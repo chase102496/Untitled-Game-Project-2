@@ -1,6 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bp8wcwqpkswl"]
+[gd_scene load_steps=15 format=3 uid="uid://bp8wcwqpkswl"]
 
-[ext_resource type="PackedScene" uid="uid://bx8ioio07wk1a" path="res://player.tscn" id="1_erbb7"]
+[ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="1_d5ilk"]
+[ext_resource type="Script" path="res://mesh_instance_3d_ground.gd" id="2_wampg"]
+[ext_resource type="Script" path="res://player_new.gd" id="4_ugq73"]
+[ext_resource type="Script" path="res://floor_box_area_3d.gd" id="5_pgwdc"]
+[ext_resource type="Script" path="res://floor_box.gd" id="6_nwwrg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xpipa"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -15,11 +19,21 @@ sky = SubResource("Sky_vjtmi")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vtarr"]
+albedo_texture = ExtResource("1_d5ilk")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_mii1f"]
 size = Vector2(10, 10)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dky83"]
 data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_u5yvh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ui80q"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xfqmg"]
+size = Vector3(1, 0.512863, 1)
 
 [node name="Node3D" type="Node3D"]
 
@@ -27,21 +41,52 @@ data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0
 environment = SubResource("Environment_1ghqa")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+transform = Transform3D(-0.63589, 0.668381, -0.38589, 0, 0.5, 0.866026, 0.77178, 0.550697, -0.317945, 0, 275.733, 0)
+light_color = Color(0.9, 0.8925, 0.81, 1)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-fov = 90.0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+layers = 3
+material_override = SubResource("StandardMaterial3D_vtarr")
 mesh = SubResource("PlaneMesh_mii1f")
+script = ExtResource("2_wampg")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+[node name="StaticBody3D_Ground" type="StaticBody3D" parent="MeshInstance3D_Ground"]
+collision_layer = 3
+collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D_Ground" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D_Ground"]
 shape = SubResource("ConcavePolygonShape3D_dky83")
 
-[node name="Player" parent="." instance=ExtResource("1_erbb7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
-linear_damp = 3.0
+[node name="Player_New" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02715, 4.9625, 2.45863)
+script = ExtResource("4_ugq73")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player_New"]
+mesh = SubResource("CapsuleMesh_u5yvh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player_New"]
+shape = SubResource("CapsuleShape3D_ui80q")
+
+[node name="TwistPivot" type="Node3D" parent="Player_New"]
+
+[node name="PitchPivot" type="Node3D" parent="Player_New/TwistPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="Player_New/TwistPivot/PitchPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.9901, 0.140366, 0, -0.140366, 0.9901, 0, 1.5, 4)
+
+[node name="Area3D_FloorBox" type="Area3D" parent="Player_New"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0952256, 0)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("5_pgwdc")
+
+[node name="CollisionShape3D_FloorBox" type="CollisionShape3D" parent="Player_New/Area3D_FloorBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.06356, 0)
+shape = SubResource("BoxShape3D_xfqmg")
+script = ExtResource("6_nwwrg")
+
+[connection signal="area_entered" from="Player_New/Area3D_FloorBox" to="Player_New" method="_on_area_3d_floor_box_area_entered"]

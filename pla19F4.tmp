@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx8ioio07wk1a"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_2pmes"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dkjcc"]
+friction = 0.0
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_65wh1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8qfky"]
+
+[node name="Player" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_dkjcc")
+lock_rotation = true
+script = ExtResource("1_2pmes")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_65wh1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8qfky")
+
+[node name="TwistPivot" type="Node3D" parent="."]
+
+[node name="PitchPivot" type="Node3D" parent="TwistPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.9901, 0.140366, 0, -0.140366, 0.9901, 0, 1.5, 4)
