@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://qt0gd5w076qq"]
+
+[ext_resource type="Script" path="res://turn_arena.gd" id="1_ivov2"]
+[ext_resource type="Script" path="res://turn_manager.gd" id="2_8uhrt"]
+[ext_resource type="Script" path="res://turn_player.gd" id="3_doq6a"]
+[ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="3_oebhd"]
+[ext_resource type="Script" path="res://turn_enemy_1.gd" id="5_0swtj"]
+
+[node name="Turn_Arena" type="Node2D"]
+script = ExtResource("1_ivov2")
+
+[node name="Turn_Manager" type="Node2D" parent="."]
+script = ExtResource("2_8uhrt")
+
+[node name="Turn_Player" type="Marker2D" parent="Turn_Manager"]
+position = Vector2(404, 521)
+script = ExtResource("3_doq6a")
+
+[node name="Sprite2D" type="Sprite2D" parent="Turn_Manager/Turn_Player"]
+modulate = Color(0.522167, 1, 0.39, 1)
+texture = ExtResource("3_oebhd")
+
+[node name="Turn_Enemy1" type="Marker2D" parent="Turn_Manager"]
+position = Vector2(1372, 342)
+script = ExtResource("5_0swtj")
+
+[node name="Sprite2D" type="Sprite2D" parent="Turn_Manager/Turn_Enemy1"]
+modulate = Color(1, 0.5, 0.5, 1)
+texture = ExtResource("3_oebhd")
+
+[node name="Turn_Enemy2" type="Marker2D" parent="Turn_Manager"]
+position = Vector2(1380, 679)
+
+[node name="Sprite2D" type="Sprite2D" parent="Turn_Manager/Turn_Enemy2"]
+modulate = Color(1, 0.5, 0.5, 1)
+texture = ExtResource("3_oebhd")
+
+[node name="Turn_Interface" type="CanvasLayer" parent="."]

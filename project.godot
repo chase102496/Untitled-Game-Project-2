@@ -15,10 +15,23 @@ run/main_scene="res://level.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Events="*res://events.gd"
+DialogueQuest="*res://addons/dialogue_quest/scripts/dialogue_quest_interface.gd"
+
+[dialogue_quest]
+
+data_directory="res://dialogue_quest"
+
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/dialogue_quest/plugin.cfg")
 
 [input]
 

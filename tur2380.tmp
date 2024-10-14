@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://qt0gd5w076qq"]
+
+[ext_resource type="Script" path="res://turn_arena.gd" id="1_ivov2"]
+[ext_resource type="Script" path="res://turn_manager.gd" id="2_8uhrt"]
+[ext_resource type="PackedScene" uid="uid://dwjrdrniryhc0" path="res://turn_character.tscn" id="3_uadfq"]
+
+[node name="Turn_Arena" type="Node2D"]
+script = ExtResource("1_ivov2")
+
+[node name="Turn_Manager" type="Node2D" parent="."]
+script = ExtResource("2_8uhrt")
+
+[node name="Turn_Character" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
+
+[node name="Turn_Character2" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
+position = Vector2(1352, 674)
+
+[node name="Sprite2D" parent="Turn_Manager/Turn_Character2" index="0"]
+modulate = Color(1, 0.6645, 0.39, 1)
+
+[node name="Turn_Character3" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
+position = Vector2(1355, 324)
+
+[node name="Sprite2D" parent="Turn_Manager/Turn_Character3" index="0"]
+modulate = Color(0.39, 1, 0.532333, 1)
+
+[node name="Turn_Interface" type="CanvasLayer" parent="."]
+
+[connection signal="turn_start" from="Turn_Manager" to="Turn_Manager/Turn_Character" method="_on_turn_manager_turn_start"]
+[connection signal="turn_end" from="Turn_Manager/Turn_Character" to="Turn_Manager" method="_on_turn_character_turn_end"]
+
+[editable path="Turn_Manager/Turn_Character"]
+[editable path="Turn_Manager/Turn_Character2"]
+[editable path="Turn_Manager/Turn_Character3"]
