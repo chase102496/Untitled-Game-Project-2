@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bitq02d30r24m"]
+
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Fancake.ttf" id="1_gserq"]
+[ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://menu_style_box.tres" id="1_sehmd"]
+
+[resource]
+Button/fonts/font = ExtResource("1_gserq")
+Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_gserq")
+PanelContainer/styles/panel = ExtResource("1_sehmd")
+VBoxContainer/constants/separation = 8

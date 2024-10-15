@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://qt0gd5w076qq"]
+
+[ext_resource type="Script" path="res://scripts/turn_manager.gd" id="2_8uhrt"]
+[ext_resource type="PackedScene" uid="uid://dwjrdrniryhc0" path="res://scenes/turn_character.tscn" id="3_uadfq"]
+[ext_resource type="Shader" path="res://shaders/turn_character.gdshader" id="4_j80yi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfo8l"]
+resource_local_to_scene = true
+shader = ExtResource("4_j80yi")
+shader_parameter/thickness = 3.0
+shader_parameter/ring_count = 16
+shader_parameter/ring_offset = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/border_clipping_fix = true
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/square_border = false
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/max_or_add = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5m5tq"]
+resource_local_to_scene = true
+shader = ExtResource("4_j80yi")
+shader_parameter/thickness = 3.0
+shader_parameter/ring_count = 16
+shader_parameter/ring_offset = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/border_clipping_fix = true
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/square_border = false
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/max_or_add = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fyckm"]
+resource_local_to_scene = true
+shader = ExtResource("4_j80yi")
+shader_parameter/thickness = 3.0
+shader_parameter/ring_count = 16
+shader_parameter/ring_offset = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/border_clipping_fix = true
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/square_border = false
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/max_or_add = false
+
+[node name="Turn_Arena" type="Node2D"]
+
+[node name="Turn_Manager" type="Node2D" parent="."]
+script = ExtResource("2_8uhrt")
+
+[node name="Turn_Character" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
+position = Vector2(243, 495)
+
+[node name="Sprite2D" parent="Turn_Manager/Turn_Character" index="0"]
+modulate = Color(0.36, 1, 0.370667, 1)
+material = SubResource("ShaderMaterial_mfo8l")
+
+[node name="Turn_Character2" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
+modulate = Color(1, 0.552667, 0.39, 1)
+position = Vector2(748, 553)
+
+[node name="Sprite2D" parent="Turn_Manager/Turn_Character2" index="0"]
+modulate = Color(1, 0.552667, 0.39, 1)
+material = SubResource("ShaderMaterial_5m5tq")
+
+[node name="Turn_Character3" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
+modulate = Color(1, 0.552667, 0.39, 1)
+position = Vector2(741, 152)
+
+[node name="Sprite2D" parent="Turn_Manager/Turn_Character3" index="0"]
+modulate = Color(1, 0.552667, 0.39, 1)
+material = SubResource("ShaderMaterial_fyckm")
+
+[node name="Turn_Interface" type="CanvasLayer" parent="."]
+
+[editable path="Turn_Manager/Turn_Character"]
+[editable path="Turn_Manager/Turn_Character2"]
+[editable path="Turn_Manager/Turn_Character3"]

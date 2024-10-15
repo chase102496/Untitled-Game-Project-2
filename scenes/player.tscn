@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://2racvr0qy6h5"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dkjcc"]
+friction = 0.0
+
+[sub_resource type="GDScript" id="GDScript_42h4a"]
+
+[node name="Player" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_dkjcc")
+lock_rotation = true
+script = SubResource("GDScript_42h4a")

@@ -1,0 +1,108 @@
+[gd_scene load_steps=16 format=3 uid="uid://bp8wcwqpkswl"]
+
+[ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="1_toah6"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="1_tpmol"]
+[ext_resource type="Script" path="res://scripts/player_new.gd" id="2_cj77a"]
+[ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="3_02y5k"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_bgffs"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_w0rap"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_ub8u8"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="8_pjkkj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xpipa"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_vjtmi"]
+sky_material = SubResource("ProceduralSkyMaterial_xpipa")
+
+[sub_resource type="Environment" id="Environment_1ghqa"]
+background_mode = 2
+sky = SubResource("Sky_vjtmi")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vtarr"]
+albedo_texture = ExtResource("1_toah6")
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nljj7"]
+size = Vector2(0.25, 0.25)
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_hciwr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ui80q"]
+
+[node name="Level" type="Node3D"]
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("1_tpmol")]
+offset_left = 757.0
+offset_right = -3.0
+offset_bottom = -410.0
+initial_node_to_watch = NodePath("../CharacterBody3D_Player/StateChart")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1ghqa")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.63589, 0.668381, -0.38589, 0, 0.5, 0.866026, 0.77178, 0.550697, -0.317945, 0, 275.733, 0)
+light_color = Color(0.9, 0.8925, 0.81, 1)
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+
+[node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_vtarr")
+mesh = SubResource("PlaneMesh_nljj7")
+
+[node name="StaticBody3D_Ground" type="StaticBody3D" parent="MeshInstance3D_Ground"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D_Ground" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D_Ground"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+shape = SubResource("HeightMapShape3D_hciwr")
+
+[node name="CharacterBody3D_Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02715, 4.9625, 2.45863)
+script = ExtResource("2_cj77a")
+
+[node name="Sprite3D" type="Sprite3D" parent="CharacterBody3D_Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.367934, 0)
+texture = ExtResource("3_02y5k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D_Player"]
+shape = SubResource("CapsuleShape3D_ui80q")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D_Player"]
+transform = Transform3D(1, 0, 0, 0, 0.9901, 0.140366, 0, -0.140366, 0.9901, 0, 1.5, 4)
+
+[node name="StateChart" type="Node" parent="CharacterBody3D_Player"]
+script = ExtResource("5_bgffs")
+
+[node name="CompoundState" type="Node" parent="CharacterBody3D_Player/StateChart"]
+script = ExtResource("6_w0rap")
+initial_state = NodePath("Default")
+
+[node name="Default" type="Node" parent="CharacterBody3D_Player/StateChart/CompoundState"]
+script = ExtResource("6_w0rap")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="CharacterBody3D_Player/StateChart/CompoundState/Default"]
+script = ExtResource("7_ub8u8")
+
+[node name="on_pause_input" type="Node" parent="CharacterBody3D_Player/StateChart/CompoundState/Default"]
+script = ExtResource("8_pjkkj")
+to = NodePath("../../Pause_Input")
+event = &"on_pause_input"
+delay_in_seconds = "0.0"
+
+[node name="Pause_Input" type="Node" parent="CharacterBody3D_Player/StateChart/CompoundState"]
+script = ExtResource("7_ub8u8")
+
+[node name="on_idle" type="Node" parent="CharacterBody3D_Player/StateChart/CompoundState/Pause_Input"]
+script = ExtResource("8_pjkkj")
+to = NodePath("../../Default")
+event = &"on_idle"
+delay_in_seconds = "0.0"

@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://bxq7iunl61l4a"]
+
+[ext_resource type="Script" path="res://scenes/turn_character3d.gd" id="1_kaupm"]
+[ext_resource type="Shader" path="res://shaders/turn_character3d.gdshader" id="2_jxp2y"]
+[ext_resource type="Texture2D" uid="uid://lpo4io452l72" path="res://sprites/icon.png" id="3_pb3x0"]
+[ext_resource type="Script" path="res://scenes/turn_sprite3d.gd" id="4_13sdt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2gfox"]
+resource_local_to_scene = true
+render_priority = 7
+shader = ExtResource("2_jxp2y")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/glowSize = 7.0
+shader_parameter/glowDensity = 10
+shader_parameter/glowRadialCoverage = 4
+shader_parameter/glowAngle = 1.57
+shader_parameter/glowSharpness = 3.68
+shader_parameter/alphaThreshold = 0.5
+shader_parameter/sprite_texture = ExtResource("3_pb3x0")
+
+[node name="Turn_Character3D" type="Marker3D"]
+script = ExtResource("1_kaupm")
+
+[node name="Turn_Sprite3D" type="Sprite3D" parent="."]
+material_override = SubResource("ShaderMaterial_2gfox")
+texture = ExtResource("3_pb3x0")
+script = ExtResource("4_13sdt")
+metadata/_edit_group_ = true

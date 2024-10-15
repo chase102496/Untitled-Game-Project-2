@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://4xy38mf8rdnk"]
+
+[ext_resource type="Script" path="res://scripts/animation_component.gd" id="1_5ioju"]
+
+[node name="AnimationComponent" type="Node"]
+script = ExtResource("1_5ioju")
+hover_scale = Vector2(1.1, 1.1)
+time = 0.2
+transition_type = 11
