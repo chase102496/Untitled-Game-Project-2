@@ -1,11 +1,15 @@
-[gd_scene load_steps=161 format=3 uid="uid://bp8wcwqpkswl"]
+[gd_scene load_steps=167 format=3 uid="uid://bp8wcwqpkswl"]
 
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_2n7i7"]
 [ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="1_toah6"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="1_tpmol"]
 [ext_resource type="Script" path="res://scripts/player_new.gd" id="2_cj77a"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="3_02y5k"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_bgffs"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="5_mna3a"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_qmx3w"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_w0rap"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="7_p7kmc"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_ub8u8"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="8_pjkkj"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://sprites/The Adventurer - Free/Idle/idle_down.png" id="9_ul3pl"]
@@ -20,6 +24,24 @@
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://sprites/The Adventurer - Free/Walk/walk_right_down.png" id="18_bfila"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://sprites/The Adventurer - Free/Walk/walk_right_up.png" id="19_w66vu"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://sprites/The Adventurer - Free/Walk/walk_up.png" id="20_h23xv"]
+
+[sub_resource type="Resource" id="Resource_j5gng"]
+script = ExtResource("6_qmx3w")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Resource" id="Resource_28lhh"]
+script = ExtResource("7_p7kmc")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 75.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xpipa"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -42,8 +64,6 @@ uv1_scale = Vector3(10, 10, 10)
 size = Vector2(0.25, 0.25)
 
 [sub_resource type="HeightMapShape3D" id="HeightMapShape3D_hciwr"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ui80q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lxicb"]
 atlas = ExtResource("9_ul3pl")
@@ -1274,7 +1294,24 @@ states/Walking/node = SubResource("AnimationNodeBlendTree_iroyj")
 states/Walking/position = Vector2(585, 89)
 transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_h3b7g")]
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ui80q"]
+
 [node name="Level" type="Node3D"]
+
+[node name="PhantomCamera3D" type="Node3D" parent="." node_paths=PackedStringArray("follow_target")]
+transform = Transform3D(1, 0, 0, 0, 0.914112, 0.405461, 0, -0.405461, 0.914112, 2.02715, 6.9625, 6.45863)
+script = ExtResource("5_mna3a")
+follow_mode = 2
+follow_target = NodePath("../CharacterBody3D_Player")
+tween_resource = SubResource("Resource_j5gng")
+camera_3d_resource = SubResource("Resource_28lhh")
+follow_offset = Vector3(0, 2, 4)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.914112, 0.405461, 0, -0.405461, 0.914112, 2.02715, 6.9625, 6.45863)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+script = ExtResource("1_2n7i7")
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("1_tpmol")]
 offset_left = 757.0
@@ -1306,6 +1343,7 @@ transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 shape = SubResource("HeightMapShape3D_hciwr")
 
 [node name="CharacterBody3D_Player" type="CharacterBody3D" parent="."]
+physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02715, 4.9625, 2.45863)
 script = ExtResource("2_cj77a")
 
@@ -1314,12 +1352,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.367934, 0)
 visible = false
 texture = ExtResource("3_02y5k")
 
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="CharacterBody3D_Player"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0208516, 0)
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_qeieo")
+animation = &"default_idle_down"
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D_Player"]
+libraries = {
+"": SubResource("AnimationLibrary_xtdjl")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="CharacterBody3D_Player"]
+tree_root = SubResource("AnimationNodeStateMachine_v24ek")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.000814974, 0)
+parameters/Idle/TimeScale/scale = 0.2
+parameters/Walking/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Walking/TimeScale/scale = 0.45
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D_Player"]
 transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ui80q")
-
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D_Player"]
-transform = Transform3D(1, 0, 0, 0, 0.911188, 0.411992, 0, -0.411992, 0.911188, 0, 2.70377, 4)
 
 [node name="StateChart" type="Node" parent="CharacterBody3D_Player"]
 script = ExtResource("5_bgffs")
@@ -1364,23 +1419,3 @@ script = ExtResource("8_pjkkj")
 to = NodePath("../../Default")
 event = &"on_idle"
 delay_in_seconds = "0.0"
-
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="CharacterBody3D_Player"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0208516, 0)
-texture_filter = 0
-sprite_frames = SubResource("SpriteFrames_qeieo")
-animation = &"default_idle_down"
-frame = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D_Player"]
-libraries = {
-"": SubResource("AnimationLibrary_xtdjl")
-}
-
-[node name="AnimationTree" type="AnimationTree" parent="CharacterBody3D_Player"]
-tree_root = SubResource("AnimationNodeStateMachine_v24ek")
-anim_player = NodePath("../AnimationPlayer")
-parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.000814974, 0)
-parameters/Idle/TimeScale/scale = 0.2
-parameters/Walking/BlendSpace2D/blend_position = Vector2(0, 0)
-parameters/Walking/TimeScale/scale = 0.45
