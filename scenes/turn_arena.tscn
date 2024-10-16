@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://qt0gd5w076qq"]
+[gd_scene load_steps=7 format=3 uid="uid://dp4dsk67dxhen"]
 
 [ext_resource type="Script" path="res://scripts/turn_manager.gd" id="2_8uhrt"]
 [ext_resource type="PackedScene" uid="uid://dwjrdrniryhc0" path="res://scenes/turn_character.tscn" id="3_uadfq"]

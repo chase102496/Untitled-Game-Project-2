@@ -26,25 +26,36 @@ var current_state = null
 #endregion
 
 func _ready() -> void:
-	#recieving signals from dialogue and sending to func
-	Dialogic.signal_event.connect(_on_dialogic_signal)
+
 	#recieving signals from state machine
 	#HACK: state_chart.get_child(0).get_current_state() shows current state of our first system
-	#$StateChart/CompoundState/Default.state_processing.connect(_on_state_processing_default)
 	
-	#Physics runtimes
-	$StateChart/CompoundState/Default.state_physics_processing.connect(_on_state_physics_processing_default)
-	$StateChart/CompoundState/Default/Idle.state_physics_processing.connect(_on_state_physics_processing_idle)
-	$StateChart/CompoundState/Default/Walking.state_physics_processing.connect(_on_state_physics_processing_walking)
-	$StateChart/CompoundState/Pause_Input.state_entered.connect(_on_state_entered_pause_input)
+	#region Signals
+	
+	#Connecting to dialogue signals
+	Dialogic.signal_event.connect(_on_dialogic_signal)
+	
+	#	State Machine Signals
+	
+	#Battle
+	$StateChart/Main/Battle.state_physics_processing.connect(_on_state_physics_processing_battle)
+	#Physics
+	$StateChart/Main/Explore.state_physics_processing.connect(_on_state_physics_processing_explore)
+	$StateChart/Main/Explore/Idle.state_physics_processing.connect(_on_state_physics_processing_explore_idle)
+	$StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
+	#Entered
+	$StateChart/Main/Pause_Input.state_entered.connect(_on_state_entered_pause_input)
 
-#region Modules for runtimes
+	#endregion
+
+#region Modules
 
 func inputs_init():
 	direction = Vector2.ZERO
 	jumping = false
 	jump_start = false
-
+func animations_init():
+	anim_tree.get("parameters/playback").travel("Idle")
 func input_handler():
 	#Physics controls inputs
 	jump_start = Input.is_action_just_pressed("move_jump")
@@ -53,13 +64,17 @@ func input_handler():
 
 	#testing transition to turn-based
 	if Input.is_action_just_pressed("ui_cancel"):
+		#TODO editing
+		var unit = Battle.unit_player
+		var friends = [unit,unit]
+		var foes = [unit,unit]
+		Battle.set_battle_list(friends, foes)
+		
 		get_tree().change_scene_to_file("res://scenes/turn_arena3d.tscn")
 	
 	#testing dialogue
 	if Input.is_action_just_pressed("interact"):
-		#TODO need to add state machines now for dialogue
 		Dialogic.start("timeline")
-		state_chart.send_event("on_chat_start")
 
 #endregion
 
@@ -68,16 +83,22 @@ func _on_dialogic_signal(arg:String) -> void:
 	#pass on the string from dialogue signal to state machine
 	state_chart.send_event(arg)
 
-#region state charts
+#	--- State Machine ---
 
-func _on_state_physics_processing_idle(_delta: float):
+#Battle state and sub-states
+func _on_state_physics_processing_battle(_delta: float):
+	pass
+
+#Explore state and sub-states
+func _on_state_physics_processing_explore(_delta: float):
+	input_handler()
+func _on_state_physics_processing_explore_idle(_delta: float):
 	
 	anim_tree.get("parameters/playback").travel("Idle")
 	
 	if direction != Vector2.ZERO:
 		state_chart.send_event("on_walking")
-
-func _on_state_physics_processing_walking(_delta: float):
+func _on_state_physics_processing_explore_walking(_delta: float):
 	if direction == Vector2.ZERO:
 		state_chart.send_event("on_idle")
 	else:
@@ -85,27 +106,16 @@ func _on_state_physics_processing_walking(_delta: float):
 		anim_tree.set("parameters/Walking/BlendSpace2D/blend_position",direction)
 		anim_tree.get("parameters/playback").travel("Walking")
 
-#Pause input
+#Pause state and sub-states
 func _on_state_entered_pause_input():
+	#Resets inputs
 	inputs_init()
-	print(direction)
-	print(velocity)
-
-#Inputs, and physics stuff for default player core
-func _on_state_physics_processing_default(_delta: float):
-	input_handler()
-
-#Runs during pause input state
-func _on_state_physics_processing_pause_input():
-	pass
-
-#endregion
+	#Reset animation to idle
+	animations_init()
 
 #Always runs
 func _process(_delta: float) -> void:
 	pass
-
-#TODO Animations
 
 #Always runs
 func _physics_process(delta: float) -> void:

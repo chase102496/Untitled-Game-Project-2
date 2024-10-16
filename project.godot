@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Untitled-Game-Project-2"
-run/main_scene="res://scenes/level.tscn"
+run/main_scene="res://scenes/ui/menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 Events="*res://scripts/events.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+Player="*res://player.gd"
+Battle="*res://battle.gd"
 
 [dialogic]
 

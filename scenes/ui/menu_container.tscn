@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4mxx3aw4y6ae"]
+[gd_scene load_steps=4 format=3 uid="uid://d4mxx3aw4y6ae"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://menu_theme.tres" id="1_7iwqr"]
 [ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://scenes/ui/animation_component.tscn" id="2_p2jmj"]
+[ext_resource type="Script" path="res://scenes/ui/button.gd" id="2_qr4nm"]
 
 [node name="CenterContainer" type="CenterContainer"]
 anchors_preset = 15
@@ -31,6 +32,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme = ExtResource("1_7iwqr")
 text = "New Game"
+script = ExtResource("2_qr4nm")
 
 [node name="AnimationComponent" parent="PanelContainer/VBoxContainer/Button" instance=ExtResource("2_p2jmj")]
 
@@ -51,3 +53,5 @@ layout_mode = 2
 text = "Quit"
 
 [node name="AnimationComponent" parent="PanelContainer/VBoxContainer/Button4" instance=ExtResource("2_p2jmj")]
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Button" to="PanelContainer/VBoxContainer/Button" method="_on_pressed"]

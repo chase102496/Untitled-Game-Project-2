@@ -22,6 +22,7 @@ shader_parameter/sprite_texture = ExtResource("3_pb3x0")
 script = ExtResource("1_kaupm")
 
 [node name="Turn_Sprite3D" type="Sprite3D" parent="."]
+visible = false
 material_override = SubResource("ShaderMaterial_2gfox")
 texture = ExtResource("3_pb3x0")
 script = ExtResource("4_13sdt")

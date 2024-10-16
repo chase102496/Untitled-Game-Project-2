@@ -14,7 +14,6 @@ func _ready() -> void:
 	connect_signals()
 	call_deferred("setup")
 
-
 func connect_signals() -> void:
 	target.mouse_entered.connect(_on_hover)
 	target.mouse_exited.connect(_off_hover)
@@ -34,6 +33,6 @@ func _off_hover() -> void:
 	add_tween("scale", default_scale, time)
 
 func add_tween(property: String, value, seconds: float) -> void:
-	var tween = get_tree().create_tween()
-	tween.tween_property(target, property, value, seconds).set_trans(transition_type)
-	
+	if get_tree():
+		var tween = get_tree().create_tween()
+		tween.tween_property(target, property, value, seconds).set_trans(transition_type)

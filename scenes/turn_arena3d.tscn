@@ -1,48 +1,56 @@
-[gd_scene load_steps=7 format=3 uid="uid://3toebp44q7k4"]
+[gd_scene load_steps=8 format=3 uid="uid://3toebp44q7k4"]
 
 [ext_resource type="Script" path="res://scenes/turn_manager3d.gd" id="1_k1dsd"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="1_vs5ud"]
 [ext_resource type="PackedScene" uid="uid://bxq7iunl61l4a" path="res://scenes/turn_character3d.tscn" id="2_d4p6f"]
-[ext_resource type="Texture2D" uid="uid://bg0dqdy383hhh" path="res://textures/kenney_prototype_textures/dark/texture_05.png" id="3_3hh3k"]
+[ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3gjc5"]
-albedo_texture = ExtResource("3_3hh3k")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inpdq"]
+albedo_texture = ExtResource("3_4sg4e")
+uv1_scale = Vector3(10, 10, 10)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ceemq"]
-size = Vector2(3, 3)
+[sub_resource type="PlaneMesh" id="PlaneMesh_p1wm8"]
+size = Vector2(0.25, 0.25)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_gd68p"]
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_jv2gb"]
 
 [node name="Turn Arena 3D" type="Node3D"]
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("1_vs5ud")]
+offset_left = 757.0
+offset_right = -3.0
+offset_bottom = -410.0
+initial_node_to_watch = NodePath("../Player/StateChart")
 
 [node name="Turn_Manager3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.603487, 0)
 script = ExtResource("1_k1dsd")
 
-[node name="Turn_Character3D" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.30468, 0, 0)
+[node name="Anchor_Friends" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56786, -0.489773, 0)
 
-[node name="Turn_Character3D2" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86761, 0, -1.45837)
-
-[node name="Turn_Character3D3" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.13089, 0, 1.18328)
+[node name="Anchor_Foes" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.30073, -0.574794, 0.0970516)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.999951, 0, -0.00989585, 0.00476055, 0.876685, 0.481042, 0.00867554, -0.481065, 0.876642, -0.0464027, 3.11506, 4.11328)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_3gjc5")
-mesh = SubResource("PlaneMesh_ceemq")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0336914)
-shape = SubResource("ConcavePolygonShape3D_gd68p")
+transform = Transform3D(0.999951, 0, -0.00989585, 0.00476055, 0.876685, 0.481042, 0.00867554, -0.481065, 0.876642, -0.046, 2, 4.113)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.69376, 0.590814, 1.26656)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11631, 1.53126, -0.259726)
 light_color = Color(1, 0.9525, 0.81, 1)
 light_energy = 16.0
+light_size = 0.91
 light_specular = 0.0
+shadow_enabled = true
+omni_range = 13.547
+
+[node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, -1.80014, 0)
+material_override = SubResource("StandardMaterial3D_inpdq")
+mesh = SubResource("PlaneMesh_p1wm8")
+
+[node name="StaticBody3D_Ground" type="StaticBody3D" parent="MeshInstance3D_Ground"]
+
+[node name="CollisionShape3D_Ground" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D_Ground"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+shape = SubResource("HeightMapShape3D_jv2gb")

@@ -1,6 +1,6 @@
 extends Node
 
 @warning_ignore("unused_signal")
-signal turn_end(_end_character)
+signal turn_end(end_character)
 @warning_ignore("unused_signal")
-signal turn_start(_start_character)
+signal turn_start(start_character)
