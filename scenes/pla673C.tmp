@@ -1261,17 +1261,18 @@ physics_interpolation_mode = 1
 script = ExtResource("1_5m8nv")
 
 [node name="StateChart" type="Node" parent="."]
-process_priority = -1
 script = ExtResource("15_6jgi1")
 
 [node name="Main" type="Node" parent="StateChart"]
-process_priority = -1
 script = ExtResource("16_gj7cp")
-initial_state = NodePath("Explore")
+initial_state = NodePath("Initialize")
+
+[node name="Initialize" type="Node" parent="StateChart/Main"]
+script = ExtResource("18_g11oa")
 
 [node name="on_start_battle" type="Node" parent="StateChart/Main"]
 script = ExtResource("17_tq741")
-to = NodePath("../Battle")
+to = NodePath("../Battle/Start")
 event = &"on_start_battle"
 delay_in_seconds = "0.0"
 
@@ -1411,6 +1412,3 @@ parameters/Walking/TimeScale/scale = 0.45
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ui80q")
-
-[connection signal="ready" from="." to="." method="_on_ready"]
-[connection signal="ready" from="StateChart" to="." method="_on_state_chart_ready"]

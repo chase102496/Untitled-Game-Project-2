@@ -1,8 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bp8wcwqpkswl"]
+[gd_scene load_steps=15 format=3 uid="uid://bp8wcwqpkswl"]
 
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_2n7i7"]
 [ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="1_toah6"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="1_tpmol"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="5_mna3a"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_qmx3w"]
 [ext_resource type="PackedScene" uid="uid://djdg8wet86nat" path="res://scenes/player.tscn" id="7_5xn44"]
@@ -64,12 +63,6 @@ transform = Transform3D(1, 0, 0, 0, 0.914112, 0.405461, 0, -0.405461, 0.914112, 
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
 script = ExtResource("1_2n7i7")
-
-[node name="StateChartDebugger" parent="." instance=ExtResource("1_tpmol")]
-offset_left = 757.0
-offset_right = -3.0
-offset_bottom = -410.0
-initial_node_to_watch = NodePath("../Player/StateChart")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1ghqa")

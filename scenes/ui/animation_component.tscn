@@ -4,6 +4,5 @@
 
 [node name="AnimationComponent" type="Node"]
 script = ExtResource("1_5ioju")
-hover_scale = Vector2(1.1, 1.1)
-time = 0.2
+hover_scale = Vector2(1.35, 1.35)
 transition_type = 11

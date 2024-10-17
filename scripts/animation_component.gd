@@ -33,6 +33,6 @@ func _off_hover() -> void:
 	add_tween("scale", default_scale, time)
 
 func add_tween(property: String, value, seconds: float) -> void:
-	if get_tree():
+	if get_tree() != null:
 		var tween = get_tree().create_tween()
 		tween.tween_property(target, property, value, seconds).set_trans(transition_type)

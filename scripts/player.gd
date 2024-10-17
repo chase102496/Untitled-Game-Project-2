@@ -4,6 +4,17 @@ extends CharacterBody3D
 
 #Setting var for state machine
 @onready var state_chart: StateChart = get_node("StateChart")
+@onready var state_subchart = get_node("StateChart/Main")
+@onready var state_init_override = null
+
+#region Stats
+
+@export_group("Stats")
+
+@export var health := 6
+@export var vis := 6
+
+#endregion
 
 #Animations init
 @onready var anim_tree = get_node("AnimationTree")
@@ -45,7 +56,7 @@ func _ready() -> void:
 	$StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
 	#Entered
 	$StateChart/Main/Pause_Input.state_entered.connect(_on_state_entered_pause_input)
-
+	
 	#endregion
 
 #region Modules
@@ -90,9 +101,14 @@ func _on_state_physics_processing_battle(_delta: float):
 	pass
 
 #Explore state and sub-states
+func _on_state_init_override(state: String):
+	state_chart.send_event(state)
 func _on_state_physics_processing_explore(_delta: float):
 	input_handler()
 func _on_state_physics_processing_explore_idle(_delta: float):
+	
+	if Input.is_action_pressed("battle"):
+		state_chart.send_event("on_start_battle")
 	
 	anim_tree.get("parameters/playback").travel("Idle")
 	
@@ -115,11 +131,15 @@ func _on_state_entered_pause_input():
 
 #Always runs
 func _process(_delta: float) -> void:
+	#TODO
+	if state_init_override:
+		state_chart.send_event(state_init_override)
+		state_init_override = null
 	pass
 
 #Always runs
 func _physics_process(delta: float) -> void:
-	
+
 	move_and_slide()
 	
 	#Applying jump

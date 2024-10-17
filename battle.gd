@@ -4,6 +4,7 @@ extends Node
 @onready var battle_list_foes : Array
 
 const unit_player: PackedScene = preload("res://scenes/player.tscn")
+const main_gui: PackedScene = preload("res://scenes/ui/battle_gui.tscn")
 
 func set_battle_list(friends,foes):
 	battle_list_friends = friends
