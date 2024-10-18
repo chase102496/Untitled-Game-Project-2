@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://3toebp44q7k4"]
+[gd_scene load_steps=8 format=3 uid="uid://3toebp44q7k4"]
 
 [ext_resource type="Script" path="res://scenes/turn_manager3d.gd" id="1_k1dsd"]
 [ext_resource type="PackedScene" uid="uid://bxq7iunl61l4a" path="res://scenes/turn_character3d.tscn" id="2_d4p6f"]
 [ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
+[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://scenes/ui/battle_gui.tscn" id="4_rcrxg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inpdq"]
 albedo_texture = ExtResource("3_4sg4e")
@@ -13,16 +14,18 @@ size = Vector2(0.25, 0.25)
 
 [sub_resource type="HeightMapShape3D" id="HeightMapShape3D_jv2gb"]
 
-[node name="Turn Arena 3D" type="Node3D"]
+[node name="Turn_Arena" type="Node3D"]
 
-[node name="Turn_Manager3D" type="Node3D" parent="."]
+[node name="Battle_GUI" parent="." instance=ExtResource("4_rcrxg")]
+
+[node name="Turn_Manager" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.603487, 0)
 script = ExtResource("1_k1dsd")
 
-[node name="Anchor_Friends" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
+[node name="friends" parent="Turn_Manager" instance=ExtResource("2_d4p6f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56786, -0.489773, 0)
 
-[node name="Anchor_Foes" parent="Turn_Manager3D" instance=ExtResource("2_d4p6f")]
+[node name="foes" parent="Turn_Manager" instance=ExtResource("2_d4p6f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.30073, -0.574794, 0.0970516)
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -47,5 +50,3 @@ mesh = SubResource("PlaneMesh_p1wm8")
 [node name="CollisionShape3D_Ground" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D_Ground"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 shape = SubResource("HeightMapShape3D_jv2gb")
-
-[connection signal="ready" from="Turn_Manager3D" to="Turn_Manager3D" method="_on_ready"]

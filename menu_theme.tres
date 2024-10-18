@@ -1,23 +1,17 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bitq02d30r24m"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://bitq02d30r24m"]
 
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Fancake.ttf" id="1_gserq"]
 [ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://menu_style_box.tres" id="1_sehmd"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_64vfq"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(0.8, 0.8, 0.8, 0)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xust"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8s2l"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(0.8, 0.8, 0.8, 0)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k8pwc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4n5v"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(0.8, 0.8, 0.8, 0)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3jkau"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_drt77"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(0.8, 0.8, 0.8, 0)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3n7wq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pu612"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wkxhl"]
 bg_color = Color(0.0559, 0.43, 0.26789, 1)
@@ -38,10 +32,13 @@ Button/colors/icon_pressed_color = Color(1, 1, 1, 0)
 Button/constants/outline_size = 20
 Button/font_sizes/font_size = 30
 Button/fonts/font = ExtResource("1_gserq")
-Button/styles/hover = SubResource("StyleBoxFlat_64vfq")
-Button/styles/hover_pressed = SubResource("StyleBoxFlat_j8s2l")
-Button/styles/normal = SubResource("StyleBoxFlat_h4n5v")
-Button/styles/pressed = SubResource("StyleBoxFlat_drt77")
+Button/styles/disabled = SubResource("StyleBoxEmpty_2xust")
+Button/styles/focus = SubResource("StyleBoxEmpty_k8pwc")
+Button/styles/hover = SubResource("StyleBoxEmpty_3jkau")
+Button/styles/normal = SubResource("StyleBoxEmpty_3n7wq")
+Button/styles/pressed = SubResource("StyleBoxEmpty_pu612")
+GridContainer/constants/h_separation = 28
+GridContainer/constants/v_separation = 14
 HBoxContainer/constants/separation = 30
 Label/colors/font_outline_color = Color(0.04, 0.04, 0.04, 1)
 Label/constants/outline_size = 25

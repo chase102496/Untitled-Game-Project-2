@@ -7,47 +7,51 @@ extends CharacterBody3D
 @onready var state_subchart = get_node("StateChart/Main")
 @onready var state_init_override = null
 
-#region Stats
-
-@export_group("Stats")
-
-@export var health := 6
-@export var vis := 6
-
-#endregion
-
 #Animations init
 @onready var anim_tree = get_node("AnimationTree")
+
+#HACK DON'T USE ONREADY WITHOUT A REASON. ONREADY ONLY RUNS FOR SCENES PRE-LAUNCH
+#INSTANTIATED SCENES IGNORE @ONREADY FOR SOME FUCKING REASON, OR JUST TAKE TOO LONG
+var stats : Dictionary = {
+	
+	"alignment" : "friends", #Side of the field I will fight on
+	"glossary" : "player", #Unit category I was spawned from
+	"spacing" : Vector3(-0.3,0,-0.1), #spacing when unit is spawned in battle
+	
+	"health" : 6,
+	"max_health" : 6,
+	
+	"vis" : 6,
+	"max_vis" : 6,
+	
+	"skillcheck_difficulty_mod" : 1.0,
+	
+	#Physics
+	"movespeed" : 50,
+	"max_movespeed" : 3.2,
+	"jump" : 10,
+	"jump_damper" : 1,
+	"grav" : 40,
+	"max_grav" : -70
+	
+}
 
 #Inputs init
 var direction := Vector2.ZERO
 var jumping := false
 var jump_start := false
 
-#Physics
-var max_run := 3.2 #8
-var run_accel := 50 #70
-var grav := 40
-var max_grav := -70
-var jump_force := 10
-var grounded := false
-var jump_damper := 1
-var current_state = null
-
 #endregion
 
 func _ready() -> void:
-
 	#recieving signals from state machine
 	#HACK: state_chart.get_child(0).get_current_state() shows current state of our first system
-	
 	#region Signals
 	
 	#Connecting to dialogue signals
 	Dialogic.signal_event.connect(_on_dialogic_signal)
 	
 	#	State Machine Signals
-	
 	#Battle
 	$StateChart/Main/Battle.state_physics_processing.connect(_on_state_physics_processing_battle)
 	#Physics
@@ -73,15 +77,9 @@ func input_handler():
 	jumping = Input.is_action_pressed("move_jump")
 	direction = Input.get_vector("move_right","move_left","move_forward","move_backward")
 
-	#testing transition to turn-based
+	#FIXME testing transition to turn-based ----------------------------------------------------------------------------------------------
 	if Input.is_action_just_pressed("ui_cancel"):
-		#TODO editing
-		var unit = Battle.unit_player
-		var friends = [unit,unit]
-		var foes = [unit,unit]
-		Battle.set_battle_list(friends, foes)
-		
-		get_tree().change_scene_to_file("res://scenes/turn_arena3d.tscn")
+		Battle.battle_initialize([self,self,self,self],[{"test":123},{"ababab":60000000},{},{}],get_tree(),"res://scenes/turn_arena3d.tscn")
 	
 	#testing dialogue
 	if Input.is_action_just_pressed("interact"):
@@ -145,14 +143,14 @@ func _physics_process(delta: float) -> void:
 	#Applying jump
 	if jump_start:
 		if is_on_floor():
-			velocity.y = jump_force
+			velocity.y = stats.jump
 	
 	#TODO add state machine for in-air stuff
 	if !jumping and !is_on_floor() and velocity.y > 0:
-		velocity.y -= move_toward(0,velocity.y,jump_damper)
+		velocity.y -= move_toward(0,velocity.y,stats.jump_damper)
 		#get_tree().change_scene_to_file("res://turn_arena.tscn")
 	
 	#Applying movement
-	velocity.x = move_toward(velocity.x, max_run * -direction.x, run_accel * delta)
-	velocity.z = move_toward(velocity.z, max_run * direction.y, run_accel * delta)
-	velocity.y = move_toward(velocity.y, max_grav, grav * delta)
+	velocity.x = move_toward(velocity.x, stats.max_movespeed * -direction.x, stats.movespeed * delta)
+	velocity.z = move_toward(velocity.z, stats.max_movespeed * direction.y, stats.movespeed * delta)
+	velocity.y = move_toward(velocity.y, stats.max_grav, stats.grav * delta)

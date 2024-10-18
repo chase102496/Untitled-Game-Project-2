@@ -1,6 +1,6 @@
 [gd_scene load_steps=154 format=3 uid="uid://djdg8wet86nat"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_5m8nv"]
+[ext_resource type="Script" path="res://scripts/player_unit.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_esm8c"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_umnvo"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://sprites/The Adventurer - Free/Idle/idle_down.png" id="3_hetwx"]
@@ -1254,7 +1254,7 @@ states/Walking/node = SubResource("AnimationNodeBlendTree_iroyj")
 states/Walking/position = Vector2(585, 89)
 transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_h3b7g")]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ui80q"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f88vy"]
 
 [node name="Player" type="CharacterBody3D"]
 physics_interpolation_mode = 1
@@ -1371,10 +1371,10 @@ script = ExtResource("18_g11oa")
 [node name="Execution" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
-[node name="End" type="Node" parent="StateChart/Main/Battle"]
+[node name="Waiting" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
-[node name="Waiting" type="Node" parent="StateChart/Main/Battle"]
+[node name="End" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
 [node name="StateChartDebugger" parent="." instance=ExtResource("2_umnvo")]
@@ -1389,7 +1389,7 @@ visible = false
 texture = ExtResource("2_esm8c")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, -0.0208516, 0)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.0279423, -0.0713769, 0)
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_qeieo")
 animation = &"default_idle_down"
@@ -1409,8 +1409,5 @@ parameters/Walking/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Walking/TimeScale/scale = 0.45
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_ui80q")
-
-[connection signal="ready" from="." to="." method="_on_ready"]
-[connection signal="ready" from="StateChart" to="." method="_on_state_chart_ready"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("CylinderShape3D_f88vy")

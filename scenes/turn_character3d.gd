@@ -14,7 +14,7 @@ func _ready() -> void:
 func _on_turn_start(start_character) -> void:
 	active_character = start_character
 	if active_character == self:
-		print(self.name)
+		#print(self.name)
 		$Turn_Sprite3D.material_override.set_shader_parameter("glowDensity", 10)
 	
 func _on_turn_end(_end_character):
