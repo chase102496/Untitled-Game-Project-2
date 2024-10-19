@@ -11,19 +11,16 @@ config_version=5
 [application]
 
 config/name="Untitled-Game-Project-2"
-run/main_scene="res://scenes/ui/menu.tscn"
+run/main_scene="res://ui/menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Events="*res://scripts/events.gd"
+Events="*res://events.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
-Player="*res://Player.gd"
 Battle="*res://battle.gd"
-Abilities="*res://abilities.gd"
-Modifiers="*res://modifiers.gd"
 
 [dialogic]
 

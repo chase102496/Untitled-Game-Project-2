@@ -1350,15 +1350,6 @@ delay_in_seconds = "0.0"
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Start")
 
-[node name="Components" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("20_ibw1c")
-
-[node name="component_physics" type="Node" parent="StateChart/Main/Battle/Components"]
-script = ExtResource("20_6nw5h")
-
-[node name="component_movement" type="Node" parent="StateChart/Main/Battle/Components"]
-script = ExtResource("21_j14mx")
-
 [node name="on_choose" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("17_tq741")
 to = NodePath("../Choose")

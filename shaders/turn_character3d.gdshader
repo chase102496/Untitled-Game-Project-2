@@ -12,7 +12,6 @@ uniform float alphaThreshold: hint_range(0.0, 1.0) =  0.2; // Alpha level a pixe
 
 //Goes through every single pixle and does thing
 void fragment() {
-	
 	vec4 col = texture(sprite_texture, UV); // Gets color at uv position of pixel
 	
 	// Sets source image as default pixel

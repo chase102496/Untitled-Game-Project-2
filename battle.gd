@@ -1,5 +1,6 @@
 extends Node
 
+var active_character : Node3D = null
 var battle_list : Array = []
 
 #Glossary to spawn any character we need

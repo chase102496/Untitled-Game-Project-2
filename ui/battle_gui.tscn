@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5r06amfsateg"]
 
-[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://menu_theme.tres" id="1_al4xi"]
-[ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://scenes/ui/animation_component.tscn" id="3_75k8e"]
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_al4xi"]
+[ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://ui/animation_component.tscn" id="3_75k8e"]
 
 [node name="Battle_GUI" type="Control"]
 layout_mode = 3

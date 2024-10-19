@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=9 format=3 uid="uid://bitq02d30r24m"]
 
-[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Fancake.ttf" id="1_gserq"]
-[ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://menu_style_box.tres" id="1_sehmd"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://ui/Fancake.ttf" id="1_gserq"]
+[ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://ui/menu_style_box.tres" id="1_sehmd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xust"]
 

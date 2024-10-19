@@ -1,4 +1,4 @@
-[gd_scene load_steps=160 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=155 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://scripts/player_unit.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_esm8c"]
@@ -9,9 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b3l4rcga8ncvo" path="res://sprites/The Adventurer - Free/Idle/idle_right_down.png" id="6_4kjix"]
 [ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://sprites/The Adventurer - Free/Idle/idle_right_up.png" id="7_b5ofy"]
 [ext_resource type="Texture2D" uid="uid://dmdw1m4techw0" path="res://sprites/The Adventurer - Free/Idle/idle_up.png" id="8_h8mg3"]
-[ext_resource type="Script" path="res://components/component_animation_controller.gd" id="9_n2kgb"]
 [ext_resource type="Texture2D" uid="uid://f5iev0g4h14w" path="res://sprites/The Adventurer - Free/Walk/walk_down.png" id="9_pgl1e"]
-[ext_resource type="Script" path="res://scenes/component_state_controller.gd" id="10_jr83e"]
 [ext_resource type="Texture2D" uid="uid://dtdiwigmmlbb0" path="res://sprites/The Adventurer - Free/Walk/walk_left_down.png" id="10_t0j7x"]
 [ext_resource type="Texture2D" uid="uid://c7m6io2ghr4m7" path="res://sprites/The Adventurer - Free/Walk/walk_left_up.png" id="11_y7p3b"]
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://sprites/The Adventurer - Free/Walk/walk_right_down.png" id="12_ac4xw"]
@@ -22,9 +20,6 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="17_tq741"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="18_g11oa"]
 [ext_resource type="Script" path="res://components/component_physics.gd" id="20_6nw5h"]
-[ext_resource type="Script" path="res://components/components.gd" id="20_ibw1c"]
-[ext_resource type="Script" path="res://components/component_movement.gd" id="21_j14mx"]
-[ext_resource type="Script" path="res://components/component_input_controller.gd" id="22_munar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lxicb"]
 atlas = ExtResource("3_hetwx")
@@ -1298,24 +1293,6 @@ delay_in_seconds = "0.0"
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Idle")
 
-[node name="Components" type="Node" parent="StateChart/Main/Explore"]
-script = ExtResource("20_ibw1c")
-
-[node name="component_movement" type="Node" parent="StateChart/Main/Explore/Components"]
-script = ExtResource("21_j14mx")
-
-[node name="component_input_controller" type="Node" parent="StateChart/Main/Explore/Components"]
-script = ExtResource("22_munar")
-
-[node name="component_physics" type="Node" parent="StateChart/Main/Explore/Components"]
-script = ExtResource("20_6nw5h")
-
-[node name="component_animation_controller" type="Node" parent="StateChart/Main/Explore/Components"]
-script = ExtResource("9_n2kgb")
-
-[node name="component_state_controller" type="Node" parent="StateChart/Main/Explore/Components"]
-script = ExtResource("10_jr83e")
-
 [node name="on_walking" type="Node" parent="StateChart/Main/Explore"]
 script = ExtResource("17_tq741")
 to = NodePath("../Walking")
@@ -1331,15 +1308,6 @@ script = ExtResource("18_g11oa")
 [node name="Pause_Input" type="Node" parent="StateChart/Main"]
 script = ExtResource("18_g11oa")
 
-[node name="Components" type="Node" parent="StateChart/Main/Pause_Input"]
-script = ExtResource("20_ibw1c")
-
-[node name="component_physics" type="Node" parent="StateChart/Main/Pause_Input/Components"]
-script = ExtResource("20_6nw5h")
-
-[node name="component_movement" type="Node" parent="StateChart/Main/Pause_Input/Components"]
-script = ExtResource("21_j14mx")
-
 [node name="on_idle" type="Node" parent="StateChart/Main/Pause_Input"]
 script = ExtResource("17_tq741")
 to = NodePath("../../Explore")
@@ -1349,15 +1317,6 @@ delay_in_seconds = "0.0"
 [node name="Battle" type="Node" parent="StateChart/Main"]
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Start")
-
-[node name="Components" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("20_ibw1c")
-
-[node name="component_physics" type="Node" parent="StateChart/Main/Battle/Components"]
-script = ExtResource("20_6nw5h")
-
-[node name="component_movement" type="Node" parent="StateChart/Main/Battle/Components"]
-script = ExtResource("21_j14mx")
 
 [node name="on_choose" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("17_tq741")
@@ -1454,3 +1413,8 @@ parameters/Walking/TimeScale/scale = 0.45
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.0316963, 0.00789857)
 shape = SubResource("BoxShape3D_nf1h3")
+
+[node name="Components" type="Node" parent="."]
+
+[node name="component_physics" type="Node" parent="Components"]
+script = ExtResource("20_6nw5h")
