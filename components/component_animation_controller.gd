@@ -18,7 +18,6 @@ func _on_input_test_direction(dir):
 
 func animations_reset(dir : Vector2 = Vector2(0,0)):
 	owner.anim_tree.get("parameters/playback").travel("Idle")
-	owner.anim_tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
 
 func _on_state_entered_pause_input():
 	animations_reset(direction)

@@ -1,78 +1,51 @@
-[gd_scene load_steps=7 format=3 uid="uid://dp4dsk67dxhen"]
+[gd_scene load_steps=8 format=3 uid="uid://3toebp44q7k4"]
 
-[ext_resource type="Script" path="res://scripts/turn_manager.gd" id="2_8uhrt"]
-[ext_resource type="PackedScene" uid="uid://dwjrdrniryhc0" path="res://scenes/turn_character.tscn" id="3_uadfq"]
-[ext_resource type="Shader" path="res://shaders/turn_character.gdshader" id="4_j80yi"]
+[ext_resource type="Script" path="res://scripts/turn_arena.gd" id="1_3biaj"]
+[ext_resource type="Script" path="res://scripts/turn_manager3d.gd" id="1_k1dsd"]
+[ext_resource type="PackedScene" uid="uid://bxq7iunl61l4a" path="res://scenes/turn_character3d.tscn" id="2_d4p6f"]
+[ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfo8l"]
-resource_local_to_scene = true
-shader = ExtResource("4_j80yi")
-shader_parameter/thickness = 3.0
-shader_parameter/ring_count = 16
-shader_parameter/ring_offset = 0.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/border_clipping_fix = true
-shader_parameter/aspect_ratio = 1.0
-shader_parameter/square_border = false
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/max_or_add = false
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inpdq"]
+albedo_texture = ExtResource("3_4sg4e")
+uv1_scale = Vector3(10, 10, 10)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5m5tq"]
-resource_local_to_scene = true
-shader = ExtResource("4_j80yi")
-shader_parameter/thickness = 3.0
-shader_parameter/ring_count = 16
-shader_parameter/ring_offset = 0.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/border_clipping_fix = true
-shader_parameter/aspect_ratio = 1.0
-shader_parameter/square_border = false
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/max_or_add = false
+[sub_resource type="PlaneMesh" id="PlaneMesh_p1wm8"]
+size = Vector2(0.25, 0.25)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fyckm"]
-resource_local_to_scene = true
-shader = ExtResource("4_j80yi")
-shader_parameter/thickness = 3.0
-shader_parameter/ring_count = 16
-shader_parameter/ring_offset = 0.0
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/border_clipping_fix = true
-shader_parameter/aspect_ratio = 1.0
-shader_parameter/square_border = false
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/max_or_add = false
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_jv2gb"]
 
-[node name="Turn_Arena" type="Node2D"]
+[node name="Turn_Arena" type="Node3D"]
+script = ExtResource("1_3biaj")
 
-[node name="Turn_Manager" type="Node2D" parent="."]
-script = ExtResource("2_8uhrt")
+[node name="Turn_Manager" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.603487, 0)
+script = ExtResource("1_k1dsd")
 
-[node name="Turn_Character" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
-position = Vector2(243, 495)
+[node name="friends" parent="Turn_Manager" instance=ExtResource("2_d4p6f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1273, -1.12433, 0.569001)
 
-[node name="Sprite2D" parent="Turn_Manager/Turn_Character" index="0"]
-modulate = Color(0.36, 1, 0.370667, 1)
-material = SubResource("ShaderMaterial_mfo8l")
+[node name="foes" parent="Turn_Manager" instance=ExtResource("2_d4p6f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.69262, -1.67131, 0.661776)
 
-[node name="Turn_Character2" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
-modulate = Color(1, 0.552667, 0.39, 1)
-position = Vector2(748, 553)
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.999951, 0, -0.00989585, 0.00476055, 0.876685, 0.481042, 0.00867554, -0.481065, 0.876642, -0.046, 2, 4.113)
 
-[node name="Sprite2D" parent="Turn_Manager/Turn_Character2" index="0"]
-modulate = Color(1, 0.552667, 0.39, 1)
-material = SubResource("ShaderMaterial_5m5tq")
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11631, 1.53126, -0.259726)
+light_color = Color(1, 0.9525, 0.81, 1)
+light_energy = 16.0
+light_size = 0.91
+light_specular = 0.0
+shadow_enabled = true
+omni_range = 13.547
 
-[node name="Turn_Character3" parent="Turn_Manager" instance=ExtResource("3_uadfq")]
-modulate = Color(1, 0.552667, 0.39, 1)
-position = Vector2(741, 152)
+[node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, -1.80014, 0)
+material_override = SubResource("StandardMaterial3D_inpdq")
+mesh = SubResource("PlaneMesh_p1wm8")
 
-[node name="Sprite2D" parent="Turn_Manager/Turn_Character3" index="0"]
-modulate = Color(1, 0.552667, 0.39, 1)
-material = SubResource("ShaderMaterial_fyckm")
+[node name="StaticBody3D_Ground" type="StaticBody3D" parent="MeshInstance3D_Ground"]
 
-[node name="Turn_Interface" type="CanvasLayer" parent="."]
-
-[editable path="Turn_Manager/Turn_Character"]
-[editable path="Turn_Manager/Turn_Character2"]
-[editable path="Turn_Manager/Turn_Character3"]
+[node name="CollisionShape3D_Ground" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D_Ground"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+shape = SubResource("HeightMapShape3D_jv2gb")

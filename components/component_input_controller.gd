@@ -16,4 +16,5 @@ func _physics_process(_delta: float) -> void:
 	#FIXME
 	# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN
 	if Input.is_action_just_pressed("ui_cancel"):
-		Battle.battle_initialize([owner,owner,owner,owner],[{"test":123},{"ababab":60000000},{"alignment":"foes"},{"alignment":"foes"}],get_tree(),"res://scenes/turn_arena3d.tscn")
+		print("test")
+		Battle.battle_initialize([owner,owner,owner,owner],[{"test":123},{"ababab":60000000},{"alignment":"foes"},{"alignment":"foes"}],get_tree(),"res://scenes/turn_arena.tscn")
