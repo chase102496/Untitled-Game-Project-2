@@ -42,12 +42,7 @@ func _ready() -> void:
 	#Battle.active_character.connect()
 	Events.turn_start.connect(_on_battle_turn_start)
 	
-	#	State Machine Signals
-	#Battle
-	$StateChart/Main/Battle.state_entered.connect(_on_state_entered_battle)
-	#$StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
-	##Entered FIXME
-	#$StateChart/Main/Pause_Input.state_entered.connect(_on_state_entered_pause_input)
+	$StateChart/Main/Explore.state_physics_processing.connect(_on_state_physics_processing_explore)
 	
 	#endregion
 
@@ -59,17 +54,11 @@ func animations_init(dir : Vector2 = Vector2(0,0)):
 
 #endregion
 
+func _on_state_physics_processing_explore(_delta: float) -> void:
+	if Input.is_action_just_pressed("interact"):
+			Dialogic.start("timeline")
+
 #	--- State Machine ---
-
-#Battle state and sub-states
-
-func _on_state_entered_battle():
-	#TODO use this for selection of attack sprite.modulate = Color(1,1,1,0.5)
-	#Sets us facing the right way, depending on our side
-	if stats.alignment == "friends":
-		animations_init(Vector2(-1,1))
-	else:
-		animations_init(Vector2(1,1))
 
 func _on_battle_turn_start():
 	if Battle.active_character == self:

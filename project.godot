@@ -21,6 +21,7 @@ Events="*res://events.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Battle="*res://battle.gd"
+Global="*res://global.gd"
 
 [dialogic]
 

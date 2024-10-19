@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c5r06amfsateg"]
+[gd_scene load_steps=4 format=3 uid="uid://c5r06amfsateg"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_al4xi"]
+[ext_resource type="Script" path="res://ui/battle_gui.gd" id="1_jw2rn"]
 [ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://ui/animation_component.tscn" id="3_75k8e"]
 
 [node name="Battle_GUI" type="Control"]
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_jw2rn")
 
 [node name="Container" type="CenterContainer" parent="."]
 layout_mode = 1

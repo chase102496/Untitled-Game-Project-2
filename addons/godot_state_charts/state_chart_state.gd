@@ -242,7 +242,7 @@ func _handle_transition(_transition:Transition, _source:StateChartState):
 func _physics_process(delta:float) -> void:
 	if Engine.is_editor_hint():
 		return
-	state_physics_processing.emit(delta) #FIXME
+	state_physics_processing.emit(delta)
 
 ## Called when the state chart step function is called.
 func _state_step():

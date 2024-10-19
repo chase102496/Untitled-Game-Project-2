@@ -2,17 +2,6 @@ extends Node3D
 
 class_name turn_manager2
 
-@onready var ui_grid_main = get_node("../Battle_GUI/Container/Panel1/Main")
-
-@onready var ui_grid_battle = get_node("../Battle_GUI/Container/Panel1/Battle")
-#@onready var ui_grid_switch = get_node("../Battle_GUI/Container/Panel1/Switch")
-#@onready var ui_grid_item = get_node("../Battle_GUI/Container/Panel1/Item")
-
-@onready var ui_button_battle = get_node("../Battle_GUI/Container/Panel1/Main/Battle")
-@onready var ui_button_switch = get_node("../Battle_GUI/Container/Panel1/Main/Switch")
-@onready var ui_button_item = get_node("../Battle_GUI/Container/Panel1/Main/Item")
-@onready var ui_button_escape = get_node("../Battle_GUI/Container/Panel1/Main/Escape")
-
 #DO NOT PUT ANYTHING BESIDES THE UNITS THAT WILL BE FIGHTING AND TAKING TURNS IN THE IMMEDIATE CHILD SECTION OF TURN_MANAGER
 
 #Init and set active character to the first in our child list and emit start of turn
@@ -20,10 +9,7 @@ func _ready() -> void:
 	#Init for event bus, so we can recieve char end turn
 	Events.turn_end.connect(_on_turn_end)
 	#Init for buttons to interact with menu
-	ui_button_battle.pressed.connect(_on_button_pressed_battle)
-	ui_button_switch.pressed.connect(_on_button_pressed_switch)
-	ui_button_item.pressed.connect(_on_button_pressed_item)
-	ui_button_escape.pressed.connect(_on_button_pressed_escape)
+	
 
 	#HACK
 	#var button_test = Label.new() #This is how to add a new part to ui live
@@ -47,24 +33,7 @@ func _ready() -> void:
 	Events.turn_start.emit() #Let the initial character know it's their turn
 
 
-func _on_button_pressed_battle():
-	print("Battle!!")
-	ui_grid_main.hide()
-	ui_grid_battle.show()
 
-func _on_button_pressed_switch():
-	ui_grid_main.hide()
-	#ui_grid_switch.show()
-	print("Switch!!")
-	
-func _on_button_pressed_item():
-	ui_grid_main.hide()
-	#ui_grid_item.show()
-	print("Item!!!")
-
-func _on_button_pressed_escape():
-	#send a signal to the player that you wish to escape
-	print("Escape :o !!!")
 
 func play_turn():
 	#Set new character as next in queue, and incrementing the index

@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://bxq7iunl61l4a"]
 
-[ext_resource type="Script" path="res://scenes/turn_character3d.gd" id="1_kaupm"]
+[ext_resource type="Script" path="res://scripts/turn_character3d.gd" id="1_kaupm"]
 [ext_resource type="Shader" path="res://shaders/turn_character3d.gdshader" id="2_jxp2y"]
 [ext_resource type="Texture2D" uid="uid://lpo4io452l72" path="res://sprites/icon.png" id="3_pb3x0"]
-[ext_resource type="Script" path="res://scenes/turn_sprite3d.gd" id="4_13sdt"]
+[ext_resource type="Script" path="res://scripts/turn_sprite3d.gd" id="4_13sdt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2gfox"]
 resource_local_to_scene = true
