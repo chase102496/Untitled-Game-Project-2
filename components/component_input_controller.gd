@@ -13,7 +13,7 @@ func reset_inputs():
 
 func _on_state_physics_processing_explore(_delta: float) -> void:
 	#Direction
-	direction = Input.get_vector("move_right","move_left","move_forward","move_backward")
+	direction = Input.get_vector("move_right","move_left","move_backward","move_forward")
 	get_parent().input_controller_direction.emit(direction)
 	#Jumping
 	if owner.is_on_floor() and Input.is_action_just_pressed("move_jump"):

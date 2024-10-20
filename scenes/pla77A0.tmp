@@ -26,7 +26,7 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="18_g11oa"]
 [ext_resource type="Script" path="res://components/component_physics.gd" id="20_6nw5h"]
 [ext_resource type="Script" path="res://components/components.gd" id="20_ibw1c"]
-[ext_resource type="Script" path="res://components/component_movement_controller.gd" id="21_j14mx"]
+[ext_resource type="Script" path="res://components/component_movement.gd" id="21_j14mx"]
 [ext_resource type="Script" path="res://components/component_input_controller.gd" id="22_munar"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bvscm"]
@@ -858,18 +858,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimatedSprite3D:animation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle_down"]
-}
 
 [sub_resource type="Animation" id="Animation_t0d77"]
 resource_name = "default_death"
@@ -1341,23 +1329,23 @@ animation = &"default_idle_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_qtk6c"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_l2s6m")
-blend_point_0/pos = Vector2(0.9, 1)
+blend_point_0/pos = Vector2(-0.9, -1)
 blend_point_1/node = SubResource("AnimationNodeAnimation_arx8n")
-blend_point_1/pos = Vector2(0.9, -0.9)
+blend_point_1/pos = Vector2(-0.9, 0.9)
 blend_point_2/node = SubResource("AnimationNodeAnimation_u138m")
-blend_point_2/pos = Vector2(-0.9, -0.9)
+blend_point_2/pos = Vector2(0.9, 0.9)
 blend_point_3/node = SubResource("AnimationNodeAnimation_hdtfa")
-blend_point_3/pos = Vector2(-0.9, 1)
+blend_point_3/pos = Vector2(0.9, -1)
 blend_point_4/node = SubResource("AnimationNodeAnimation_5se3y")
-blend_point_4/pos = Vector2(0, -0.9)
+blend_point_4/pos = Vector2(0, 1)
 blend_point_5/node = SubResource("AnimationNodeAnimation_1mqd7")
-blend_point_5/pos = Vector2(0, 1)
+blend_point_5/pos = Vector2(0, -1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_ee2r2"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_kitbh"]
-graph_offset = Vector2(-330, 7)
+graph_offset = Vector2(-781, 14)
 nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_qtk6c")
 nodes/BlendSpace2D/position = Vector2(-70.4, 141.9)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_ee2r2")
@@ -1384,17 +1372,17 @@ animation = &"default_walk_right_up"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_e7e6s"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_ly8lo")
-blend_point_0/pos = Vector2(-0.9, 1)
+blend_point_0/pos = Vector2(0.9, -1.1)
 blend_point_1/node = SubResource("AnimationNodeAnimation_i01no")
-blend_point_1/pos = Vector2(-0.9, -0.9)
+blend_point_1/pos = Vector2(0.9, 0.9)
 blend_point_2/node = SubResource("AnimationNodeAnimation_bvmei")
-blend_point_2/pos = Vector2(0, -0.9)
+blend_point_2/pos = Vector2(0, 1)
 blend_point_3/node = SubResource("AnimationNodeAnimation_0isxw")
-blend_point_3/pos = Vector2(0, 1)
+blend_point_3/pos = Vector2(0, -1)
 blend_point_4/node = SubResource("AnimationNodeAnimation_gj6ua")
-blend_point_4/pos = Vector2(0.9, -0.9)
+blend_point_4/pos = Vector2(-0.9, 0.9)
 blend_point_5/node = SubResource("AnimationNodeAnimation_cd1h2")
-blend_point_5/pos = Vector2(0.9, 1)
+blend_point_5/pos = Vector2(-0.9, -1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4rdfh"]
@@ -1412,7 +1400,7 @@ node_connections = [&"TimeScale", 0, &"BlendSpace2D", &"output", 0, &"TimeScale"
 animation = &"test"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4npe0"]
-graph_offset = Vector2(-752, -235.455)
+graph_offset = Vector2(-752, -19.4546)
 nodes/Squish/node = SubResource("AnimationNodeAnimation_6un5u")
 nodes/Squish/position = Vector2(-420, 80)
 node_connections = [&"output", 0, &"Squish"]
@@ -1428,7 +1416,6 @@ node_connections = [&"output", 0, &"Squish"]
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dbu3l"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_me03o"]
-priority = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ub337"]
 priority = 0
@@ -1452,10 +1439,10 @@ states/Walking/position = Vector2(603, 110)
 states/test/node = SubResource("AnimationNodeBlendTree_4npe0")
 states/test/position = Vector2(403, -42)
 transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_h3b7g"), "Walking", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Idle", "test", SubResource("AnimationNodeStateMachineTransition_me03o"), "test", "Idle", SubResource("AnimationNodeStateMachineTransition_ub337"), "test", "Walking", SubResource("AnimationNodeStateMachineTransition_dtvnc"), "Walking", "test", SubResource("AnimationNodeStateMachineTransition_bgpmv")]
-graph_offset = Vector2(-356, -104)
+graph_offset = Vector2(-343, -148)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nf1h3"]
-size = Vector3(1, 1.90677, 0.41626)
+size = Vector3(1, 2.10847, 0.41626)
 
 [node name="Player" type="CharacterBody3D"]
 physics_interpolation_mode = 1
@@ -1472,7 +1459,7 @@ script = ExtResource("9_8x8g7")
 [node name="component_state_controller" type="Node" parent="Components"]
 script = ExtResource("10_tnwy7")
 
-[node name="component_movement_controller" type="Node" parent="Components"]
+[node name="component_movement" type="Node" parent="Components"]
 script = ExtResource("21_j14mx")
 
 [node name="component_input_controller" type="Node" parent="Components"]
@@ -1613,19 +1600,16 @@ offset_right = -3.0
 offset_bottom = -410.0
 initial_node_to_watch = NodePath("../StateChart")
 
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-gi_mode = 2
-shaded = true
-alpha_cut = 2
-texture_filter = 0
-sprite_frames = SubResource("SpriteFrames_qeieo")
-animation = &"default_idle_down"
-
 [node name="Sprite3D_Debug" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.367934, 0)
 visible = false
 texture = ExtResource("2_esm8c")
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_qeieo")
+animation = &""
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1636,11 +1620,11 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_v24ek")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Death/TimeScale/scale = 0.2
-parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.898289, 0.910448)
+parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.000814974, 0)
 parameters/Idle/TimeScale/scale = 0.2
 parameters/Walking/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Walking/TimeScale/scale = 0.45
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0282694, 0.0187277, 0.00789857)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.0316963, 0.00789857)
 shape = SubResource("BoxShape3D_nf1h3")

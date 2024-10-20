@@ -50,16 +50,16 @@ size = Vector2(0.25, 0.25)
 [node name="Level" type="Node3D"]
 
 [node name="PhantomCamera3D" type="Node3D" parent="." node_paths=PackedStringArray("follow_target")]
-transform = Transform3D(1, 0, 0, 0, 0.914112, 0.405461, 0, -0.405461, 0.914112, 0, 2.5, 4)
+transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 2.5, -4)
 script = ExtResource("5_mna3a")
 follow_mode = 2
 follow_target = NodePath("../Player")
 tween_resource = SubResource("Resource_j5gng")
 camera_3d_resource = SubResource("Resource_28lhh")
-follow_offset = Vector3(0, 2.5, 4)
+follow_offset = Vector3(0, 2.5, -4)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.914112, 0.405461, 0, -0.405461, 0.914112, 0, 2.5, 4)
+transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 2.5, -4)
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
 script = ExtResource("1_2n7i7")
@@ -68,10 +68,11 @@ script = ExtResource("1_2n7i7")
 environment = SubResource("Environment_1ghqa")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.63589, 0.668381, -0.38589, 0, 0.5, 0.866026, 0.77178, 0.550697, -0.317945, 0, 275.733, 0)
+transform = Transform3D(-0.63589, 0.668381, -0.38589, 0, 0.5, 0.866026, 0.77178, 0.550697, -0.317945, -4.17783, 4.9739, -0.467015)
 light_color = Color(0.9, 0.8925, 0.81, 1)
-light_indirect_energy = 0.0
-light_volumetric_fog_energy = 0.0
+light_energy = 2.0
+light_indirect_energy = 2.345
+light_volumetric_fog_energy = 1.383
 shadow_enabled = true
 
 [node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]

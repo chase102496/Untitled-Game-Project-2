@@ -32,7 +32,7 @@ func _on_state_entered_battle():
 	if owner.stats.alignment == "friends":
 		animations_reset(Vector2(-1,1))
 	else:
-		animations_reset(Vector2(1,1))
+		animations_reset(Vector2(1,-1))
 
 func _on_state_entered_explore_idle():
 	owner.anim_tree.get("parameters/playback").travel("Idle")

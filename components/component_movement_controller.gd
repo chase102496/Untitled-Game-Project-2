@@ -1,4 +1,4 @@
-class_name component_movement
+class_name component_movement_controller
 extends Node
 
 #For functions, emit a signal, and then just connect it on the parent end and create a function to run when it is signalled
@@ -22,7 +22,7 @@ func _on_input_controller_direction(dir):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	owner.velocity.x = move_toward(owner.velocity.x, max_movespeed * -direction.x, movespeed * delta)
+	owner.velocity.x = move_toward(owner.velocity.x, max_movespeed * direction.x, movespeed * delta)
 	owner.velocity.z = move_toward(owner.velocity.z, max_movespeed * direction.y, movespeed * delta)
 
 func _on_input_controller_event(input_name, param1 = null):

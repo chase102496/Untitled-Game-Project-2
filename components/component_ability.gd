@@ -1,4 +1,12 @@
+class_name component_ability
 extends Node
+
+@onready var my_abilities = [click_of_death]
+@onready var test = 10.1
+
+
+func _ready() -> void:
+	pass
 
 func test_ability(caster, target, dmg):
 	print("doot doot, I shall cast dooty doot",", I am going to steal ",dmg," from ",caster)

@@ -1,20 +1,15 @@
 extends CharacterBody3D
 
 #region init public vars
+@onready var component_ability: component_ability = $Components/component_ability
+@onready var component_state_controller: component_state_controller = $Components/component_state_controller
+@onready var component_movement_controller: component_movement_controller = $Components/component_movement
+@onready var component_input_controller: component_input_controller = $Components/component_input_controller
+@onready var component_animation_controller: component_animation_controller = $Components/component_animation_controller
+@onready var component_physics: component_physics = $Components/component_physics
 
 # An array of functions that we use to cast our abilities off of.
 var my_abilities = [Ability.simple_print,Ability.test_ability]
-
-@warning_ignore("shadowed_global_identifier")
-@onready var component_state_controller: component_state_controller = $Components/component_state_controller
-@warning_ignore("shadowed_global_identifier")
-@onready var component_movement: component_movement = $Components/component_movement
-@warning_ignore("shadowed_global_identifier")
-@onready var component_animation_controller: component_animation_controller = $Components/component_animation_controller
-@warning_ignore("shadowed_global_identifier")
-@onready var component_physics: component_physics = $Components/component_physics
-@warning_ignore("shadowed_global_identifier")
-@onready var component_ability: Node = $Components/component_ability
 
 #HACK DON'T USE ONREADY WITHOUT A REASON. ONREADY ONLY RUNS FOR SCENES PRE-LAUNCH
 #INSTANTIATED SCENES IGNORE @ONREADY FOR SOME FUCKING REASON, OR JUST TAKE TOO LONG
@@ -79,7 +74,12 @@ func _process(_delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("battle"):
-		anim_tree.get("parameters/playback").travel("test")
+		print(component_ability.test)
+		component_ability.test += randi()
+		print(component_ability.test)
+		
+		#print(component_ability.my_abilities[0])
+		#anim_tree.get("parameters/playback").travel("test")
 		#if Battle.battle_list[0] == self:
 			#print(self.name)
 			#component_ability.click_of_death(Battle.battle_list[3])
