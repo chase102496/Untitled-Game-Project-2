@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5r06amfsateg"]
+[gd_scene load_steps=5 format=3 uid="uid://c5r06amfsateg"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_al4xi"]
 [ext_resource type="Script" path="res://ui/battle_gui.gd" id="1_jw2rn"]
 [ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://ui/animation_component.tscn" id="3_75k8e"]
+[ext_resource type="Script" path="res://ui/battle_ability_button.gd" id="4_ldj7d"]
 
 [node name="Battle_GUI" type="Control"]
 layout_mode = 3
@@ -74,38 +75,42 @@ visible = false
 layout_mode = 2
 columns = 2
 
-[node name="1" type="Button" parent="Container/Panel1/Battle"]
+[node name="first" type="Button" parent="Container/Panel1/Battle"]
 texture_filter = 2
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 action_mode = 0
 text = "1"
+script = ExtResource("4_ldj7d")
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/1" instance=ExtResource("3_75k8e")]
+[node name="AnimationComponent" parent="Container/Panel1/Battle/first" instance=ExtResource("3_75k8e")]
 
-[node name="2" type="Button" parent="Container/Panel1/Battle"]
+[node name="second" type="Button" parent="Container/Panel1/Battle"]
 texture_filter = 2
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 action_mode = 0
 text = "2"
+script = ExtResource("4_ldj7d")
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/2" instance=ExtResource("3_75k8e")]
+[node name="AnimationComponent" parent="Container/Panel1/Battle/second" instance=ExtResource("3_75k8e")]
 
-[node name="3" type="Button" parent="Container/Panel1/Battle"]
+[node name="third" type="Button" parent="Container/Panel1/Battle"]
 texture_filter = 2
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 action_mode = 0
 text = "3"
+script = ExtResource("4_ldj7d")
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/3" instance=ExtResource("3_75k8e")]
+[node name="AnimationComponent" parent="Container/Panel1/Battle/third" instance=ExtResource("3_75k8e")]
 
-[node name="4" type="Button" parent="Container/Panel1/Battle"]
+[node name="fourth" type="Button" parent="Container/Panel1/Battle"]
 texture_filter = 2
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 action_mode = 0
 text = "4"
+script = ExtResource("4_ldj7d")
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/4" instance=ExtResource("3_75k8e")]
+[node name="AnimationComponent" parent="Container/Panel1/Battle/fourth" instance=ExtResource("3_75k8e")]

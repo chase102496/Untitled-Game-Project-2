@@ -6,6 +6,7 @@ extends Control
 #@onready var ui_grid_item = $Container/Panel1/Item
 
 @onready var ui_button_battle = $Container/Panel1/Main/Battle
+
 @onready var ui_button_switch = $Container/Panel1/Main/Switch
 @onready var ui_button_item = $Container/Panel1/Main/Item
 @onready var ui_button_escape = $Container/Panel1/Main/Escape
@@ -15,25 +16,32 @@ extends Control
 
 func _ready() -> void:
 	hide()
-	
+	#connect to button signals
 	ui_button_battle.pressed.connect(_on_button_pressed_battle)
-	ui_button_switch.pressed.connect(_on_button_pressed_switch)
-	ui_button_item.pressed.connect(_on_button_pressed_item)
-	ui_button_escape.pressed.connect(_on_button_pressed_escape)
 	
+	# TODO Sets up our abilities in the ui
+	#for i in $Container/Panel1/Battle.get_child_count():
+		#ui_grid_battle.get_child(i).text = get_parent().my_abilities[i]
+
+	#
+	ui_button_switch.pressed.connect(_on_button_pressed_switch)
+	#
+	ui_button_item.pressed.connect(_on_button_pressed_item)
+	#
+	ui_button_escape.pressed.connect(_on_button_pressed_escape)
+	#
 	#connect to enter and exit for start
-	get_parent().state_entered.connect(_on_state_entered)
-	get_parent().state_exited.connect(_on_state_exited)
+	$"../StateChart/Main/Battle/Start".state_entered.connect(_on_state_entered_battle_start)
+	$"../StateChart/Main/Battle/Start".state_exited.connect(_on_state_exited_battle_start)
 
-func _on_state_entered():
-	#FIXME Just temporary until I make enemies, deleted all other guis
-	if Battle.battle_list[0] != owner:
-		print('deleted gui: ', self)
-		queue_free()
-	else:
+func _on_state_entered_battle_start():
+	#FIXME just for demonstration
+	if owner == Battle.battle_list[0]:
 		show()
+	else:
+		queue_free()
 
-func _on_state_exited():
+func _on_state_exited_battle_start():
 	hide()
 
 func _on_button_pressed_battle():
@@ -56,5 +64,4 @@ func _on_button_pressed_escape():
 	print("Escape :o !!!")
 
 func _process(_delta: float) -> void:
-	if Input.is_action_pressed("battle"):
-		owner.state_chart.send_event("on_idle") #lol
+	pass

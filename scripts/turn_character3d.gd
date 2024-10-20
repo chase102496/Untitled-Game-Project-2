@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _on_turn_start() -> void:
 	if Battle.active_character == self:
-		print(self.name)
+		print("TURN: ",self.name)
 		#$AnimatedSprite3D.material_override.set_shader_parameter("glowDensity", 10)
 
 func _on_turn_end():
