@@ -1,9 +1,63 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5r06amfsateg"]
+[gd_scene load_steps=12 format=3 uid="uid://c5r06amfsateg"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_al4xi"]
 [ext_resource type="Script" path="res://ui/battle_gui.gd" id="1_jw2rn"]
+[ext_resource type="Texture2D" uid="uid://dgvkniyh48b7f" path="res://sprites/hand_thin_small_point.svg" id="2_obblc"]
 [ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://ui/animation_component.tscn" id="3_75k8e"]
-[ext_resource type="Script" path="res://ui/battle_ability_button.gd" id="4_ldj7d"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_e75bu"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_154vc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_t4p3g"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="8_rxcdg"]
+
+[sub_resource type="Animation" id="Animation_vwle6"]
+resource_name = "pointer_hover"
+length = 0.433
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_obblc")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.433333),
+"transitions": PackedFloat32Array(1, 1, 2.2974),
+"update": 0,
+"values": [Vector3(1.8, 1.8, 1.8), Vector3(2, 2, 2), Vector3(1.5, 1.5, 1.5)]
+}
+
+[sub_resource type="Animation" id="Animation_nsg2u"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2, 2, 2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vgfiw"]
+_data = {
+"RESET": SubResource("Animation_nsg2u"),
+"pointer_hover": SubResource("Animation_vwle6")
+}
 
 [node name="Battle_GUI" type="Control"]
 layout_mode = 3
@@ -13,6 +67,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jw2rn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vgfiw")
+}
+autoplay = "pointer_hover"
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1.92498, -0.542647, 0, 0.542647, 1.92498, 0, 0, 0, 2, 0, 0, 0)
+visible = false
+offset = Vector2(-15, -5)
+flip_h = true
+flip_v = true
+texture_filter = 0
+texture = ExtResource("2_obblc")
 
 [node name="Container" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -31,6 +100,7 @@ layout_mode = 2
 theme = ExtResource("1_al4xi")
 
 [node name="Main" type="GridContainer" parent="Container/Panel1"]
+visible = false
 layout_mode = 2
 columns = 2
 
@@ -75,42 +145,51 @@ visible = false
 layout_mode = 2
 columns = 2
 
-[node name="first" type="Button" parent="Container/Panel1/Battle"]
-texture_filter = 2
-layout_mode = 2
-theme = ExtResource("1_al4xi")
-action_mode = 0
-text = "1"
-script = ExtResource("4_ldj7d")
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("5_e75bu")
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/first" instance=ExtResource("3_75k8e")]
+[node name="Battle GUI" type="Node" parent="StateChart"]
+script = ExtResource("6_154vc")
+initial_state = NodePath("Disabled")
 
-[node name="second" type="Button" parent="Container/Panel1/Battle"]
-texture_filter = 2
-layout_mode = 2
-theme = ExtResource("1_al4xi")
-action_mode = 0
-text = "2"
-script = ExtResource("4_ldj7d")
+[node name="on_gui_disabled" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../Disabled")
+event = &"on_gui_disabled"
+delay_in_seconds = "0.0"
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/second" instance=ExtResource("3_75k8e")]
+[node name="on_gui_main" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../Main")
+event = &"on_gui_main"
+delay_in_seconds = "0.0"
 
-[node name="third" type="Button" parent="Container/Panel1/Battle"]
-texture_filter = 2
-layout_mode = 2
-theme = ExtResource("1_al4xi")
-action_mode = 0
-text = "3"
-script = ExtResource("4_ldj7d")
+[node name="Disabled" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/third" instance=ExtResource("3_75k8e")]
+[node name="Main" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
 
-[node name="fourth" type="Button" parent="Container/Panel1/Battle"]
-texture_filter = 2
-layout_mode = 2
-theme = ExtResource("1_al4xi")
-action_mode = 0
-text = "4"
-script = ExtResource("4_ldj7d")
+[node name="on_gui_battle" type="Node" parent="StateChart/Battle GUI/Main"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Battle")
+event = &"on_gui_battle"
+delay_in_seconds = "0.0"
 
-[node name="AnimationComponent" parent="Container/Panel1/Battle/fourth" instance=ExtResource("3_75k8e")]
+[node name="Battle" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
+
+[node name="on_gui_main" type="Node" parent="StateChart/Battle GUI/Battle"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Main")
+event = &"on_gui_main"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_select" type="Node" parent="StateChart/Battle GUI/Battle"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Select")
+event = &"on_gui_select"
+delay_in_seconds = "0.0"
+
+[node name="Select" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")

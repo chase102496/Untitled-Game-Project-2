@@ -1,28 +1,26 @@
 extends CharacterBody3D
 
 #region init public vars
-@onready var component_ability: component_ability = $Components/component_ability
-@onready var component_state_controller: component_state_controller = $Components/component_state_controller
-@onready var component_movement_controller: component_movement_controller = $Components/component_movement
-@onready var component_input_controller: component_input_controller = $Components/component_input_controller
-@onready var component_animation_controller: component_animation_controller = $Components/component_animation_controller
-@onready var component_physics: component_physics = $Components/component_physics
+@onready var my_component_ability: component_ability = $Components/component_ability
+@onready var my_component_state_controller: component_state_controller = $Components/component_state_controller
+@onready var my_component_movement_controller: component_movement_controller = $Components/component_movement_controller
+@onready var my_component_input_controller: component_input_controller = $Components/component_input_controller
+@onready var my_component_animation_controller: component_animation_controller = $Components/component_animation_controller
+@onready var my_component_physics: component_physics = $Components/component_physics
+@onready var my_component_health: component_health = $Components/component_health
 
-# An array of functions that we use to cast our abilities off of.
-var my_abilities = [Ability.simple_print,Ability.test_ability]
+@onready var my_battle_gui : Control = $Battle_GUI
+@onready var target : Node = self
 
 #HACK DON'T USE ONREADY WITHOUT A REASON. ONREADY ONLY RUNS FOR SCENES PRE-LAUNCH
 #INSTANTIATED SCENES IGNORE @ONREADY FOR SOME FUCKING REASON, OR JUST TAKE TOO LONG
 
-#TODO prob gonna get rid of this and turn into component
+#TODO prob gonna get rid of this and turn into component!!!
 var stats : Dictionary = {
 	
 	"alignment" : "friends", #Side of the field I will fight on
 	"glossary" : "player", #Unit category I was spawned from
 	"spacing" : Vector3(-0.6,0,-0.1), #spacing when unit is spawned in battle
-	
-	"health" : 6,
-	"max_health" : 6,
 	
 	"vis" : 6,
 	"max_vis" : 6,
@@ -49,6 +47,8 @@ var stats : Dictionary = {
 
 func _ready() -> void:
 	
+	name = str(name," ",randi())
+	
 	#recieving signals from state machine
 	#HACK: state_chart.get_child(0).get_current_state() shows current state of our first system (Main)
 	#region Signals
@@ -66,20 +66,10 @@ func _ready() -> void:
 #	--- State Machine ---
 
 func _on_battle_turn_start():
-	if Battle.active_character == self:
-		print(self)
+	pass
 
 func _process(_delta: float) -> void:
 	pass
 
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_just_pressed("battle"):
-		print(component_ability.test)
-		component_ability.test += randi()
-		print(component_ability.test)
-		
-		#print(component_ability.my_abilities[0])
-		#anim_tree.get("parameters/playback").travel("test")
-		#if Battle.battle_list[0] == self:
-			#print(self.name)
-			#component_ability.click_of_death(Battle.battle_list[3])
+	pass

@@ -1,29 +1,70 @@
 class_name component_ability
 extends Node
 
-@onready var my_abilities = [click_of_death]
-@onready var test = 10.1
+@onready var caster : Node = owner
+@onready var cast_queue : Object = null
 
+#We will not assign spells this way, might need to fix tho, hard to set em up without all the vars right in front of you FIXME
+@onready var my_abilities : Array = [ability_tackle.new(caster),ability.new(caster),ability.new(caster),ability.new(caster)]
 
-func _ready() -> void:
-	pass
+#------------------------------------------------------------------------------
+#DONT use name or owner, already taken
+#HACK _init is where you store stuff you'd only need before battle, like damage, vis cost, etc
+#HACK Don't store anything you can already access with the caster like target, health, etc
 
-func test_ability(caster, target, dmg):
-	print("doot doot, I shall cast dooty doot",", I am going to steal ",dmg," from ",caster)
-	target.stats.health -= dmg
-	caster.stats.health += dmg
+class ability:
+	var caster : Node
+	var title : String = "---"
+	var skillcheck_modifier : float = 1.0
+	var damage : int = 2
+	var valid_targets : Array = ["foes","friends"] #who we can target
+	var target : Node
 	
-	#tell caster what animation to play, and tell target what animation to play based on a type that everyone will have
-	#Examples,
-	# for caster: ranged_throwing, ranged_magic_small, ranged_magic_special
-	# for target: hit_small, hit_big, hit_status_effect
+	func _init(caster : Node) -> void:
+		self.caster = caster
+		
+	func validate(): #run validations, check vis, health, etc
+		var result = true
+		return result
 	
-func click_of_death(target):
-	var anim = owner.anim_tree.get("parameters/playback")
-	print(owner.name," casted Click of Death")
-	anim.travel("Death")
-	await owner.anim_tree.animation_finished
-	target.anim_tree.get("parameters/playback").travel("Death")
-	await target.anim_tree.animation_finished
-	anim.travel("Idle")
-	target.queue_free()
+	func validate_failed():
+		print_debug("Reason for failing goes here")
+		#You can execute code here, run a Dialogic event to show them they can't use that, etc
+	
+	func skillcheck(result):
+		skillcheck_modifier = result
+		print_debug("Result of skillcheck is ",result)
+	
+	func cast():
+		print_debug(caster.name," Stood there, menacingly")
+		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
+		
+	func finished(): #are we done casting? Usually would be checking for animation_finished
+		var result = true
+		return result
+
+class ability_tackle:
+	extends ability
+	
+	func _init(caster : Node) -> void:
+		self.caster = caster
+		title = "Tackle"
+		
+	func cast():
+		#TODO setup animations
+		print_debug(caster.name, " Tackled ", target.name,"!")
+		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
+		if target.my_component_health:
+			target.my_component_health.damage(damage)
+		
+		#how do I handle damage? call the target's function here? or...?
+	#
+	#TODO put spell here, grab owner's multipliers for POWER or whatever and put FIXED damage inside here under a var. Don't add it as a passthrough. Only passthrough should be target in the instantiation of the class
+	#TODO make vis system where we check to make sure we have enough vis in the CAST function of the spell! Then we can start integrating the state chart system and how it will interact with the abilities.
+	#var target : Object
+	#var damage : int
+	#
+	#func cast(target, damage):
+		#print(caster.desc," used Tackle for ",damage," damage!")
+		#if target.my_component_health:
+			#target.my_component_health.damage(damage)

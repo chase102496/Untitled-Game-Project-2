@@ -1,4 +1,4 @@
-[gd_scene load_steps=184 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=185 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://scripts/player_unit.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_esm8c"]
@@ -448,6 +448,11 @@ region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qeieo"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"default_current_animation",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bvscm")
@@ -1420,6 +1425,8 @@ node_connections = [&"TimeScale", 0, &"BlendSpace2D", &"output", 0, &"TimeScale"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l2cto"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h3b7g"]
+
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vhr1l"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dbu3l"]
@@ -1446,7 +1453,7 @@ states/Squish/position = Vector2(500, -57)
 states/Start/position = Vector2(280, 100)
 states/Walking/node = SubResource("AnimationNodeBlendTree_iroyj")
 states/Walking/position = Vector2(682, 100)
-transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walking", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Squish", "Walking", SubResource("AnimationNodeStateMachineTransition_txplm"), "Walking", "Squish", SubResource("AnimationNodeStateMachineTransition_h1fm8"), "Squish", "Idle", SubResource("AnimationNodeStateMachineTransition_lgedy"), "Idle", "Squish", SubResource("AnimationNodeStateMachineTransition_gnxyh")]
+transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_h3b7g"), "Walking", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Squish", "Walking", SubResource("AnimationNodeStateMachineTransition_txplm"), "Walking", "Squish", SubResource("AnimationNodeStateMachineTransition_h1fm8"), "Squish", "Idle", SubResource("AnimationNodeStateMachineTransition_lgedy"), "Idle", "Squish", SubResource("AnimationNodeStateMachineTransition_gnxyh")]
 graph_offset = Vector2(-175, -93)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nf1h3"]
@@ -1500,10 +1507,10 @@ to = NodePath("../Death")
 event = &"on_death"
 delay_in_seconds = "0.0"
 
-[node name="on_waiting" type="Node" parent="StateChart/Main"]
+[node name="on_start_battle" type="Node" parent="StateChart/Main"]
 script = ExtResource("17_tq741")
-to = NodePath("../Battle/Waiting")
-event = &"on_waiting"
+to = NodePath("../Battle")
+event = &"on_start_battle"
 delay_in_seconds = "0.0"
 
 [node name="on_pause_input" type="Node" parent="StateChart/Main"]
@@ -1548,69 +1555,73 @@ script = ExtResource("18_g11oa")
 
 [node name="Battle" type="Node" parent="StateChart/Main"]
 script = ExtResource("16_gj7cp")
-initial_state = NodePath("Waiting")
+initial_state = NodePath("Start")
 
-[node name="on_finished" type="Node" parent="StateChart/Main/Battle"]
+[node name="on_start" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("17_tq741")
-to = NodePath("../Finished")
-event = &"on_finished"
+to = NodePath("../Start")
+event = &"on_start"
 delay_in_seconds = "0.0"
 
-[node name="Waiting" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("18_g11oa")
-
-[node name="on_start" type="Node" parent="StateChart/Main/Battle/Waiting"]
+[node name="on_choose" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("17_tq741")
-to = NodePath("../../Start")
-event = &"on_start"
+to = NodePath("../Choose")
+event = &"on_choose"
+delay_in_seconds = "0.0"
+
+[node name="on_check_attack" type="Node" parent="StateChart/Main/Battle"]
+script = ExtResource("17_tq741")
+to = NodePath("../Skill_Check/Check_Attack")
+event = &"on_check_attack"
+delay_in_seconds = "0.0"
+
+[node name="on_check_defend" type="Node" parent="StateChart/Main/Battle"]
+script = ExtResource("17_tq741")
+to = NodePath("../Skill_Check/Check_Defend")
+event = &"on_check_defend"
+delay_in_seconds = "0.0"
+
+[node name="on_execution" type="Node" parent="StateChart/Main/Battle"]
+script = ExtResource("17_tq741")
+to = NodePath("../Execution")
+event = &"on_execution"
+delay_in_seconds = "0.0"
+
+[node name="on_end" type="Node" parent="StateChart/Main/Battle"]
+script = ExtResource("17_tq741")
+to = NodePath("../End")
+event = &"on_end"
+delay_in_seconds = "0.0"
+
+[node name="on_waiting" type="Node" parent="StateChart/Main/Battle"]
+script = ExtResource("17_tq741")
+to = NodePath("../Waiting")
+event = &"on_waiting"
 delay_in_seconds = "0.0"
 
 [node name="Start" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
-[node name="on_choose" type="Node" parent="StateChart/Main/Battle/Start"]
-script = ExtResource("17_tq741")
-to = NodePath("../../Choose")
-event = &"on_choose"
-delay_in_seconds = "0.0"
-
 [node name="Choose" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
-[node name="on_skillcheck" type="Node" parent="StateChart/Main/Battle/Choose"]
-script = ExtResource("17_tq741")
-to = NodePath("../../Skillcheck")
-event = &"on_skillcheck"
-delay_in_seconds = "0.0"
+[node name="Skill_Check" type="Node" parent="StateChart/Main/Battle"]
+script = ExtResource("16_gj7cp")
+initial_state = NodePath("Check_Attack")
 
-[node name="Skillcheck" type="Node" parent="StateChart/Main/Battle"]
+[node name="Check_Attack" type="Node" parent="StateChart/Main/Battle/Skill_Check"]
 script = ExtResource("18_g11oa")
 
-[node name="on_execution" type="Node" parent="StateChart/Main/Battle/Skillcheck"]
-script = ExtResource("17_tq741")
-to = NodePath("../../Execution")
-event = &"on_execution"
-delay_in_seconds = "0.0"
+[node name="Check_Defend" type="Node" parent="StateChart/Main/Battle/Skill_Check"]
+script = ExtResource("18_g11oa")
 
 [node name="Execution" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
-[node name="on_end" type="Node" parent="StateChart/Main/Battle/Execution"]
-script = ExtResource("17_tq741")
-to = NodePath("../../End")
-event = &"on_end"
-delay_in_seconds = "0.0"
-
-[node name="End" type="Node" parent="StateChart/Main/Battle"]
+[node name="Waiting" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
-[node name="on_waiting" type="Node" parent="StateChart/Main/Battle/End"]
-script = ExtResource("17_tq741")
-to = NodePath("../../Waiting")
-event = &"on_waiting"
-delay_in_seconds = "0.0"
-
-[node name="Finished" type="Node" parent="StateChart/Main/Battle"]
+[node name="End" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
 [node name="StateChartDebugger ?" parent="." instance=ExtResource("2_umnvo")]

@@ -1,27 +1,26 @@
 extends Node
 class_name component_animation_controller
 
-@onready var direction = Vector2.ZERO
+@export var my_component_input_controller : component_input_controller
+
+var direction = Vector2.ZERO
 
 func _ready() -> void:
-	
-	#FIXME
-	get_parent().input_controller_direction.connect(input_controller_direction)
-	
 	#State Machine signals
 	owner.get_node("StateChart/Main/Explore/Idle").state_entered.connect(_on_state_entered_explore_idle)
 	owner.get_node("StateChart/Main/Explore/Walking").state_entered.connect(_on_state_entered_explore_walking)
 	owner.get_node("StateChart/Main/Explore/Walking").state_physics_processing.connect(_on_state_physics_processing_explore_walking)
 	owner.get_node("StateChart/Main/Pause_Input").state_entered.connect(_on_state_entered_pause_input)
 	owner.get_node("StateChart/Main/Battle").state_entered.connect(_on_state_entered_battle)
-
-func input_controller_direction(dir):
-	direction = dir
+	owner.get_node("StateChart/Main/Death").state_entered.connect(_on_state_entered_death)
 
 func animations_reset(dir : Vector2 = Vector2(0,0)):
 	owner.anim_tree.get("parameters/playback").travel("Idle")
 	if dir != Vector2.ZERO:
 		owner.anim_tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
+
+func _on_state_entered_death():
+	owner.anim_tree.get("parameters/playback").travel("Death")
 
 func _on_state_entered_pause_input():
 	animations_reset(direction)
@@ -41,6 +40,9 @@ func _on_state_entered_explore_walking():
 	owner.anim_tree.get("parameters/playback").travel("Walking")
 
 func _on_state_physics_processing_explore_walking(_delta: float):
+	if my_component_input_controller:
+		direction = my_component_input_controller.direction
+	
 	if direction != Vector2.ZERO:
 		owner.anim_tree.set("parameters/Walking/BlendSpace2D/blend_position",direction)
 		owner.anim_tree.set("parameters/Idle/BlendSpace2D/blend_position",direction)

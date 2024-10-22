@@ -1550,12 +1550,6 @@ script = ExtResource("18_g11oa")
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Waiting")
 
-[node name="on_finished" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("17_tq741")
-to = NodePath("../Finished")
-event = &"on_finished"
-delay_in_seconds = "0.0"
-
 [node name="Waiting" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("18_g11oa")
 
@@ -1609,9 +1603,6 @@ script = ExtResource("17_tq741")
 to = NodePath("../../Waiting")
 event = &"on_waiting"
 delay_in_seconds = "0.0"
-
-[node name="Finished" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("18_g11oa")
 
 [node name="StateChartDebugger ?" parent="." instance=ExtResource("2_umnvo")]
 offset_left = 757.0

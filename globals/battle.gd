@@ -10,6 +10,13 @@ const glossary : Dictionary = {
 	"some random enemy name" : ""
 }
 
+func get_team(alignment):
+	var team = []
+	for i in len(Battle.battle_list):
+		if Battle.battle_list[i].stats.alignment == alignment:
+			team.append(Battle.battle_list[i])
+	return team
+
 #Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
 #and the old and new scenes they will be transitioning from and to.
 func battle_initialize(list : Array, stat_merge : Array, scene_old, scene_new : String):

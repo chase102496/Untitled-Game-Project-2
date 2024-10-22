@@ -1,6 +1,5 @@
 extends Node
 
-@warning_ignore("shadowed_global_identifier")
 func simple_print(str):
 	print(str)
 
@@ -8,7 +7,7 @@ func test_ability(caster, target, dmg):
 	print("doot doot, I shall cast dooty doot",", I am going to steal ",dmg," from ",caster)
 	target.stats.health -= dmg
 	caster.stats.health += dmg
-	
+
 	#tell caster what animation to play, and tell target what animation to play based on a type that everyone will have
 	#Examples,
 	# for caster: ranged_throwing, ranged_magic_small, ranged_magic_special
