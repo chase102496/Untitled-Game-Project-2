@@ -1,4 +1,4 @@
-[gd_scene load_steps=198 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=184 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://scripts/player_unit.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_esm8c"]
@@ -29,39 +29,6 @@
 [ext_resource type="Script" path="res://components/components.gd" id="20_ibw1c"]
 [ext_resource type="Script" path="res://components/component_movement_controller.gd" id="21_j14mx"]
 [ext_resource type="Script" path="res://components/component_input_controller.gd" id="22_munar"]
-[ext_resource type="Script" path="res://scripts/animated_sprite_3d.gd" id="29_6t6o8"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u8y54"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(0, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_nnr30"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(48, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_sexeo"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(96, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4el52"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(144, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8hr5a"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(192, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uf71n"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(240, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_04u0a"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(288, 0, 48, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xj6e4"]
-atlas = ExtResource("14_c1ktx")
-region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bvscm"]
 atlas = ExtResource("16_ult57")
@@ -481,35 +448,6 @@ region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qeieo"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u8y54")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_nnr30")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_sexeo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4el52")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8hr5a")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uf71n")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_04u0a")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xj6e4")
-}],
-"loop": true,
-"name": &"default_attack",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bvscm")
@@ -936,7 +874,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_t0d77"]
 resource_name = "default_death"
-length = 0.5
+length = 0.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -956,7 +894,7 @@ tracks/1/path = NodePath("AnimatedSprite3D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.400001, 0.433334, 0.466667),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6, 7]
@@ -1310,6 +1248,9 @@ tracks/1/keys = {
 "values": [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
+[sub_resource type="Animation" id="Animation_qrsmv"]
+resource_name = "new_animation"
+
 [sub_resource type="Animation" id="Animation_efel2"]
 resource_name = "test"
 length = 0.3
@@ -1352,52 +1293,9 @@ tracks/3/keys = {
 "values": [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
-[sub_resource type="Animation" id="Animation_ebets"]
-resource_name = "default_attack"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite3D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_death"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite3D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.400001, 0.433334, 0.466667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite3D")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.133333),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"attack_contact_notify"
-}]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xtdjl"]
 _data = {
 "RESET": SubResource("Animation_6djwh"),
-"default_attack": SubResource("Animation_ebets"),
 "default_death": SubResource("Animation_t0d77"),
 "default_idle_down": SubResource("Animation_2odl2"),
 "default_idle_left_down": SubResource("Animation_rwmny"),
@@ -1411,21 +1309,9 @@ _data = {
 "default_walk_right_down": SubResource("Animation_1tvbq"),
 "default_walk_right_up": SubResource("Animation_kyqii"),
 "default_walk_up": SubResource("Animation_bgswt"),
+"new_animation": SubResource("Animation_qrsmv"),
 "test": SubResource("Animation_efel2")
 }
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r3b70"]
-animation = &"default_attack"
-
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_wdvbc"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_erse1"]
-graph_offset = Vector2(-713.992, 49.6611)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_r3b70")
-nodes/Animation/position = Vector2(-341, 117)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_wdvbc")
-nodes/TimeScale/position = Vector2(-20, 100)
-node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jr7gi"]
 animation = &"default_death"
@@ -1476,6 +1362,7 @@ blend_mode = 1
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_ee2r2"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_kitbh"]
+graph_offset = Vector2(-330, 7)
 nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_qtk6c")
 nodes/BlendSpace2D/position = Vector2(-70.4, 141.9)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_ee2r2")
@@ -1549,17 +1436,9 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gnxyh"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tl8fc"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_47qkb"]
-switch_mode = 2
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_v24ek"]
-states/Attack/node = SubResource("AnimationNodeBlendTree_erse1")
-states/Attack/position = Vector2(576, 332)
 states/Death/node = SubResource("AnimationNodeBlendTree_5ckq2")
-states/Death/position = Vector2(211, 357)
+states/Death/position = Vector2(500, 268)
 states/Idle/node = SubResource("AnimationNodeBlendTree_kitbh")
 states/Idle/position = Vector2(489, 100)
 states/Squish/node = SubResource("AnimationNodeAnimation_1do5q")
@@ -1567,8 +1446,8 @@ states/Squish/position = Vector2(500, -57)
 states/Start/position = Vector2(280, 100)
 states/Walking/node = SubResource("AnimationNodeBlendTree_iroyj")
 states/Walking/position = Vector2(682, 100)
-transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walking", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Squish", "Walking", SubResource("AnimationNodeStateMachineTransition_txplm"), "Walking", "Squish", SubResource("AnimationNodeStateMachineTransition_h1fm8"), "Squish", "Idle", SubResource("AnimationNodeStateMachineTransition_lgedy"), "Idle", "Squish", SubResource("AnimationNodeStateMachineTransition_gnxyh"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_tl8fc"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_47qkb")]
-graph_offset = Vector2(-341, 124)
+transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walking", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Squish", "Walking", SubResource("AnimationNodeStateMachineTransition_txplm"), "Walking", "Squish", SubResource("AnimationNodeStateMachineTransition_h1fm8"), "Squish", "Idle", SubResource("AnimationNodeStateMachineTransition_lgedy"), "Idle", "Squish", SubResource("AnimationNodeStateMachineTransition_gnxyh")]
+graph_offset = Vector2(-175, -93)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nf1h3"]
 size = Vector3(1, 1.90677, 0.41626)
@@ -1576,16 +1455,6 @@ size = Vector3(1, 1.90677, 0.41626)
 [node name="Player" type="CharacterBody3D"]
 physics_interpolation_mode = 1
 script = ExtResource("1_5m8nv")
-
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-gi_mode = 2
-shaded = true
-alpha_cut = 2
-texture_filter = 0
-sprite_frames = SubResource("SpriteFrames_qeieo")
-animation = &"default_idle_down"
-script = ExtResource("29_6t6o8")
 
 [node name="Battle_GUI" parent="." instance=ExtResource("12_pmvac")]
 
@@ -1624,12 +1493,6 @@ script = ExtResource("15_6jgi1")
 process_priority = -1
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Explore")
-
-[node name="on_start" type="Node" parent="StateChart/Main"]
-script = ExtResource("17_tq741")
-to = NodePath("../Battle/Start")
-event = &"on_start"
-delay_in_seconds = "0.0"
 
 [node name="on_death" type="Node" parent="StateChart/Main"]
 script = ExtResource("17_tq741")
@@ -1686,12 +1549,6 @@ script = ExtResource("18_g11oa")
 [node name="Battle" type="Node" parent="StateChart/Main"]
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Waiting")
-
-[node name="on_start" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("17_tq741")
-to = NodePath("../Start")
-event = &"on_start"
-delay_in_seconds = "0.0"
 
 [node name="on_finished" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("17_tq741")
@@ -1762,6 +1619,15 @@ offset_right = -3.0
 offset_bottom = -410.0
 initial_node_to_watch = NodePath("../StateChart")
 
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+gi_mode = 2
+shaded = true
+alpha_cut = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_qeieo")
+animation = &"default_idle_down"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_xtdjl")
@@ -1770,8 +1636,7 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_v24ek")
 anim_player = NodePath("../AnimationPlayer")
-parameters/Attack/TimeScale/scale = 0.5
-parameters/Death/TimeScale/scale = 0.3
+parameters/Death/TimeScale/scale = 0.2
 parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.898289, 0.910448)
 parameters/Idle/TimeScale/scale = 0.2
 parameters/Walking/BlendSpace2D/blend_position = Vector2(0, 0)

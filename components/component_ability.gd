@@ -16,20 +16,21 @@ class ability:
 	var caster : Node
 	var title : String = "---"
 	var skillcheck_modifier : float = 1.0
-	var damage : int = 2
+	var damage : int = 200
 	var valid_targets : Array = ["foes","friends"] #who we can target
-	var target : Node
+	var target : Node = null
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		
-	func validate(): #run validations, check vis, health, etc
-		var result = true
+	
+	func validate(): #run validations, check vis, health, etc needs passthru values
+		var result = false #default so we cannot use this move
 		return result
 	
 	func validate_failed():
-		print_debug("Reason for failing goes here")
+		#print_debug("Reason for failing goes here")
 		#You can execute code here, run a Dialogic event to show them they can't use that, etc
+		pass
 	
 	func skillcheck(result):
 		skillcheck_modifier = result
@@ -38,10 +39,12 @@ class ability:
 	func cast():
 		print_debug(caster.name," Stood there, menacingly")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
-		
+	
+	func animation():
+		caster.anim_tree.get("parameters/playback").travel("Attack")
+	
 	func finished(): #are we done casting? Usually would be checking for animation_finished
-		var result = true
-		return result
+		return true
 
 class ability_tackle:
 	extends ability
@@ -49,7 +52,11 @@ class ability_tackle:
 	func _init(caster : Node) -> void:
 		self.caster = caster
 		title = "Tackle"
-		
+	
+	func validate(): #run validations, check vis, health, etc needs passthru values
+		var result = true #default so we cannot use this move
+		return result
+	
 	func cast():
 		#TODO setup animations
 		print_debug(caster.name, " Tackled ", target.name,"!")

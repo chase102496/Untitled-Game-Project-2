@@ -1420,7 +1420,7 @@ animation = &"default_attack"
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_wdvbc"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_erse1"]
-graph_offset = Vector2(-713.992, 49.6611)
+graph_offset = Vector2(-760, -57)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_r3b70")
 nodes/Animation/position = Vector2(-341, 117)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_wdvbc")
@@ -1557,9 +1557,9 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_v24ek"]
 states/Attack/node = SubResource("AnimationNodeBlendTree_erse1")
-states/Attack/position = Vector2(576, 332)
+states/Attack/position = Vector2(590, 277)
 states/Death/node = SubResource("AnimationNodeBlendTree_5ckq2")
-states/Death/position = Vector2(211, 357)
+states/Death/position = Vector2(186, 405)
 states/Idle/node = SubResource("AnimationNodeBlendTree_kitbh")
 states/Idle/position = Vector2(489, 100)
 states/Squish/node = SubResource("AnimationNodeAnimation_1do5q")
@@ -1568,7 +1568,7 @@ states/Start/position = Vector2(280, 100)
 states/Walking/node = SubResource("AnimationNodeBlendTree_iroyj")
 states/Walking/position = Vector2(682, 100)
 transitions = ["Idle", "Walking", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walking", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walking", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Squish", "Walking", SubResource("AnimationNodeStateMachineTransition_txplm"), "Walking", "Squish", SubResource("AnimationNodeStateMachineTransition_h1fm8"), "Squish", "Idle", SubResource("AnimationNodeStateMachineTransition_lgedy"), "Idle", "Squish", SubResource("AnimationNodeStateMachineTransition_gnxyh"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_tl8fc"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_47qkb")]
-graph_offset = Vector2(-341, 124)
+graph_offset = Vector2(-414, 11)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nf1h3"]
 size = Vector3(1, 1.90677, 0.41626)
@@ -1625,12 +1625,6 @@ process_priority = -1
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Explore")
 
-[node name="on_start" type="Node" parent="StateChart/Main"]
-script = ExtResource("17_tq741")
-to = NodePath("../Battle/Start")
-event = &"on_start"
-delay_in_seconds = "0.0"
-
 [node name="on_death" type="Node" parent="StateChart/Main"]
 script = ExtResource("17_tq741")
 to = NodePath("../Death")
@@ -1686,12 +1680,6 @@ script = ExtResource("18_g11oa")
 [node name="Battle" type="Node" parent="StateChart/Main"]
 script = ExtResource("16_gj7cp")
 initial_state = NodePath("Waiting")
-
-[node name="on_start" type="Node" parent="StateChart/Main/Battle"]
-script = ExtResource("17_tq741")
-to = NodePath("../Start")
-event = &"on_start"
-delay_in_seconds = "0.0"
 
 [node name="on_finished" type="Node" parent="StateChart/Main/Battle"]
 script = ExtResource("17_tq741")
@@ -1771,7 +1759,7 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_v24ek")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Attack/TimeScale/scale = 0.5
-parameters/Death/TimeScale/scale = 0.3
+parameters/Death/TimeScale/scale = 0.2
 parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.898289, 0.910448)
 parameters/Idle/TimeScale/scale = 0.2
 parameters/Walking/BlendSpace2D/blend_position = Vector2(0, 0)

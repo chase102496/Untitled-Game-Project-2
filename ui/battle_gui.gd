@@ -56,13 +56,8 @@ func _ready() -> void:
 func _on_state_entered_battle_gui_disabled():
 	hide()
 func _on_state_exited_battle_gui_disabled():
-	if len(Battle.get_team("foes")) == 0: #TODO Make an end battle screen? Nah actually
-		owner.state_chart.send_event("on_idle")
-	elif len(Battle.get_team("friends")) == 0:
-		owner.state_chart.send_event("on_finished") #TODO RIP, you lost or fainted or whatever, what do?
-	else:
-		show()
-
+	show()
+#---
 func _on_state_entered_battle_gui_main():
 	ui_grid_main.show()
 func _on_state_exited_battle_gui_main():
@@ -120,8 +115,6 @@ func _on_state_exited_battle_gui_select():
 
 func _on_button_pressed_battle():
 	state_chart.send_event("on_gui_battle")
-	#TODO Figure out what to do once ability button is pressed. How to interpret generically
-	#Maybe run a generic cast function in the ability once the button is pressed and let it handle the rest
 	#TODO add back button for GUIs
 
 func _on_button_pressed_battle_ability(ability):

@@ -2,6 +2,7 @@ extends Node
 
 var active_character : Node3D = null
 var battle_list : Array = []
+var battle_list_ready : bool = true
 
 #Glossary to spawn any character we need
 const glossary : Dictionary = {
