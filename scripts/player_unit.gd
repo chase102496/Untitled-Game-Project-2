@@ -3,17 +3,17 @@ extends CharacterBody3D
 #region init public vars
 @onready var my_component_health: component_health = $Components/component_health
 @onready var my_component_ability: component_ability = $Components/component_ability
-@onready var my_component_state_controller: component_state_controller = $Components/component_state_controller
-@onready var my_component_movement_controller: component_movement_controller = $Components/component_movement_controller
-@onready var my_component_input_controller: component_input_controller = $Components/component_input_controller
-@onready var my_component_animation_controller: component_animation_controller = $Components/component_animation_controller
-@onready var my_component_physics: component_physics = $Components/component_physics
+#@onready var my_component_state_controller: component_state_controller = $Components/component_state_controller
+#@onready var my_component_movement_controller: component_movement_controller = $Components/component_movement_controller
+#@onready var my_component_input_controller: component_input_controller = $Components/component_input_controller
+#@onready var my_component_animation_controller: component_animation_controller = $Components/component_animation_controller
+#@onready var my_component_physics: component_physics = $Components/component_physics
 
 @onready var my_battle_gui : Control = $Battle_GUI
 
 #HACK DON'T USE ONREADY WITHOUT A REASON. ONREADY ONLY RUNS FOR SCENES PRE-LAUNCH
 #INSTANTIATED SCENES IGNORE @ONREADY FOR SOME FUCKING REASON, OR JUST TAKE TOO LONG
-
+#HACK sprite.texture.get_width() and sprite.texture.get_height() for spacing
 #TODO prob gonna get rid of this and turn into component!!!
 #TODO COMPONENTS!!!
 var stats : Dictionary = {
@@ -54,4 +54,12 @@ func _process(_delta: float) -> void:
 	pass
 
 func _physics_process(_delta: float) -> void:
-	pass
+	
+	if Input.is_action_just_pressed("debug"):
+		if !Global.debug:
+			$StateChartDebugger.enabled = true
+			Global.debug = true
+		else:
+			$StateChartDebugger.enabled = false
+			Global.debug = false
+	

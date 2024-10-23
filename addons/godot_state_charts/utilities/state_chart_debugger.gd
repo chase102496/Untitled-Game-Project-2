@@ -53,6 +53,7 @@ var _connected_transitions:Dictionary = {}
 var _history:DebuggerHistory = null
 
 func _ready():
+	
 	# always run, even if the game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS	
 	
@@ -70,7 +71,6 @@ func _ready():
 	%IgnoreEventsCheckbox.set_pressed_no_signal(ignore_events)
 	%IgnoreStateChangesCheckbox.set_pressed_no_signal(ignore_state_changes)
 	%IgnoreTransitionsCheckbox.set_pressed_no_signal(ignore_transitions)
-		
 	
 
 ## Adds an item to the history list.

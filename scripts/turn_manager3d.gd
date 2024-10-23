@@ -43,9 +43,6 @@ func _on_battle_finished(outcome):
 
 func _physics_process(_delta: float) -> void:
 	
-	if Input.is_action_just_pressed("battle"):
-		Battle.active_character.state_chart.send_event("on_start")
-	
 	#PLACEHOLDER FOR WHEN MENUS ARE MADE
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://scenes/level.tscn")

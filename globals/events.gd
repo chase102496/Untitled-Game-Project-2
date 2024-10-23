@@ -8,5 +8,7 @@ signal turn_start
 signal battle_finished(outcome)
 @warning_ignore("unused_signal")
 signal battle_gui_button_pressed(ability)
+@warning_ignore("unused_signal")
+signal skillcheck_hit(area,ability_queued)
 #@warning_ignore("unused_signal")
 #signal on_battle_initialize(battle_list)

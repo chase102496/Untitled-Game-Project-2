@@ -1,9 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://3toebp44q7k4"]
+[gd_scene load_steps=13 format=3 uid="uid://3toebp44q7k4"]
 
 [ext_resource type="Script" path="res://scripts/turn_arena.gd" id="1_3biaj"]
 [ext_resource type="Script" path="res://scripts/turn_manager3d.gd" id="1_k1dsd"]
-[ext_resource type="PackedScene" uid="uid://bxq7iunl61l4a" path="res://scenes/turn_character3d.tscn" id="2_d4p6f"]
 [ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_xytlk"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_hyi0i"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="6_xaec2"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_gmraj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inpdq"]
 albedo_texture = ExtResource("3_4sg4e")
@@ -14,6 +17,24 @@ size = Vector2(0.25, 0.25)
 
 [sub_resource type="HeightMapShape3D" id="HeightMapShape3D_jv2gb"]
 
+[sub_resource type="Resource" id="Resource_ka31u"]
+script = ExtResource("5_hyi0i")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Resource" id="Resource_ycegs"]
+script = ExtResource("6_xaec2")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 75.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
+
 [node name="Turn_Arena" type="Node3D"]
 script = ExtResource("1_3biaj")
 
@@ -21,14 +42,11 @@ script = ExtResource("1_3biaj")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.603487, 0)
 script = ExtResource("1_k1dsd")
 
-[node name="friends" parent="Turn_Manager" instance=ExtResource("2_d4p6f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.71913, -1.4253, -1.2891)
+[node name="friends" type="Marker3D" parent="Turn_Manager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.41278, 0, -1.1241)
 
-[node name="foes" parent="Turn_Manager" instance=ExtResource("2_d4p6f")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.22514, -1.67131, 0.994428)
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999947, 0.00855526, -0.00569592, 0.00476055, 0.876685, 0.481041, 0.00910896, 0.480989, -0.87668, -0.046, 1.64889, -4)
+[node name="foes" type="Marker3D" parent="Turn_Manager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11803, 0, 0.929834)
 
 [node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, -1.80014, 0)
@@ -49,3 +67,16 @@ light_indirect_energy = 50.0
 light_specular = 0.0
 spot_range = 19.1982
 spot_angle = 21.7129
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 0.00140647, 0.94999, 0.312278, 0.0140315, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
+script = ExtResource("4_xytlk")
+tween_resource = SubResource("Resource_ka31u")
+camera_3d_resource = SubResource("Resource_ycegs")
+follow_offset = Vector3(0, 1.8, -3)
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(-0.999901, 0.00571774, -0.0128906, 0.00140647, 0.94999, 0.312278, 0.0140315, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D2"]
+script = ExtResource("7_gmraj")

@@ -9,9 +9,13 @@ func _ready() -> void:
 
 func damage(amt):
 	
+	print_debug("Target hp before:", health)
+	
 	health -= amt
 	
 	owner.anim_tree.get("parameters/playback").travel("Squish")
+	
+	print_debug("Target hp after:", health)
 	
 	if health <= 0:
 		owner.state_chart.send_event("on_death")

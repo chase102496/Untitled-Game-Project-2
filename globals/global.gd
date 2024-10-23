@@ -1,2 +1,3 @@
 extends Node
-var done = true
+var state_chart_already_exists : bool = false
+var debug = false

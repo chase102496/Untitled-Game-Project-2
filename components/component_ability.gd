@@ -15,8 +15,8 @@ extends Node
 class ability:
 	var caster : Node
 	var title : String = "---"
-	var skillcheck_modifier : float = 1.0
-	var damage : int = 200
+	var skillcheck_modifier : int = 1
+	var damage : int = 2
 	var valid_targets : Array = ["foes","friends"] #who we can target
 	var target : Node = null
 	
@@ -33,7 +33,17 @@ class ability:
 		pass
 	
 	func skillcheck(result):
-		skillcheck_modifier = result
+		if result == "Miss":
+			skillcheck_modifier = 0
+		elif result == "Good":
+			skillcheck_modifier = 1
+		elif result == "Great":
+			skillcheck_modifier = 2
+		elif result == "Excellent":
+			skillcheck_modifier = 3
+		else:
+			skillcheck_modifier = 1
+		
 		print_debug("Result of skillcheck is ",result)
 	
 	func cast():
@@ -53,8 +63,8 @@ class ability_tackle:
 		self.caster = caster
 		title = "Tackle"
 	
-	func validate(): #run validations, check vis, health, etc needs passthru values
-		var result = true #default so we cannot use this move
+	func validate():
+		var result = true
 		return result
 	
 	func cast():
@@ -62,7 +72,7 @@ class ability_tackle:
 		print_debug(caster.name, " Tackled ", target.name,"!")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
 		if target.my_component_health:
-			target.my_component_health.damage(damage)
+			target.my_component_health.damage(skillcheck_modifier*damage)
 		
 		#how do I handle damage? call the target's function here? or...?
 	#

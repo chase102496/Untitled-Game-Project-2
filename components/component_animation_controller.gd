@@ -37,9 +37,11 @@ func _on_state_entered_explore_idle():
 	owner.anim_tree.get("parameters/playback").travel("Idle")
 
 func _on_state_entered_explore_walking():
+
 	owner.anim_tree.get("parameters/playback").travel("Walking")
 
 func _on_state_physics_processing_explore_walking(_delta: float):
+	
 	if my_component_input_controller:
 		direction = my_component_input_controller.direction
 	

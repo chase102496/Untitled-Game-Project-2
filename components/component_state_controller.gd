@@ -20,6 +20,7 @@ func _ready() -> void:
 	owner.get_node("StateChart/Main/Battle/Choose").state_entered.connect(_on_state_entered_battle_choose)
 	owner.get_node("StateChart/Main/Battle/Choose").state_exited.connect(_on_state_exited_battle_choose)
 	owner.get_node("StateChart/Main/Battle/Skillcheck").state_entered.connect(_on_state_entered_battle_skillcheck)
+	owner.get_node("StateChart/Main/Battle/Skillcheck").state_exited.connect(_on_state_exited_battle_skillcheck)
 	owner.get_node("StateChart/Main/Battle/Execution").state_entered.connect(_on_state_entered_battle_execution)
 	owner.get_node("StateChart/Main/Battle/Execution").state_physics_processing.connect(_on_state_physics_processing_battle_execution)
 	owner.get_node("StateChart/Main/Battle/End").state_physics_processing.connect(_on_state_physics_processing_battle_end)
@@ -75,11 +76,12 @@ func _on_state_entered_battle_start():
 func _on_state_entered_battle_choose():
 	owner.my_battle_gui.state_chart.send_event("on_gui_main")
 func _on_state_exited_battle_choose():
-	owner.my_battle_gui.state_chart.send_event("on_gui_disabled") #TODO maybe add a transition to skillcheck in the gui here
-	
+	pass
+
 func _on_state_entered_battle_skillcheck():
-	var result = randf_range(0,1) #TODO Add skillcheck GUI thing, that will also handle going to execution
-	owner.my_component_ability.cast_queue.skillcheck(result)
+	pass
+func _on_state_exited_battle_skillcheck():
+	owner.my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
 	owner.state_chart.send_event("on_execution")
 	
 func _on_state_entered_battle_execution():
