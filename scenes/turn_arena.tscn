@@ -68,15 +68,17 @@ light_specular = 0.0
 spot_range = 19.1982
 spot_angle = 21.7129
 
-[node name="PhantomCamera3D" type="Node3D" parent="."]
+[node name="Camera" type="Node3D" parent="."]
+
+[node name="PhantomCamera3D" type="Node3D" parent="Camera"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 0.00140647, 0.94999, 0.312278, 0.0140315, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
 script = ExtResource("4_xytlk")
 tween_resource = SubResource("Resource_ka31u")
 camera_3d_resource = SubResource("Resource_ycegs")
 follow_offset = Vector3(0, 1.8, -3)
 
-[node name="Camera3D2" type="Camera3D" parent="."]
-transform = Transform3D(-0.999901, 0.00571774, -0.0128906, 0.00140647, 0.94999, 0.312278, 0.0140315, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
+[node name="Camera3D2" type="Camera3D" parent="Camera"]
+transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 0.00140647, 0.94999, 0.312278, 0.0140315, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
 
-[node name="PhantomCameraHost" type="Node" parent="Camera3D2"]
+[node name="PhantomCameraHost" type="Node" parent="Camera/Camera3D2"]
 script = ExtResource("7_gmraj")

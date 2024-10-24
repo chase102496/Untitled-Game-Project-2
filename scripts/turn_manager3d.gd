@@ -2,8 +2,6 @@ extends Node3D
 
 #DO NOT PUT ANYTHING BESIDES THE UNITS THAT WILL BE FIGHTING AND TAKING TURNS IN THE IMMEDIATE CHILD SECTION OF TURN_MANAGER
 
-var first : bool = true
-
 #Init and set active character to the first in our child list and emit start of turn
 func _ready() -> void:
 	#Init for event bus, so we can recieve char end turn
@@ -24,10 +22,10 @@ func _ready() -> void:
 		instance.state_init_override = "on_waiting"
 		
 	Battle.active_character = Battle.battle_list[0] #Setting initial turn order
+	
 	Events.turn_start.emit()
 
-func play_turn():
-	print("--------------------")
+func _on_turn_end():
 	#Set new character as next in queue, and incrementing the index
 	var new_index = (Battle.battle_list.find(Battle.active_character,0) + 1) % len(Battle.battle_list)
 	Battle.active_character = Battle.battle_list[new_index]
@@ -46,6 +44,3 @@ func _physics_process(_delta: float) -> void:
 	#PLACEHOLDER FOR WHEN MENUS ARE MADE
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://scenes/level.tscn")
-
-func _on_turn_end() -> void:
-	play_turn()

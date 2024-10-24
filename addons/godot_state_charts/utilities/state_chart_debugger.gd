@@ -182,6 +182,13 @@ func _connect_signals(state:StateChartState):
 
 
 func _process(delta):
+	#FIXME THIS IS MY CUSTOM ADDON CODE HEHE
+	if Input.is_action_just_pressed("debug"):
+		if enabled:
+			enabled = false
+		else:
+			enabled = true
+	
 	# Clear contents
 	_tree.clear()
 

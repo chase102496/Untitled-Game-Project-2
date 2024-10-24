@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0xhx3uxvewnh"]
+
+[ext_resource type="Script" path="res://test_junk/text_in_3d.gd" id="1_tp3n2"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_hahmc"]
+resource_local_to_scene = false
+viewport_path = NodePath("Port")
+
+[node name="DEBUG_3D_TEXT" type="Sprite3D"]
+billboard = 1
+double_sided = false
+texture = SubResource("ViewportTexture_hahmc")
+
+[node name="Port" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(153, 23)
+script = ExtResource("1_tp3n2")
+
+[node name="Label" type="Label" parent="Port"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.5
+offset_top = -11.5
+offset_right = 76.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "DEBUG VISUAL"

@@ -65,13 +65,13 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vafvi"]
-size = Vector2(86.024, 57.7623)
+size = Vector2(83.3163, 59.3471)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mwsi5"]
-size = Vector2(96.6079, 60.1114)
+size = Vector2(94.2756, 60.1114)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_acl81"]
-size = Vector2(37.076, 47.762)
+size = Vector2(39.2892, 48.5615)
 
 [sub_resource type="Animation" id="Animation_dvh4e"]
 length = 0.001
@@ -151,7 +151,7 @@ libraries = {
 autoplay = "pointer_hover"
 
 [node name="Selector Sprite" type="Sprite3D" parent="."]
-transform = Transform3D(1.92498, -0.542641, 0, 0.542641, 1.92498, 0, 0, 0, 2, 0, 0, 0)
+transform = Transform3D(1.92498, -0.542639, 0, 0.542639, 1.92498, 0, 0, 0, 2, 0, 0, 0)
 visible = false
 offset = Vector2(-15, -5)
 flip_h = true
@@ -238,7 +238,7 @@ texture = ExtResource("6_ps4ef")
 [node name="Good" type="Area2D" parent="Container/Skillcheck/Wheel/Good"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Good/Good"]
-position = Vector2(-5.71753, -106.679)
+position = Vector2(-6.81836, -105.561)
 rotation = -0.263545
 shape = SubResource("RectangleShape2D_vafvi")
 debug_color = Color(1, 0.405, 0.3, 0.439216)
@@ -251,8 +251,9 @@ texture = ExtResource("6_ps4ef")
 [node name="Good" type="Area2D" parent="Container/Skillcheck/Wheel/Good2"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Good2/Good"]
-position = Vector2(-13.3317, -104.002)
+position = Vector2(-14.4575, -103.698)
 rotation = -0.263545
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_mwsi5")
 debug_color = Color(1, 0.5835, 0.49, 0.47451)
 
@@ -266,7 +267,7 @@ texture = ExtResource("7_5rli0")
 [node name="Great" type="Area2D" parent="Container/Skillcheck/Wheel/Great"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Great/Great"]
-position = Vector2(1.14063, -100.496)
+position = Vector2(0.0671387, -100.096)
 scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_acl81")
 debug_color = Color(0.889405, 0.237402, 0.569274, 0.42)
@@ -280,7 +281,7 @@ texture = ExtResource("7_5rli0")
 [node name="Excellent" type="Area2D" parent="Container/Skillcheck/Wheel/Excellent"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Excellent/Excellent"]
-position = Vector2(1.51062, -100.496)
+position = Vector2(1.1261, -100.496)
 shape = SubResource("RectangleShape2D_acl81")
 debug_color = Color(0.889405, 0.237402, 0.569274, 0.42)
 
@@ -303,7 +304,7 @@ position = Vector2(-1.32322e-05, -2.13981e-05)
 rotation = 0.289725
 scale = Vector2(0.3, 0.3)
 exclude_parent = false
-target_position = Vector2(-246.381, -135.675)
+target_position = Vector2(-249.234, -134.76)
 collide_with_areas = true
 collide_with_bodies = false
 script = ExtResource("6_rhj8w")

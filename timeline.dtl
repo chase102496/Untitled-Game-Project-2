@@ -1,7 +1,7 @@
 [signal arg="on_pause_input"]
-Test \:)
-- YAAAAAAAY
+[pulse] YAAAAAAAY [/pulse]
+- It finally works!
 	I know, right?!
 	- I guess...
-Anyways, gotta get going, cya!
+[pause=0.5] You guess[lspeed=0.1]...? [n] [lspeed] [shake] RUDE! [/shake]
 [signal arg="on_idle"]

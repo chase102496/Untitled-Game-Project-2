@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn12mfcsq7oqw"]
+
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cj5thivh7di1u" path="res://scenes/character_animation_tree.tres" id="1_uh522"]
+
+[node name="character_animation_tree" type="AnimationTree"]
+root_node = NodePath("../character_animation_sprite")
+tree_root = ExtResource("1_uh522")
+anim_player = NodePath("../character_animation_player")
+parameters/Attack/TimeScale/scale = 1.0
+parameters/Death/TimeScale/scale = 1.0
+parameters/Idle/BlendSpace2D/blend_position = Vector2(0.301537, 0.859873)
+parameters/Idle/TimeScale/scale = 0.2
+parameters/Walk/BlendSpace2D/blend_position = Vector2(-0.0011825, 0.00709224)
+parameters/Walk/TimeScale/scale = 0.5
