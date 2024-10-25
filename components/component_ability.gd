@@ -21,7 +21,7 @@ class ability:
 	var skillcheck_modifier : int = 1
 	var caster : Node
 	var target : Node = null
-	var valid_targets : Array = ["foes","friends"] #who we can target
+	var valid_targets : Array = ["foes","friends"] #who we can target, can be foes, friends, self, or none. Let's make it an enum later
 	
 	var title : String = "---"
 	
