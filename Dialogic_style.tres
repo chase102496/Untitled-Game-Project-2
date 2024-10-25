@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DialogicStyle" load_steps=3 format=3 uid="uid://bav21k377mwpt"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Resources/dialogic_style_layer.gd" id="1_lp7yb"]
+[ext_resource type="Script" path="res://addons/dialogic/Resources/dialogic_style.gd" id="2_sb4vk"]
+
+[resource]
+script = ExtResource("2_sb4vk")
+name = "Dialogic_style"
+base_overrides = {
+"global_bg_color": "Color(0, 0.168627, 0, 0.886275)",
+"global_font": "\"res://ui/Fancake.ttf\"",
+"global_font_size": "24.0"
+}
+layers = Array[ExtResource("1_lp7yb")]([])
+metadata/_latest_layer = -1

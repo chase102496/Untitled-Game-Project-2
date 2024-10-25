@@ -186,7 +186,7 @@ func _on_button_pressed_battle_ability(ability):
 		
 		#after selection
 	else:
-		ability.validate_failed()
+		ability.select_validate_failed()
 		
 		#store obj in memory to cast ability later
 		#send state change to owner

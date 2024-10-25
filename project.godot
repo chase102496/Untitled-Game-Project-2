@@ -39,8 +39,8 @@ directories/dtl_directory={
 "timeline": "res://timeline.dtl"
 }
 glossary/default_case_sensitive=true
-layout/style_list=[""]
-layout/default_style=""
+layout/style_list=["res://ui/dialogic_style_new.tres"]
+layout/default_style="res://ui/dialogic_style_new.tres"
 variables={}
 extensions_folder="res://addons/dialogic_additions"
 text/letter_speed=0.01
@@ -56,7 +56,7 @@ animations/leave_default_wait=true
 animations/cross_fade_default_length=0.5
 choices/autofocus_first=false
 choices/delay=0.2
-choices/reveal_delay=0
+choices/reveal_delay=0.25
 choices/reveal_by_input=false
 save/autosave_delay=60.0
 save/encryption_on_exports_only=true

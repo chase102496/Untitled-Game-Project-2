@@ -15,19 +15,20 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
 func animations_reset(dir : Vector2 = Vector2(0,0)):
-	owner.anim_tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
-	owner.anim_tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
+	
 	if dir.x >= 0:
 		owner.anim_root.rotation.y = 0
 	else:
 		owner.anim_root.rotation.y = PI
+	owner.anim_tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
+	owner.anim_tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
 
 func _on_state_entered_death():
 	pass
 
 func _on_state_entered_pause_input():
-	owner.anim_tree.get("parameters/playback").travel("Idle")
 	animations_reset(direction)
+	owner.anim_tree.get("parameters/playback").travel("Idle")
 
 func _on_state_entered_battle():
 	#TODO use this for selection of attack sprite.modulate = Color(1,1,1,0.5)
@@ -49,7 +50,6 @@ func _on_state_physics_processing_explore_walking(_delta: float):
 	
 	if my_component_input_controller:
 		direction = my_component_input_controller.direction
-			
+		
 	if direction != Vector2.ZERO:
-			
 		animations_reset(direction)

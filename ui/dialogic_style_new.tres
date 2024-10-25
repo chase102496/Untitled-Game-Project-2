@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="DialogicStyle" load_steps=19 format=3 uid="uid://bhn3uyr5m3tao"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Resources/dialogic_style_layer.gd" id="1_vnlce"]
+[ext_resource type="PackedScene" uid="uid://c1k5m0w3r40xf" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_FullBackground/full_background_layer.tscn" id="2_4jt7c"]
+[ext_resource type="PackedScene" uid="uid://cy1y14inwkplb" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.tscn" id="3_22i8m"]
+[ext_resource type="PackedScene" uid="uid://cn674foxwedqu" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Input/full_advance_input_layer.tscn" id="4_go68t"]
+[ext_resource type="PackedScene" uid="uid://bquja8jyk8kbr" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Textbox/vn_textbox_layer.tscn" id="5_pdbx2"]
+[ext_resource type="PackedScene" uid="uid://dsbwnp5hegnu3" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_Glossary/glossary_popup_layer.tscn" id="6_2w0hg"]
+[ext_resource type="PackedScene" uid="uid://dhk6j6eb6e3q" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Choices/vn_choice_layer.tscn" id="7_lkvky"]
+[ext_resource type="PackedScene" uid="uid://cvgf4c6gg0tsy" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_TextInput/text_input_layer.tscn" id="8_ogyld"]
+[ext_resource type="PackedScene" uid="uid://lx24i8fl6uo" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/history_layer.tscn" id="9_xksqe"]
+[ext_resource type="Script" path="res://addons/dialogic/Resources/dialogic_style.gd" id="10_tkme8"]
+
+[sub_resource type="Resource" id="Resource_f2obu"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("2_4jt7c")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_7ryic"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("3_22i8m")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_ak88l"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("4_go68t")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_pvyls"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("5_pdbx2")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_3vujr"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("6_2w0hg")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_g10w1"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("7_lkvky")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_rg16g"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("8_ogyld")
+overrides = {}
+
+[sub_resource type="Resource" id="Resource_famv7"]
+script = ExtResource("1_vnlce")
+scene = ExtResource("9_xksqe")
+overrides = {}
+
+[resource]
+script = ExtResource("10_tkme8")
+name = "dialogic_style_new"
+base_overrides = {
+"global_bg_color": "Color(0, 0.152941, 0, 0.901961)",
+"global_font": "\"res://ui/Fancake.ttf\""
+}
+layers = Array[ExtResource("1_vnlce")]([SubResource("Resource_f2obu"), SubResource("Resource_7ryic"), SubResource("Resource_ak88l"), SubResource("Resource_pvyls"), SubResource("Resource_3vujr"), SubResource("Resource_g10w1"), SubResource("Resource_rg16g"), SubResource("Resource_famv7")])
+metadata/_latest_layer = -1

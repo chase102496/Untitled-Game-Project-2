@@ -25,7 +25,8 @@ class ability:
 	
 	var title : String = "---"
 	
-	var damage : int = 1
+	var damage : int = 0
+	var vis_cost : int = 0
 	
 	var status_effect : bool = false
 	
@@ -104,18 +105,22 @@ class ability_tackle:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
+		self.damage = 1
+		self.vis_cost = 4
 		title = "Tackle"
 	
 	func select_validate():
-		var result = true
-		return result
+		if caster.my_component_vis.vis >= vis_cost:
+			return true
+		else:
+			return false
 	
 	func cast_main():
 		#TODO setup animations
 		print_debug(caster.name, " Tackled ", target.name,"!")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
-		if target.my_component_health:
-			target.my_component_health.damage(skillcheck_modifier*damage)
+		target.my_component_health.damage(skillcheck_modifier*damage)
+		caster.my_component_vis.siphon(vis_cost)
 		
 		#how do I handle damage? call the target's function here? or...?
 	#

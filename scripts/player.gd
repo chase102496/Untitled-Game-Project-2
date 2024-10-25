@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var my_component_health: component_health = %Components/component_health
+@onready var my_component_vis: component_vis = %Components/component_vis
 @onready var my_component_ability: component_ability = %Components/component_ability
 @onready var my_component_state_controller: component_state_controller = %Components/component_state_controller
 @onready var my_component_input_controller: component_input_controller = %Components/component_input_controller
@@ -42,7 +43,7 @@ var stats : Dictionary = {
 func _ready() -> void:
 	
 	#Dialogic
-	#Dialogic.preload_timeline
+	Dialogic.preload_timeline
 
 	#Abilities
 	var abil = my_component_ability
@@ -70,8 +71,8 @@ func _physics_process(_delta: float) -> void:
 			#Global.debug = false
 	
 	if Input.is_action_just_pressed("interact"):
-		#Dialogic.start("timeline")
-		anim_tree.get("parameters/playback").travel("Attack")
+		Dialogic.start("timeline")
+		#anim_tree.get("parameters/playback").travel("Attack")
 		
 	
 	# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER

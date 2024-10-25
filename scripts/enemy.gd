@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var my_component_health: component_health = %Components/component_health
+@onready var my_component_vis: component_vis = %Components/component_vis
 @onready var my_component_ability: component_ability = %Components/component_ability
 @onready var my_component_state_controller: component_state_controller = %Components/component_state_controller
 

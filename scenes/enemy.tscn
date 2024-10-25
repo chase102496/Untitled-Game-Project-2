@@ -1,4 +1,4 @@
-[gd_scene load_steps=110 format=3 uid="uid://d0k7ifshme1kl"]
+[gd_scene load_steps=111 format=3 uid="uid://d0k7ifshme1kl"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_tu2mm"]
 [ext_resource type="Script" path="res://scenes/debug_3d_text.gd" id="2_2sbhw"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://sprites/The Adventurer - Free/Walk/walk_right_down.png" id="14_4rrjp"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://sprites/The Adventurer - Free/Walk/walk_right_up.png" id="15_aqqpw"]
 [ext_resource type="Script" path="res://scripts/animated_sprite_3d.gd" id="16_rd3nk"]
+[ext_resource type="Script" path="res://components/component_vis.gd" id="18_6vpc6"]
 [ext_resource type="Script" path="res://components/components.gd" id="18_orvp7"]
 [ext_resource type="Script" path="res://components/component_health.gd" id="19_ed3vo"]
 [ext_resource type="Script" path="res://components/component_ability.gd" id="20_uo5aw"]
@@ -1064,6 +1065,9 @@ animations = [{
 physics_interpolation_mode = 1
 script = ExtResource("1_tu2mm")
 
+[node name="StateChart" parent="." instance=ExtResource("20_w8p7b")]
+unique_name_in_owner = true
+
 [node name="DEBUG_3D_TEXT" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0213653, 0.775609, 0)
 billboard = 1
@@ -1108,6 +1112,9 @@ script = ExtResource("18_orvp7")
 [node name="component_health" type="Node" parent="Components"]
 script = ExtResource("19_ed3vo")
 
+[node name="component_vis" type="Node" parent="Components"]
+script = ExtResource("18_6vpc6")
+
 [node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("20_uo5aw")
 
@@ -1123,6 +1130,3 @@ script = ExtResource("24_t4mhg")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("25_t7kuk")
-
-[node name="StateChart" parent="." instance=ExtResource("20_w8p7b")]
-unique_name_in_owner = true
