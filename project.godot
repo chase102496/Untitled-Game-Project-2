@@ -22,7 +22,6 @@ Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Battle="*res://globals/battle.gd"
 Global="*res://globals/global.gd"
-Ability="*res://globals/ability.gd"
 Glossary="*res://globals/glossary.gd"
 
 [debug]

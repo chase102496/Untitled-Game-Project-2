@@ -23,7 +23,7 @@ func _ready() -> void:
 		
 	Battle.active_character = Battle.battle_list[0] #Setting initial turn order
 	
-	Events.turn_start.emit()
+	Battle.active_character.state_init_override = "on_start" #TODO Other bandaid that fits a lil better
 
 func _on_turn_end():
 	#Set new character as next in queue, and incrementing the index

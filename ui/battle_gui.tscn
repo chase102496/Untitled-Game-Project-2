@@ -253,7 +253,6 @@ texture = ExtResource("6_ps4ef")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Good2/Good"]
 position = Vector2(-14.4575, -103.698)
 rotation = -0.263545
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_mwsi5")
 debug_color = Color(1, 0.5835, 0.49, 0.47451)
 
@@ -268,7 +267,6 @@ texture = ExtResource("7_5rli0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Great/Great"]
 position = Vector2(0.0671387, -100.096)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_acl81")
 debug_color = Color(0.889405, 0.237402, 0.569274, 0.42)
 

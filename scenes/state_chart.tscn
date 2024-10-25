@@ -6,13 +6,25 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_wcf4l"]
 
 [node name="StateChart" type="Node"]
-process_priority = -1
+process_priority = -2
 script = ExtResource("1_bs7hr")
 
 [node name="Main" type="Node" parent="."]
 process_priority = -1
 script = ExtResource("2_3drry")
 initial_state = NodePath("Explore")
+
+[node name="on_idle" type="Node" parent="Main"]
+script = ExtResource("3_3xgqe")
+to = NodePath("../Explore/Idle")
+event = &"on_idle"
+delay_in_seconds = "0.0"
+
+[node name="on_pause_input" type="Node" parent="Main"]
+script = ExtResource("3_3xgqe")
+to = NodePath("../Pause_Input")
+event = &"on_pause_input"
+delay_in_seconds = "0.0"
 
 [node name="on_start" type="Node" parent="Main"]
 script = ExtResource("3_3xgqe")
@@ -26,18 +38,6 @@ to = NodePath("../Battle/Waiting")
 event = &"on_waiting"
 delay_in_seconds = "0.0"
 
-[node name="on_pause_input" type="Node" parent="Main"]
-script = ExtResource("3_3xgqe")
-to = NodePath("../Pause_Input")
-event = &"on_pause_input"
-delay_in_seconds = "0.0"
-
-[node name="on_idle" type="Node" parent="Main"]
-script = ExtResource("3_3xgqe")
-to = NodePath("../Explore/Idle")
-event = &"on_idle"
-delay_in_seconds = "0.0"
-
 [node name="Explore" type="Node" parent="Main"]
 script = ExtResource("2_3drry")
 initial_state = NodePath("Idle")
@@ -48,10 +48,22 @@ to = NodePath("../Walking")
 event = &"on_walking"
 delay_in_seconds = "0.0"
 
+[node name="on_air" type="Node" parent="Main/Explore"]
+script = ExtResource("3_3xgqe")
+to = NodePath("../Air")
+event = &"on_air"
+delay_in_seconds = "0.0"
+
 [node name="Idle" type="Node" parent="Main/Explore"]
 script = ExtResource("4_wcf4l")
 
 [node name="Walking" type="Node" parent="Main/Explore"]
+script = ExtResource("4_wcf4l")
+
+[node name="Ground" type="Node" parent="Main/Explore"]
+script = ExtResource("2_3drry")
+
+[node name="Air" type="Node" parent="Main/Explore"]
 script = ExtResource("4_wcf4l")
 
 [node name="Pause_Input" type="Node" parent="Main"]

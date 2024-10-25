@@ -6,8 +6,8 @@ var jump : bool = false
 var jump_damper : bool = false
 
 func _ready() -> void:
-	owner.get_node("StateChart/Main/Explore").state_physics_processing.connect(_on_state_physics_processing_explore)
-	owner.get_node("StateChart/Main/Explore").state_exited.connect(_on_state_exited_explore)
+	%StateChart/Main/Explore.state_physics_processing.connect(_on_state_physics_processing_explore)
+	%StateChart/Main/Explore.state_exited.connect(_on_state_exited_explore)
 
 func _on_state_physics_processing_explore(_delta: float) -> void:
 	#Direction

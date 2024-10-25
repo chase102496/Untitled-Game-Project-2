@@ -168,7 +168,7 @@ func _on_button_pressed_battle_ability(ability):
 	selector_list = []
 	selected_ability = ability #for use later
 	
-	if ability.validate():
+	if ability.select_validate():
 		#TODO check if it is a targetable spell first, if not skip this part
 		for i in len(Battle.battle_list): #adds potential targets to our selector list to select a tgt
 			var unit = Battle.battle_list[i]

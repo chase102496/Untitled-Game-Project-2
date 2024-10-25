@@ -5,11 +5,10 @@ class_name component_state_controller
 @export var my_component_ability: component_ability
 
 @onready var direction := Vector2.ZERO
-@onready var fuckthisshit : bool = true
-
 @onready var character_ready : bool = true
 
 func _ready() -> void:
+
 	Events.turn_start.connect(_on_turn_start)
 	Dialogic.signal_event.connect(_on_dialogic_signal)
 	
@@ -18,32 +17,30 @@ func _ready() -> void:
 	Events.animation_started.connect(_on_animation_started)
 	
 	#Explore
-	owner.get_node("StateChart/Main/Explore/Walking").state_physics_processing.connect(_on_state_physics_processing_explore_walking)
-	owner.get_node("StateChart/Main/Explore").state_physics_processing.connect(_on_state_physics_processing_explore)
-	owner.get_node("StateChart/Main/Explore/Idle").state_physics_processing.connect(_on_state_physics_processing_explore_idle)
+	%StateChart/Main/Explore.state_physics_processing.connect(_on_state_physics_processing_explore)
+	%StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
+	%StateChart/Main/Explore/Idle.state_physics_processing.connect(_on_state_physics_processing_explore_idle)
 	#Battle
-	
-	owner.get_node("StateChart/Main/Battle/Hurt").state_entered.connect(_on_state_entered_battle_hurt)
-	owner.get_node("StateChart/Main/Battle/Hurt").state_physics_processing.connect(_on_state_physics_processing_battle_hurt)
-	owner.get_node("StateChart/Main/Battle/Waiting").state_entered.connect(_on_state_entered_battle_waiting)
-	owner.get_node("StateChart/Main/Battle/Waiting").state_physics_processing.connect(_on_state_physics_processing_battle_waiting)
-	owner.get_node("StateChart/Main/Battle/Start").state_entered.connect(_on_state_entered_battle_start)
-	owner.get_node("StateChart/Main/Battle/Choose").state_entered.connect(_on_state_entered_battle_choose)
-	owner.get_node("StateChart/Main/Battle/Choose").state_exited.connect(_on_state_exited_battle_choose)
-	owner.get_node("StateChart/Main/Battle/Skillcheck").state_entered.connect(_on_state_entered_battle_skillcheck)
-	owner.get_node("StateChart/Main/Battle/Skillcheck").state_exited.connect(_on_state_exited_battle_skillcheck)
-	owner.get_node("StateChart/Main/Battle/Execution").state_entered.connect(_on_state_entered_battle_execution)
-	owner.get_node("StateChart/Main/Battle/Execution").state_physics_processing.connect(_on_state_physics_processing_battle_execution)
-	owner.get_node("StateChart/Main/Battle/End").state_physics_processing.connect(_on_state_physics_processing_battle_end)
+	%StateChart/Main/Battle/Hurt.state_entered.connect(_on_state_entered_battle_hurt)
+	%StateChart/Main/Battle/Hurt.state_physics_processing.connect(_on_state_physics_processing_battle_hurt)
+	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
+	%StateChart/Main/Battle/Waiting.state_physics_processing.connect(_on_state_physics_processing_battle_waiting)
+	%StateChart/Main/Battle/Start.state_entered.connect(_on_state_entered_battle_start)
+	%StateChart/Main/Battle/Choose.state_entered.connect(_on_state_entered_battle_choose)
+	%StateChart/Main/Battle/Choose.state_exited.connect(_on_state_exited_battle_choose)
+	%StateChart/Main/Battle/Skillcheck.state_entered.connect(_on_state_entered_battle_skillcheck)
+	%StateChart/Main/Battle/Skillcheck.state_exited.connect(_on_state_exited_battle_skillcheck)
+	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
+	%StateChart/Main/Battle/Execution.state_physics_processing.connect(_on_state_physics_processing_battle_execution)
+	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
 	#Death
-	owner.get_node("StateChart/Main/Battle/Death").state_entered.connect(_on_state_entered_death)
-	
+	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
+
 func _physics_process(_delta: float) -> void:
 	if my_component_input_controller:
 		direction = my_component_input_controller.direction
 	
-	#FIXME bandaid
-	if owner.state_init_override:
+	if typeof(owner.state_init_override) == 4: #If it's a string
 		owner.state_chart.send_event(owner.state_init_override)
 		owner.state_init_override = null
 
@@ -60,30 +57,22 @@ func _on_state_physics_processing_explore_walking(_delta: float) -> void:
 #Battle
 
 func _on_animation_started(anim_name,character):
-	print(anim_name,character)
 	if character == owner:
 		match anim_name:
 			"default_attack":
-				print(anim_name," START")
 				character_ready = false
 			"default_hurt":
-				print(anim_name," START")
 				character_ready = false
 			"default_death":
-				print(anim_name," START")
 				character_ready = false
-
 func _on_animation_finished(anim_name,character):
 	if character == owner:
 		match anim_name:
-			"default_attack":
-				print(anim_name," END")
+			"default_attack": #make RegEx for this later, for diff attacks
 				owner.state_chart.send_event("on_end")
 			"default_hurt":
-				print(anim_name," END")
 				owner.state_chart.send_event("on_waiting")
 			"default_death":
-				print(anim_name," END")
 				Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
 				#Check if we are the last one
 				if len(Battle.get_team("foes")) == 0: #TODO Make an end battle screen? Nah actually
@@ -97,10 +86,8 @@ func _on_animation_finished(anim_name,character):
 func _on_turn_start(): #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN
 	if Battle.active_character == owner:
 		owner.state_chart.send_event("on_start")
-		owner.state_init_override = "on_start" #FUCK this state machine sometimes
 	else:
 		owner.state_chart.send_event("on_waiting")
-	pass
 
 func _on_state_entered_battle_waiting():
 	character_ready = true
@@ -115,7 +102,7 @@ func _on_state_entered_battle_start():
 	# setting stats or whatever if we have a boost like certain pokemon
 	# If this is the first round of turns (we will check and keep track with var), skip choose and skillcheck
 	if !owner.sprite.attack_contact.is_connected(_on_attack_contact):
-		owner.sprite.attack_contact.connect(_on_attack_contact) #For informing us when to hit target with cast()
+		owner.sprite.attack_contact.connect(_on_attack_contact) #For informing us when to hit target with cast
 	
 	
 func _on_state_entered_battle_choose():
@@ -124,10 +111,15 @@ func _on_state_entered_battle_choose():
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
 		"enemy":
 			await get_tree().create_timer(0.5).timeout
-			owner.my_component_ability.cast_queue =  owner.my_component_ability.my_abilities.pick_random() #Pick random move
+			owner.my_component_ability.cast_queue = owner.my_component_ability.my_abilities.pick_random() #Pick random move
 			
 			#TODO Check if queued ability is to be used on allies or enemies before choosing
-			owner.my_component_ability.cast_queue.target = Battle.get_team("friends").pick_random()
+			#turn this into a script we run with battle list as the entire battle field param, and owner as caster
+			#the move will narrow down the list of viable targets based on the input and its move type (myteam, enemies, single target, aoe, self, all)
+			#the move will then run a script based on whether we are player/dreamkin or enemy and send gui our target array or randomly select from target array
+			#eg if x: do x
+			#x is single-target, so we either randomly select 1 person from
+			owner.my_component_ability.cast_queue.target = Battle.get_team("friends").pick_random() #Pick random opponent
 			
 			var skillcheck_result = "Miss"
 			var skill_rand = randf_range(0,1)
@@ -152,11 +144,16 @@ func _on_state_exited_battle_skillcheck():
 	owner.state_chart.send_event("on_execution")
 	
 func _on_state_entered_battle_execution():
-	owner.my_component_ability.cast_queue.animation()
+	if owner.my_component_ability.cast_queue.cast_validate():
+		owner.my_component_ability.cast_queue.animation()
+	else:
+		await get_tree().create_timer(0.5).timeout
+		owner.my_component_ability.cast_queue.cast_validate_failed()
+		owner.state_chart.send_event("on_end") #move failed, skip execution
 func _on_state_physics_processing_battle_execution(_delta: float) -> void:
 	pass
 func _on_attack_contact():
-	owner.my_component_ability.cast_queue.cast()
+	owner.my_component_ability.cast_queue.cast_main()
 
 func _on_state_physics_processing_battle_end(_delta: float) -> void:
 	#End code goes here, then we ready up

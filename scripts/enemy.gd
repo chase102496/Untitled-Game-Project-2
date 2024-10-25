@@ -23,6 +23,7 @@ var stats : Dictionary = {
 @onready var state_init_override = null
 
 #Animations init
+@onready var anim_root : Node3D = %Animations
 @onready var anim_tree : AnimationTree = %Animations/character_animation_tree
 @onready var anim : AnimationPlayer = %Animations/character_animation_player
 @onready var sprite : AnimatedSprite3D = %Animations/character_animation_sprite
