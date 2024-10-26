@@ -17,15 +17,18 @@ ease = 2
 
 [sub_resource type="Environment" id="Environment_pgady"]
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_2l4bs"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_o7fxa"]
 dof_blur_near_enabled = true
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xpipa"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r5uxb"]
+sky_top_color = Color(0.496719, 0.794427, 0.942849, 1)
+sky_horizon_color = Color(0.154229, 0.158943, 0.166384, 1)
+ground_bottom_color = Color(0.709736, 0.642871, 0.566031, 1)
 
 [sub_resource type="Sky" id="Sky_iwprf"]
-sky_material = SubResource("ProceduralSkyMaterial_xpipa")
+sky_material = SubResource("ProceduralSkyMaterial_r5uxb")
+process_mode = 1
+radiance_size = 1
 
 [sub_resource type="Environment" id="Environment_1ghqa"]
 background_mode = 2
@@ -63,7 +66,7 @@ follow_offset = Vector3(0, 1.8, -3)
 [node name="Camera3D" type="Camera3D" parent="Camera"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
 environment = SubResource("Environment_pgady")
-attributes = SubResource("CameraAttributesPractical_2l4bs")
+attributes = SubResource("CameraAttributesPractical_o7fxa")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera/Camera3D"]
 script = ExtResource("1_2n7i7")
