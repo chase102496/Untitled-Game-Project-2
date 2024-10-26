@@ -17,7 +17,7 @@ ease = 2
 
 [sub_resource type="Environment" id="Environment_pgady"]
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bavtl"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_2l4bs"]
 dof_blur_near_enabled = true
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xpipa"]
@@ -63,7 +63,7 @@ follow_offset = Vector3(0, 1.8, -3)
 [node name="Camera3D" type="Camera3D" parent="Camera"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
 environment = SubResource("Environment_pgady")
-attributes = SubResource("CameraAttributesPractical_bavtl")
+attributes = SubResource("CameraAttributesPractical_2l4bs")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera/Camera3D"]
 script = ExtResource("1_2n7i7")
@@ -92,4 +92,6 @@ shape = SubResource("HeightMapShape3D_hciwr")
 
 [node name="Player" parent="." instance=ExtResource("7_5xn44")]
 
-[node name="particle_fear" parent="." instance=ExtResource("8_itdur")]
+[node name="Particles" type="Node3D" parent="."]
+
+[node name="particle_fear" parent="Particles" instance=ExtResource("8_itdur")]

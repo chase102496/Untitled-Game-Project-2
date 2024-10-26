@@ -28,7 +28,6 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Skillcheck.state_entered.connect(_on_state_entered_battle_skillcheck)
 	%StateChart/Main/Battle/Skillcheck.state_exited.connect(_on_state_exited_battle_skillcheck)
 	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
-	%StateChart/Main/Battle/Execution.state_physics_processing.connect(_on_state_physics_processing_battle_execution)
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
 	#Death
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
@@ -129,8 +128,6 @@ func _on_state_entered_battle_choose():
 func _on_state_entered_battle_skillcheck():
 
 	match owner.stats.glossary:
-		"player":
-			pass
 		"enemy": #weighted random skillcheck
 			var skillcheck_result = "Miss"
 			var skill_rand = randf_range(0,1)/my_component_ability.skillcheck_difficulty #Modify it by skillcheck diff. Higher = smaller num = less good
@@ -138,7 +135,7 @@ func _on_state_entered_battle_skillcheck():
 				skillcheck_result = "Excellent"
 			elif skill_rand >= 0.8:
 				skillcheck_result = "Great"
-			elif skill_rand >= 0.2:
+			elif skill_rand >= 0.15:
 				skillcheck_result = "Good"
 				
 			my_component_ability.cast_queue.skillcheck(skillcheck_result)
@@ -148,7 +145,6 @@ func _on_state_exited_battle_skillcheck():
 	match owner.stats.glossary:
 		"player":
 			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
-	#TODO reset skillcheck difficulty here
 	
 func _on_state_entered_battle_execution():
 	if my_component_ability.cast_queue.cast_validate():
@@ -157,8 +153,6 @@ func _on_state_entered_battle_execution():
 		await get_tree().create_timer(0.5).timeout
 		my_component_ability.cast_queue.cast_validate_failed()
 		owner.state_chart.send_event("on_end") #move failed, skip execution
-func _on_state_physics_processing_battle_execution(_delta: float) -> void:
-	pass
 func _on_attack_contact():
 	my_component_ability.cast_queue.cast_main()
 

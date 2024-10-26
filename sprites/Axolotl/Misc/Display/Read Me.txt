@@ -1,0 +1,3 @@
+This folder includes sprites that I use for creating the listing on itch.io
+
+Please ignore it.

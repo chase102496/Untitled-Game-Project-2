@@ -69,10 +69,10 @@ class status:
 class status_fear:
 	extends status
 	
-	func _init(host : Node) -> void:
+	func _init(host : Node,duration : int) -> void:
 		self.host = host
+		self.duration = duration
 		self.title = "Fear"
-		self.duration = randi_range(2,2)
 	
 	func on_start():
 		host.my_component_ability.skillcheck_difficulty += 1
@@ -186,7 +186,7 @@ class ability_spook:
 		if skillcheck_modifier > 0:
 			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
-			target.my_component_ability.add_status_effect(status_fear.new(target))
+			target.my_component_ability.add_status_effect(status_fear.new(target,skillcheck_modifier*2)) #duration is 2x of modifier
 			target.anim_tree.get("parameters/playback").travel("Hurt")
 		else:
 			print_debug("It failed!")
