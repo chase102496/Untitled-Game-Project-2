@@ -31,7 +31,7 @@ extends Control
 
 func _ready() -> void:
 	
-	#position.x += randi_range(100,200) just to make sure there's no duplicate menus up
+	#position.x += randi_range(100,200) #just to make sure there's no duplicate menus up
 	#position.y -= randi_range(100,200)
 	#connect to button signals
 	ui_button_battle.pressed.connect(_on_button_pressed_battle)
@@ -54,7 +54,6 @@ func _ready() -> void:
 	get_node("StateChart/Battle GUI/Battle").state_exited.connect(_on_state_exited_battle_gui_battle)
 	get_node("StateChart/Battle GUI/Select").state_entered.connect(_on_state_entered_battle_gui_select)
 	get_node("StateChart/Battle GUI/Select").state_physics_processing.connect(_on_state_physics_processing_battle_gui_select)
-	get_node("StateChart/Battle GUI/Select").state_exited.connect(_on_state_exited_battle_gui_select)
 	get_node("StateChart/Battle GUI/Disabled").state_entered.connect(_on_state_entered_battle_gui_disabled)
 	get_node("StateChart/Battle GUI/Disabled").state_exited.connect(_on_state_exited_battle_gui_disabled)
 	get_node("StateChart/Battle GUI/Skillcheck").state_entered.connect(_on_state_entered_battle_gui_skillcheck)
@@ -129,15 +128,14 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 		state_chart.send_event("on_gui_skillcheck") #End of GUI stuff #TODO put skillcheck gui next
 		selector_sprite.hide()
 
-func _on_state_exited_battle_gui_select():
-	pass
-	
 # Skillcheck
 	
 func _on_state_entered_battle_gui_skillcheck():
 	ui_skillcheck.show()
+	ui_skillcheck_cursor_anim.speed_scale = owner.my_component_ability.skillcheck_difficulty
 
 func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
+	
 	if Input.is_action_just_pressed("ui_select"):
 		ui_skillcheck_cursor_anim.pause()
 		await get_tree().create_timer(1.0).timeout
@@ -172,7 +170,7 @@ func _on_button_pressed_battle_ability(ability):
 		#TODO check if it is a targetable spell first, if not skip this part
 		for i in len(Battle.battle_list): #adds potential targets to our selector list to select a tgt
 			var unit = Battle.battle_list[i]
-			if unit.stats.alignment == "foes": #add foes first as prio for target
+			if unit.stats.alignment == Global.alignment.FOES: #add foes first as prio for target
 				selector_list.push_front(unit)
 			elif unit.stats.alignment in ability.valid_targets: #add others second and prio for target
 				selector_list.append(unit)

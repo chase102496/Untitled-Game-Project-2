@@ -4,13 +4,14 @@ var active_character : Node3D = null
 var battle_list : Array = []
 var battle_list_ready : bool = true
 
-#Glossary to spawn any character we need
-const glossary : Dictionary = {
-	"player" : preload("res://scenes/player.tscn"),
-	"enemy" : preload("res://scenes/enemy.tscn"),
-	"nym" : "",
-	"some random enemy name" : ""
-}
+func my_team(character):
+	return get_team(character.stats.alignment)
+
+func opposing_team(character):
+	if character.stats.alignment == Global.alignment.FRIENDS:
+		return get_team(Global.alignment.FOES)
+	else:
+		return get_team(Global.alignment.FRIENDS)
 
 func get_team(alignment):
 	var team = []
@@ -35,7 +36,7 @@ func battle_initialize(unit_list : Array, stat_list : Array, scene_old, scene_ne
 	#Instantiating all the battle characters
 	for i in len(unit_list):
 		var unit_name : String = unit_list[i]
-		var unit_scene : Object = Battle.glossary.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
+		var unit_scene : Object = Glossary.entity.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
 		var unit_stats : Dictionary = stat_list[i]
 		
 		unit_instance = unit_scene.instantiate()

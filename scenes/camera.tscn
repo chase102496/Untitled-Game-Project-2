@@ -1,0 +1,37 @@
+[gd_scene load_steps=9 format=3 uid="uid://qklm0d27lwlg"]
+
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="1_n5ryg"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_vjpsh"]
+[ext_resource type="Resource" uid="uid://m0fodoqc7ee4" path="res://scenes/camera_resource.tres" id="3_nc050"]
+[ext_resource type="CameraAttributesPractical" uid="uid://cyai3vswc0s7h" path="res://scenes/camera_attributes.tres" id="4_wgdwd"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_42dvy"]
+
+[sub_resource type="Resource" id="Resource_j5gng"]
+script = ExtResource("2_vjpsh")
+duration = 1.0
+transition = 0
+ease = 2
+
+[sub_resource type="Environment" id="Environment_pgady"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_38fui"]
+dof_blur_near_enabled = true
+
+[node name="Camera" type="Node3D"]
+
+[node name="PhantomCamera3D" type="Node3D" parent="."]
+transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
+script = ExtResource("1_n5ryg")
+follow_mode = 2
+tween_resource = SubResource("Resource_j5gng")
+camera_3d_resource = ExtResource("3_nc050")
+attributes = ExtResource("4_wgdwd")
+follow_offset = Vector3(0, 1.8, -3)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
+environment = SubResource("Environment_pgady")
+attributes = SubResource("CameraAttributesPractical_38fui")
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+script = ExtResource("5_42dvy")

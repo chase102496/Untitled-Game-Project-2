@@ -7,14 +7,9 @@ extends CharacterBody3D
 
 var stats : Dictionary = {
 	
-	"alignment" : "foes", #Side of the field I will fight on, maybe later a component we could make could have a script to change sides
+	"alignment" : Global.alignment.FOES, #Side of the field I will fight on, maybe later a component we could make could have a script to change sides
 	"glossary" : "enemy", #Unit category I was spawned from
 	"spacing" : Vector3(-0.6,0,-0.1), #spacing when unit is spawned in battle
-	
-	"vis" : 6, #component
-	"max_vis" : 6,
-	
-	"skillcheck_difficulty_mod" : 1.0 #component
 }
 
 #Setting var for state machine

@@ -13,7 +13,7 @@ func _ready() -> void:
 		var instance = Battle.battle_list[i] #Our object to move into scene
 		var parent = get_node(instance.stats.alignment)
 		parent.add_child(instance) #Adds it as a child to the position marker
-		if instance.stats.alignment == "foes": #making spacing go opposite
+		if instance.stats.alignment == Global.alignment.FOES: #making spacing go opposite
 			instance.stats.spacing *= -1
 		var offset = instance.stats.spacing #Offset, for more than 1 of the unit we need to move them over some
 		instance.position = (offset*i) #Sets position

@@ -34,7 +34,7 @@ func _on_state_entered_battle():
 	#TODO use this for selection of attack sprite.modulate = Color(1,1,1,0.5)
 	#Sets us facing the right way, depending on our side
 	owner.anim_tree.get("parameters/playback").travel("Idle")
-	if owner.stats.alignment == "friends":
+	if owner.stats.alignment == Global.alignment.FRIENDS:
 		animations_reset(Vector2(-1,1))
 	else:
 		animations_reset(Vector2(1,-1))

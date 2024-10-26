@@ -4,7 +4,7 @@ var ability
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.pressed.connect(_on_button_pressed)
-	text = ability.title
+	text = str(ability.type.ICON," ",ability.title)
 	# vis cost
 	# element
 	# description

@@ -172,7 +172,7 @@ theme = ExtResource("1_al4xi")
 
 [node name="Menu" type="PanelContainer" parent="Container"]
 visible = false
-modulate = Color(1, 1, 1, 0.784314)
+modulate = Color(1, 1, 1, 0.937255)
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 
@@ -291,6 +291,7 @@ texture = ExtResource("6_hayiy")
 offset = Vector2(-16, -16)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Skillcheck/Cursor"]
+unique_name_in_owner = true
 root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_47fjt")

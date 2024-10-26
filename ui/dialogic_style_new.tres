@@ -55,7 +55,7 @@ overrides = {}
 script = ExtResource("10_tkme8")
 name = "dialogic_style_new"
 base_overrides = {
-"global_bg_color": "Color(0, 0.152941, 0, 0.901961)",
+"global_bg_color": "Color(0.47451, 0.141176, 0.266667, 0.294118)",
 "global_font": "\"res://ui/Fancake.ttf\""
 }
 layers = Array[ExtResource("1_vnlce")]([SubResource("Resource_f2obu"), SubResource("Resource_7ryic"), SubResource("Resource_ak88l"), SubResource("Resource_pvyls"), SubResource("Resource_3vujr"), SubResource("Resource_g10w1"), SubResource("Resource_rg16g"), SubResource("Resource_famv7")])

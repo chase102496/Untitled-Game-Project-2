@@ -4,7 +4,7 @@ extends Label3D
 @onready var history = "history"
 
 func _ready() -> void:
-	position.y += randf_range(0,0.75)
+	position.y += randf_range(0,0.6)
 	modulate = Color(randf_range(0,1),randf_range(0,1),randf_range(0,1))
 
 func _physics_process(delta: float) -> void:
@@ -18,6 +18,6 @@ func _physics_process(delta: float) -> void:
 	"\n",
 	owner.name,
 	"\n",
-	"Current: ", state.rsplit(":")[0],
+	"Now: ", state.rsplit(":")[0],
 	"\n",
-	"Old: ", history.rsplit(":")[0])
+	"Prev: ", history.rsplit(":")[0])

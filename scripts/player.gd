@@ -16,7 +16,7 @@ extends CharacterBody3D
 #TODO prob gonna get rid of this and turn into component!!!
 #TODO COMPONENTS!!!
 var stats : Dictionary = {
-	"alignment" : "friends", #Side of the field I will fight on, maybe later a component we could make could have a script to change sides
+	"alignment" : Global.alignment.FRIENDS, #Side of the field I will fight on, maybe later a component we could make could have a script to change sides
 	"glossary" : "player", #Unit category I was spawned from
 	"spacing" : Vector3(-0.6,0,-0.1), #spacing when unit is spawned in battle
 	
@@ -43,11 +43,11 @@ var stats : Dictionary = {
 func _ready() -> void:
 	
 	#Dialogic
-	Dialogic.preload_timeline
+	Dialogic.preload_timeline("res://timeline.dtl")
 
 	#Abilities
 	var abil = my_component_ability
-	abil.my_abilities = [abil.ability_tackle.new(self),abil.ability.new(self),abil.ability.new(self),abil.ability.new(self)]
+	abil.my_abilities = [abil.ability_tackle.new(self),abil.ability_spook.new(self),abil.ability.new(self),abil.ability.new(self)]
 	
 	#HACK for debug to see diff players
 	name = str(name," ",randi())
@@ -72,7 +72,7 @@ func _physics_process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("interact"):
 		Dialogic.start("timeline")
-		#anim_tree.get("parameters/playback").travel("Attack")
+		#anim_tree.get("parameters/playback").travel("attack_default")
 		
 	
 	# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER
