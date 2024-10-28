@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtwvcihds5bb3"]
+[gd_scene load_steps=6 format=3 uid="uid://dtwvcihds5bb3"]
 
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="1_bs7hr"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="2_3drry"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="3_3xgqe"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_wcf4l"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="5_h064g"]
 
 [node name="StateChart" type="Node"]
 process_priority = -2
@@ -72,6 +73,28 @@ delay_in_seconds = "0.0"
 script = ExtResource("2_3drry")
 initial_state = NodePath("Waiting")
 
+[node name="Previous" type="Node" parent="Main/Battle"]
+script = ExtResource("5_h064g")
+default_state = NodePath("../Waiting")
+
+[node name="on_end" type="Node" parent="Main/Battle"]
+script = ExtResource("3_3xgqe")
+to = NodePath("../End")
+event = &"on_end"
+delay_in_seconds = "0.0"
+
+[node name="on_previous" type="Node" parent="Main/Battle"]
+script = ExtResource("3_3xgqe")
+to = NodePath("../Previous")
+event = &"on_previous"
+delay_in_seconds = "0.0"
+
+[node name="on_hurt" type="Node" parent="Main/Battle"]
+script = ExtResource("3_3xgqe")
+to = NodePath("../Hurt")
+event = &"on_hurt"
+delay_in_seconds = "0.0"
+
 [node name="on_death" type="Node" parent="Main/Battle"]
 script = ExtResource("3_3xgqe")
 to = NodePath("../Death")
@@ -103,12 +126,6 @@ script = ExtResource("4_wcf4l")
 script = ExtResource("3_3xgqe")
 to = NodePath("../../Start")
 event = &"on_start"
-delay_in_seconds = "0.0"
-
-[node name="on_hurt" type="Node" parent="Main/Battle/Waiting"]
-script = ExtResource("3_3xgqe")
-to = NodePath("../../Hurt")
-event = &"on_hurt"
 delay_in_seconds = "0.0"
 
 [node name="Start" type="Node" parent="Main/Battle"]
@@ -146,12 +163,6 @@ delay_in_seconds = "0.0"
 
 [node name="Execution" type="Node" parent="Main/Battle"]
 script = ExtResource("4_wcf4l")
-
-[node name="on_end" type="Node" parent="Main/Battle/Execution"]
-script = ExtResource("3_3xgqe")
-to = NodePath("../../End")
-event = &"on_end"
-delay_in_seconds = "0.0"
 
 [node name="End" type="Node" parent="Main/Battle"]
 script = ExtResource("4_wcf4l")

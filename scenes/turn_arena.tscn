@@ -15,7 +15,7 @@ duration = 1.0
 transition = 0
 ease = 2
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_swe73"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w2u6h"]
 dof_blur_near_enabled = true
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7ptv8"]
@@ -58,7 +58,7 @@ follow_offset = Vector3(0, 1.8, -3)
 
 [node name="Camera3D2" type="Camera3D" parent="Camera_Battle"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128907, 0.00140647, 0.94999, 0.312278, 0.0140316, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
-attributes = SubResource("CameraAttributesPractical_swe73")
+attributes = SubResource("CameraAttributesPractical_w2u6h")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera_Battle/Camera3D2"]
 script = ExtResource("7_gmraj")
@@ -80,8 +80,9 @@ shape = SubResource("HeightMapShape3D_jv2gb")
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.17942, 0.983773, 0, -0.983773, -0.17942, 0, 10.7363, -3.53567)
 light_color = Color(1, 0.9565, 0.91, 1)
-light_energy = 40.0
+light_energy = 50.0
 light_indirect_energy = 50.0
+light_volumetric_fog_energy = 2.0
 light_specular = 0.0
 spot_range = 19.1982
 spot_angle = 21.7129
@@ -91,7 +92,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.603487, 0)
 script = ExtResource("1_k1dsd")
 
 [node name="Friends" type="Marker3D" parent="Turn_Manager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.41278, 0, -1.1241)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24434, 0, -0.979343)
 
 [node name="Foes" type="Marker3D" parent="Turn_Manager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.11803, 0, 0.929834)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84751, 0, 1.67682)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.14503, 0.766948, 0.625106, 0, -0.631786, 0.775143, 0.989427, -0.112419, -0.0916278, 4.44401, 1.56837, 0)

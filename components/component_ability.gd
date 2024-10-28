@@ -54,6 +54,9 @@ class status:
 	func on_skillcheck(): #runs right before skillcheck
 		pass
 	
+	func on_hit(): #runs right after we attack someone
+		pass
+	
 	func on_end(): #runs on end of turn
 		pass
 	
@@ -86,8 +89,30 @@ class status_fear:
 		fx.queue_free()
 		fx = null
 
-# - Abilities -
+class status_burn:
+	extends status
+	
+	var damage : int
+	
+	func _init(host : Node,duration : int,damage : int) -> void:
+		self.host = host
+		self.duration = duration
+		self.damage = damage
+		self.title = "Burn"
+	
+	func on_end():
+		host.my_component_health.damage(damage,Global.type.NOVA) #Do nova damage
+	
+	func fx_add():
+		fx = Glossary.particle.burn.instantiate() #TODO make particle
+		host.sprite.add_child(fx)
+		fx.global_position = host.sprite.global_position
+	
+	func fx_remove():
+		fx.queue_free()
+		fx = null
 
+# - Abilities -
 class ability:
 
 	#These will be enums
@@ -105,8 +130,6 @@ class ability:
 	var damage : int = 0
 	var vis_cost : int = 0
 	
-	var status_effect : bool = false
-	
 	func _init(caster : Node) -> void:
 		self.caster = caster
 	
@@ -115,7 +138,7 @@ class ability:
 		return result
 	
 	func select_validate_failed():
-		print_debug("Can't do that")
+		#print_debug("Can't do that")
 		#You can execute code here, run a Dialogic event to show them they can't use that, etc
 		pass
 	
@@ -154,14 +177,15 @@ class ability:
 	#E.g. Poison spell
 	#Has function status_effect_on_start
 
-class ability_spook:
+class ability_template_default: #Standard ability with vis cost and skillcheck
 	extends ability
 	
-	func _init(caster : Node) -> void:
-		self.caster = caster
-		self.type = Global.type.VOID
-		title = "Spook"
-		vis_cost = 2
+	func select_validate():
+		if caster.my_component_vis.vis >= vis_cost:
+			return true
+		else:
+			print_debug("Not enough Vis!")
+			return false
 	
 	func skillcheck(result): #TODO make categories of skillchecks to extend from
 		if result == "Miss":
@@ -174,28 +198,57 @@ class ability_spook:
 			skillcheck_modifier = 3
 		else:
 			skillcheck_modifier = 1
+
+class ability_spook:
+	extends ability_template_default
 	
-	func select_validate():
-		if caster.my_component_vis.vis >= vis_cost:
-			return true
-		else:
-			return false
-	
+	func _init(caster : Node) -> void:
+		self.caster = caster
+		type = Global.type.VOID
+		title = "Spook"
+		vis_cost = 2
+		damage = 1
+
 	func cast_main():
 		print_debug(caster.name, " tried to spook ", target.name,"!")
 		if skillcheck_modifier > 0:
 			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
+			target.my_component_health.damage(damage) #Flat damage
 			target.my_component_ability.add_status_effect(status_fear.new(target,skillcheck_modifier*2)) #duration is 2x of modifier
-			target.anim_tree.get("parameters/playback").travel("Hurt")
 		else:
 			print_debug("It failed!")
 			
 	func animation():
 		caster.anim_tree.get("parameters/playback").travel("default_attack_spook")
 
+class ability_solar_flare:
+	extends ability_template_default
+	
+	func _init(caster : Node) -> void:
+		self.caster = caster
+		self.type = Global.type.NOVA
+		title = "Solar Flare"
+		vis_cost = 2
+		damage = 1
+		valid_targets = [Global.alignment.FOES]
+	
+	func cast_main():
+		print_debug(caster.name, " tried to ignite ", target.name,"!")
+		if skillcheck_modifier > 0:
+			print_debug("It was successful!")
+			caster.my_component_vis.siphon(vis_cost)
+			target.my_component_health.damage(damage) #Flat damage
+			target.my_component_ability.add_status_effect(status_burn.new(target,skillcheck_modifier*2,1))
+			target.state_chart.send_event("on_hurt")
+		else:
+			print_debug("It failed!")
+			
+	func animation():
+		caster.anim_tree.get("parameters/playback").travel("default_attack") #TODO make solar flare animation or FX
+
 class ability_tackle:
-	extends ability
+	extends ability_template_default
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
@@ -203,23 +256,9 @@ class ability_tackle:
 		self.type = Global.type.NEUTRAL
 		title = "Tackle"
 	
-	func select_validate():
-		if caster.my_component_vis.vis >= vis_cost:
-			return true
-		else:
-			return false
-	
-	func select_validate_failed():
-		print_debug("Not enough vis!")
-	
 	func cast_main():
 		#TODO setup animations
 		print_debug(caster.name, " Tackled ", target.name,"!")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
 		target.my_component_health.damage(skillcheck_modifier*damage)
 		caster.my_component_vis.siphon(vis_cost)
-		
-		#how do I handle damage? call the target's function here? or...?
-	#
-	#TODO put spell here, grab owner's multipliers for POWER or whatever and put FIXED damage inside here under a var. Don't add it as a passthrough. Only passthrough should be target in the instantiation of the class
-	#TODO make vis system where we check to make sure we have enough vis in the CAST function of the spell! Then we can start integrating the state chart system and how it will interact with the abilities.

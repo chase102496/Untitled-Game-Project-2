@@ -14,9 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://sprites/The Adventurer - Free/Walk/walk_right_down.png" id="12_ac4xw"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="12_pmvac"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://sprites/The Adventurer - Free/Walk/walk_right_up.png" id="13_r1wra"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cj5thivh7di1u" path="res://scenes/character_animation_tree.tres" id="14_68iwe"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://kayc3qljdn4u" path="res://animations/character_animation_tree_player.tres" id="14_a3n3l"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://sprites/The Adventurer - Free/Walk/walk_up.png" id="14_c1ktx"]
-[ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="15_n5r0m"]
+[ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="15_13wkk"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="16_ult57"]
 [ext_resource type="Script" path="res://components/component_physics.gd" id="20_6nw5h"]
 [ext_resource type="Script" path="res://components/components.gd" id="20_ibw1c"]
@@ -710,7 +710,7 @@ tracks/2/keys = {
 tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("%Components/component_state_controller")
+tracks/3/path = NodePath("../../Components/component_state_controller")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -776,7 +776,7 @@ tracks/3/keys = {
 tracks/4/type = "method"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("%Components/component_state_controller")
+tracks/4/path = NodePath("../../Components/component_state_controller")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -1178,7 +1178,6 @@ alpha_cut = 2
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_5y1yy")
 animation = &"default_idle_down"
-frame = 1
 script = ExtResource("29_6t6o8")
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
@@ -1190,7 +1189,7 @@ libraries = {
 [node name="character_animation_tree" type="AnimationTree" parent="Animations"]
 active = false
 root_node = NodePath("../character_animation_sprite")
-tree_root = ExtResource("14_68iwe")
+tree_root = ExtResource("14_a3n3l")
 anim_player = NodePath("../character_animation_player")
 parameters/Death/TimeScale/scale = 0.4
 parameters/Hurt/TimeScale/scale = 1.0
@@ -1198,7 +1197,7 @@ parameters/Idle/BlendSpace2D/blend_position = Vector2(0.301537, 0.859873)
 parameters/Idle/TimeScale/scale = 0.2
 parameters/Walk/BlendSpace2D/blend_position = Vector2(-0.0011825, 0.00709224)
 parameters/Walk/TimeScale/scale = 0.5
-script = ExtResource("15_n5r0m")
+script = ExtResource("15_13wkk")
 
 [node name="Battle_GUI" parent="." instance=ExtResource("12_pmvac")]
 unique_name_in_owner = true
@@ -1206,6 +1205,11 @@ unique_name_in_owner = true
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("20_ibw1c")
+
+[node name="component_state_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller", "my_component_ability")]
+script = ExtResource("10_tnwy7")
+my_component_input_controller = NodePath("../component_input_controller")
+my_component_ability = NodePath("../component_ability")
 
 [node name="component_health" type="Node" parent="Components"]
 script = ExtResource("4_33msd")
@@ -1215,11 +1219,6 @@ script = ExtResource("20_yn4w4")
 
 [node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("9_8x8g7")
-
-[node name="component_state_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller", "my_component_ability")]
-script = ExtResource("10_tnwy7")
-my_component_input_controller = NodePath("../component_input_controller")
-my_component_ability = NodePath("../component_ability")
 
 [node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("21_j14mx")

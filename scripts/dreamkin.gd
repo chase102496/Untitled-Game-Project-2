@@ -20,8 +20,8 @@ extends CharacterBody3D
 
 var stats : Dictionary = {
 	"alignment" : Global.alignment.FRIENDS, #Side of the field I will fight on
-	"glossary" : "player", #Unit category I was spawned from
-	"spacing" : Vector3(0.6,0,-0.1), #spacing when unit is spawned in battle
+	"glossary" : "dreamkin", #Unit category I was spawned from
+	"spacing" : Vector3(0.9,0,-0.1), #spacing when unit is spawned in battle
 }
 
 func _ready() -> void:
@@ -29,24 +29,13 @@ func _ready() -> void:
 	name = str(name," ",randi())
 	#Dialogic
 	Dialogic.preload_timeline("res://timeline.dtl")
-	# -- Abilities --
+	#Abilities
 	var abil = my_component_ability
 	abil.my_abilities = [
 		abil.ability_tackle.new(self),
-		abil.ability_spook.new(self),
+		abil.ability_solar_flare.new(self),
 		abil.ability.new(self),
 		abil.ability.new(self)
 		]
 	#FUCK this animation tree shit sometimes
 	anim_tree.active = true
-
-func _physics_process(_delta: float) -> void:
-	
-	if Input.is_action_just_pressed("interact"):
-		Dialogic.start("timeline")
-		#anim_tree.get("parameters/playback").travel("attack_default")
-		
-	# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER
-	if Input.is_action_just_pressed("ui_cancel"):
-		Battle.battle_initialize(["player","dreamkin","enemy","enemy"],[{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
-	

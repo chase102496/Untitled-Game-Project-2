@@ -12,9 +12,22 @@ func damage(amt,type : Dictionary = Global.type.NEUTRAL):
 	if amt != 0:
 		match type:
 			Global.type.VOID:
-				pass
-				#do void damage
+				print_debug(health," HP -> ",health - amt," HP")
+				health -= amt
+				
+				if health <= 0:
+					owner.state_chart.send_event("on_death")
+				else:
+					owner.state_chart.send_event("on_hurt")
 			Global.type.NEUTRAL:
+				print_debug(health," HP -> ",health - amt," HP")
+				health -= amt
+				
+				if health <= 0:
+					owner.state_chart.send_event("on_death")
+				else:
+					owner.state_chart.send_event("on_hurt")
+			Global.type.NOVA:
 				print_debug(health," HP -> ",health - amt," HP")
 				health -= amt
 				

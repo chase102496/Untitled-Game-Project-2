@@ -18,6 +18,8 @@ func _physics_process(delta: float) -> void:
 	"\n",
 	owner.name,
 	"\n",
+	owner.my_component_health.health,"/",owner.my_component_health.max_health,
+	"\n",
 	"Now: ", state.rsplit(":")[0],
 	"\n",
 	"Prev: ", history.rsplit(":")[0])

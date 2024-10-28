@@ -64,9 +64,12 @@ text/autopauses={}
 
 [display]
 
-window/size/viewport_width=1080
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/size/initial_position_type=2
+window/size/always_on_top=true
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
@@ -190,5 +193,6 @@ tips/show_jitter_tips=false
 
 textures/canvas_textures/default_texture_filter=0
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
-textures/decals/filter=2
+textures/decals/filter=0
+textures/light_projectors/filter=0
 anti_aliasing/quality/msaa_3d=1

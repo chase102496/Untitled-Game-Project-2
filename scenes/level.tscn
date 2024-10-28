@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bp8wcwqpkswl"]
+[gd_scene load_steps=19 format=3 uid="uid://bp8wcwqpkswl"]
 
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="1_2n7i7"]
 [ext_resource type="Resource" uid="uid://m0fodoqc7ee4" path="res://scenes/camera_resource.tres" id="3_qstb7"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_qmx3w"]
 [ext_resource type="PackedScene" uid="uid://djdg8wet86nat" path="res://scenes/player.tscn" id="7_5xn44"]
 [ext_resource type="PackedScene" uid="uid://dmrpjjw65g2x7" path="res://particles/scenes/particle_fear.tscn" id="8_itdur"]
+[ext_resource type="PackedScene" uid="uid://q17nibqx83ur" path="res://particles/scenes/particle_burn.tscn" id="8_qi3dm"]
 
 [sub_resource type="Resource" id="Resource_j5gng"]
 script = ExtResource("6_qmx3w")
@@ -17,7 +18,7 @@ ease = 2
 
 [sub_resource type="Environment" id="Environment_pgady"]
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_o7fxa"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_v4oiv"]
 dof_blur_near_enabled = true
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_r5uxb"]
@@ -66,7 +67,7 @@ follow_offset = Vector3(0, 1.8, -3)
 [node name="Camera3D" type="Camera3D" parent="Camera"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
 environment = SubResource("Environment_pgady")
-attributes = SubResource("CameraAttributesPractical_o7fxa")
+attributes = SubResource("CameraAttributesPractical_v4oiv")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera/Camera3D"]
 script = ExtResource("1_2n7i7")
@@ -97,4 +98,8 @@ shape = SubResource("HeightMapShape3D_hciwr")
 
 [node name="Particles" type="Node3D" parent="."]
 
+[node name="particle_burn" parent="Particles" instance=ExtResource("8_qi3dm")]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 4.69241, -1.45073, 0)
+
 [node name="particle_fear" parent="Particles" instance=ExtResource("8_itdur")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.41165, -1.65472, 0)

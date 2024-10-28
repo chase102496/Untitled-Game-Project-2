@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d4senx3uvusy"
-path.s3tc="res://.godot/imported/Axolotl_Red_Death.png-a6b1442ef7f08c90fae773e98dbcf510.s3tc.ctex"
+path="res://.godot/imported/Axolotl_Red_Death.png-a6b1442ef7f08c90fae773e98dbcf510.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://sprites/Axolotl/Spritesheets/Axolotl_Red_Death.png"
-dest_files=["res://.godot/imported/Axolotl_Red_Death.png-a6b1442ef7f08c90fae773e98dbcf510.s3tc.ctex"]
+dest_files=["res://.godot/imported/Axolotl_Red_Death.png-a6b1442ef7f08c90fae773e98dbcf510.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

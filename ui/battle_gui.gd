@@ -171,9 +171,9 @@ func _on_button_pressed_battle_ability(ability):
 		for i in len(Battle.battle_list): #adds potential targets to our selector list to select a tgt
 			var unit = Battle.battle_list[i]
 			if unit.stats.alignment == Global.alignment.FOES: #add foes first as prio for target
-				selector_list.push_front(unit)
-			elif unit.stats.alignment in ability.valid_targets: #add others second and prio for target
 				selector_list.append(unit)
+			elif unit.stats.alignment in ability.valid_targets: #add others second and prio for target
+				selector_list.push_front(unit)
 		state_chart.send_event("on_gui_select")
 			
 		#signal a new thing to happen

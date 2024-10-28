@@ -1,13 +1,14 @@
-[gd_scene load_steps=60 format=3 uid="uid://ct0v1pb5ehqc6"]
+[gd_scene load_steps=64 format=3 uid="uid://ct0v1pb5ehqc6"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_e4irl"]
+[ext_resource type="Script" path="res://scripts/dreamkin.gd" id="1_uelph"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="2_bj2fs"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_ohwwd"]
 [ext_resource type="Texture2D" uid="uid://d4senx3uvusy" path="res://sprites/Axolotl/Spritesheets/Axolotl_Red_Death.png" id="4_yax8f"]
 [ext_resource type="Texture2D" uid="uid://sqrggdn7ckmy" path="res://sprites/Axolotl/Spritesheets/Axolotl_Red_Floating_Idle.png" id="5_pq05l"]
 [ext_resource type="Texture2D" uid="uid://bdjb6koyadhmf" path="res://sprites/Axolotl/Spritesheets/Axolotl_Red_Swimming.png" id="6_i10ad"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cj5thivh7di1u" path="res://scenes/character_animation_tree.tres" id="8_0jbb0"]
-[ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="9_4bdcr"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cu5emsrm85m3s" path="res://animations/character_animation_tree_dreamkin.tres" id="8_m4ckd"]
+[ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="9_wl2do"]
+[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="10_xtrnu"]
 [ext_resource type="Script" path="res://scripts/animated_sprite_3d.gd" id="13_8s7kv"]
 [ext_resource type="Script" path="res://components/components.gd" id="15_po7pm"]
 [ext_resource type="Script" path="res://components/component_health.gd" id="16_if7q5"]
@@ -344,34 +345,22 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath(".:modulate")
+tracks/4/path = NodePath(".:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector3(0, 0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath(".:rotation")
+tracks/5/path = NodePath(".:transparency")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath(".:transparency")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -431,10 +420,50 @@ tracks/3/keys = {
 "method": &"_on_attack_contact"
 }]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:animation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_idle"]
+}
+
+[sub_resource type="Animation" id="Animation_l8wqm"]
+resource_name = "default_death"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_death"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
 
 [sub_resource type="Animation" id="Animation_0joem"]
 resource_name = "default_hurt"
-length = 1.5
+length = 0.4
 step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -446,7 +475,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"default_idle_down"]
+"values": [&"default_death"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -463,62 +492,111 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".:modulate")
+tracks/2/path = NodePath(".:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(2.82843, 1),
-"update": 0,
-"values": [Color(0.13, 0.0806, 0.0806, 0.815686), Color(1, 1, 1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.01, 0.03, 0.04, 0.06, 0.08, 0.1, 0.54),
+"times": PackedFloat32Array(0, 0.01, 0.03, 0.04, 0.06, 0.07, 0.09, 0.32),
 "transitions": PackedFloat32Array(1, 1, 1, 6.27666, 1, 1, 1, 20.393),
 "update": 0,
 "values": [Vector3(-0.0577791, 0.0823706, 0), Vector3(-0.276845, 0.0823706, 0), Vector3(-0.276845, 0.0823706, 0), Vector3(0.389639, 0.0823706, 0), Vector3(0.389639, 0.0823706, 0), Vector3(-0.276845, 0.0823706, 0), Vector3(-0.276845, 0.0823706, 0), Vector3(0, 0, 0)]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.01, 0.03, 0.04, 0.06, 0.08, 0.1, 0.54),
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.03, 0.04, 0.06, 0.07, 0.09, 0.32),
 "transitions": PackedFloat32Array(1, 1, 1, 6.27667, 1, 1, 1, 7.99999),
 "update": 0,
 "values": [Vector3(0, 0, 0.0446106), Vector3(0, 0, 0.141232), Vector3(0, 0, 0.141232), Vector3(0, 0, -0.0346971), Vector3(0, 0, -0.0346971), Vector3(0, 0, 0.141232), Vector3(0, 0, 0.141232), Vector3(0, 0, 0)]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:scale")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.86),
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.32),
 "transitions": PackedFloat32Array(1, 15.455),
 "update": 0,
 "values": [Vector3(5, 5, 5), Vector3(4, 4, 4)]
+}
+
+[sub_resource type="Animation" id="Animation_1fj2r"]
+resource_name = "default_idle"
+length = 0.2667
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_sxj7a"]
+resource_name = "default_walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_move"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7el08"]
 _data = {
 "RESET": SubResource("Animation_deov8"),
 "default_attack": SubResource("Animation_jvi1r"),
-"default_hurt": SubResource("Animation_0joem")
+"default_death": SubResource("Animation_l8wqm"),
+"default_hurt": SubResource("Animation_0joem"),
+"default_idle": SubResource("Animation_1fj2r"),
+"default_walk": SubResource("Animation_sxj7a")
 }
 
 [node name="Dreamkin" type="CharacterBody3D"]
 physics_interpolation_mode = 1
-script = ExtResource("1_e4irl")
+script = ExtResource("1_uelph")
 
 [node name="StateChart" parent="." instance=ExtResource("2_bj2fs")]
 unique_name_in_owner = true
@@ -535,11 +613,13 @@ unique_name_in_owner = true
 
 [node name="character_animation_sprite" type="AnimatedSprite3D" parent="Animations"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+flip_h = true
 shaded = true
 alpha_cut = 2
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_hyon4")
 animation = &"default_idle"
+frame = 1
 script = ExtResource("13_8s7kv")
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
@@ -551,15 +631,16 @@ libraries = {
 [node name="character_animation_tree" type="AnimationTree" parent="Animations"]
 active = false
 root_node = NodePath("../character_animation_sprite")
-tree_root = ExtResource("8_0jbb0")
+tree_root = ExtResource("8_m4ckd")
 anim_player = NodePath("../character_animation_player")
 parameters/Death/TimeScale/scale = 0.4
 parameters/Hurt/TimeScale/scale = 1.0
-parameters/Idle/BlendSpace2D/blend_position = Vector2(0.301537, 0.859873)
 parameters/Idle/TimeScale/scale = 0.2
-parameters/Walk/BlendSpace2D/blend_position = Vector2(-0.0011825, 0.00709224)
 parameters/Walk/TimeScale/scale = 0.5
-script = ExtResource("9_4bdcr")
+script = ExtResource("9_wl2do")
+
+[node name="Battle_GUI" parent="." instance=ExtResource("10_xtrnu")]
+unique_name_in_owner = true
 
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
