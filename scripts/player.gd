@@ -4,7 +4,7 @@ extends CharacterBody3D
 @onready var my_component_health: component_health = %Components/component_health
 @onready var my_component_vis: component_vis = %Components/component_vis
 @onready var my_component_ability: component_ability = %Components/component_ability
-@onready var my_component_state_controller: component_state_controller = %Components/component_state_controller
+@onready var my_component_state_controller_battle: component_state_controller_battle = %Components/component_state_controller_battle
 #Statecharts
 @onready var state_chart: StateChart = %StateChart
 @onready var state_subchart_battle := %StateChart/Main/Battle
@@ -15,7 +15,7 @@ extends CharacterBody3D
 @onready var anim_player : AnimationPlayer = %Animations/character_animation_player
 @onready var sprite : AnimatedSprite3D = %Animations/character_animation_sprite
 #Player or Dreamkin
-@onready var my_component_input_controller: component_input_controller = %Components/component_input_controller
+@onready var my_component_input_controller: Node = %Components/component_input_controller_manual
 @onready var my_battle_gui : Control = %Battle_GUI
 
 var stats : Dictionary = {
@@ -26,7 +26,7 @@ var stats : Dictionary = {
 
 func _ready() -> void:
 	#Debug
-	name = str(name," ",randi())
+	#name = str(name," ",randi())
 	#Dialogic
 	Dialogic.preload_timeline("res://timeline.dtl")
 	# -- Abilities --

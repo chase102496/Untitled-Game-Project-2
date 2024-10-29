@@ -97,9 +97,9 @@ func _on_state_exited_battle_gui_battle():
 # Select target
 
 func _on_state_entered_battle_gui_select():
+	selected_target = selector_list[0]
 	if !selector_sprite.visible:
 			selector_sprite.show()
-	selected_target = selector_list[0]
 
 func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 

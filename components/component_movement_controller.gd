@@ -1,13 +1,13 @@
 class_name component_movement_controller
 extends Node
 
-@export var my_component_input_controller : component_input_controller
+@export var my_component_input_controller : Node
 
 var direction = Vector2.ZERO
-var movespeed := 50
-var max_movespeed := 3.2
-var jump_strength = 10
-var jump_damper_strength = 1
+@export var movespeed := 50
+@export var max_movespeed := 3.2
+@export var jump_strength = 10
+@export var jump_damper_strength = 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta: float) -> void:

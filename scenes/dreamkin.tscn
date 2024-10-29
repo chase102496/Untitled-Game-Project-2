@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://ct0v1pb5ehqc6"]
+[gd_scene load_steps=66 format=3 uid="uid://ct0v1pb5ehqc6"]
 
 [ext_resource type="Script" path="res://scripts/dreamkin.gd" id="1_uelph"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="2_bj2fs"]
@@ -9,18 +9,19 @@
 [ext_resource type="AnimationNodeStateMachine" uid="uid://cu5emsrm85m3s" path="res://animations/character_animation_tree_dreamkin.tres" id="8_m4ckd"]
 [ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="9_wl2do"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="10_xtrnu"]
+[ext_resource type="Script" path="res://components/component_state_controller_battle.gd" id="12_38hgc"]
+[ext_resource type="Script" path="res://components/component_input_controller_follow.gd" id="12_efiqj"]
 [ext_resource type="Script" path="res://scripts/animated_sprite_3d.gd" id="13_8s7kv"]
+[ext_resource type="Script" path="res://components/component_state_controller_explore.gd" id="14_yw0sx"]
 [ext_resource type="Script" path="res://components/components.gd" id="15_po7pm"]
 [ext_resource type="Script" path="res://components/component_health.gd" id="16_if7q5"]
 [ext_resource type="Script" path="res://components/component_vis.gd" id="17_2vbmf"]
 [ext_resource type="Script" path="res://components/component_ability.gd" id="18_ksuhb"]
-[ext_resource type="Script" path="res://components/component_state_controller.gd" id="19_xk68r"]
 [ext_resource type="Script" path="res://components/component_movement_controller.gd" id="20_w2qj1"]
 [ext_resource type="Script" path="res://components/component_animation_controller.gd" id="21_g3svn"]
 [ext_resource type="Script" path="res://components/component_physics.gd" id="22_m25ti"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_nf1h3"]
-size = Vector3(1, 1.90677, 0.41626)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dltsc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1o7u4"]
 atlas = ExtResource("4_yax8f")
@@ -406,31 +407,31 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(4, 4, 4), Vector3(4, 4, 4), Vector3(6, 6, 6), Vector3(5, 5, 5), Vector3(4, 4, 4)]
 }
-tracks/3/type = "method"
+tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../../Components/component_state_controller")
+tracks/3/path = NodePath(".:animation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.833333),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_idle"]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("%Components/component_state_controller_battle")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.766667),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"_on_attack_contact"
 }]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:animation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle"]
 }
 
 [sub_resource type="Animation" id="Animation_l8wqm"]
@@ -596,6 +597,9 @@ _data = {
 
 [node name="Dreamkin" type="CharacterBody3D"]
 physics_interpolation_mode = 1
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_uelph")
 
 [node name="StateChart" parent="." instance=ExtResource("2_bj2fs")]
@@ -605,8 +609,8 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0282693, 0.0187277, 0.00789857)
-shape = SubResource("BoxShape3D_nf1h3")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.101925, 0.0287893, 0.00621723)
+shape = SubResource("CapsuleShape3D_dltsc")
 
 [node name="Animations" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -646,6 +650,18 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("15_po7pm")
 
+[node name="component_input_controller_follow" type="Node" parent="Components" node_paths=PackedStringArray("my_component_movement_controller")]
+script = ExtResource("12_efiqj")
+my_component_movement_controller = NodePath("../component_movement_controller")
+
+[node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
+script = ExtResource("12_38hgc")
+my_component_ability = NodePath("../component_ability")
+
+[node name="component_state_controller_explore" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
+script = ExtResource("14_yw0sx")
+my_component_input_controller = NodePath("../component_input_controller_follow")
+
 [node name="component_health" type="Node" parent="Components"]
 script = ExtResource("16_if7q5")
 
@@ -655,15 +671,14 @@ script = ExtResource("17_2vbmf")
 [node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("18_ksuhb")
 
-[node name="component_state_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
-script = ExtResource("19_xk68r")
-my_component_ability = NodePath("../component_ability")
-
-[node name="component_movement_controller" type="Node" parent="Components"]
+[node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("20_w2qj1")
+my_component_input_controller = NodePath("../component_input_controller_follow")
+movespeed = 10
 
-[node name="component_animation_controller" type="Node" parent="Components"]
+[node name="component_animation_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("21_g3svn")
+my_component_input_controller = NodePath("../component_input_controller_follow")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("22_m25ti")

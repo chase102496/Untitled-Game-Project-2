@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=115 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://sprites/The Adventurer - Free/Idle/idle_down.png" id="3_hetwx"]
@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://components/component_ability.gd" id="9_8x8g7"]
 [ext_resource type="Script" path="res://components/component_animation_controller.gd" id="9_n2kgb"]
 [ext_resource type="Texture2D" uid="uid://f5iev0g4h14w" path="res://sprites/The Adventurer - Free/Walk/walk_down.png" id="9_pgl1e"]
-[ext_resource type="Script" path="res://components/component_state_controller.gd" id="10_tnwy7"]
+[ext_resource type="Script" path="res://components/component_state_controller_explore.gd" id="10_tnwy7"]
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://sprites/The Adventurer - Free/Walk/walk_right_down.png" id="12_ac4xw"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="12_pmvac"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://sprites/The Adventurer - Free/Walk/walk_right_up.png" id="13_r1wra"]
@@ -18,16 +18,16 @@
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://sprites/The Adventurer - Free/Walk/walk_up.png" id="14_c1ktx"]
 [ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="15_13wkk"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="16_ult57"]
+[ext_resource type="Script" path="res://components/component_state_controller_battle.gd" id="18_ghucg"]
 [ext_resource type="Script" path="res://components/component_physics.gd" id="20_6nw5h"]
 [ext_resource type="Script" path="res://components/components.gd" id="20_ibw1c"]
 [ext_resource type="Script" path="res://components/component_vis.gd" id="20_yn4w4"]
 [ext_resource type="Script" path="res://components/component_movement_controller.gd" id="21_j14mx"]
-[ext_resource type="Script" path="res://components/component_input_controller.gd" id="22_munar"]
+[ext_resource type="Script" path="res://components/component_input_controller_manual.gd" id="22_munar"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="23_lkweg"]
 [ext_resource type="Script" path="res://scripts/animated_sprite_3d.gd" id="29_6t6o8"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_nf1h3"]
-size = Vector3(1, 1.90677, 0.41626)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h7j1u"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bvscm"]
 atlas = ExtResource("16_ult57")
@@ -710,11 +710,11 @@ tracks/2/keys = {
 tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../../Components/component_state_controller")
+tracks/3/path = NodePath("%Components/component_state_controller_battle")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.833333),
+"times": PackedFloat32Array(0.766667),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -773,31 +773,31 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(-0.166, 0, 0), Vector3(-0.166, 0, 0), Vector3(1.36, 0.4, -0.586), Vector3(1.05, 0.4, -0.586), Vector3(1.24, 0.4, -0.586), Vector3(1.05, 0.4, -0.586), Vector3(1.24, 0.4, -0.586), Vector3(1.05, 0.4, -0.586), Vector3(1.24, 0.4, -0.586), Vector3(1.36, 0.4, -0.586)]
 }
-tracks/4/type = "method"
+tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../../Components/component_state_controller")
+tracks/4/path = NodePath(".:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(1.5),
+"times": PackedFloat32Array(0, 1.36667, 1.43333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("%Components/component_state_controller_battle")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(1.43333),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"_on_attack_contact"
 }]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:modulate")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 1.36667, 1.43333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_j2kcc"]
@@ -1165,7 +1165,7 @@ unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0282694, 0.0187277, 0.00789857)
-shape = SubResource("BoxShape3D_nf1h3")
+shape = SubResource("CapsuleShape3D_h7j1u")
 
 [node name="Animations" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -1178,6 +1178,7 @@ alpha_cut = 2
 texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_5y1yy")
 animation = &"default_idle_down"
+frame = 1
 script = ExtResource("29_6t6o8")
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
@@ -1206,10 +1207,13 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("20_ibw1c")
 
-[node name="component_state_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller", "my_component_ability")]
-script = ExtResource("10_tnwy7")
-my_component_input_controller = NodePath("../component_input_controller")
+[node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
+script = ExtResource("18_ghucg")
 my_component_ability = NodePath("../component_ability")
+
+[node name="component_state_controller_explore" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
+script = ExtResource("10_tnwy7")
+my_component_input_controller = NodePath("../component_input_controller_manual")
 
 [node name="component_health" type="Node" parent="Components"]
 script = ExtResource("4_33msd")
@@ -1222,14 +1226,14 @@ script = ExtResource("9_8x8g7")
 
 [node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("21_j14mx")
-my_component_input_controller = NodePath("../component_input_controller")
+my_component_input_controller = NodePath("../component_input_controller_manual")
 
-[node name="component_input_controller" type="Node" parent="Components"]
+[node name="component_input_controller_manual" type="Node" parent="Components"]
 script = ExtResource("22_munar")
 
 [node name="component_animation_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("9_n2kgb")
-my_component_input_controller = NodePath("../component_input_controller")
+my_component_input_controller = NodePath("../component_input_controller_manual")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("20_6nw5h")

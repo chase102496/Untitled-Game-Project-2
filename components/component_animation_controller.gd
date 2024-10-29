@@ -1,7 +1,7 @@
-extends Node
 class_name component_animation_controller
+extends Node
 
-@export var my_component_input_controller : component_input_controller
+@export var my_component_input_controller : Node
 
 var direction = Vector2.ZERO
 
@@ -12,10 +12,10 @@ func _ready() -> void:
 	%StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
 	%StateChart/Main/Pause_Input.state_entered.connect(_on_state_entered_pause_input)
 	%StateChart/Main/Battle.state_entered.connect(_on_state_entered_battle)
+	%StateChart/Main/Battle/Hurt.state_entered.connect(_on_state_entered_battle_hurt)
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
 func animations_reset(dir : Vector2 = Vector2(0,0)):
-	
 	if dir.x >= 0:
 		owner.anim_root.rotation.y = 0
 	else:
@@ -24,7 +24,10 @@ func animations_reset(dir : Vector2 = Vector2(0,0)):
 	owner.anim_tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
 
 func _on_state_entered_death():
-	pass
+	owner.anim_tree.get("parameters/playback").travel("Death")
+
+func _on_state_entered_battle_hurt() -> void:
+	owner.anim_tree.get("parameters/playback").travel("Hurt")
 
 func _on_state_entered_pause_input():
 	animations_reset(direction)
@@ -38,7 +41,6 @@ func _on_state_entered_battle():
 		animations_reset(Vector2(-1,1))
 	else:
 		animations_reset(Vector2(1,-1))
-		
 
 func _on_state_entered_explore_idle():
 	owner.anim_tree.get("parameters/playback").travel("Idle")
@@ -47,7 +49,7 @@ func _on_state_entered_explore_walking():
 	owner.anim_tree.get("parameters/playback").travel("Walk")
 
 func _on_state_physics_processing_explore_walking(_delta: float):
-	
+
 	if my_component_input_controller:
 		direction = my_component_input_controller.direction
 		

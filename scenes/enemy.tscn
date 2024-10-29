@@ -14,12 +14,12 @@
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://sprites/The Adventurer - Free/Walk/walk_right_up.png" id="15_aqqpw"]
 [ext_resource type="Script" path="res://scripts/character_animation_tree.gd" id="15_f1sv5"]
 [ext_resource type="Script" path="res://scripts/animated_sprite_3d.gd" id="16_rd3nk"]
+[ext_resource type="Script" path="res://components/component_state_controller_battle.gd" id="17_qyv5h"]
 [ext_resource type="Script" path="res://components/component_vis.gd" id="18_6vpc6"]
 [ext_resource type="Script" path="res://components/components.gd" id="18_orvp7"]
 [ext_resource type="Script" path="res://components/component_health.gd" id="19_ed3vo"]
 [ext_resource type="Script" path="res://components/component_ability.gd" id="20_uo5aw"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="20_w8p7b"]
-[ext_resource type="Script" path="res://components/component_state_controller.gd" id="21_pundp"]
 [ext_resource type="Script" path="res://components/component_movement_controller.gd" id="22_8lng5"]
 [ext_resource type="Script" path="res://components/component_animation_controller.gd" id="24_t4mhg"]
 [ext_resource type="Script" path="res://components/component_physics.gd" id="25_t7kuk"]
@@ -708,11 +708,11 @@ tracks/2/keys = {
 tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("%Components/component_state_controller")
+tracks/3/path = NodePath("%Components/component_state_controller_battle")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.833333),
+"times": PackedFloat32Array(0.766667),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -771,31 +771,31 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(-0.166, 0, 0), Vector3(1.36, 0.5, -0.586), Vector3(1.05, 0.5, -0.586), Vector3(1.24, 0.5, -0.586), Vector3(1.05, 0.5, -0.586), Vector3(1.24, 0.5, -0.586), Vector3(1.05, 0.5, -0.586), Vector3(1.24, 0.5, -0.586), Vector3(1.36, 0.5, -0.586)]
 }
-tracks/4/type = "method"
+tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("%Components/component_state_controller")
+tracks/4/path = NodePath(".:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.36667, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("%Components/component_state_controller_battle")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(1.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"_on_attack_contact"
 }]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:modulate")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 1.36667, 1.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_j2kcc"]
@@ -1202,6 +1202,10 @@ script = ExtResource("15_f1sv5")
 unique_name_in_owner = true
 script = ExtResource("18_orvp7")
 
+[node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
+script = ExtResource("17_qyv5h")
+my_component_ability = NodePath("../component_ability")
+
 [node name="component_health" type="Node" parent="Components"]
 script = ExtResource("19_ed3vo")
 
@@ -1210,10 +1214,6 @@ script = ExtResource("18_6vpc6")
 
 [node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("20_uo5aw")
-
-[node name="component_state_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
-script = ExtResource("21_pundp")
-my_component_ability = NodePath("../component_ability")
 
 [node name="component_movement_controller" type="Node" parent="Components"]
 script = ExtResource("22_8lng5")

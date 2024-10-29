@@ -59,7 +59,6 @@ const ScatterUtil := preload('./common/scatter_util.gd')
 @export var visibility_range_begin_margin : float = 0
 @export var visibility_range_end : float = 0
 @export var visibility_range_end_margin : float = 0
-#TODO what is a nicer way to expose this?
 @export_enum("Disabled:0", "Self:1") var visibility_range_fade_mode = 0
 
 @export_group("Level Of Detail", "lod_")

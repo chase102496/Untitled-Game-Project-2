@@ -23,7 +23,7 @@ func get_team(alignment):
 func check_ready():
 	var result = true
 	for i in len(battle_list):
-		if !battle_list[i].my_component_state_controller.character_ready:
+		if !battle_list[i].my_component_state_controller_battle.character_ready:
 			result = false
 	return result
 

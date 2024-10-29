@@ -73,7 +73,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [filesystem]
 
@@ -176,8 +176,8 @@ debug_lmb={
 
 [layer_names]
 
-3d_physics/layer_1="Player"
-3d_physics/layer_2="Ground"
+3d_physics/layer_1="Layer 1"
+3d_physics/layer_2="Layer 2"
 
 [phantom_camera]
 
