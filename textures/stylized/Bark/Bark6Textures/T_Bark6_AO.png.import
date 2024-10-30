@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qd5mtsdhxwvx"
-path="res://.godot/imported/T_Bark6_AO.png-bd1bace55b76697a8bae1924fdcac1b1.ctex"
+path.s3tc="res://.godot/imported/T_Bark6_AO.png-bd1bace55b76697a8bae1924fdcac1b1.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://textures/stylized/Bark/Bark6Textures/T_Bark6_AO.png"
-dest_files=["res://.godot/imported/T_Bark6_AO.png-bd1bace55b76697a8bae1924fdcac1b1.ctex"]
+dest_files=["res://.godot/imported/T_Bark6_AO.png-bd1bace55b76697a8bae1924fdcac1b1.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
@@ -23,7 +24,7 @@ compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=0
+roughness/mode=1
 roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false

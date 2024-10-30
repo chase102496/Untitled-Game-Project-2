@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://byk6146yrh4h5"]
+
+[ext_resource type="Script" path="res://addons/waterways_net/RiverManager.cs" id="1_7kn7f"]
+[ext_resource type="Script" path="res://addons/waterways_net/Data/RiverShaderSettings.cs" id="2_dwvmp"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gw3gk"]
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7iy0m"]
+noise = SubResource("FastNoiseLite_gw3gk")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hbw5j"]
+frequency = 0.0183
+fractal_type = 0
+cellular_return_type = 3
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_17ibb"]
+seamless = true
+as_normal_map = true
+bump_strength = 0.3
+normalize = false
+noise = SubResource("FastNoiseLite_hbw5j")
+
+[sub_resource type="Resource" id="Resource_0q3b0"]
+script = ExtResource("2_dwvmp")
+MatShaderType = 1
+FoamNoise = SubResource("NoiseTexture2D_7iy0m")
+mat_albedo_color_first = Color(0.112278, 0.254697, 0.44892, 1)
+mat_albedo_color_second = Color(0.325562, 0.618239, 0.990651, 1)
+mat_albedo_depth = 10.0
+mat_albedo_depth_curve = 0.25
+mat_transparency_clarity = 2.0
+mat_transparency_depth_curve = 0.25
+mat_transparency_refraction = 0.05
+mat_normal_scale = 1.0
+mat_normal_bump_texture = SubResource("NoiseTexture2D_17ibb")
+mat_flow_speed = 1.0
+mat_flow_base = 0.0
+mat_flow_steepness = 2.0
+mat_flow_distance = 1.0
+mat_flow_pressure = 1.0
+mat_flow_max = 4.0
+mat_foam_color = Color(0.9, 0.9, 0.9, 1)
+mat_foam_amount = 2.0
+mat_foam_steepness = 2.0
+mat_foam_smoothness = 0.3
+mat_uv_scale = Vector3(1, 1, 1)
+mat_roughness = 0.2
+mat_edge_fade = 0.05
+LodLod0Distance = 50.0
+_selectedShader = 1
+
+[sub_resource type="Curve3D" id="Curve3D_5p2cn"]
+resource_local_to_scene = true
+bake_interval = 0.05
+_data = {
+"points": PackedVector3Array(0, 0, -0.25, 0, 0, 0.25, 0, 0, -0.5, 0, 0, -0.25, 0, 0, 0.25, 0, 0, 0.5),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="RiverManager" type="Node3D"]
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 44.1112, 2.5, -32.2909)
+script = ExtResource("1_7kn7f")
+ShaderSettings = SubResource("Resource_0q3b0")
+Curve = SubResource("Curve3D_5p2cn")

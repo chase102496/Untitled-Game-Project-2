@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://jo7ogxn4r2nj"
-path="res://.godot/imported/T_Bark10_Height.png-a787a3ca9d1dccbdc4405b2744850542.ctex"
+path.s3tc="res://.godot/imported/T_Bark10_Height.png-a787a3ca9d1dccbdc4405b2744850542.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://textures/stylized/Bark/Bark10Textures/T_Bark10_Height.png"
-dest_files=["res://.godot/imported/T_Bark10_Height.png-a787a3ca9d1dccbdc4405b2744850542.ctex"]
+dest_files=["res://.godot/imported/T_Bark10_Height.png-a787a3ca9d1dccbdc4405b2744850542.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
@@ -23,7 +24,7 @@ compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=0
+roughness/mode=1
 roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false

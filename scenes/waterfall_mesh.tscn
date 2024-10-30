@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1vu3rc76kj3o"]
+
+[ext_resource type="Shader" path="res://shaders/waterfall_shader.gdshader" id="1_82blx"]
+[ext_resource type="Texture2D" uid="uid://dlvoch60ovp8j" path="res://test_junk/noise_waterfall.png" id="2_do7tt"]
+[ext_resource type="Texture2D" uid="uid://clio0qld6ld0n" path="res://test_junk/noise_waterfall2.png" id="3_8kfa6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sakxs"]
+render_priority = 0
+shader = ExtResource("1_82blx")
+shader_parameter/top_light_color = Color(0.252, 0.84, 0.6146, 1)
+shader_parameter/top_dark_color = Color(0.141176, 0.47451, 0.34902, 1)
+shader_parameter/bot_light_color = Color(0.66, 0.66, 0.66, 1)
+shader_parameter/bot_dark_color = Color(0.25, 0.25, 0.25, 1)
+shader_parameter/displ_amount = 0.02
+shader_parameter/bottom_foam_threshold = 0.48
+shader_parameter/speed = 0.25
+shader_parameter/noise_tex = ExtResource("3_8kfa6")
+shader_parameter/displ_tex = ExtResource("2_do7tt")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_n2y06"]
+
+[node name="Waterfall_Mesh" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 1, 0, 3.13099, 0)
+material_overlay = SubResource("ShaderMaterial_sakxs")
+mesh = SubResource("CylinderMesh_n2y06")

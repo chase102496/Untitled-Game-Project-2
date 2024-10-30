@@ -15,7 +15,7 @@ duration = 1.0
 transition = 0
 ease = 2
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ihnc1"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7pkg1"]
 dof_blur_far_enabled = true
 dof_blur_far_distance = 9.0
 
@@ -59,7 +59,7 @@ follow_offset = Vector3(0, 1.8, -3)
 
 [node name="Camera3D2" type="Camera3D" parent="Camera_Battle"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128907, 0.00140647, 0.94999, 0.312278, 0.0140316, 0.312229, -0.949903, 0.189133, 0.0306042, -3.14621)
-attributes = SubResource("CameraAttributesPractical_ihnc1")
+attributes = SubResource("CameraAttributesPractical_7pkg1")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera_Battle/Camera3D2"]
 script = ExtResource("7_gmraj")
