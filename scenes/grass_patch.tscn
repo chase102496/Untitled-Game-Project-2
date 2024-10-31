@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6xbq7i6g6kex"]
+
+[ext_resource type="ArrayMesh" uid="uid://bihfk8dmcfm5m" path="res://Art/models/Other/grass.tres" id="1_qr11n"]
+
+[node name="grass_patch" type="MeshInstance3D"]
+mesh = ExtResource("1_qr11n")
