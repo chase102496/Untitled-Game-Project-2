@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbeobl3pic1vl"]
+
+[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_Color.png" id="1_kw3uy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iu45n"]
+albedo_texture = ExtResource("1_kw3uy")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="PrismMesh" id="PrismMesh_8qhm7"]
+material = SubResource("StandardMaterial3D_iu45n")
+size = Vector3(0.6, 0.52, 0.1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_qj4sd"]
+points = PackedVector3Array(0, 0.26, 0.05, 0.3, -0.26, 0.05, 0, 0.26, -0.05, -0.3, -0.26, 0.05, 0.3, -0.26, -0.05, -0.3, -0.26, -0.05)
+
+[node name="hex_base_segment_stone" type="MeshInstance3D"]
+transform = Transform3D(-2.78181e-08, 1, -1.49012e-08, 1.13133e-08, -2.98023e-08, 1, 1, 5.76204e-08, -1.13133e-08, -0.259, -0.05, 0)
+mesh = SubResource("PrismMesh_8qhm7")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_qj4sd")

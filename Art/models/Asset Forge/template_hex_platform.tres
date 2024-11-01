@@ -1,0 +1,41 @@
+[gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://dgx85yvlw74un"]
+
+[ext_resource type="Texture2D" uid="uid://dho1gytkyrxeq" path="res://Art/textures/stylized/Grass/Grass5Textures/T_Grass5_Color.png" id="1_8nbrb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xlhli"]
+albedo_texture = ExtResource("1_8nbrb")
+uv1_scale = Vector3(0.4, 0.4, 0.4)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_cvrxt"]
+_surfaces = [{
+"aabb": AABB(-0.4, 0, -0.461854, 0.81, 0.05, 0.935307),
+"format": 34896613377,
+"index_count": 60,
+"index_data": PackedByteArray("AgAAAAEAAQADAAIABgAEAAUABQAHAAYABAAGAAgACAADAAQACAAJAAMACQACAAMAAwABAAUABQAEAAMACAAKAAsACwAJAAgABgAHAAoACgAIAAYACgAHAAUABQABAAoAAQALAAoAAQAAAAsACwAAAAIAAgAJAAsA"),
+"name": "stone(Clone)",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("//8AAP+/AAD/fwAA//8AAP//////vwAA/3//////AAAAAP///78AAAAAAAD/vwAAAAD///8/AAAAAAAA/z8AAP9///8AAAAA//////8/AAD/fwAAAAAAAP//AAD/PwAA")
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_name = "hex_platform_mesh"
+_surfaces = [{
+"aabb": AABB(-0.4, 0, -0.461854, 0.81, 0.05, 0.935307),
+"attribute_data": PackedByteArray("///e1o+B3tb//4bSj4GG0s7KhtLOyt7WzziG0s843tYfAw/Dj4G/rh8Dr+uPgf////8Pw///r+uPgd7WHwPe1o+BhtIfA4bSb37e1gAA3tZvfobSAACG0t/83tZvft7W3/yG0m9+htIfA63qHwMNwo+B/f6Pgb2t//+t6v//DcIwNd7WMDWG0i/H3tYvx4bS"),
+"format": 34896613399,
+"index_count": 60,
+"index_data": PackedByteArray("AgAAAAEAAQADAAIABgAEAAUABQAHAAYACgAIAAkACQALAAoACQAMAAsADAANAAsAEAAOAA8ADwARABAAFAASABMAEwAVABQAGAAWABcAFwAZABgAHAAaABsAGwAdABwAHQAeABwAHQAfAB4AIgAgACEAIQAjACIA"),
+"material": SubResource("StandardMaterial3D_xlhli"),
+"name": "stone(Clone)",
+"primitive": 3,
+"uv_scale": Vector4(0.82, 2.94691, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("//8AAP+/VJX/fwAA//9Ulf//////v1SV/3//////VJUAAP///7//vwAAAAD/v/+/AAD///8//78AAAAA/z//vwAA////P/+//3///wAA/78AAP///7//v/9///////+///////8//7///////7//v/9/AAD//1SVAAAAAP+/VJX/f/////9UlQAA////v1SV/38AAAAAqer//wAA/z+p6v9///8AAKnq//////8/qeoAAAAA/z+p6v9/AAAAAKnqAAD///8/qer/f///AACp6gAAAAD/P/+/AAAAAP+//7//fwAAAAD/v/9/AAD///+///8AAP8//7///wAA/7//v///AAD/v/+///////+//7///wAA/z//v///////P/+//38AAP9/AAD/fwAA/38AAP9/////f////3////9///////9/////f////3////9/////f////3//f////3////9/////f////38AAP9/AAD/fwAA/38AAP9/////f////3////9///8AAP9/AAD/fwAA/38AAP9/AAD/fwAA/3//fwAA/38AAP9/AAD/fwAA")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_cvrxt")

@@ -1172,10 +1172,10 @@ unique_name_in_owner = true
 
 [node name="character_animation_sprite" type="AnimatedSprite3D" parent="Animations"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-ignore_occlusion_culling = true
 shaded = true
 alpha_cut = 2
 texture_filter = 0
+render_priority = -1
 sprite_frames = SubResource("SpriteFrames_5y1yy")
 animation = &"default_idle_down"
 frame = 1

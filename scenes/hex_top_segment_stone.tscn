@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://brs0sv3hia0gy"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2hhlr"]
+load_path = "res://.godot/imported/T_Ground9_Color.png-f7551993295f944dbd964557592a9cc0.bptc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c88mo"]
+albedo_texture = SubResource("CompressedTexture2D_2hhlr")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="PrismMesh" id="PrismMesh_5qnim"]
+material = SubResource("StandardMaterial3D_c88mo")
+size = Vector3(0.5, 0.433, 0.1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_abmhe"]
+points = PackedVector3Array(0, 0.2165, 0.05, 0.25, -0.2165, 0.05, 0, 0.2165, -0.05, -0.25, -0.2165, 0.05, 0.25, -0.2165, -0.05, -0.25, -0.2165, -0.05)
+
+[node name="hex_top_segment_stone" type="MeshInstance3D"]
+transform = Transform3D(-2.78181e-08, 1, -1.49012e-08, 1.13133e-08, -2.98023e-08, 1, 1, 5.76204e-08, -1.13133e-08, -0.216, 0, 0)
+mesh = SubResource("PrismMesh_5qnim")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_abmhe")

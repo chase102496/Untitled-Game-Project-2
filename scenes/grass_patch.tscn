@@ -3,4 +3,5 @@
 [ext_resource type="ArrayMesh" uid="uid://bihfk8dmcfm5m" path="res://Art/models/Other/grass.tres" id="1_qr11n"]
 
 [node name="grass_patch" type="MeshInstance3D"]
+transform = Transform3D(0.75, 0, 0, 0, 1, 0, 0, 0, 0.75, 0, 0, 0)
 mesh = ExtResource("1_qr11n")

@@ -1,0 +1,49 @@
+[gd_resource type="ArrayMesh" load_steps=6 format=4 uid="uid://l871ywxaahnc"]
+
+[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_Color.png" id="1_26e3t"]
+[ext_resource type="Texture2D" uid="uid://b6b8xul6jocip" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_AO.png" id="2_y5y2s"]
+[ext_resource type="Texture2D" uid="uid://d0v2gwcnj5kcy" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_Normal.png" id="3_cbv3q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uvdnv"]
+resource_name = "stone(Clone)"
+albedo_texture = ExtResource("1_26e3t")
+normal_enabled = true
+normal_texture = ExtResource("3_cbv3q")
+ao_enabled = true
+ao_texture = ExtResource("2_y5y2s")
+uv1_scale = Vector3(0.2, 0.2, 0.2)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_r6xvw"]
+_surfaces = [{
+"aabb": AABB(-0.5, 0, -0.57735, 1, 1, 1.1547),
+"format": 34896613377,
+"index_count": 60,
+"index_data": PackedByteArray("AgAAAAEAAQADAAIABgAEAAUABQAHAAYABAAGAAgACAADAAQACAAJAAMACQACAAMAAwABAAUABQAEAAMACAAKAAsACwAJAAgABgAHAAoACgAIAAYACgAHAAUABQABAAoAAQALAAoAAQAAAAsACwAAAAIAAgAJAAsA"),
+"name": "stone(Clone)",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("//8AAP+/AAD/fwAA//8AAP//////vwAA/3//////AAAAAP///78AAAAAAAD/vwAAAAD///8/AAAAAAAA/z8AAP9///8AAAAA//////8/AAD/fwAAAAAAAP//AAD/PwAA")
+}]
+blend_shape_mode = 0
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Untitled-1-unchanged_Mesh hexagon Instance"
+_surfaces = [{
+"aabb": AABB(-0.5, 0, -0.57735, 1, 1, 1.1547),
+"attribute_data": PackedByteArray("//8l0f9/JdH///9//3//f+XJ/3/lySXRGTb/fxk2JdEAALi5/39LogAAkuj/f/////+4uf//kuj/fyXRAAAl0f9//38AAP9//38l0QAAJdH/f/9/AAD/f///JdH/fyXR////f/9//38AAJLoAAC4uf9/////f0ui//+S6P//uLkZNiXRGTb/f+XJJdHlyf9/"),
+"format": 34896613399,
+"index_count": 60,
+"index_data": PackedByteArray("AgAAAAEAAQADAAIABgAEAAUABQAHAAYACgAIAAkACQALAAoACQAMAAsADAANAAsAEAAOAA8ADwARABAAFAASABMAEwAVABQAGAAWABcAFwAZABgAHAAaABsAGwAdABwAHQAeABwAHQAfAB4AIgAgACEAIQAjACIA"),
+"material": SubResource("StandardMaterial3D_uvdnv"),
+"name": "stone",
+"primitive": 3,
+"uv_scale": Vector4(1, 3.1547, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("//8AAP+/VJX/fwAA//9Ulf//////v1SV/3//////VJUAAP///7//vwAAAAD/v/+/AAD///8//78AAAAA/z//vwAA////P/+//3///wAA/78AAP///7//v/9///////+///////8//7///////7//v/9/AAD//1SVAAAAAP+/VJX/f/////9UlQAA////v1SV/38AAAAAqer//wAA/z+p6v9///8AAKnq//////8/qeoAAAAA/z+p6v9/AAAAAKnqAAD///8/qer/f///AACp6gAAAAD/P/+/AAAAAP+//7//fwAAAAD/v/9/AAD///+///8AAP8//7///wAA/7//v///AAD/v/+///////+//7///wAA/z//v///////P/+//38AAP9/AAD/fwAA/38AAP9/////f////3////9///////9/////f////3////9/////f////3//f////3////9/////f////38AAP9/AAD/fwAA/38AAP9/////f////3////9///8AAP9/AAD/fwAA/38AAP9/AAD/fwAA/3//fwAA/38AAP9/AAD/fwAA")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_r6xvw")

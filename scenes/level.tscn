@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bp8wcwqpkswl"]
+[gd_scene load_steps=30 format=3 uid="uid://bp8wcwqpkswl"]
 
 [ext_resource type="PackedScene" uid="uid://ct0v1pb5ehqc6" path="res://scenes/dreamkin.tscn" id="1_teo6x"]
 [ext_resource type="Resource" uid="uid://m0fodoqc7ee4" path="res://scenes/camera_resource.tres" id="3_qstb7"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dmrpjjw65g2x7" path="res://Art/particles/scenes/particle_fear.tscn" id="8_itdur"]
 [ext_resource type="PackedScene" uid="uid://q17nibqx83ur" path="res://Art/particles/scenes/particle_burn.tscn" id="8_qi3dm"]
 [ext_resource type="ArrayMesh" uid="uid://bihfk8dmcfm5m" path="res://Art/models/Other/grass.tres" id="11_tliuh"]
+[ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://scenes/grass_patch.tscn" id="12_66bw3"]
 [ext_resource type="Shader" uid="uid://cjyredh1xk3x3" path="res://Art/shaders/stylized_grass.tres" id="12_vwvtr"]
 
 [sub_resource type="Resource" id="Resource_j5gng"]
@@ -195,5 +196,4 @@ material_override = SubResource("ShaderMaterial_8qd8r")
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_qr2x1")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="GrassMaker"]
-mesh = ExtResource("11_tliuh")
+[node name="grass_patch" parent="GrassMaker" instance=ExtResource("12_66bw3")]
