@@ -33,7 +33,7 @@ panorama = ExtResource("8_0iyuf")
 [sub_resource type="Sky" id="Sky_ncf8r"]
 sky_material = SubResource("PanoramaSkyMaterial_wg504")
 
-[sub_resource type="Environment" id="Environment_lx0t8"]
+[sub_resource type="Environment" id="Environment_nxf6j"]
 background_mode = 2
 background_color = Color(0.108, 0.2214, 0.27, 1)
 sky = SubResource("Sky_ncf8r")
@@ -55,7 +55,7 @@ adjustment_brightness = 1.03
 adjustment_contrast = 1.2
 adjustment_saturation = 1.12
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_c4dc4"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tfw4l"]
 dof_blur_far_enabled = true
 dof_blur_far_distance = 9.0
 
@@ -884,8 +884,8 @@ follow_offset = Vector3(0, 1.8, -3)
 
 [node name="Camera3D" type="Camera3D" parent="Camera"]
 transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 32.9057, 0.7278, -30.989)
-environment = SubResource("Environment_lx0t8")
-attributes = SubResource("CameraAttributesPractical_c4dc4")
+environment = SubResource("Environment_nxf6j")
+attributes = SubResource("CameraAttributesPractical_tfw4l")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera/Camera3D"]
 script = ExtResource("9_o2hwv")
