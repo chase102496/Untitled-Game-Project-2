@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dmcvit1u23lpm"
+path="res://.godot/imported/Pine_4.obj-9dc9261b951ad54b991c50e1f03a1e91.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Pine_4.obj-9dc9261b951ad54b991c50e1f03a1e91.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/Pine_4.obj"
+dest_files=["res://.godot/imported/Pine_4.obj-9dc9261b951ad54b991c50e1f03a1e91.mesh", "res://.godot/imported/Pine_4.obj-9dc9261b951ad54b991c50e1f03a1e91.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

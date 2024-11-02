@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c0dilx8t88cr0"
+path="res://.godot/imported/Beach_Terrain_Sand_Transition_Gentle_Sharp_Centered.obj-c6453f60900e449548b583b4f9b99cfc.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beach_Terrain_Sand_Transition_Gentle_Sharp_Centered.obj-c6453f60900e449548b583b4f9b99cfc.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Beach_Terrain_Sand_Transition_Gentle_Sharp_Centered.obj"
+dest_files=["res://.godot/imported/Beach_Terrain_Sand_Transition_Gentle_Sharp_Centered.obj-c6453f60900e449548b583b4f9b99cfc.mesh", "res://.godot/imported/Beach_Terrain_Sand_Transition_Gentle_Sharp_Centered.obj-c6453f60900e449548b583b4f9b99cfc.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

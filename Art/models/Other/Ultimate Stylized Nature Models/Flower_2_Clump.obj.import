@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://d2qbbmqvy0umw"
+path="res://.godot/imported/Flower_2_Clump.obj-c4d259c72000dcf5641fb035f6a22f7e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Flower_2_Clump.obj-c4d259c72000dcf5641fb035f6a22f7e.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/Flower_2_Clump.obj"
+dest_files=["res://.godot/imported/Flower_2_Clump.obj-c4d259c72000dcf5641fb035f6a22f7e.mesh", "res://.godot/imported/Flower_2_Clump.obj-c4d259c72000dcf5641fb035f6a22f7e.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

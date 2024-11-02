@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://8fmme01p2kbu"
+path="res://.godot/imported/Beach_Terrain_Sand_Floor.obj-de25293f34d33ffd894fbc5ac611577f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beach_Terrain_Sand_Floor.obj-de25293f34d33ffd894fbc5ac611577f.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Beach_Terrain_Sand_Floor.obj"
+dest_files=["res://.godot/imported/Beach_Terrain_Sand_Floor.obj-de25293f34d33ffd894fbc5ac611577f.mesh", "res://.godot/imported/Beach_Terrain_Sand_Floor.obj-de25293f34d33ffd894fbc5ac611577f.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

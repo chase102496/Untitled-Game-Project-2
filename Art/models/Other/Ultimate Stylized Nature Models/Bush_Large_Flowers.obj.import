@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://d3bgs0n8uwjoh"
+path="res://.godot/imported/Bush_Large_Flowers.obj-f00f13af268354e80f819694bdb40be6.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Bush_Large_Flowers.obj-f00f13af268354e80f819694bdb40be6.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/Bush_Large_Flowers.obj"
+dest_files=["res://.godot/imported/Bush_Large_Flowers.obj-f00f13af268354e80f819694bdb40be6.mesh", "res://.godot/imported/Bush_Large_Flowers.obj-f00f13af268354e80f819694bdb40be6.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

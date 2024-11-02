@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dmrpjjw65g2x7" path="res://Art/particles/scenes/particle_fear.tscn" id="8_itdur"]
 [ext_resource type="PackedScene" uid="uid://q17nibqx83ur" path="res://Art/particles/scenes/particle_burn.tscn" id="8_qi3dm"]
 [ext_resource type="ArrayMesh" uid="uid://bihfk8dmcfm5m" path="res://Art/models/Other/grass.tres" id="11_tliuh"]
-[ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://scenes/grass_patch.tscn" id="12_66bw3"]
+[ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://scenes/environment/templates/grass.tscn" id="12_66bw3"]
 [ext_resource type="Shader" uid="uid://cjyredh1xk3x3" path="res://Art/shaders/stylized_grass.tres" id="12_vwvtr"]
 
 [sub_resource type="Resource" id="Resource_j5gng"]

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c74b68r426pk1"
+path="res://.godot/imported/Mountain_3.obj-5cc5fb0ac82baf81b0e6e03b8cc3558b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Mountain_3.obj-5cc5fb0ac82baf81b0e6e03b8cc3558b.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Mountain_3.obj"
+dest_files=["res://.godot/imported/Mountain_3.obj-5cc5fb0ac82baf81b0e6e03b8cc3558b.mesh", "res://.godot/imported/Mountain_3.obj-5cc5fb0ac82baf81b0e6e03b8cc3558b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://6h167pl1ekjq"
+path="res://.godot/imported/Beach_Terrain_Sand_Side_Shift_Gentle.obj-bf53eddca3ae9ebdf0ae7e6a1fc4ed4b.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beach_Terrain_Sand_Side_Shift_Gentle.obj-bf53eddca3ae9ebdf0ae7e6a1fc4ed4b.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Beach_Terrain_Sand_Side_Shift_Gentle.obj"
+dest_files=["res://.godot/imported/Beach_Terrain_Sand_Side_Shift_Gentle.obj-bf53eddca3ae9ebdf0ae7e6a1fc4ed4b.mesh", "res://.godot/imported/Beach_Terrain_Sand_Side_Shift_Gentle.obj-bf53eddca3ae9ebdf0ae7e6a1fc4ed4b.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

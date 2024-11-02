@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dmp2ea51rgodk"
+path="res://.godot/imported/Beach_Prop_Docks_Steps.obj-62c42aa12f5ba84a83e65c71dbf231eb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beach_Prop_Docks_Steps.obj-62c42aa12f5ba84a83e65c71dbf231eb.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Beach_Prop_Docks_Steps.obj"
+dest_files=["res://.godot/imported/Beach_Prop_Docks_Steps.obj-62c42aa12f5ba84a83e65c71dbf231eb.mesh", "res://.godot/imported/Beach_Prop_Docks_Steps.obj-62c42aa12f5ba84a83e65c71dbf231eb.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

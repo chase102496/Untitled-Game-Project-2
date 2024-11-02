@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://1m33icsm0dp6"
+path="res://.godot/imported/Petal_5.obj-7f2f21ea8542bf339ab1ab3691d5abf7.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Petal_5.obj-7f2f21ea8542bf339ab1ab3691d5abf7.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/Petal_5.obj"
+dest_files=["res://.godot/imported/Petal_5.obj-7f2f21ea8542bf339ab1ab3691d5abf7.mesh", "res://.godot/imported/Petal_5.obj-7f2f21ea8542bf339ab1ab3691d5abf7.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

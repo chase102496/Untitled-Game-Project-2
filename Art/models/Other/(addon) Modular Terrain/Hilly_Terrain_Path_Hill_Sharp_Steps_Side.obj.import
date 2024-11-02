@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bpvhq1ho3qvrf"
+path="res://.godot/imported/Hilly_Terrain_Path_Hill_Sharp_Steps_Side.obj-14eb95cff5fb25d9c57dd7e44c68a6da.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Terrain_Path_Hill_Sharp_Steps_Side.obj-14eb95cff5fb25d9c57dd7e44c68a6da.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Hilly_Terrain_Path_Hill_Sharp_Steps_Side.obj"
+dest_files=["res://.godot/imported/Hilly_Terrain_Path_Hill_Sharp_Steps_Side.obj-14eb95cff5fb25d9c57dd7e44c68a6da.mesh", "res://.godot/imported/Hilly_Terrain_Path_Hill_Sharp_Steps_Side.obj-14eb95cff5fb25d9c57dd7e44c68a6da.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

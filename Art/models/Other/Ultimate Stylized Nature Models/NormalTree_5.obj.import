@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c6cto2nmnflly"
+path="res://.godot/imported/NormalTree_5.obj-8f83588029e4c634e88915ce5c887ddf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/NormalTree_5.obj-8f83588029e4c634e88915ce5c887ddf.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/NormalTree_5.obj"
+dest_files=["res://.godot/imported/NormalTree_5.obj-8f83588029e4c634e88915ce5c887ddf.mesh", "res://.godot/imported/NormalTree_5.obj-8f83588029e4c634e88915ce5c887ddf.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

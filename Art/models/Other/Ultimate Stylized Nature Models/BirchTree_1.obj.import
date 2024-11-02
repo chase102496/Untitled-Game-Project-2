@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dbg5s3qdlf030"
+path="res://.godot/imported/BirchTree_1.obj-0a29fe202afde91b5712860fb54418ca.mesh"
+
+[deps]
+
+files=["res://.godot/imported/BirchTree_1.obj-0a29fe202afde91b5712860fb54418ca.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/BirchTree_1.obj"
+dest_files=["res://.godot/imported/BirchTree_1.obj-0a29fe202afde91b5712860fb54418ca.mesh", "res://.godot/imported/BirchTree_1.obj-0a29fe202afde91b5712860fb54418ca.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

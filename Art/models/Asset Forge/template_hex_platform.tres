@@ -1,14 +1,14 @@
 [gd_resource type="ArrayMesh" load_steps=5 format=4 uid="uid://b1e1p1a603yqq"]
 
-[ext_resource type="Texture2D" uid="uid://t1glbh1h8klx" path="res://Art/textures/stylized/Dirt/Dirt1Textures/Dirt1_Color.png" id="1_eu48y"]
+[ext_resource type="Texture2D" uid="uid://brcpxw7x3g58p" path="res://Art/textures/stylized/T_Grass5_Color.png" id="1_7213v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_th8np"]
-albedo_texture = ExtResource("1_eu48y")
+albedo_texture = ExtResource("1_7213v")
 uv1_scale = Vector3(0.4, 0.4, 0.4)
 uv1_triplanar = true
 uv1_world_triplanar = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kyou8"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbmk7"]
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 
@@ -18,7 +18,7 @@ _surfaces = [{
 "format": 34896613377,
 "index_count": 60,
 "index_data": PackedByteArray("AgAAAAEAAQADAAIABgAEAAUABQAHAAYABAAGAAgACAADAAQACAAJAAMACQACAAMAAwABAAUABQAEAAMACAAKAAsACwAJAAgABgAHAAoACgAIAAYACgAHAAUABQABAAoAAQALAAoAAQAAAAsACwAAAAIAAgAJAAsA"),
-"material": SubResource("StandardMaterial3D_kyou8"),
+"material": SubResource("StandardMaterial3D_qbmk7"),
 "name": "stone(Clone)",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),

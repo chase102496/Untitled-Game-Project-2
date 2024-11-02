@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://1y810yh3knwu"
+path="res://.godot/imported/Cliff_Prop_Bridge_Rope_Middle_Support.obj-7fa0833298592cc037ffa1f05d2a0a4f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cliff_Prop_Bridge_Rope_Middle_Support.obj-7fa0833298592cc037ffa1f05d2a0a4f.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Cliff_Prop_Bridge_Rope_Middle_Support.obj"
+dest_files=["res://.godot/imported/Cliff_Prop_Bridge_Rope_Middle_Support.obj-7fa0833298592cc037ffa1f05d2a0a4f.mesh", "res://.godot/imported/Cliff_Prop_Bridge_Rope_Middle_Support.obj-7fa0833298592cc037ffa1f05d2a0a4f.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

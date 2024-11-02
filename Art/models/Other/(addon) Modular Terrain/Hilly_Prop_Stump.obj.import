@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://sdy2kl6iymr6"
+path="res://.godot/imported/Hilly_Prop_Stump.obj-f04573411b7ce6ed49903e2e64018e80.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Prop_Stump.obj-f04573411b7ce6ed49903e2e64018e80.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Hilly_Prop_Stump.obj"
+dest_files=["res://.godot/imported/Hilly_Prop_Stump.obj-f04573411b7ce6ed49903e2e64018e80.mesh", "res://.godot/imported/Hilly_Prop_Stump.obj-f04573411b7ce6ed49903e2e64018e80.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

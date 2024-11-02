@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cdeaq1nmeaswf"
+path="res://.godot/imported/Beach_Terrain_Sand_Corner_Inner_2x2.obj-cb460bf14e1aea5341b7b5a401252dee.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Beach_Terrain_Sand_Corner_Inner_2x2.obj-cb460bf14e1aea5341b7b5a401252dee.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Beach_Terrain_Sand_Corner_Inner_2x2.obj"
+dest_files=["res://.godot/imported/Beach_Terrain_Sand_Corner_Inner_2x2.obj-cb460bf14e1aea5341b7b5a401252dee.mesh", "res://.godot/imported/Beach_Terrain_Sand_Corner_Inner_2x2.obj-cb460bf14e1aea5341b7b5a401252dee.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

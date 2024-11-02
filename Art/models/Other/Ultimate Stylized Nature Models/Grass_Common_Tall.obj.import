@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://37ga0oj60dql"
+path="res://.godot/imported/Grass_Common_Tall.obj-9516d70b538ce85ccb77c03967a2f2d9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Grass_Common_Tall.obj-9516d70b538ce85ccb77c03967a2f2d9.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/Grass_Common_Tall.obj"
+dest_files=["res://.godot/imported/Grass_Common_Tall.obj-9516d70b538ce85ccb77c03967a2f2d9.mesh", "res://.godot/imported/Grass_Common_Tall.obj-9516d70b538ce85ccb77c03967a2f2d9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

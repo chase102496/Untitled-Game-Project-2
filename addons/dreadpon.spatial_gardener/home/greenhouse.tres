@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=9 format=3 uid="uid://kgr7cpp6k4u4"]
 
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_LOD_variant.gd" id="1_4b1vx"]
-[ext_resource type="ArrayMesh" uid="uid://bihfk8dmcfm5m" path="res://Art/models/Other/grass.tres" id="1_cpshw"]
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse.gd" id="1_j8ppj"]
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_plant.gd" id="2_ruhyo"]
+[ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://scenes/environment/templates/grass.tscn" id="2_ypaep"]
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_plant_state.gd" id="3_y7nm3"]
 
 [sub_resource type="Resource" id="Resource_u6rwo"]
 resource_name = "Greenhouse_LODVariant"
 script = ExtResource("1_4b1vx")
-mesh = ExtResource("1_cpshw")
+spawned_spatial = ExtResource("2_ypaep")
 cast_shadow = 1
 metadata/class = "Greenhouse_LODVariant"
 
@@ -24,7 +24,7 @@ mesh/mesh_LOD_max_capacity = 75
 mesh/mesh_LOD_min_size = 1.0
 octree/octree_reconfigure_button = false
 octree/octree_recenter_button = false
-density/density_per_units = 5000.0
+density/density_per_units = 4999.99
 scale/scale_scaling_type = 0
 scale/scale_range = [Vector3(0.4, 0.4, 0.4), Vector3(0.5, 0.5, 0.5)]
 up_vector/up_vector_primary_type = 2

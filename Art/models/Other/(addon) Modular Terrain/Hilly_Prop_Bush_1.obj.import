@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dg2gb2wl6hn54"
+path="res://.godot/imported/Hilly_Prop_Bush_1.obj-c6c896a0f3ecb64397dd6afe3607bc3c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Hilly_Prop_Bush_1.obj-c6c896a0f3ecb64397dd6afe3607bc3c.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Hilly_Prop_Bush_1.obj"
+dest_files=["res://.godot/imported/Hilly_Prop_Bush_1.obj-c6c896a0f3ecb64397dd6afe3607bc3c.mesh", "res://.godot/imported/Hilly_Prop_Bush_1.obj-c6c896a0f3ecb64397dd6afe3607bc3c.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

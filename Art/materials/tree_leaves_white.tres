@@ -1,0 +1,21 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://dvca5qxnb2753"]
+
+[ext_resource type="Shader" uid="uid://beqs1m0ttyy5k" path="res://Art/shaders/shape_color_sway.tres" id="1_bfcm8"]
+[ext_resource type="Texture2D" uid="uid://x7dqygeq3kbx" path="res://Art/textures/Ultimate Stylized Nature Textures/NormalTree_Leaves.png" id="2_nmjpo"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_11i1u"]
+frequency = 0.015
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7w20y"]
+seamless = true
+noise = SubResource("FastNoiseLite_11i1u")
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_bfcm8")
+shader_parameter/Foliage_Color1 = Color(1, 1, 1, 1)
+shader_parameter/Foliage_Color2 = Color(1, 1, 1, 1)
+shader_parameter/WindNoise = SubResource("NoiseTexture2D_7w20y")
+shader_parameter/Texture_Mask = ExtResource("2_nmjpo")

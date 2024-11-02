@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ba87joxuup8xh"
+path="res://.godot/imported/Cave_Terrain_Hill_Corner_Inner_2x2.obj-44bff61b7ff89d45ecac1d2781dffc1e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Cave_Terrain_Hill_Corner_Inner_2x2.obj-44bff61b7ff89d45ecac1d2781dffc1e.mesh"]
+
+source_file="res://Art/models/Other/(addon) Modular Terrain/Cave_Terrain_Hill_Corner_Inner_2x2.obj"
+dest_files=["res://.godot/imported/Cave_Terrain_Hill_Corner_Inner_2x2.obj-44bff61b7ff89d45ecac1d2781dffc1e.mesh", "res://.godot/imported/Cave_Terrain_Hill_Corner_Inner_2x2.obj-44bff61b7ff89d45ecac1d2781dffc1e.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

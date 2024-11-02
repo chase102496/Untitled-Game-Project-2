@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://uu4ixwp7v5ir"
+path="res://.godot/imported/Clover_1.obj-e4fd15aa02f0a41221220f30a1acef0d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Clover_1.obj-e4fd15aa02f0a41221220f30a1acef0d.mesh"]
+
+source_file="res://Art/models/Other/Ultimate Stylized Nature Models/Clover_1.obj"
+dest_files=["res://.godot/imported/Clover_1.obj-e4fd15aa02f0a41221220f30a1acef0d.mesh", "res://.godot/imported/Clover_1.obj-e4fd15aa02f0a41221220f30a1acef0d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
