@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://cfwrpxxi8ue18"]
 
-[ext_resource type="PackedScene" uid="uid://ccqv46e24xsr3" path="res://scenes/environment/tree_1.tscn" id="1_f58sl"]
+[ext_resource type="PackedScene" uid="uid://c28gp4acwxuqx" path="res://scenes/rock_0.tscn" id="1_f58sl"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_q2qsk"]
 resource_local_to_scene = true

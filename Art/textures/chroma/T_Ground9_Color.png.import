@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dweu4twl5s8ul"
-path.s3tc="res://.godot/imported/Dirt1_Color.png-7f666aa4d6971b1dd0a719a82b2ed07e.s3tc.ctex"
+uid="uid://by5v53vsnh8wg"
+path.s3tc="res://.godot/imported/T_Ground9_Color.png-e7f41e61daf8dfd1110fd927daa68881.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Art/textures/stylized/Dirt1_Color.png"
-dest_files=["res://.godot/imported/Dirt1_Color.png-7f666aa4d6971b1dd0a719a82b2ed07e.s3tc.ctex"]
+source_file="res://Art/textures/chroma/T_Ground9_Color.png"
+dest_files=["res://.godot/imported/T_Ground9_Color.png-e7f41e61daf8dfd1110fd927daa68881.s3tc.ctex"]
 
 [params]
 

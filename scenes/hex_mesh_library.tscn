@@ -1,12 +1,12 @@
 [gd_scene load_steps=23 format=4 uid="uid://c5dful68oe7vj"]
 
 [ext_resource type="ArrayMesh" uid="uid://b1e1p1a603yqq" path="res://Art/models/Asset Forge/template_hex_platform.tres" id="1_4ngr3"]
-[ext_resource type="Texture2D" uid="uid://5vtu88rtwwsp" path="res://Art/textures/stylized/T_Ground9_Color.png" id="1_5butk"]
-[ext_resource type="Texture2D" uid="uid://brcpxw7x3g58p" path="res://Art/textures/stylized/T_Grass5_Color.png" id="2_ih205"]
-[ext_resource type="Texture2D" uid="uid://dweu4twl5s8ul" path="res://Art/textures/stylized/Dirt1_Color.png" id="4_rvp7h"]
+[ext_resource type="Texture2D" uid="uid://by5v53vsnh8wg" path="res://Art/textures/chroma/T_Ground9_Color.png" id="1_7vfct"]
+[ext_resource type="Texture2D" uid="uid://cbg0psg3r1jk2" path="res://Art/textures/chroma/T_Grass5_Color.png" id="2_5b3bx"]
+[ext_resource type="Texture2D" uid="uid://cp16p18v8vki4" path="res://Art/textures/chroma/Dirt1_Color.png" id="4_6esia"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0rn6"]
-albedo_texture = ExtResource("1_5butk")
+albedo_texture = ExtResource("1_7vfct")
 metallic = 0.2
 roughness = 0.5
 uv1_scale = Vector3(0.2, 0.2, 0.2)
@@ -51,7 +51,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_1oncy")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tpqvy"]
-albedo_texture = ExtResource("4_rvp7h")
+albedo_texture = ExtResource("2_5b3bx")
 uv1_scale = Vector3(0.4, 0.4, 0.4)
 uv1_triplanar = true
 uv1_world_triplanar = true
@@ -90,7 +90,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ju4rg")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8vp3y"]
-albedo_texture = ExtResource("1_5butk")
+albedo_texture = ExtResource("1_7vfct")
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 uv1_world_triplanar = true
@@ -132,7 +132,7 @@ shadow_mesh = SubResource("ArrayMesh_0b7c1")
 points = PackedVector3Array(-9.78708e-05, 0, 0.57735, 0.5, 0, 0.288562, -0.5, 0, 0.288562, -9.78708e-05, -4, 0.57735, 0.5, -4, 0.288562, 0.5, 0, -0.288788, -0.5, 0, -0.288788, -0.5, -4, 0.288562, 0.5, -4, -0.288788, -9.78708e-05, 0, -0.57735, -0.5, -4, -0.288788, -9.78708e-05, -4, -0.57735)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ocfy6"]
-albedo_texture = ExtResource("4_rvp7h")
+albedo_texture = ExtResource("2_5b3bx")
 uv1_scale = Vector3(0.4, 0.4, 0.4)
 uv1_triplanar = true
 uv1_world_triplanar = true
@@ -171,7 +171,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mujjm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4skhe"]
-albedo_texture = ExtResource("2_ih205")
+albedo_texture = ExtResource("4_6esia")
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 uv1_world_triplanar = true
@@ -226,6 +226,7 @@ mesh = SubResource("ArrayMesh_k8dys")
 
 [node name="hex_top_dirt" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+visible = false
 mesh = ExtResource("1_4ngr3")
 
 [node name="hex_base_long_stone" type="MeshInstance3D" parent="."]
