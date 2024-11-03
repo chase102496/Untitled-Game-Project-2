@@ -1,37 +1,96 @@
-[gd_scene load_steps=9 format=3 uid="uid://qklm0d27lwlg"]
+[gd_scene load_steps=16 format=3 uid="uid://qklm0d27lwlg"]
 
+[ext_resource type="Script" path="res://Logic/scripts/camera.gd" id="1_l2ekv"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="1_n5ryg"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_vjpsh"]
-[ext_resource type="Resource" uid="uid://m0fodoqc7ee4" path="res://scenes/camera_resource.tres" id="3_nc050"]
-[ext_resource type="CameraAttributesPractical" uid="uid://cyai3vswc0s7h" path="res://scenes/camera_attributes.tres" id="4_wgdwd"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="3_x1rkd"]
+[ext_resource type="Environment" uid="uid://cea82iqv8py6c" path="res://scenes/dream_garden_environment.tres" id="4_hpshe"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_42dvy"]
+[ext_resource type="CameraAttributesPractical" uid="uid://c45u5oad2yy8i" path="res://camera_attributes_explore.tres" id="5_khipv"]
+[ext_resource type="Texture2D" uid="uid://bqtf1oaofrx2r" path="res://Art/panorama/panorama_image (2).png" id="7_knix3"]
+[ext_resource type="Script" path="res://Logic/scripts/camera_ray_cast.gd" id="9_hk5qm"]
 
-[sub_resource type="Resource" id="Resource_j5gng"]
+[sub_resource type="Resource" id="Resource_hm6fi"]
 script = ExtResource("2_vjpsh")
 duration = 1.0
 transition = 0
 ease = 2
 
-[sub_resource type="Environment" id="Environment_pgady"]
+[sub_resource type="Resource" id="Resource_us75k"]
+script = ExtResource("3_x1rkd")
+cull_mask = 1048575
+h_offset = 0.0
+v_offset = 0.0
+projection = 0
+fov = 75.0
+size = 1.0
+frustum_offset = Vector2(0, 0)
+near = 0.05
+far = 4000.0
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_38fui"]
-dof_blur_near_enabled = true
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_hmjsv"]
+panorama = ExtResource("7_knix3")
+
+[sub_resource type="Sky" id="Sky_ncf8r"]
+sky_material = SubResource("PanoramaSkyMaterial_hmjsv")
+
+[sub_resource type="Environment" id="Environment_pes31"]
+background_mode = 2
+background_color = Color(0.108, 0.2214, 0.27, 1)
+sky = SubResource("Sky_ncf8r")
+ambient_light_source = 3
+glow_enabled = true
+glow_intensity = 0.15
+glow_blend_mode = 4
+fog_light_color = Color(0.1508, 0.25818, 0.26, 1)
+fog_light_energy = 5.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0325
+volumetric_fog_albedo = Color(0.235503, 0.189935, 0.3064, 1)
+volumetric_fog_emission = Color(0.655212, 0.47399, 0.993068, 1)
+volumetric_fog_emission_energy = 0.2
+volumetric_fog_length = 1024.0
+volumetric_fog_sky_affect = 0.26
+adjustment_enabled = true
+adjustment_brightness = 1.03
+adjustment_contrast = 1.2
+adjustment_saturation = 1.12
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_bts8h"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 15.0
+dof_blur_far_transition = -1.0
 
 [node name="Camera" type="Node3D"]
-
-[node name="PhantomCamera3D" type="Node3D" parent="."]
-transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
+transform = Transform3D(-0.999701, 0, 0, 0, 0.97014, 0.242536, 0, 0.242535, -0.970144, 34.8779, 2.58424, -31.4697)
 script = ExtResource("1_n5ryg")
 follow_mode = 2
-tween_resource = SubResource("Resource_j5gng")
-camera_3d_resource = ExtResource("3_nc050")
-attributes = ExtResource("4_wgdwd")
-follow_offset = Vector3(0, 1.8, -3)
+look_at_mode = 2
+tween_resource = SubResource("Resource_hm6fi")
+tween_on_load = false
+camera_3d_resource = SubResource("Resource_us75k")
+environment = ExtResource("4_hpshe")
+attributes = ExtResource("5_khipv")
+follow_offset = Vector3(0, 1.5, -3)
+follow_damping_value = Vector3(0.2, 0.2, 0.2)
+look_at_offset = Vector3(0, 0.75, 0)
+
+[node name="Camera" type="Node" parent="."]
+script = ExtResource("1_l2ekv")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.999901, 0.00571777, -0.0128906, 1.00611e-09, 0.914112, 0.405461, 0.0141018, 0.405421, -0.914021, 0, 1.8, -3)
-environment = SubResource("Environment_pgady")
-attributes = SubResource("CameraAttributesPractical_38fui")
+environment = SubResource("Environment_pes31")
+attributes = SubResource("CameraAttributesPractical_bts8h")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
 script = ExtResource("5_42dvy")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 0)
+collision_mask = 8
+script = ExtResource("9_hk5qm")
+
+[node name="RayCast3D2" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 0)
+collision_mask = 8
+script = ExtResource("9_hk5qm")

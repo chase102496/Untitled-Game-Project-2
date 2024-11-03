@@ -34,13 +34,7 @@ func _on_turn_end():
 func _on_battle_finished(outcome):
 	if outcome == "Win":
 		print_debug("Yay!")
-		get_tree().change_scene_to_file("res://scenes/level.tscn")
+		get_tree().change_scene_to_file("res://levels/dream_garden.tscn")
 	elif outcome == "Lose":
 		print_debug("womp womp")
-		get_tree().change_scene_to_file("res://scenes/level.tscn")
-
-func _physics_process(_delta: float) -> void:
-	
-	#PLACEHOLDER FOR WHEN MENUS ARE MADE
-	if Input.is_action_just_pressed("ui_cancel"):
-		get_tree().change_scene_to_file("res://scenes/level.tscn")
+		get_tree().change_scene_to_file("res://levels/dream_garden.tscn")

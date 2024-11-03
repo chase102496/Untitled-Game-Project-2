@@ -6,7 +6,7 @@ extends Node
 var direction = Vector2.ZERO
 @export var movespeed := 50
 @export var max_movespeed := 3.2
-@export var jump_strength = 10
+@export var jump_strength = 8
 @export var jump_damper_strength = 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

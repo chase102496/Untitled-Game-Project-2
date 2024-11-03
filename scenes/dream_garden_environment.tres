@@ -2,11 +2,11 @@
 
 [ext_resource type="Texture2D" uid="uid://bqtf1oaofrx2r" path="res://Art/panorama/panorama_image (2).png" id="1_o6c60"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_wg504"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_hmjsv"]
 panorama = ExtResource("1_o6c60")
 
 [sub_resource type="Sky" id="Sky_ncf8r"]
-sky_material = SubResource("PanoramaSkyMaterial_wg504")
+sky_material = SubResource("PanoramaSkyMaterial_hmjsv")
 
 [resource]
 background_mode = 2

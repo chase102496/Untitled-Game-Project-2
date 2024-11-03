@@ -1,15 +1,11 @@
-extends Node3D
+extends Node
 
-@onready var camera_ray_cast : RayCast3D = $PhantomCamera3D/RayCast3D
-@onready var camera_ray_cast_default : RayCast3D = $PhantomCamera3D/RayCast3D2
+@onready var camera_ray_cast : RayCast3D = get_parent().get_node("RayCast3D")
+@onready var camera_ray_cast_default : RayCast3D = get_parent().get_node("RayCast3D2")
+
 var obstacle : Node = null
 var obstacles_exit : Array = []
 var get_all_colliders : Array = []
-
-#Make func ANY TIME the camera changes direction, update 
-
-func _ready() -> void:
-	Global.camera = $PhantomCamera3D
 
 func camera_los_player_check():
 	

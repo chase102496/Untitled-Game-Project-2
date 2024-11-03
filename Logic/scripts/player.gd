@@ -48,15 +48,19 @@ func _physics_process(_delta: float) -> void:
 		#anim_tree.get("parameters/playback").travel("attack_default")
 		
 	if Input.is_action_just_pressed("ui_cancel"):
-		if Global.camera.follow_mode != 0:
-			Global.camera.follow_target = null
-			Global.camera.follow_mode = 0 #None
-			Global.camera.look_at_target = null
-			Global.camera.global_transform = get_parent().get_node("shot_waterfall").global_transform
-		else:
-			Global.camera.follow_target = self
-			Global.camera.follow_mode = 2 #Simple
-			Global.camera.look_at_target = self
+		#if Global.camera.follow_mode != 0:
+			#Global.camera.follow_target = null
+			#Global.camera.follow_mode = 0 #None
+			#Global.camera.look_at_target = null
+			#Global.camera.global_transform = get_parent().get_node("shot_waterfall").global_transform
+		#else:
+			#Global.camera.follow_target = self
+			#Global.camera.follow_mode = 2 #Simple
+			#Global.camera.look_at_target = self
 			# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER
-		#Battle.battle_initialize(["player","dreamkin","enemy","enemy"],[{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
+		if get_tree().current_scene.name == "turn_arena":
+			Events.battle_finished.emit("Win")
+		elif get_tree().current_scene.name == "dream_garden":
+			Battle.battle_initialize(["player","dreamkin","enemy","enemy"],[{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
+		
 	
