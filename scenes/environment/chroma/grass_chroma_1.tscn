@@ -32,7 +32,7 @@ _surfaces = [{
 }]
 shadow_mesh = SubResource("ArrayMesh_yod04")
 
-[node name="grass_chroma" type="Node3D"]
+[node name="grass_chroma_1_0" type="Node3D"]
 
 [node name="Grass" parent="." instance=ExtResource("1_d352l")]
 

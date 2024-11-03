@@ -1,4 +1,6 @@
 extends Node
+var camera : Node3D = null
+var player : Node3D = null
 var state_chart_already_exists : bool = false
 var debug = false
 

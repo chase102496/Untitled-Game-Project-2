@@ -4,6 +4,7 @@ extends Node
 @export var my_component_movement_controller : component_movement_controller
 
 var direction = Vector2.ZERO
+var raw_direction = Vector2.ZERO
 var jump : bool = false
 var jump_damper : bool = false
 
@@ -22,7 +23,8 @@ func _on_state_physics_processing_explore(_delta: float) -> void:
 			var from = Vector2(owner.global_position.x,owner.global_position.z)
 			var to = Vector2(player.global_position.x,player.global_position.z)
 			var result_dir = from.direction_to(to).normalized()
-			direction = Vector2(snapped(result_dir.x,0.1),snapped(result_dir.y,0.1))
+			direction = Vector2(snapped(result_dir.x,0.25),snapped(result_dir.y,0.25)) #less jitter
+			raw_direction = direction.rotated(Global.camera.global_rotation.y)
 		else:
 			direction = Vector2.ZERO
 	#Jumping

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Logic/scripts/turn_arena.gd" id="1_3biaj"]
 [ext_resource type="Script" path="res://Logic/scripts/turn_manager3d.gd" id="1_k1dsd"]
-[ext_resource type="Texture2D" path="res://textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
+[ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://Art/textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
 [ext_resource type="Resource" uid="uid://m0fodoqc7ee4" path="res://scenes/camera_resource.tres" id="4_4ycum"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="4_xytlk"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_hyi0i"]

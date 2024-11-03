@@ -23,6 +23,7 @@ PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_came
 Battle="*res://Logic/globals/battle.gd"
 Global="*res://Logic/globals/global.gd"
 Glossary="*res://Logic/globals/glossary.gd"
+DrawLine3D="*res://Logic/globals/drawline3d.gd"
 
 [debug]
 

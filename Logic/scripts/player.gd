@@ -25,6 +25,7 @@ var stats : Dictionary = {
 }
 
 func _ready() -> void:
+	Global.player = self
 	#Debug
 	#name = str(name," ",randi())
 	#Dialogic
@@ -46,7 +47,16 @@ func _physics_process(_delta: float) -> void:
 		Dialogic.start("timeline")
 		#anim_tree.get("parameters/playback").travel("attack_default")
 		
-	# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER
 	if Input.is_action_just_pressed("ui_cancel"):
-		Battle.battle_initialize(["player","dreamkin","enemy","enemy"],[{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
+		if Global.camera.follow_mode != 0:
+			Global.camera.follow_target = null
+			Global.camera.follow_mode = 0 #None
+			Global.camera.look_at_target = null
+			Global.camera.global_transform = get_parent().get_node("shot_waterfall").global_transform
+		else:
+			Global.camera.follow_target = self
+			Global.camera.follow_mode = 2 #Simple
+			Global.camera.look_at_target = self
+			# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER
+		#Battle.battle_initialize(["player","dreamkin","enemy","enemy"],[{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
 	

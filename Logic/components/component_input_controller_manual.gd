@@ -2,6 +2,7 @@ class_name component_input_controller_manual
 extends Node
 
 var direction = Vector2.ZERO
+var raw_direction = Vector2.ZERO
 var jump : bool = false
 var jump_damper : bool = false
 
@@ -11,7 +12,8 @@ func _ready() -> void:
 
 func _on_state_physics_processing_explore(_delta: float) -> void:
 	#Direction
-	direction = Input.get_vector("move_right","move_left","move_backward","move_forward")
+	raw_direction = Input.get_vector("move_left","move_right","move_forward","move_backward")
+	direction = raw_direction.rotated(-Global.camera.global_rotation.y)
 	#Jumping
 	if owner.is_on_floor() and Input.is_action_just_pressed("move_jump"):
 		#TODO
