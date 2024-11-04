@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=4 uid="uid://dqwob7hb2sqob"]
+[gd_scene load_steps=6 format=4 uid="uid://dqwob7hb2sqob"]
 
+[ext_resource type="Script" path="res://Logic/scripts/tree.gd" id="1_1c54c"]
 [ext_resource type="Material" uid="uid://c67631iuvadgg" path="res://Art/materials/tree_bark_darkgrey.tres" id="1_8vf72"]
 [ext_resource type="Material" uid="uid://dvca5qxnb2753" path="res://Art/materials/tree_leaves_white.tres" id="2_0luhu"]
 
@@ -36,6 +37,7 @@ height = 6.26
 radius = 0.467
 
 [node name="tree_chroma_2_0" type="Node3D"]
+script = ExtResource("1_1c54c")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_8ex2c")

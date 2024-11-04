@@ -9,6 +9,7 @@
 albedo_texture = ExtResource("1_7vfct")
 metallic = 0.2
 roughness = 0.5
+heightmap_scale = 16.0
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 uv1_world_triplanar = true
@@ -95,7 +96,7 @@ shadow_mesh = SubResource("ArrayMesh_ju4rg")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hgomi"]
 points = PackedVector3Array(0.41, 1.05, 0.239535, 0.00492069, 1.05, 0.473453, 0.41, 1, 0.239535, 0.41, 1.05, -0.228119, 0.00492069, 1, 0.473453, -0.4, 1.05, 0.239535, 0.41, 1, -0.228119, 0.00492069, 1.05, -0.461854, -0.4, 1, 0.239535, -0.4, 1.05, -0.228119, 0.00492069, 1, -0.461854, -0.4, 1, -0.228119)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6kdj5"]
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_d8v15"]
 points = PackedVector3Array(0.41, 1.05, 0.239535, 0.00492069, 1.05, 0.473453, 0.41, 1, 0.239535, 0.41, 1.05, -0.228119, 0.00492069, 1, 0.473453, -0.4, 1.05, 0.239535, 0.41, 1, -0.228119, 0.00492069, 1.05, -0.461854, -0.4, 1, 0.239535, -0.4, 1.05, -0.228119, 0.00492069, 1, -0.461854, -0.4, 1, -0.228119)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8vp3y"]
@@ -224,58 +225,66 @@ points = PackedVector3Array(-9.78708e-05, 0, 0.57735, 0.5, 0, 0.288562, -0.5, 0,
 [node name="hex_mesh_library" type="Node3D"]
 
 [node name="hex_top_stone" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 visible = false
 mesh = SubResource("ArrayMesh_qycxy")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="hex_top_stone"]
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hex_top_stone/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_xy135")
 
 [node name="hex_top_grass" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("ArrayMesh_k8dys")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="hex_top_grass"]
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hex_top_grass/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_hgomi")
 
 [node name="hex_top_dirt" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 visible = false
 mesh = ExtResource("1_4ngr3")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="hex_top_dirt"]
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hex_top_dirt/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_6kdj5")
+shape = SubResource("ConvexPolygonShape3D_d8v15")
 
 [node name="hex_base_long_stone" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51, 0)
 visible = false
 mesh = SubResource("ArrayMesh_bcg7i")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="hex_base_long_stone"]
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hex_base_long_stone/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_fpidy")
 
 [node name="hex_base_long_grass" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 visible = false
 mesh = SubResource("ArrayMesh_q2laf")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="hex_base_long_grass"]
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hex_base_long_grass/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_fpidy")
 
 [node name="hex_base_long_dirt" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 visible = false
 mesh = SubResource("ArrayMesh_tck58")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="hex_base_long_dirt"]
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hex_base_long_dirt/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_adhte")

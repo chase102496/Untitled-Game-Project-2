@@ -4,6 +4,7 @@
 
 [node name="DEBUG_3D_TEXT" type="Label3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.224335, -0.270939)
+visible = false
 billboard = 1
 double_sided = false
 no_depth_test = true

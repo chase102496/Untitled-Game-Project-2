@@ -1,6 +1,5 @@
 extends Label3D
 
-var enabled : bool = true
 @onready var prev = "init"
 @onready var history = "history"
 

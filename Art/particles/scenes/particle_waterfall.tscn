@@ -49,6 +49,5 @@ cast_shadow = 0
 amount = 50
 lifetime = 3.0
 randomness = 0.3
-draw_order = 1
 process_material = SubResource("ParticleProcessMaterial_3cgax")
 draw_pass_1 = SubResource("QuadMesh_bwovf")

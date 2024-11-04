@@ -613,10 +613,6 @@ func _exit_tree() -> void:
 
 
 func _ready():
-	
-	#HACK I ADDED THIS, NOT PHANTOM CAMERA NATIVE
-	Global.camera = self
-	
 	if follow_mode == FollowMode.THIRD_PERSON:
 		if not Engine.is_editor_hint():
 			if not is_instance_valid(_follow_spring_arm):
