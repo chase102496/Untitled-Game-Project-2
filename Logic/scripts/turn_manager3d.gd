@@ -31,10 +31,12 @@ func _on_turn_end():
 	Battle.active_character = Battle.battle_list[new_index]
 	Events.turn_start.emit()
 	
-func _on_battle_finished(outcome):
-	if outcome == "Win":
+func _on_battle_finished(result):
+	if result == "Win":
 		print_debug("Yay!")
 		get_tree().change_scene_to_file("res://levels/dream_garden.tscn")
-	elif outcome == "Lose":
+	elif result == "Lose":
 		print_debug("womp womp")
 		get_tree().change_scene_to_file("res://levels/dream_garden.tscn")
+	else:
+		push_error("ERROR")

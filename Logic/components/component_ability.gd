@@ -19,8 +19,13 @@ func add_status_effect(effect):
 		print_debug("!status added!")
 		current_status_effect = effect
 		effect.fx_add()
+	elif current_status_effect.priority < effect.priority:
+		remove_status_effect()
+		print_debug("!status overwritten!")
+		current_status_effect = effect
+		effect.fx_add()
 	else:
-		print_debug("!already existing status effect!")
+		print_debug("!cannot overwrite current status effect, it's too strong!")
 
 func remove_status_effect():
 	if current_status_effect:
@@ -33,9 +38,10 @@ func remove_status_effect():
 # - Status Effects - #
 class status:
 	var host : Node #The owner of the status effect. Who to apply it to
-	var duration : int
-	var title : String
-	var fx : Node
+	var duration : int #How many turns it lasts
+	var title : String #Name
+	var fx : Node #Visual fx
+	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
 	
 	func _init(host : Node) -> void:
 		self.host = host
@@ -76,6 +82,7 @@ class status_fear:
 		self.host = host
 		self.duration = duration
 		self.title = "Fear"
+		self.priority = 1
 	
 	func on_start():
 		host.my_component_ability.skillcheck_difficulty += 1

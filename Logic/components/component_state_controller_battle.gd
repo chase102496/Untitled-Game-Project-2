@@ -15,10 +15,7 @@ func _ready() -> void:
 	
 	#Battle
 	Events.turn_start.connect(_on_turn_start)
-	Events.battle_entity_cast_failed.connect(_on_battle_entity_cast_failed)
-	Events.battle_entity_on_hit.connect(_on_battle_entity_on_hit)
-	Events.battle_entity_hurt.connect(_on_battle_entity_hurt)
-	Events.battle_entity_death.connect(_on_battle_entity_death)
+	Events.battle_entity_damaged.connect(_on_battle_entity_damaged)
 	#
 	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
 	%StateChart/Main/Battle/Start.state_entered.connect(_on_state_entered_battle_start)
@@ -55,23 +52,24 @@ func _on_animation_finished(anim_name,character) -> void:
 				"hurt":
 					owner.state_chart.send_event(state_chart_memory) #Statecharts has a bug so I bandaided it
 				"death":
-					Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
 					#Check if we are the last one
-					if len(Battle.get_team(Global.alignment.FOES)) == 0: #TODO Make an end battle screen? Nah actually
-						Events.battle_finished.emit("Win")
-					elif len(Battle.get_team(Global.alignment.FRIENDS)) == 0:
-						Events.battle_finished.emit("Lose")
+					if len(Battle.my_team(owner)) == 1:
+						if owner.stats.alignment == Global.alignment.FOES:
+							Events.battle_finished.emit("Win")
+						elif owner.stats.alignment == Global.alignment.FRIENDS:
+							Events.battle_finished.emit("Lose")
+						else:
+							push_error("ERROR")
+					#If we aren't just end turn
 					elif Battle.active_character == owner:
 						Events.turn_end.emit()
+					#if we just died and it wasn't our turn, do nothing
+					else:
+						pass
+					Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
 					owner.queue_free() #deletus da fetus
 
-func _on_battle_entity_cast_failed() -> void:
-	pass
-func _on_battle_entity_on_hit() -> void:
-	pass
-func _on_battle_entity_hurt() -> void:
-	pass
-func _on_battle_entity_death() -> void:
+func _on_battle_entity_damaged(entity : Node, amount : int):
 	pass
 
 func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN

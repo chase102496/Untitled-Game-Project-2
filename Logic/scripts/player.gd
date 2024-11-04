@@ -51,6 +51,6 @@ func _physics_process(_delta: float) -> void:
 		if get_tree().current_scene.name == "turn_arena":
 			Events.battle_finished.emit("Win")
 		elif get_tree().current_scene.name == "dream_garden":
-			Battle.battle_initialize(["player","dreamkin","enemy","enemy"],[{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
+			Battle.battle_initialize(["player","dreamkin","enemy","enemy","enemy","enemy","enemy","enemy"],[{},{},{},{},{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")
 		
 	
