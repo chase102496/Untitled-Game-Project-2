@@ -4,99 +4,156 @@ extends Node
 @export var my_component_status : component_status
 
 @onready var cast_queue : Object = null
-@onready var current_status_effect : Object = null
+
+@onready var current_status_effect : Object = status_manager.new()
+#@onready var current_status_effect_2 : Object = status_manager.new()
 
 #We will not assign spells this way, might need to fix tho, hard to set em up without all the vars right in front of you 
 @onready var my_abilities : Array = [ability_tackle.new(owner),ability.new(owner),ability.new(owner),ability.new(owner)]# FIXME starts blank
 @onready var max_ability_count : int = 4
 @onready var skillcheck_difficulty : float = 1.0
 
+func _ready() -> void:
+	#current_status_effect_2.NORMAL = status.new(Global.player)
+	#current_status_effect_2.status_event("test")
+	pass
 #------------------------------------------------------------------------------
 #DONT use name or owner, already taken
 #HACK _init is where you store stuff you'd only need way before battle, like damage, vis cost, etc
 
 # - Functions - #
-func add_status_effect(effect):
-	if !current_status_effect:
-		print_debug("!status added!")
-		current_status_effect = effect
-		effect.fx_add()
-	elif current_status_effect.priority < effect.priority:
-		remove_status_effect()
-		print_debug("!status overwritten!")
-		current_status_effect = effect
-		effect.fx_add()
-	else:
-		print_debug("!cannot overwrite current status effect, it's too strong!")
+#Global.status_type.NORMAL, TETHER and SOULBOUND
+#NORMAL is just normal status effects, they can overwrite eachother based on priority
+#TETHER is an ability based binding, that ties one unit to another in some way
+#SOULBOUND is a permanent version of TETHER that persists through battle
 
-func remove_status_effect():
-	if current_status_effect:
-		print_debug("!status removed!")
-		current_status_effect.fx_remove()
-		current_status_effect = null
-	else:
-		print_debug("!no status effect to remove!")
+class status_manager:
+	var NORMAL #Buffs, debuffs, DoT, etc.
+	var TETHER #Primarily for Lumia's stitch mechanic
+	var SOULBOUND #Primarily for permanent bonds that start at battle initialize
+	
+	func add(effect : Object):
+		match effect.category:
+			"NORMAL":
+				if !NORMAL:
+					NORMAL = effect
+					effect.fx_add()
+					print_debug("!status added!")
+				elif NORMAL.priority < effect.priority:
+					remove(NORMAL)
+					NORMAL = effect
+					effect.fx_add()
+					print_debug("!status overwritten!")
+				else:
+					print_debug("!cannot overwrite current status effect, it's too strong!")
+			"TETHER":
+				if !TETHER:
+					TETHER = effect
+					effect.fx_add()
+					print_debug("!status added!")
+				elif TETHER.priority < effect.priority:
+					remove(TETHER)
+					TETHER = effect
+					effect.fx_add()
+					print_debug("!status overwritten!")
+				else:
+					print_debug("!cannot overwrite current status effect, it's too strong!")
+			"SOULBOUND":
+				if !SOULBOUND:
+					SOULBOUND = effect
+					effect.fx_add()
+					print_debug("!status added!")
+				elif SOULBOUND.priority < effect.priority:
+					remove(SOULBOUND)
+					SOULBOUND = effect
+					effect.fx_add()
+					print_debug("!status overwritten!")
+				else:
+					print_debug("!cannot overwrite current status effect, it's too strong!")
+			_:
+				push_error("COULD NOT ADD ",effect," TO ",effect.category)
+	
+	func remove(effect : Object):
+		match effect.category:
+			"NORMAL":
+				if NORMAL:
+					print_debug("!status removed!")
+					NORMAL.fx_remove()
+					NORMAL = null
+				else:
+					print_debug("!no status effect to remove!")
+			"TETHER":
+				if TETHER:
+					print_debug("!status removed!")
+					TETHER.fx_remove()
+					TETHER = null
+				else:
+					print_debug("!no status effect to remove!")
+			"SOULBOUND":
+				if SOULBOUND:
+					print_debug("!status removed!")
+					SOULBOUND.fx_remove()
+					SOULBOUND = null
+				else:
+					print_debug("!no status effect to remove!")
+			_:
+				push_error("COULD NOT REMOVE ",effect," TO ",effect.category)
+
+	func status_event(event : String, arg1 = null, arg2 = null, arg3 = null):
+		if NORMAL and NORMAL.has_method(event):
+			if arg3:
+				Callable(NORMAL,event).call(arg1,arg2,arg3)
+			elif arg2:
+				Callable(NORMAL,event).call(arg1,arg2)
+			elif arg1:
+				Callable(NORMAL,event).call(arg1)
+			else:
+				Callable(NORMAL,event).call()
+		if TETHER and TETHER.has_method(event):
+			if arg3:
+				Callable(TETHER,event).call(arg1,arg2,arg3)
+			elif arg2:
+				Callable(TETHER,event).call(arg1,arg2)
+			elif arg1:
+				Callable(TETHER,event).call(arg1)
+			else:
+				Callable(TETHER,event).call()
+		if SOULBOUND and SOULBOUND.has_method(event):
+			if arg3:
+				Callable(SOULBOUND,event).call(arg1,arg2,arg3)
+			elif arg2:
+				Callable(SOULBOUND,event).call(arg1,arg2)
+			elif arg1:
+				Callable(SOULBOUND,event).call(arg1)
+			else:
+				Callable(SOULBOUND,event).call()
 
 #need to make a tether class and then subclasses based on what to do with the tether
 #one called tether_heart which shares damage between the two
 #one called tether_undying which makes the target check if its partner is dead before truly dying, and if not, "revive" to full health
 #	should play death animation and stay in it until the next start() and then revive and reset to full
 #
-#class tether:
-	#extends status
-	#var partner : Node #partner of tether to access
-	#
-	#func _init(host : Node,partner : Node) -> void:
-		#self.host = host
-		#self.title = "---"
-		#self.partner = partner
-	#
-	#func on_duration():
-		#if duration > 0:
-			#duration -= 1
-		#else:
-			#on_remove()
-			#host.my_component_ability.remove_status_effect()
-	#
-	#func on_start(): #runs on start of turn
-		#pass
-	#
-	#func on_skillcheck(): #runs right before skillcheck
-		#pass
-	#
-	#func on_hit(): #runs right after we attack someone
-		#pass
-	#
-	#func on_end(): #runs on end of turn
-		#pass
-	#
-	#func on_remove(): #runs when status effect expires
-		#print_debug(title," wore off for ",host.name,"!")
-	#
-	#func fx_add():
-		#pass
-	#
-	#func fx_remove():
-		#pass
 
 # - Status Effects - #
 class status:
 	var host : Node #The owner of the status effect. Who to apply it to
+	var category : String = "NORMAL"
 	var duration : int #How many turns it lasts
-	var title : String #Name
+	var title : String = "---"
 	var fx : Node #Visual fx
 	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
 	
 	func _init(host : Node) -> void:
 		self.host = host
-		self.title = "---"
+	
+	func test():
+		print("SUCCESS")
 	
 	func on_duration():
 		if duration > 0:
 			duration -= 1
 		else:
 			on_remove()
-			host.my_component_ability.remove_status_effect()
 	
 	func on_start(): #runs on start of turn
 		pass
@@ -104,7 +161,10 @@ class status:
 	func on_skillcheck(): #runs right before skillcheck
 		pass
 	
-	func on_hit(): #runs right after we attack someone
+	func on_target_hit(): #runs right after we attack someone
+		pass
+	
+	func on_host_health_change(entity,amount): #runs when the host of the status effect's health changes
 		pass
 	
 	func on_end(): #runs on end of turn
@@ -112,13 +172,16 @@ class status:
 	
 	func on_remove(): #runs when status effect expires
 		print_debug(title," wore off for ",host.name,"!")
+		host.my_component_ability.current_status_effect.remove(self)
 	
 	func fx_add():
 		pass
 	
 	func fx_remove():
 		pass
+# ---
 
+# NORMAL
 class status_fear:
 	extends status
 	
@@ -152,10 +215,10 @@ class status_burn:
 		self.title = "Burn"
 	
 	func on_end():
-		host.my_component_health.damage(damage,Global.type.NOVA) #Do nova damage
+		host.my_component_health.damage(damage)
 	
 	func fx_add():
-		fx = Glossary.particle.burn.instantiate() #TODO make particle
+		fx = Glossary.particle.burn.instantiate()
 		host.sprite.add_child(fx)
 		fx.global_position = host.sprite.global_position
 	
@@ -163,7 +226,44 @@ class status_burn:
 		fx.queue_free()
 		fx = null
 
-# - Abilities -
+# TETHER
+
+class status_tether_heart:
+	extends status
+	
+	var partner : Node
+	var fx2 : Node
+	
+	func _init(host : Node,partner : Node,duration : int) -> void:
+		self.host = host #who is the initial target of the stitch
+		self.partner = partner #who is paired to the host
+		self.duration = duration
+		self.category = "TETHER"
+		self.title = "Heart Stitch"
+	
+	func on_host_health_change(entity,amount): #the bread n butta of heartstitch
+		if entity == host: #if person hurt was our host
+			partner.my_component_health.damage(amount,true) #TODO mirror damage to our partner
+			print_debug(partner.name," took ",amount," points of mirror damage!")
+		elif entity == partner:
+			host.my_component_health.damage(amount,true) #TODO mirror damage to our host
+			print_debug(host.name," took ",amount," points of mirror damage!")
+	
+	func fx_add():
+		fx = Glossary.particle.burn.instantiate() #TODO make particle
+		fx2 = Glossary.particle.burn.instantiate()
+		host.sprite.add_child(fx)
+		partner.sprite.add_child(fx2)
+		fx.global_position = host.sprite.global_position
+		fx2.global_position = partner.sprite.global_position
+	
+	func fx_remove():
+		fx.queue_free()
+		fx2.queue_free()
+		fx = null
+		fx2 = null
+
+# - Abilities - #
 class ability:
 
 	#These will be enums
@@ -227,6 +327,7 @@ class ability:
 	#when they were healthy will reference any calls in our spell's vocab and we don't have to do anything on character-side
 	#E.g. Poison spell
 	#Has function status_effect_on_start
+# ---
 
 class ability_template_default: #Standard ability with vis cost and skillcheck
 	extends ability
@@ -266,7 +367,7 @@ class ability_spook:
 			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
 			target.my_component_health.damage(damage) #Flat damage
-			target.my_component_ability.add_status_effect(status_fear.new(target,skillcheck_modifier*2)) #duration is 2x of modifier
+			target.my_component_ability.current_status_effect.add(status_fear.new(target,skillcheck_modifier*2)) #duration is 2x of modifier
 		else:
 			print_debug("It failed!")
 			
@@ -278,7 +379,7 @@ class ability_solar_flare:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		self.type = Global.type.NOVA
+		type = Global.type.NOVA
 		title = "Solar Flare"
 		vis_cost = 2
 		damage = 1
@@ -290,7 +391,7 @@ class ability_solar_flare:
 			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
 			target.my_component_health.damage(damage) #Flat damage
-			target.my_component_ability.add_status_effect(status_burn.new(target,skillcheck_modifier*2,1))
+			target.my_component_ability.current_status_effect.add(status_burn.new(target,skillcheck_modifier*2,1))
 			target.state_chart.send_event("on_hurt")
 		else:
 			print_debug("It failed!")
@@ -313,3 +414,28 @@ class ability_tackle:
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
 		target.my_component_health.damage(skillcheck_modifier*damage)
 		caster.my_component_vis.siphon(vis_cost)
+
+class ability_heart_stitch:
+	extends ability_template_default
+	
+	func _init(caster : Node) -> void:
+		self.caster = caster
+		type = Global.type.VOID
+		title = "Heartstitch"
+		vis_cost = 2
+		damage = 1
+		valid_targets = [Global.alignment.FOES,Global.alignment.FRIENDS]
+	
+	func cast_main():
+		print_debug(caster.name, " tried to stitch ", target.name,"!") #TODO
+		if skillcheck_modifier > 0:
+			print_debug("It was successful!")
+			caster.my_component_vis.siphon(vis_cost)
+			target.my_component_health.damage(damage) #Flat damage
+			target.my_component_ability.current_status_effect.add(status_tether_heart.new(target,caster,skillcheck_modifier*1))
+			target.state_chart.send_event("on_hurt")
+		else:
+			print_debug("It failed!")
+			
+	func animation():
+		caster.anim_tree.get("parameters/playback").travel("default_attack") #TODO

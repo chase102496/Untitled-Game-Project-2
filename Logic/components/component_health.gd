@@ -7,11 +7,11 @@ var health : int
 func _ready() -> void:
 	health = max_health
 
-func damage(amt,type : Dictionary = Global.type.NEUTRAL):
+func damage(amt, mirror_damage : bool = false, type : Dictionary = Global.type.NEUTRAL,):
 	
 	if amt != 0:
-		Events.battle_entity_damaged.emit(self,amt)
-		
+		if !mirror_damage: #To protect recursive when using heartstitch
+			Events.battle_entity_damaged.emit(owner,amt)
 		match type:
 			Global.type.VOID:
 				#Send signal out that we recieved damage, who we are, and how much

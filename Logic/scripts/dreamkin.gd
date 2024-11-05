@@ -4,7 +4,7 @@ extends CharacterBody3D
 @onready var my_component_health: component_health = %Components/component_health
 @onready var my_component_vis: component_vis = %Components/component_vis
 @onready var my_component_ability: component_ability = %Components/component_ability
-@onready var my_component_status_effect_controller: component_status_effect_controller = %Components/component_status_effect_controller
+@onready var my_component_status: component_status = %Components/component_status
 @onready var my_component_state_controller_battle: component_state_controller_battle = %Components/component_state_controller_battle
 
 #Statecharts

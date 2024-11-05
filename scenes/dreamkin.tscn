@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://ct0v1pb5ehqc6"]
+[gd_scene load_steps=66 format=3 uid="uid://ct0v1pb5ehqc6"]
 
 [ext_resource type="Script" path="res://Logic/scripts/dreamkin.gd" id="1_uelph"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="2_bj2fs"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" path="res://Logic/components/component_status.gd" id="12_5sdgd"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="12_38hgc"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_follow.gd" id="12_efiqj"]
-[ext_resource type="Script" path="res://Logic/scripts/animated_sprite_3d.gd" id="13_8s7kv"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_explore.gd" id="14_yw0sx"]
 [ext_resource type="Script" path="res://Logic/components/components.gd" id="15_po7pm"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="16_if7q5"]
@@ -423,7 +422,7 @@ tracks/3/keys = {
 tracks/4/type = "method"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("%Components/component_state_controller_battle")
+tracks/4/path = NodePath("../character_animation_tree")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -625,7 +624,6 @@ texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_hyon4")
 animation = &"default_idle"
 frame = 1
-script = ExtResource("13_8s7kv")
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
 root_node = NodePath("../character_animation_sprite")

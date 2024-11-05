@@ -45,3 +45,14 @@ const type : Dictionary = {
 		"ICON" : "≋"
 	},
 }
+
+const status_type : Dictionary = {
+	"NORMAL" : {
+		"TITLE" : "Normal",
+		"ICON" : ""
+	},
+	"TETHER" : {
+		"TITLE" : "Tether",
+		"ICON" : "⛓"
+	}
+}

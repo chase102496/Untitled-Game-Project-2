@@ -1,4 +1,4 @@
-[gd_scene load_steps=113 format=3 uid="uid://d0k7ifshme1kl"]
+[gd_scene load_steps=112 format=3 uid="uid://d0k7ifshme1kl"]
 
 [ext_resource type="Script" path="res://Logic/scripts/enemy.gd" id="1_tu2mm"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="3_c8rcq"]
@@ -13,7 +13,6 @@
 [ext_resource type="AnimationNodeStateMachine" uid="uid://kayc3qljdn4u" path="res://Art/animations/character_animation_tree_player.tres" id="14_7s00h"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="15_aqqpw"]
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="15_f1sv5"]
-[ext_resource type="Script" path="res://Logic/scripts/animated_sprite_3d.gd" id="16_rd3nk"]
 [ext_resource type="Script" path="res://Logic/components/component_status.gd" id="17_bqk17"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="17_qyv5h"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="18_6vpc6"]
@@ -709,7 +708,7 @@ tracks/2/keys = {
 tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("%Components/component_state_controller_battle")
+tracks/3/path = NodePath("../character_animation_tree")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -787,7 +786,7 @@ tracks/4/keys = {
 tracks/5/type = "method"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("%Components/component_state_controller_battle")
+tracks/5/path = NodePath("../character_animation_tree")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1178,7 +1177,6 @@ texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_hyon4")
 animation = &"default_idle_down"
 frame = 1
-script = ExtResource("16_rd3nk")
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
 root_node = NodePath("../character_animation_sprite")

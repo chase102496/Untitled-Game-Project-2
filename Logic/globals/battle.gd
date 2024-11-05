@@ -4,16 +4,20 @@ var active_character : Node3D = null
 var battle_list : Array = []
 var battle_list_ready : bool = true
 
-func my_team(character):
+func team_adjacent(character : Node,direction : int):
+	var team = my_team(character)
+	
+
+func my_team(character : Node):
 	return get_team(character.stats.alignment)
 
-func opposing_team(character):
+func opposing_team(character : Node):
 	if character.stats.alignment == Global.alignment.FRIENDS:
 		return get_team(Global.alignment.FOES)
 	else:
 		return get_team(Global.alignment.FRIENDS)
 
-func get_team(alignment):
+func get_team(alignment : String):
 	var team = []
 	for i in len(battle_list):
 		if battle_list[i].stats.alignment == alignment:
