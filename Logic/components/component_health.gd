@@ -11,6 +11,7 @@ func damage(amt,type : Dictionary = Global.type.NEUTRAL):
 	
 	if amt != 0:
 		Events.battle_entity_damaged.emit(self,amt)
+		
 		match type:
 			Global.type.VOID:
 				#Send signal out that we recieved damage, who we are, and how much

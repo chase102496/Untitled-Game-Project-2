@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://3toebp44q7k4"]
 
-[ext_resource type="Script" path="res://Logic/scripts/turn_arena.gd" id="1_3biaj"]
+[ext_resource type="Script" path="res://Logic/scripts/scene_tree_script.gd" id="1_0n5a0"]
 [ext_resource type="Script" path="res://Logic/scripts/turn_manager3d.gd" id="1_k1dsd"]
 [ext_resource type="PackedScene" uid="uid://qklm0d27lwlg" path="res://scenes/camera.tscn" id="2_vx8wr"]
 [ext_resource type="Texture2D" uid="uid://dwditrmbo3y4n" path="res://Art/textures/kenney_prototype_textures/dark/texture_09.png" id="3_4sg4e"]
@@ -18,7 +18,7 @@ size = Vector2(0.25, 0.25)
 [sub_resource type="HeightMapShape3D" id="HeightMapShape3D_jv2gb"]
 
 [node name="turn_arena" type="Node3D"]
-script = ExtResource("1_3biaj")
+script = ExtResource("1_0n5a0")
 
 [node name="Camera" parent="." instance=ExtResource("2_vx8wr")]
 transform = Transform3D(-0.999701, 9.13814e-09, -8.6944e-08, 0, 0.994519, 0.104529, 8.73966e-08, 0.104528, -0.994523, 0, -0.595, -3)

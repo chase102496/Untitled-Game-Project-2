@@ -1,6 +1,8 @@
 class_name component_ability
 extends Node
 
+@export var my_component_status : component_status
+
 @onready var cast_queue : Object = null
 @onready var current_status_effect : Object = null
 
@@ -34,6 +36,48 @@ func remove_status_effect():
 		current_status_effect = null
 	else:
 		print_debug("!no status effect to remove!")
+
+#need to make a tether class and then subclasses based on what to do with the tether
+#one called tether_heart which shares damage between the two
+#one called tether_undying which makes the target check if its partner is dead before truly dying, and if not, "revive" to full health
+#	should play death animation and stay in it until the next start() and then revive and reset to full
+#
+#class tether:
+	#extends status
+	#var partner : Node #partner of tether to access
+	#
+	#func _init(host : Node,partner : Node) -> void:
+		#self.host = host
+		#self.title = "---"
+		#self.partner = partner
+	#
+	#func on_duration():
+		#if duration > 0:
+			#duration -= 1
+		#else:
+			#on_remove()
+			#host.my_component_ability.remove_status_effect()
+	#
+	#func on_start(): #runs on start of turn
+		#pass
+	#
+	#func on_skillcheck(): #runs right before skillcheck
+		#pass
+	#
+	#func on_hit(): #runs right after we attack someone
+		#pass
+	#
+	#func on_end(): #runs on end of turn
+		#pass
+	#
+	#func on_remove(): #runs when status effect expires
+		#print_debug(title," wore off for ",host.name,"!")
+	#
+	#func fx_add():
+		#pass
+	#
+	#func fx_remove():
+		#pass
 
 # - Status Effects - #
 class status:

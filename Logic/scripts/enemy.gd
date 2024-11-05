@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var my_component_vis: component_vis = %Components/component_vis
 @onready var my_component_ability: component_ability = %Components/component_ability
 @onready var my_component_state_controller_battle: component_state_controller_battle = %Components/component_state_controller_battle
+@onready var my_component_status_effect_controller: component_status_effect_controller = %Components/component_status_effect_controller
 #Statecharts
 @onready var state_chart: StateChart = %StateChart
 @onready var state_subchart_battle := %StateChart/Main/Battle

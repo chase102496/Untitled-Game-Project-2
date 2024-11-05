@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=116 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://Logic/scripts/player.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://Art/sprites/The Adventurer - Free/Idle/idle_down.png" id="3_hetwx"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="15_13wkk"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="16_ult57"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="18_ghucg"]
+[ext_resource type="Script" path="res://Logic/components/component_status.gd" id="19_gd6a2"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="20_6nw5h"]
 [ext_resource type="Script" path="res://Logic/components/components.gd" id="20_ibw1c"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="20_yn4w4"]
@@ -1211,6 +1212,12 @@ script = ExtResource("20_ibw1c")
 script = ExtResource("18_ghucg")
 my_component_ability = NodePath("../component_ability")
 
+[node name="component_ability" type="Node" parent="Components"]
+script = ExtResource("9_8x8g7")
+
+[node name="component_status" type="Node" parent="Components"]
+script = ExtResource("19_gd6a2")
+
 [node name="component_state_controller_explore" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("10_tnwy7")
 my_component_input_controller = NodePath("../component_input_controller_manual")
@@ -1220,9 +1227,6 @@ script = ExtResource("4_33msd")
 
 [node name="component_vis" type="Node" parent="Components"]
 script = ExtResource("20_yn4w4")
-
-[node name="component_ability" type="Node" parent="Components"]
-script = ExtResource("9_8x8g7")
 
 [node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("21_j14mx")

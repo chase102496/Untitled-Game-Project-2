@@ -70,6 +70,7 @@ func _on_animation_finished(anim_name,character) -> void:
 					owner.queue_free() #deletus da fetus
 
 func _on_battle_entity_damaged(entity : Node, amount : int):
+	#run 
 	pass
 
 func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN

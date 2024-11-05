@@ -1,4 +1,4 @@
-[gd_scene load_steps=112 format=3 uid="uid://d0k7ifshme1kl"]
+[gd_scene load_steps=113 format=3 uid="uid://d0k7ifshme1kl"]
 
 [ext_resource type="Script" path="res://Logic/scripts/enemy.gd" id="1_tu2mm"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="3_c8rcq"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="15_aqqpw"]
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="15_f1sv5"]
 [ext_resource type="Script" path="res://Logic/scripts/animated_sprite_3d.gd" id="16_rd3nk"]
+[ext_resource type="Script" path="res://Logic/components/component_status.gd" id="17_bqk17"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="17_qyv5h"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="18_6vpc6"]
 [ext_resource type="Script" path="res://Logic/components/components.gd" id="18_orvp7"]
@@ -1201,6 +1202,10 @@ script = ExtResource("15_f1sv5")
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("18_orvp7")
+
+[node name="component_status" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
+script = ExtResource("17_bqk17")
+my_component_ability = NodePath("../component_ability")
 
 [node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
 script = ExtResource("17_qyv5h")
