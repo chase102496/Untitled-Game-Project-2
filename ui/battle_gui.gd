@@ -3,6 +3,8 @@ extends Control
 @onready var selector_list : Array
 @onready var selected_ability : Object
 @onready var selected_target : Object
+@onready var selected_target_2 : Object
+
 @onready var selector_sprite : Node = $"Selector Sprite"
 
 @onready var ui_grid_menu : Node = $Container/Menu #Any menu that isn't a selector or skillcheck
@@ -155,7 +157,7 @@ func _on_state_exited_battle_gui_skillcheck():
 	ui_skillcheck.hide()
 	ui_skillcheck_cursor_anim.play()
 	
-# ------------------------------------------- States ^ and Buttons \/
+# ------------------------------------------- States ^ | Buttons \/
 
 func _on_button_pressed_battle():
 	state_chart.send_event("on_gui_battle")
@@ -167,22 +169,8 @@ func _on_button_pressed_battle_ability(ability):
 	selected_ability = ability #for use later
 	
 	if ability.select_validate():
-		#TODO check if it is a targetable spell first, if not skip this part
-		for i in len(Battle.battle_list): #adds potential targets to our selector list to select a tgt
-			var unit = Battle.battle_list[i]
-			if unit.stats.alignment == Global.alignment.FOES: #add foes first as prio for target
-				selector_list.append(unit)
-			elif unit.stats.alignment in ability.valid_targets: #add others second and prio for target
-				selector_list.push_front(unit)
+		selector_list = Battle.get_target_type_list(owner,selected_ability.target_type,true)
 		state_chart.send_event("on_gui_select")
-			
-		#signal a new thing to happen
-		
-		#HACK
-		
-		#function to select goes here
-		
-		#after selection
 	else:
 		ability.select_validate_failed()
 		

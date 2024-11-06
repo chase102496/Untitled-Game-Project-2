@@ -10,6 +10,7 @@ var get_all_colliders : Array = []
 func _ready() -> void:
 	Global.camera_function = self
 	Global.camera = owner
+	Global.camera_object = $"../Camera3D"
 
 func shot_transition(new_location):
 #if Global.camera.follow_mode != 0:

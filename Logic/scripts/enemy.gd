@@ -17,7 +17,7 @@ extends CharacterBody3D
 @onready var sprite : AnimatedSprite3D = %Animations/character_animation_sprite
 
 var stats : Dictionary = {
-	"alignment" : Global.alignment.FOES, #Side of the field I will fight on
+	"alignment" : Battle.alignment.FOES, #Side of the field I will fight on
 	"glossary" : "enemy", #Unit category I was spawned from
 	"spacing" : Vector3(0.6,0,-0.1), #spacing when unit is spawned in battle
 }

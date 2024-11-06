@@ -33,6 +33,7 @@ class status_manager:
 	var SOULBOUND #Primarily for permanent bonds that start at battle initialize
 	
 	func add(effect : Object):
+		#check if they have a partner with the buff NAH
 		match effect.category:
 			"NORMAL":
 				if !NORMAL:
@@ -245,7 +246,7 @@ class status_tether_heart:
 		if entity == host: #if person hurt was our host
 			partner.my_component_health.damage(amount,true) #TODO mirror damage to our partner
 			print_debug(partner.name," took ",amount," points of mirror damage!")
-		elif entity == partner:
+		elif entity == partner: #if person was our partner
 			host.my_component_health.damage(amount,true) #TODO mirror damage to our host
 			print_debug(host.name," took ",amount," points of mirror damage!")
 	
@@ -266,17 +267,15 @@ class status_tether_heart:
 # - Abilities - #
 class ability:
 
-	#These will be enums
-	#Type of ability: Damage/Status/Utility(Heal, recover, cleanse)
-	#valid_targets: Self/Foes/Friends/All/No target
-
 	var skillcheck_modifier : int = 1
 	var caster : Node
 	var target : Node = null
-	var valid_targets : Array = [Global.alignment.FRIENDS,Global.alignment.FOES] #who we can target, can be my team, enemy team, self, or none.
+	#Change this to a function (Callable type) that returns a list of whatever you want. Make the function in Battle
+	var target_type : String = Battle.target_type.EVERYONE #Who we can target on the field
+	var target_selector : String = Battle.target_selector.SINGLE #How many targets we select
 	
 	var title : String = "---"
-	var type : Dictionary = Global.type.EMPTY
+	var type : Dictionary = Battle.type.EMPTY
 	
 	var damage : int = 0
 	var vis_cost : int = 0
@@ -356,7 +355,7 @@ class ability_spook:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		type = Global.type.VOID
+		type = Battle.type.VOID
 		title = "Spook"
 		vis_cost = 2
 		damage = 1
@@ -379,11 +378,10 @@ class ability_solar_flare:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		type = Global.type.NOVA
+		type = Battle.type.NOVA
 		title = "Solar Flare"
 		vis_cost = 2
 		damage = 1
-		valid_targets = [Global.alignment.FOES]
 	
 	func cast_main():
 		print_debug(caster.name, " tried to ignite ", target.name,"!")
@@ -405,7 +403,7 @@ class ability_tackle:
 	func _init(caster : Node) -> void:
 		self.caster = caster
 		self.damage = 1
-		self.type = Global.type.NEUTRAL
+		self.type = Battle.type.NEUTRAL
 		title = "Tackle"
 	
 	func cast_main():
@@ -420,11 +418,10 @@ class ability_heart_stitch:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		type = Global.type.VOID
+		type = Battle.type.VOID
 		title = "Heartstitch"
 		vis_cost = 2
 		damage = 1
-		valid_targets = [Global.alignment.FOES,Global.alignment.FRIENDS]
 	
 	func cast_main():
 		print_debug(caster.name, " tried to stitch ", target.name,"!") #TODO

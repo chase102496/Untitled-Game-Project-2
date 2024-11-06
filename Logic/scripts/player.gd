@@ -20,7 +20,7 @@ extends CharacterBody3D
 @onready var my_battle_gui : Control = %Battle_GUI
 
 var stats : Dictionary = {
-	"alignment" : Global.alignment.FRIENDS, #Side of the field I will fight on
+	"alignment" : Battle.alignment.FRIENDS, #Side of the field I will fight on
 	"glossary" : "player", #Unit category I was spawned from
 	"spacing" : Vector3(0.6,0,-0.1), #spacing when unit is spawned in battle
 }
