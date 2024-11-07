@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=118 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://Logic/scripts/player.gd" id="1_5m8nv"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://Art/sprites/The Adventurer - Free/Idle/idle_down.png" id="3_hetwx"]
@@ -26,6 +26,20 @@
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="21_j14mx"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="22_munar"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="23_lkweg"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4fh3i"]
+viewport_path = NodePath("Status_HUD/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j3uce"]
+resource_local_to_scene = true
+transparency = 1
+diffuse_mode = 3
+albedo_texture = SubResource("ViewportTexture_4fh3i")
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_2o35i"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_j3uce")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h7j1u"]
 
@@ -1158,14 +1172,39 @@ _data = {
 physics_interpolation_mode = 1
 script = ExtResource("1_5m8nv")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
+[node name="Status_HUD" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="SubViewport" type="SubViewport" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Status_HUD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("QuadMesh_2o35i")
 
-[node name="ProgressBar" type="ProgressBar" parent="SubViewport"]
-offset_right = 192.0
-offset_bottom = 27.0
-value = 50.0
+[node name="SubViewport" type="SubViewport" parent="Status_HUD"]
+transparent_bg = true
+render_target_update_mode = 4
+
+[node name="PanelContainer" type="Control" parent="Status_HUD/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="status_grid" type="GridContainer" parent="Status_HUD/SubViewport/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -87.0
+offset_top = -150.0
+offset_right = 87.0
+grow_horizontal = 2
+grow_vertical = 0
+columns = 2
 
 [node name="StateChart" parent="." instance=ExtResource("23_lkweg")]
 unique_name_in_owner = true
@@ -1210,6 +1249,8 @@ script = ExtResource("15_13wkk")
 
 [node name="Battle_GUI" parent="." instance=ExtResource("12_pmvac")]
 unique_name_in_owner = true
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true

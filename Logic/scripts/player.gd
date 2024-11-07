@@ -45,7 +45,9 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	
 	if Input.is_action_just_pressed("interact"):
-		Dialogic.start("timeline")
+		var inst = Glossary.ui.heartstitch.instantiate()
+		%status_grid.add_child(inst)
+		#Dialogic.start("timeline")
 		#anim_tree.get("parameters/playback").travel("attack_default")
 		
 	if Input.is_action_just_pressed("ui_cancel"):

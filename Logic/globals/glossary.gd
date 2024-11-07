@@ -10,3 +10,7 @@ const particle : Dictionary = {
 	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
 	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn")
 	}
+
+const ui : Dictionary = {
+	"heartstitch" : preload("res://ui/status_effect_heartstitch.tscn")
+}
