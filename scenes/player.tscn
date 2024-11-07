@@ -1158,6 +1158,15 @@ _data = {
 physics_interpolation_mode = 1
 script = ExtResource("1_5m8nv")
 
+[node name="Sprite3D" type="Sprite3D" parent="."]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="SubViewport"]
+offset_right = 192.0
+offset_bottom = 27.0
+value = 50.0
+
 [node name="StateChart" parent="." instance=ExtResource("23_lkweg")]
 unique_name_in_owner = true
 

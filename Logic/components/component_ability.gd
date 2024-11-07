@@ -232,44 +232,39 @@ class status_burn:
 class status_tether_heart:
 	extends status
 	
-	var partner : Node
-	var fx2 : Node
+	var partners : Array
+	#var fx2 : Node
 	
-	func _init(host : Node,partner : Node,duration : int) -> void:
+	func _init(host : Node,partners : Array,duration : int) -> void:
 		self.host = host #who is the initial target of the stitch
-		self.partner = partner #who is paired to the host
+		self.partners = partners #who is paired to the host
 		self.duration = duration
-		self.category = "TETHER"
-		self.title = "Heart Stitch"
+		category = "TETHER"
+		title = "Heartstitch"
 	
 	func on_host_health_change(entity,amount): #the bread n butta of heartstitch
-		if entity == host: #if person hurt was our host
-			partner.my_component_health.damage(amount,true) #TODO mirror damage to our partner
-			print_debug(partner.name," took ",amount," points of mirror damage!")
-		elif entity == partner: #if person was our partner
-			host.my_component_health.damage(amount,true) #TODO mirror damage to our host
-			print_debug(host.name," took ",amount," points of mirror damage!")
+		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
+			for i in len(partners):
+				if partners[i] != host:
+					partners[i].my_component_health.damage(amount,true)
+					print_debug(partners[i].name," took ",amount," points of mirror damage!")
 	
 	func fx_add():
 		fx = Glossary.particle.burn.instantiate() #TODO make particle
-		fx2 = Glossary.particle.burn.instantiate()
 		host.sprite.add_child(fx)
-		partner.sprite.add_child(fx2)
 		fx.global_position = host.sprite.global_position
-		fx2.global_position = partner.sprite.global_position
 	
 	func fx_remove():
 		fx.queue_free()
-		fx2.queue_free()
 		fx = null
-		fx2 = null
 
 # - Abilities - #
 class ability:
 
 	var skillcheck_modifier : int = 1
 	var caster : Node
-	var target : Node = null
+	var target : Node = null #TODO remove
+	var targets : Array = []
 	#Change this to a function (Callable type) that returns a list of whatever you want. Make the function in Battle
 	var target_type : String = Battle.target_type.EVERYONE #Who we can target on the field
 	var target_selector : String = Battle.target_selector.SINGLE #How many targets we select
@@ -288,7 +283,7 @@ class ability:
 		return result
 	
 	func select_validate_failed():
-		#print_debug("Can't do that")
+		print_debug("Can't do that")
 		#You can execute code here, run a Dialogic event to show them they can't use that, etc
 		pass
 	
@@ -313,7 +308,7 @@ class ability:
 			return false
 			
 	func cast_validate_failed():
-		print_debug("Missed!")
+		print_debug("It failed!")
 	
 	func cast_main(): #Main function, calls on hit
 		pass
@@ -330,6 +325,9 @@ class ability:
 
 class ability_template_default: #Standard ability with vis cost and skillcheck
 	extends ability
+	
+	func _init() -> void:
+		target_type = Battle.target_type.OPPONENTS
 	
 	func select_validate():
 		if caster.my_component_vis.vis >= vis_cost:
@@ -361,14 +359,15 @@ class ability_spook:
 		damage = 1
 
 	func cast_main():
-		print_debug(caster.name, " tried to spook ", target.name,"!")
 		if skillcheck_modifier > 0:
 			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
-			target.my_component_health.damage(damage) #Flat damage
-			target.my_component_ability.current_status_effect.add(status_fear.new(target,skillcheck_modifier*2)) #duration is 2x of modifier
+			for i in len(targets):
+				print_debug(caster.name, " tried to spook ", targets[i].name,"!")
+				targets[i].my_component_health.damage(damage) #Flat damage
+				targets[i].my_component_ability.current_status_effect.add(status_fear.new(targets[i],skillcheck_modifier*2)) #duration is 2x of modifier
 		else:
-			print_debug("It failed!")
+			cast_validate_failed()
 			
 	func animation():
 		caster.anim_tree.get("parameters/playback").travel("default_attack_spook")
@@ -384,15 +383,14 @@ class ability_solar_flare:
 		damage = 1
 	
 	func cast_main():
-		print_debug(caster.name, " tried to ignite ", target.name,"!")
 		if skillcheck_modifier > 0:
-			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
-			target.my_component_health.damage(damage) #Flat damage
-			target.my_component_ability.current_status_effect.add(status_burn.new(target,skillcheck_modifier*2,1))
-			target.state_chart.send_event("on_hurt")
+			for i in len(targets):
+				print_debug(caster.name, " ignited ", targets[i].name,"!")
+				targets[i].my_component_health.damage(damage) #Flat damage
+				targets[i].my_component_ability.current_status_effect.add(status_burn.new(targets[i],skillcheck_modifier*2,1))
 		else:
-			print_debug("It failed!")
+			cast_validate_failed()
 			
 	func animation():
 		caster.anim_tree.get("parameters/playback").travel("default_attack") #TODO make solar flare animation or FX
@@ -402,35 +400,47 @@ class ability_tackle:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		self.damage = 1
-		self.type = Battle.type.NEUTRAL
+		damage = 1
+		type = Battle.type.NEUTRAL
+		target_type = Battle.target_type.OPPONENTS
 		title = "Tackle"
 	
 	func cast_main():
-		#TODO setup animations
-		print_debug(caster.name, " Tackled ", target.name,"!")
-		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
-		target.my_component_health.damage(skillcheck_modifier*damage)
-		caster.my_component_vis.siphon(vis_cost)
+		if skillcheck_modifier > 0:
+			caster.my_component_vis.siphon(vis_cost)
+			for i in len(targets):
+				print_debug(caster.name, " Tackled ", targets[i].name,"!")
+				print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
+				targets[i].my_component_health.damage(skillcheck_modifier*damage)
+		else:
+			cast_validate_failed()
 
 class ability_heart_stitch:
 	extends ability_template_default
 	
+	var old_targets : Array = []
+
 	func _init(caster : Node) -> void:
 		self.caster = caster
+		target_selector = Battle.target_selector.SINGLE_RIGHT
 		type = Battle.type.VOID
 		title = "Heartstitch"
 		vis_cost = 2
 		damage = 1
 	
 	func cast_main():
-		print_debug(caster.name, " tried to stitch ", target.name,"!") #TODO
+		print_debug(caster.name, " tried to stitch ", targets[0].name,"!")
 		if skillcheck_modifier > 0:
 			print_debug("It was successful!")
 			caster.my_component_vis.siphon(vis_cost)
-			target.my_component_health.damage(damage) #Flat damage
-			target.my_component_ability.current_status_effect.add(status_tether_heart.new(target,caster,skillcheck_modifier*1))
-			target.state_chart.send_event("on_hurt")
+			for i in len(targets):
+				targets[i].my_component_health.damage(damage) #Flat damage
+				targets[i].my_component_ability.current_status_effect.add(status_tether_heart.new(targets[i],targets,skillcheck_modifier*1))
+			for i in len(old_targets):
+				if old_targets[i]:
+					if old_targets[i].my_component_ability.current_status_effect.TETHER.title == title: #If we find they still have our old buff
+						old_targets[i].my_component_ability.current_status_effect.remove(old_targets[i].my_component_ability.current_status_effect.TETHER) #remove
+			old_targets = targets
 		else:
 			print_debug("It failed!")
 			

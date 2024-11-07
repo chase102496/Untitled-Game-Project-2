@@ -9,14 +9,23 @@ func _ready() -> void:
 	Events.battle_finished.connect(_on_battle_finished)
 	
 	#Initialize characters and battle list
+	var friends_offset := Vector3.ZERO
+	var foes_offset := Vector3.ZERO
 	for i in len(Battle.battle_list):
+		
 		var instance = Battle.battle_list[i] #Our object to move into scene
 		var parent = get_node(instance.stats.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
+		
+		var offset = instance.stats.spacing
+		
 		if instance.stats.alignment == Battle.alignment.FOES: #making spacing go opposite
 			instance.stats.spacing *= -1
-		var offset = instance.stats.spacing #Offset, for more than 1 of the unit we need to move them over some
-		instance.position = (offset*i) #Sets position
+			instance.position = (offset+foes_offset) #Sets position
+			foes_offset += instance.stats.spacing
+		else:
+			instance.position = (offset+friends_offset) #Sets position
+			friends_offset += instance.stats.spacing
 		
 		#FIXME Bandaid solution for state machine being slower than the initialization of my scene so it would not recieve the signal in the right order
 		instance.state_init_override = "on_waiting"

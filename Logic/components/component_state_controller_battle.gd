@@ -113,7 +113,7 @@ func _on_state_entered_battle_choose() -> void:
 			#the move will then run a script based on whether we are player/dreamkin or enemy and send gui our target array or randomly select from target array
 			#eg if x: do x
 			#x is single-target, so we either randomly select 1 person from
-			my_component_ability.cast_queue.target = Battle.get_team(Battle.alignment.FRIENDS).pick_random() #Pick random opponent
+			my_component_ability.cast_queue.targets = [Battle.get_team(Battle.alignment.FRIENDS).pick_random()] #Pick random opponent
 			owner.state_chart.send_event("on_skillcheck")
 		_:
 			push_error("Not a valid entity for battle: ",owner.name)
@@ -131,7 +131,7 @@ func _on_state_entered_battle_skillcheck() -> void:
 			elif skill_rand >= 0.15:
 				skillcheck_result = "Good"
 			else:
-				Events.battle_entity_cast_failed.emit(owner,owner.my_component_ability.cast_queue.target,owner.my_component_ability.cast_queue) #emit a failed notif
+				Events.battle_entity_cast_failed.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue) #emit a failed notif
 				
 			my_component_ability.cast_queue.skillcheck(skillcheck_result)
 			owner.state_chart.send_event("on_execution")

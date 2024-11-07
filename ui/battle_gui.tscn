@@ -153,15 +153,7 @@ autoplay = "pointer_hover"
 [node name="Selector Sprite" type="Sprite3D" parent="."]
 transform = Transform3D(1.92498, -0.542639, 0, 0.542639, 1.92498, 0, 0, 0, 2, 0, 0, 0)
 visible = false
-offset = Vector2(-15, -5)
-flip_h = true
-flip_v = true
-texture_filter = 0
-texture = ExtResource("2_obblc")
-
-[node name="Selector Sprite2" type="Sprite3D" parent="."]
-transform = Transform3D(1.92498, -0.542639, 0, 0.542639, 1.92498, 0, 0, 0, 2, 0, 0, 0)
-visible = false
+ignore_occlusion_culling = true
 offset = Vector2(-15, -5)
 flip_h = true
 flip_v = true

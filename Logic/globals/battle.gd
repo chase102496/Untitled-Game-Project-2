@@ -76,6 +76,11 @@ func sort_screen(a,b): #Sorts based on screen X position (so left to right on sc
 	else:
 		return false
 
+func update_positions(): #Updates all units positions to reflect a change (like death or swap)
+	for i in len(battle_list):
+		var unit = battle_list[i]
+		
+
 func get_target_selector_list(target : Node, selector : String, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
 	match selector:
@@ -97,12 +102,14 @@ func get_target_selector_list(target : Node, selector : String, target_type_list
 			var target_tertiary_index = target_type_list.find(target) - 1
 			if target_secondary_index < len(target_type_list):
 				result.append(target_type_list[target_secondary_index])
-			if target_secondary_index > -1:
+			if target_tertiary_index > -1:
 				result.append(target_type_list[target_tertiary_index])
 		Battle.target_selector.TEAM:
-			pass
+			for i in len(target_type_list):
+				if target_type_list[i].stats.alignment == target.stats.alignment:
+					result.append(target_type_list[i])
 		Battle.target_selector.ALL:
-			pass
+			result = target_type_list
 		Battle.target_selector.NONE:
 			pass
 		_:
@@ -110,27 +117,27 @@ func get_target_selector_list(target : Node, selector : String, target_type_list
 		
 	return result
 
-func get_target_type_list(character : Node,type : String,sorted : bool = false): #returns list of characters based on type we want, optionally sorted from left to right on screen for selection purposes
+func get_target_type_list(caster : Node,type : String,sorted : bool = false): #returns list of characters based on type we want, optionally sorted from left to right on screen for selection purposes
 	var result : Array = []
 	var ref_battle_list = battle_list.duplicate()
 	match type:
 		Battle.target_type.SELF:
-			result.append(character)
+			result = [caster]
 		Battle.target_type.OTHERS:
-			ref_battle_list.pop_at(ref_battle_list.find(character))
+			ref_battle_list.pop_at(ref_battle_list.find(caster))
 			result = ref_battle_list
 		Battle.target_type.ALLIES:
-			result = my_team(character)
+			result = my_team(caster)
 		Battle.target_type.OPPONENTS:
-			result = opposing_team(character)
+			result = opposing_team(caster)
 		Battle.target_type.OTHER_ALLIES:
-			var team = my_team(character)
-			team.pop_at(team.find(character))
+			var team = my_team(caster)
+			team.pop_at(team.find(caster))
 			result = team
 		Battle.target_type.EVERYONE:
 			result = ref_battle_list
 		_:
-			push_error("ERROR, INVALID CHARACTER OR TYPE: ",character,type)
+			push_error("ERROR, INVALID CASTER OR TYPE: ",caster,type)
 			
 	if sorted:
 		result.sort_custom(sort_screen)

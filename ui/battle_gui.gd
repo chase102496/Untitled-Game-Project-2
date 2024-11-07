@@ -3,7 +3,6 @@ extends Control
 @onready var selector_list : Array
 @onready var selected_ability : Object
 @onready var selected_target : Object
-@onready var selected_target_2 : Object
 
 @onready var selector_sprite : Node = $"Selector Sprite"
 
@@ -125,9 +124,15 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 
 	if Input.is_action_just_pressed("ui_select"):
 		owner.my_component_ability.cast_queue = selected_ability #Set the spell for casting
-		selected_ability.target = selected_target #set the spell's target to our gui's target
+		
+		selected_ability.target = selected_target #TODO REMOVE and set the spell's target list to our gui's target list
+		selected_ability.targets = Battle.get_target_selector_list(
+			selected_target,
+			selected_ability.target_selector,
+			Battle.get_target_type_list(owner,selected_ability.target_type,true)
+			)
 		owner.state_chart.send_event("on_skillcheck") #Run skillcheck
-		state_chart.send_event("on_gui_skillcheck") #End of GUI stuff #TODO put skillcheck gui next
+		state_chart.send_event("on_gui_skillcheck") #End of GUI stuff
 		selector_sprite.hide()
 
 # Skillcheck

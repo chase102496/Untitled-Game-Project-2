@@ -22,7 +22,7 @@ extends CharacterBody3D
 var stats : Dictionary = {
 	"alignment" : Battle.alignment.FRIENDS, #Side of the field I will fight on
 	"glossary" : "player", #Unit category I was spawned from
-	"spacing" : Vector3(0.6,0,-0.1), #spacing when unit is spawned in battle
+	"spacing" : Vector3(0.1,0,-0.1), #spacing when unit is spawned in battle
 }
 
 func _ready() -> void:
