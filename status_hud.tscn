@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3707fwdhap4h"]
+
+[ext_resource type="Script" path="res://Logic/scripts/status_hud.gd" id="1_yujgj"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_nq24v"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2gmu"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_nq24v")
+
+[sub_resource type="QuadMesh" id="QuadMesh_j4aiy"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_i2gmu")
+
+[node name="Status_HUD" type="Node3D"]
+script = ExtResource("1_yujgj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("QuadMesh_j4aiy")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+render_target_update_mode = 4
+
+[node name="PanelContainer" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="status_grid" type="GridContainer" parent="SubViewport/PanelContainer"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -87.0
+offset_top = -150.0
+offset_right = 87.0
+grow_horizontal = 2
+grow_vertical = 0
+columns = 2

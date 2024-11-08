@@ -29,7 +29,7 @@ func _ready() -> void:
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
 
 func _physics_process(_delta: float) -> void:
-	
+	await owner.ready
 	if typeof(owner.state_init_override) == 4: #If it's a string
 		owner.state_chart.send_event(owner.state_init_override)
 		owner.state_init_override = null

@@ -197,8 +197,8 @@ class status_fear:
 	
 	func fx_add():
 		fx = Glossary.particle.fear.instantiate()
-		host.sprite.add_child(fx)
-		fx.global_position = host.sprite.global_position
+		host.animations.sprite.add_child(fx)
+		fx.global_position = host.animations.sprite.global_position
 	
 	func fx_remove():
 		fx.queue_free()
@@ -220,8 +220,8 @@ class status_burn:
 	
 	func fx_add():
 		fx = Glossary.particle.burn.instantiate()
-		host.sprite.add_child(fx)
-		fx.global_position = host.sprite.global_position
+		host.animations.sprite.add_child(fx)
+		fx.global_position = host.animations.sprite.global_position
 	
 	func fx_remove():
 		fx.queue_free()
@@ -250,9 +250,8 @@ class status_tether_heart:
 					print_debug(partners[i].name," took ",amount," points of mirror damage!")
 	
 	func fx_add():
-		fx = Glossary.particle.burn.instantiate() #TODO make particle
-		host.sprite.add_child(fx)
-		fx.global_position = host.sprite.global_position
+		fx = Glossary.ui.heartstitch.instantiate()
+		host.status_hud.grid.add_child(fx)
 	
 	func fx_remove():
 		fx.queue_free()
@@ -314,7 +313,7 @@ class ability:
 		pass
 	
 	func animation():
-		caster.anim_tree.get("parameters/playback").travel("default_attack")
+		caster.animations.tree.get("parameters/playback").travel("default_attack")
 	
 	#Put status effect in here, and when we cast, we add our spell to their status_effects array based on conditions (only one status at a time, if it's used we send a message saying they're immune)
 	#They run their normal course, but are "infected" with our functions. Now the empty method calls 
@@ -370,7 +369,7 @@ class ability_spook:
 			cast_validate_failed()
 			
 	func animation():
-		caster.anim_tree.get("parameters/playback").travel("default_attack_spook")
+		caster.animations.tree.get("parameters/playback").travel("default_attack_spook")
 
 class ability_solar_flare:
 	extends ability_template_default
@@ -393,7 +392,7 @@ class ability_solar_flare:
 			cast_validate_failed()
 			
 	func animation():
-		caster.anim_tree.get("parameters/playback").travel("default_attack") #TODO make solar flare animation or FX
+		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO make solar flare animation or FX
 
 class ability_tackle:
 	extends ability_template_default
@@ -445,4 +444,4 @@ class ability_heart_stitch:
 			print_debug("It failed!")
 			
 	func animation():
-		caster.anim_tree.get("parameters/playback").travel("default_attack") #TODO
+		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO

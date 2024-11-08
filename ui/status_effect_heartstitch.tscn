@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://bebepy1pcroi6" path="res://Art/sprites/Hearts/Heartstitch_Inverted.PNG" id="2_06qqj"]
 
 [node name="TextureButton" type="TextureButton"]
+offset_right = 174.0
+offset_bottom = 150.0
 size_flags_vertical = 8
 tooltip_text = "TEST"
 texture_normal = ExtResource("1_3368s")

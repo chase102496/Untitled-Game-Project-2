@@ -11,25 +11,12 @@ extends CharacterBody3D
 @onready var state_subchart_battle := %StateChart/Main/Battle
 @onready var state_init_override = null
 #Animations
-@onready var anim_root : Node3D = %Animations
-@onready var anim_tree : AnimationTree = %Animations/character_animation_tree
-@onready var anim_player : AnimationPlayer = %Animations/character_animation_player
-@onready var sprite : AnimatedSprite3D = %Animations/character_animation_sprite
+@export var animations : Node3D
+#Status HUD
+@onready var status_hud : Node3D = %Status_HUD
 
 var stats : Dictionary = {
 	"alignment" : Battle.alignment.FOES, #Side of the field I will fight on
 	"glossary" : "enemy", #Unit category I was spawned from
 	"spacing" : Vector3(0.6,0,-0.1), #spacing when unit is spawned in battle
 }
-
-func _ready() -> void:
-	#Debug
-	name = str(name," ",randi())
-	#Abilities
-	var abil = my_component_ability
-	abil.my_abilities = [
-		abil.ability_tackle.new(self),
-		abil.ability_spook.new(self)
-	]
-	#FUCK this animation tree shit sometimes
-	anim_tree.active = true

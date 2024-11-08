@@ -27,3 +27,16 @@ func _on_state_physics_processing_explore(_delta: float) -> void:
 
 func _on_state_exited_explore():
 	direction = Vector2.ZERO
+
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("interact"):
+		#var inst = Glossary.ui.heartstitch.instantiate()
+		#%status_grid.add_child(inst)
+		Dialogic.start("timeline")
+		
+	if Input.is_action_just_pressed("ui_cancel"):
+		Global.scene_transition("res://scenes/turn_arena.tscn")
+		if get_tree().current_scene.name == "turn_arena":
+			Events.battle_finished.emit("Win")
+		elif get_tree().current_scene.name == "dream_garden":
+			Battle.battle_initialize(["player","dreamkin","enemy","enemy","enemy"],[{},{},{},{},{}],owner.get_tree(),"res://scenes/turn_arena.tscn")

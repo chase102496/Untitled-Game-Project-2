@@ -1,9 +1,10 @@
-[gd_scene load_steps=112 format=3 uid="uid://d0k7ifshme1kl"]
+[gd_scene load_steps=114 format=3 uid="uid://d0k7ifshme1kl"]
 
-[ext_resource type="Script" path="res://Logic/scripts/enemy.gd" id="1_tu2mm"]
+[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://status_hud.tscn" id="2_fe81q"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="3_c8rcq"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_nogfc"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="4_i6dxw"]
+[ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_6pymp"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://Art/sprites/The Adventurer - Free/Idle/idle_down.png" id="5_tkhh4"]
 [ext_resource type="Texture2D" uid="uid://b3l4rcga8ncvo" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_down.png" id="8_nycma"]
 [ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_up.png" id="9_gi4yj"]
@@ -16,6 +17,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_status.gd" id="17_bqk17"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="17_qyv5h"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="18_6vpc6"]
+[ext_resource type="Script" path="res://Logic/components/component_core_enemy.gd" id="18_8vc7t"]
 [ext_resource type="Script" path="res://Logic/components/components.gd" id="18_orvp7"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="19_ed3vo"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="20_uo5aw"]
@@ -1154,13 +1156,18 @@ _data = {
 
 [node name="Enemy" type="CharacterBody3D"]
 physics_interpolation_mode = 1
-script = ExtResource("1_tu2mm")
+
+[node name="Status_HUD" parent="." instance=ExtResource("2_fe81q")]
+unique_name_in_owner = true
 
 [node name="StateChart" parent="." instance=ExtResource("20_w8p7b")]
 unique_name_in_owner = true
 
-[node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("3_nogfc")]
+[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis") instance=ExtResource("3_nogfc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
+my_component_state_controller_battle = NodePath("../Components/component_state_controller_battle")
+my_component_health = NodePath("../Components/component_health")
+my_component_vis = NodePath("../Components/component_vis")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0282693, 0.0187277, 0.00789857)
@@ -1168,6 +1175,7 @@ shape = SubResource("BoxShape3D_nf1h3")
 
 [node name="Animations" type="Node3D" parent="."]
 unique_name_in_owner = true
+script = ExtResource("5_6pymp")
 
 [node name="character_animation_sprite" type="AnimatedSprite3D" parent="Animations"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
@@ -1200,6 +1208,9 @@ script = ExtResource("15_f1sv5")
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("18_orvp7")
+
+[node name="component_core_enemy" type="Node" parent="Components"]
+script = ExtResource("18_8vc7t")
 
 [node name="component_status" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
 script = ExtResource("17_bqk17")

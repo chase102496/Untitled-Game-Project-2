@@ -7,11 +7,7 @@ var health : int
 func _ready() -> void:
 	health = max_health
 
-func display_damage(amt):
-	print("AAAAAAAAAAAAA ",amt)
-
 func damage(amt, mirror_damage : bool = false, type : Dictionary = Battle.type.NEUTRAL,):
-	
 	if amt != 0:
 		if !mirror_damage: #To protect recursive when using heartstitch
 			Events.battle_entity_damaged.emit(owner,amt)
