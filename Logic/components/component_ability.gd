@@ -11,7 +11,7 @@ extends Node
 #We will not assign spells this way, might need to fix tho, hard to set em up without all the vars right in front of you 
 @onready var my_abilities : Array = [ability_tackle.new(owner),ability.new(owner),ability.new(owner),ability.new(owner)]# FIXME starts blank
 @onready var max_ability_count : int = 4
-@onready var skillcheck_difficulty : float = 1.0
+var skillcheck_difficulty : float = 1.0
 
 func _ready() -> void:
 	#current_status_effect_2.NORMAL = status.new(Global.player)

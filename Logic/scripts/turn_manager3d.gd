@@ -17,14 +17,15 @@ func _ready() -> void:
 		var parent = get_node(instance.stats.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
 		
-		var offset = instance.stats.spacing
-		
-		if instance.stats.alignment == Battle.alignment.FOES: #making spacing go opposite
-			instance.stats.spacing *= -1
-			instance.position = (offset+foes_offset) #Sets position
-			foes_offset += instance.stats.spacing
+		if instance.stats.alignment == Battle.alignment.FOES:
+			instance.position.x = foes_offset.x
+			instance.position.z = foes_offset.z
+			instance.position.y = instance.collider.shape.height
+			foes_offset -= instance.stats.spacing
 		else:
-			instance.position = (offset+friends_offset) #Sets position
+			instance.position.x = friends_offset.x
+			instance.position.z = friends_offset.z
+			instance.position.y = instance.collider.shape.height
 			friends_offset += instance.stats.spacing
 		
 		#FIXME Bandaid solution for state machine being slower than the initialization of my scene so it would not recieve the signal in the right order

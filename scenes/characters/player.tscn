@@ -1,317 +1,329 @@
-[gd_scene load_steps=117 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=122 format=3 uid="uid://djdg8wet86nat"]
 
-[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://status_hud.tscn" id="2_ivxqe"]
-[ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://Art/sprites/The Adventurer - Free/Idle/idle_down.png" id="3_hetwx"]
-[ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_mshaw"]
-[ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_gkalq"]
-[ext_resource type="Texture2D" uid="uid://b3l4rcga8ncvo" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_down.png" id="6_4kjix"]
-[ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_up.png" id="7_b5ofy"]
-[ext_resource type="Texture2D" uid="uid://dmdw1m4techw0" path="res://Art/sprites/The Adventurer - Free/Idle/idle_up.png" id="8_h8mg3"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="9_n2kgb"]
-[ext_resource type="Texture2D" uid="uid://f5iev0g4h14w" path="res://Art/sprites/The Adventurer - Free/Walk/walk_down.png" id="9_pgl1e"]
-[ext_resource type="Script" path="res://Logic/components/component_state_controller_explore.gd" id="10_tnwy7"]
-[ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_down.png" id="12_ac4xw"]
-[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="12_pmvac"]
-[ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="13_r1wra"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://kayc3qljdn4u" path="res://Art/animations/character_animation_tree_player.tres" id="14_a3n3l"]
-[ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="14_c1ktx"]
-[ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="15_13wkk"]
-[ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="16_ult57"]
-[ext_resource type="Script" path="res://Logic/components/component_core_player.gd" id="19_b5oop"]
-[ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="20_6nw5h"]
-[ext_resource type="Script" path="res://Logic/components/components.gd" id="20_ibw1c"]
-[ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="21_j14mx"]
-[ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="22_munar"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="23_lkweg"]
+[ext_resource type="Script" path="res://Logic/scripts/entity.gd" id="1_2kv6a"]
+[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://status_hud.tscn" id="2_gi1kf"]
+[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="3_hev1b"]
+[ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_axrug"]
+[ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_33p5r"]
+[ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="6_j7t8f"]
+[ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://Art/sprites/The Adventurer - Free/Idle/idle_down.png" id="7_kry2e"]
+[ext_resource type="Texture2D" uid="uid://b4y2n7w11dkwo" path="res://Art/sprites/Lumia/Lumia_Idle_Center.png" id="7_pvkf2"]
+[ext_resource type="Texture2D" uid="uid://b3l4rcga8ncvo" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_down.png" id="8_fbdvt"]
+[ext_resource type="Texture2D" uid="uid://dkr02cfap046a" path="res://Art/sprites/Lumia/Lumia_Idle_Left_1.png" id="8_o1tga"]
+[ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_up.png" id="9_5e3a4"]
+[ext_resource type="Texture2D" uid="uid://hgcl7lamr4sm" path="res://Art/sprites/Lumia/Lumia_Idle_Left_2.png" id="9_swxvp"]
+[ext_resource type="Texture2D" uid="uid://dmdw1m4techw0" path="res://Art/sprites/The Adventurer - Free/Idle/idle_up.png" id="10_3a7yr"]
+[ext_resource type="Texture2D" uid="uid://dk0u5sqsnxcbr" path="res://Art/sprites/Lumia/Lumia_Idle_Left_3.png" id="10_8svyq"]
+[ext_resource type="Texture2D" uid="uid://f5iev0g4h14w" path="res://Art/sprites/The Adventurer - Free/Walk/walk_down.png" id="11_yisdg"]
+[ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_down.png" id="12_t11th"]
+[ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="13_oamug"]
+[ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="14_ksmw3"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://kayc3qljdn4u" path="res://Art/animations/character_animation_tree_player.tres" id="15_wa7r3"]
+[ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="16_ukdol"]
+[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="17_y2bkf"]
+[ext_resource type="Script" path="res://Logic/components/components.gd" id="18_rp8yi"]
+[ext_resource type="Script" path="res://Logic/components/component_core_player.gd" id="19_kndtb"]
+[ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="20_i27bg"]
+[ext_resource type="Script" path="res://Logic/components/component_state_controller_explore.gd" id="21_iwr6i"]
+[ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="22_yokt3"]
+[ext_resource type="Script" path="res://Logic/components/component_status.gd" id="23_nm85q"]
+[ext_resource type="Script" path="res://Logic/components/component_health.gd" id="24_a64lg"]
+[ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="25_t2vpy"]
+[ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="26_sbkog"]
+[ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="27_k062g"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="28_pglts"]
+[ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="29_4dxkt"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h7j1u"]
+radius = 0.258558
+height = 1.11006
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bvscm"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8kyh3"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qb5ue"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_um8fl"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i2wck"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nbqpi"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ujfqk"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f3r45"]
-atlas = ExtResource("16_ult57")
+atlas = ExtResource("6_j7t8f")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lxicb"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f3nxv"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pf2g3"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8fgj7"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c024j"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_05xjh"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ah4xt"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kqjgi"]
-atlas = ExtResource("3_hetwx")
+atlas = ExtResource("7_kry2e")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t8147"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7rht3"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xiqyl"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1vqtn"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rphhe"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rno75"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fcir6"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cvi5v"]
-atlas = ExtResource("6_4kjix")
+atlas = ExtResource("8_fbdvt")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2aqsq"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1mh33"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_argqd"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3fumn"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_skv2p"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8e3lf"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s3my5"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vi6be"]
-atlas = ExtResource("7_b5ofy")
+atlas = ExtResource("9_5e3a4")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5uqll"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6xkc1"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jvam8"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1dlgo"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1smg3"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kjkff"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eesxp"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s0i24"]
-atlas = ExtResource("8_h8mg3")
+atlas = ExtResource("10_3a7yr")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jbddr"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q8yyk"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tg4ht"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2r7i7"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_588pm"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_djxj8"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nhbtw"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o8mwu"]
-atlas = ExtResource("9_pgl1e")
+atlas = ExtResource("11_yisdg")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v1pk0"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m55tf"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vfgel"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_57vcp"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q06oe"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uc7ap"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oilv4"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_48t6c"]
-atlas = ExtResource("12_ac4xw")
+atlas = ExtResource("12_t11th")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_agmhk"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_518u5"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tu1ay"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wv0dd"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u15cn"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w7avf"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6cgm2"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rl811"]
-atlas = ExtResource("13_r1wra")
+atlas = ExtResource("13_oamug")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d25m7"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(0, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_62yas"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(48, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1vxb8"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(96, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3spiq"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(144, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_02s7m"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(192, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7ty1g"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(240, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jxaj7"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(288, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1p5bs"]
-atlas = ExtResource("14_c1ktx")
+atlas = ExtResource("14_ksmw3")
 region = Rect2(336, 0, 48, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5y1yy"]
@@ -347,6 +359,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("7_pvkf2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_o1tga")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_swxvp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_8svyq")
+}],
+"loop": true,
+"name": &"default_idle_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_lxicb")
 }, {
 "duration": 1.0,
@@ -371,7 +400,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_kqjgi")
 }],
 "loop": true,
-"name": &"default_idle_down",
+"name": &"default_idle_down_old",
 "speed": 5.0
 }, {
 "frames": [{
@@ -664,6 +693,30 @@ tracks/6/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:texture_filter")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:flip_h")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_jvi1r"]
 resource_name = "default_attack"
@@ -904,8 +957,9 @@ tracks/5/keys = {
 
 [sub_resource type="Animation" id="Animation_crmcx"]
 resource_name = "default_idle_down"
-length = 0.2667
+length = 0.44
 loop_mode = 1
+step = 0.04
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -925,10 +979,58 @@ tracks/1/path = NodePath(".:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
+"times": PackedFloat32Array(0, 0.08, 0.12, 0.16, 0.24, 0.32, 0.36, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
+"values": [0, 1, 2, 3, 0, 1, 2, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.33, 0.33, 0.33)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:texture_filter")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.4897, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.32),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_mes03"]
@@ -1151,716 +1253,45 @@ _data = {
 "default_walk_up": SubResource("Animation_t7144")
 }
 
-[sub_resource type="GDScript" id="GDScript_5r1s6"]
-script/source = "class_name component_state_controller_battle
-extends Node
-
-@export var my_component_ability: component_ability
-
-@onready var character_ready : bool = true
-@onready var already_applied_end_status : bool = false
-@onready var state_chart_memory : String = \"\"
-
-func _ready() -> void:
-	
-	#Animation
-	Events.animation_finished.connect(_on_animation_finished)
-	Events.animation_started.connect(_on_animation_started)
-	
-	#Battle
-	Events.turn_start.connect(_on_turn_start)
-	Events.battle_entity_hit.connect(_on_battle_entity_hit)
-	Events.battle_entity_damaged.connect(_on_battle_entity_damaged)
-	#Events.battle_entity_death.connect(_on_battle_entity_death)
-	#
-	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
-	%StateChart/Main/Battle/Start.state_entered.connect(_on_state_entered_battle_start)
-	%StateChart/Main/Battle/Choose.state_entered.connect(_on_state_entered_battle_choose)
-	%StateChart/Main/Battle/Skillcheck.state_entered.connect(_on_state_entered_battle_skillcheck)
-	%StateChart/Main/Battle/Skillcheck.state_exited.connect(_on_state_exited_battle_skillcheck)
-	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
-	%StateChart/Main/Battle/End.state_entered.connect(_on_state_entered_battle_end)
-	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
-
-func _physics_process(_delta: float) -> void:
-	await owner.ready
-	if typeof(owner.state_init_override) == 4: #If it's a string
-		owner.state_chart.send_event(owner.state_init_override)
-		owner.state_init_override = null
-
-#Battle
-
-func _on_animation_started(anim_name,character) -> void:
-	if character == owner:
-		var regex = RegEx.new()
-		regex.compile(\"(default_)(attack|hurt|death)(_.*)?\")
-		if regex.search(anim_name):
-			character_ready = false
-func _on_animation_finished(anim_name,character) -> void:
-	if character == owner:
-		var regex = RegEx.new()
-		regex.compile(\"(default_)(attack|hurt|death)(_.*)?\")
-		var result = regex.search(anim_name)
-		if result: #If result is not null
-			match result.get_string(2): #match only 2nd group attack|hurt|death
-				\"attack\":
-					owner.state_chart.send_event(\"on_end\")
-				\"hurt\":
-					owner.state_chart.send_event(state_chart_memory) #Statecharts has a bug so I bandaided it
-				\"death\":
-					#Check if we are the last one
-					if len(Battle.my_team(owner)) == 1:
-						if owner.stats.alignment == Battle.alignment.FOES:
-							Events.battle_finished.emit(\"Win\")
-						elif owner.stats.alignment == Battle.alignment.FRIENDS:
-							Events.battle_finished.emit(\"Lose\")
-						else:
-							push_error(\"ERROR\")
-					#If we aren't just end turn
-					elif Battle.active_character == owner:
-						Events.turn_end.emit()
-					#if we just died and it wasn't our turn, do nothing
-					else:
-						pass
-					Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
-					Events.battle_entity_death.emit(owner) #let everyone know we died rip
-					owner.queue_free() #deletus da fetus
-
-func _on_battle_entity_damaged(entity : Node, amount : int):
-	my_component_ability.current_status_effect.status_event(\"on_host_health_change\",entity,amount)
-
-func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN
-	if Battle.active_character == owner:
-		already_applied_end_status = false
-		owner.state_chart.send_event(\"on_start\")
-	else:
-		owner.state_chart.send_event(\"on_waiting\")
-
-func _on_state_entered_battle_waiting() -> void:
-	character_ready = true
-	state_chart_memory = \"on_waiting\"
-
-func _on_state_entered_battle_start() -> void:
-	print_debug(\"-----------------------\")
-	print_debug(\"Turn Start: \",owner.name)
-	
-	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
-	
-	my_component_ability.current_status_effect.status_event(\"on_duration\")
-	my_component_ability.current_status_effect.status_event(\"on_start\")
-	
-	owner.state_chart.send_event(\"on_choose\") 
-
-func _on_state_entered_battle_choose() -> void:
-	match owner.stats.glossary:
-		\"player\":
-			owner.my_battle_gui.state_chart.send_event(\"on_gui_main\")
-		\"dreamkin\":
-			owner.my_battle_gui.state_chart.send_event(\"on_gui_main\")
-		\"enemy\":
-			await get_tree().create_timer(0.3).timeout
-			my_component_ability.cast_queue = my_component_ability.my_abilities.pick_random() #Pick random move
-			
-			#TODO Check if queued ability is to be used on allies or enemies before choosing
-			#turn this into a script we run with battle list as the entire battle field param, and owner as caster
-			#the move will narrow down the list of viable targets based on the input and its move type (myteam, enemies, single target, aoe, self, all)
-			#the move will then run a script based on whether we are player/dreamkin or enemy and send gui our target array or randomly select from target array
-			#eg if x: do x
-			#x is single-target, so we either randomly select 1 person from
-			my_component_ability.cast_queue.targets = [Battle.get_team(Battle.alignment.FRIENDS).pick_random()] #Pick random opponent
-			owner.state_chart.send_event(\"on_skillcheck\")
-		_:
-			push_error(\"Not a valid entity for battle: \",owner.name)
-
-func _on_state_entered_battle_skillcheck() -> void:
-
-	match owner.stats.glossary:
-		\"enemy\": #weighted random skillcheck
-			var skillcheck_result = \"Miss\"
-			var skill_rand = randf_range(0,1)/my_component_ability.skillcheck_difficulty #Modify it by skillcheck diff. Higher = smaller num = less good
-			if skill_rand >= 0.95:
-				skillcheck_result = \"Excellent\"
-			elif skill_rand >= 0.8:
-				skillcheck_result = \"Great\"
-			elif skill_rand >= 0.15:
-				skillcheck_result = \"Good\"
-			else:
-				Events.battle_entity_cast_failed.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue) #emit a failed notif
-				
-			my_component_ability.cast_queue.skillcheck(skillcheck_result)
-			owner.state_chart.send_event(\"on_execution\")
-
-func _on_state_exited_battle_skillcheck() -> void:
-	match owner.stats.glossary:
-		\"player\":
-			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
-		\"dreamkin\":
-			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
-	
-func _on_state_entered_battle_execution() -> void:
-	if my_component_ability.cast_queue.cast_validate():
-		my_component_ability.cast_queue.animation()
-	else:
-		Events.battle_entity_cast_failed.emit(owner,owner.my_component_ability.cast_queue.target,owner.my_component_ability.cast_queue)
-		await get_tree().create_timer(0.5).timeout
-		my_component_ability.cast_queue.cast_validate_failed()
-		my_component_ability.cast_queue.animation()
-		#owner.state_chart.send_event(\"on_end\") #move failed, skip execution
-
-func _on_battle_entity_hit(entity_caster : Node, entity_target : Node, ability : Object) -> void:
-	if entity_caster == owner:
-		my_component_ability.cast_queue.cast_main()
-		my_component_ability.current_status_effect.status_event(\"on_target_hit\")
-
-func _on_state_entered_battle_end() -> void:
-	if my_component_ability.current_status_effect and !already_applied_end_status: #yucky cope var
-		state_chart_memory = \"on_end\"
-		already_applied_end_status = true
-		my_component_ability.current_status_effect.status_event(\"on_end\")
-
-func _on_state_physics_processing_battle_end(_delta: float) -> void:
-	#End code goes here, then we ready up
-	if Battle.check_ready():
-		owner.state_chart.send_event(\"on_waiting\")
-		Events.turn_end.emit()
-	character_ready = true
-"
-
-[sub_resource type="GDScript" id="GDScript_51lx8"]
-script/source = "class_name component_ability
-extends Node
-
-@export var my_component_status : component_status
-
-@onready var cast_queue : Object = null
-
-@onready var current_status_effect : Object = status_manager.new()
-#@onready var current_status_effect_2 : Object = status_manager.new()
-
-#We will not assign spells this way, might need to fix tho, hard to set em up without all the vars right in front of you 
-@onready var my_abilities : Array = [ability_tackle.new(owner),ability.new(owner),ability.new(owner),ability.new(owner)]# FIXME starts blank
-@onready var max_ability_count : int = 4
-@onready var skillcheck_difficulty : float = 1.0
-
-func _ready() -> void:
-	#current_status_effect_2.NORMAL = status.new(Global.player)
-	#current_status_effect_2.status_event(\"test\")
-	pass
-#------------------------------------------------------------------------------
-#DONT use name or owner, already taken
-#HACK _init is where you store stuff you'd only need way before battle, like damage, vis cost, etc
-
-# - Functions - #
-#Global.status_type.NORMAL, TETHER and SOULBOUND
-#NORMAL is just normal status effects, they can overwrite eachother based on priority
-#TETHER is an ability based binding, that ties one unit to another in some way
-#SOULBOUND is a permanent version of TETHER that persists through battle
-
-class status_manager:
-	var NORMAL #Buffs, debuffs, DoT, etc.
-	var TETHER #Primarily for Lumia's stitch mechanic
-	var SOULBOUND #Primarily for permanent bonds that start at battle initialize
-	
-	func add(effect : Object):
-		#check if they have a partner with the buff NAH
-		match effect.category:
-			\"NORMAL\":
-				if !NORMAL:
-					NORMAL = effect
-					effect.fx_add()
-					print_debug(\"!status added!\")
-				elif NORMAL.priority < effect.priority:
-					remove(NORMAL)
-					NORMAL = effect
-					effect.fx_add()
-					print_debug(\"!status overwritten!\")
-				else:
-					print_debug(\"!cannot overwrite current status effect, it's too strong!\")
-			\"TETHER\":
-				if !TETHER:
-					TETHER = effect
-					effect.fx_add()
-					print_debug(\"!status added!\")
-				elif TETHER.priority < effect.priority:
-					remove(TETHER)
-					TETHER = effect
-					effect.fx_add()
-					print_debug(\"!status overwritten!\")
-				else:
-					print_debug(\"!cannot overwrite current status effect, it's too strong!\")
-			\"SOULBOUND\":
-				if !SOULBOUND:
-					SOULBOUND = effect
-					effect.fx_add()
-					print_debug(\"!status added!\")
-				elif SOULBOUND.priority < effect.priority:
-					remove(SOULBOUND)
-					SOULBOUND = effect
-					effect.fx_add()
-					print_debug(\"!status overwritten!\")
-				else:
-					print_debug(\"!cannot overwrite current status effect, it's too strong!\")
-			_:
-				push_error(\"COULD NOT ADD \",effect,\" TO \",effect.category)
-	
-	func remove(effect : Object):
-		match effect.category:
-			\"NORMAL\":
-				if NORMAL:
-					print_debug(\"!status removed!\")
-					NORMAL.fx_remove()
-					NORMAL = null
-				else:
-					print_debug(\"!no status effect to remove!\")
-			\"TETHER\":
-				if TETHER:
-					print_debug(\"!status removed!\")
-					TETHER.fx_remove()
-					TETHER = null
-				else:
-					print_debug(\"!no status effect to remove!\")
-			\"SOULBOUND\":
-				if SOULBOUND:
-					print_debug(\"!status removed!\")
-					SOULBOUND.fx_remove()
-					SOULBOUND = null
-				else:
-					print_debug(\"!no status effect to remove!\")
-			_:
-				push_error(\"COULD NOT REMOVE \",effect,\" TO \",effect.category)
-
-	func status_event(event : String, arg1 = null, arg2 = null, arg3 = null):
-		if NORMAL and NORMAL.has_method(event):
-			if arg3:
-				Callable(NORMAL,event).call(arg1,arg2,arg3)
-			elif arg2:
-				Callable(NORMAL,event).call(arg1,arg2)
-			elif arg1:
-				Callable(NORMAL,event).call(arg1)
-			else:
-				Callable(NORMAL,event).call()
-		if TETHER and TETHER.has_method(event):
-			if arg3:
-				Callable(TETHER,event).call(arg1,arg2,arg3)
-			elif arg2:
-				Callable(TETHER,event).call(arg1,arg2)
-			elif arg1:
-				Callable(TETHER,event).call(arg1)
-			else:
-				Callable(TETHER,event).call()
-		if SOULBOUND and SOULBOUND.has_method(event):
-			if arg3:
-				Callable(SOULBOUND,event).call(arg1,arg2,arg3)
-			elif arg2:
-				Callable(SOULBOUND,event).call(arg1,arg2)
-			elif arg1:
-				Callable(SOULBOUND,event).call(arg1)
-			else:
-				Callable(SOULBOUND,event).call()
-
-#need to make a tether class and then subclasses based on what to do with the tether
-#one called tether_heart which shares damage between the two
-#one called tether_undying which makes the target check if its partner is dead before truly dying, and if not, \"revive\" to full health
-#	should play death animation and stay in it until the next start() and then revive and reset to full
-#
-
-# - Status Effects - #
-class status:
-	var host : Node #The owner of the status effect. Who to apply it to
-	var category : String = \"NORMAL\"
-	var duration : int #How many turns it lasts
-	var title : String = \"---\"
-	var fx : Node #Visual fx
-	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
-	
-	func _init(host : Node) -> void:
-		self.host = host
-	
-	func test():
-		print(\"SUCCESS\")
-	
-	func on_duration():
-		if duration > 0:
-			duration -= 1
-		else:
-			on_remove()
-	
-	func on_start(): #runs on start of turn
-		pass
-	
-	func on_skillcheck(): #runs right before skillcheck
-		pass
-	
-	func on_target_hit(): #runs right after we attack someone
-		pass
-	
-	func on_host_health_change(entity,amount): #runs when the host of the status effect's health changes
-		pass
-	
-	func on_end(): #runs on end of turn
-		pass
-	
-	func on_remove(): #runs when status effect expires
-		print_debug(title,\" wore off for \",host.name,\"!\")
-		host.my_component_ability.current_status_effect.remove(self)
-	
-	func fx_add():
-		pass
-	
-	func fx_remove():
-		pass
-# ---
-
-# NORMAL
-class status_fear:
-	extends status
-	
-	func _init(host : Node,duration : int) -> void:
-		self.host = host
-		self.duration = duration
-		self.title = \"Fear\"
-		self.priority = 1
-	
-	func on_start():
-		host.my_component_ability.skillcheck_difficulty += 1
-	
-	func fx_add():
-		fx = Glossary.particle.fear.instantiate()
-		host.animations.sprite.add_child(fx)
-		fx.global_position = host.animations.sprite.global_position
-	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
-
-class status_burn:
-	extends status
-	
-	var damage : int
-	
-	func _init(host : Node,duration : int,damage : int) -> void:
-		self.host = host
-		self.duration = duration
-		self.damage = damage
-		self.title = \"Burn\"
-	
-	func on_end():
-		host.my_component_health.damage(damage)
-	
-	func fx_add():
-		fx = Glossary.particle.burn.instantiate()
-		host.animations.sprite.add_child(fx)
-		fx.global_position = host.animations.sprite.global_position
-	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
-
-# TETHER
-
-class status_tether_heart:
-	extends status
-	
-	var partners : Array
-	#var fx2 : Node
-	
-	func _init(host : Node,partners : Array,duration : int) -> void:
-		self.host = host #who is the initial target of the stitch
-		self.partners = partners #who is paired to the host
-		self.duration = duration
-		category = \"TETHER\"
-		title = \"Heartstitch\"
-	
-	func on_host_health_change(entity,amount): #the bread n butta of heartstitch
-		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
-			for i in len(partners):
-				if partners[i] != host:
-					partners[i].my_component_health.damage(amount,true)
-					print_debug(partners[i].name,\" took \",amount,\" points of mirror damage!\")
-	
-	func fx_add():
-		fx = Glossary.ui.heartstitch.instantiate()
-		host.status_hud.grid.add_child(fx)
-	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
-
-# - Abilities - #
-class ability:
-
-	var skillcheck_modifier : int = 1
-	var caster : Node
-	var target : Node = null #TODO remove
-	var targets : Array = []
-	#Change this to a function (Callable type) that returns a list of whatever you want. Make the function in Battle
-	var target_type : String = Battle.target_type.EVERYONE #Who we can target on the field
-	var target_selector : String = Battle.target_selector.SINGLE #How many targets we select
-	
-	var title : String = \"---\"
-	var type : Dictionary = Battle.type.EMPTY
-	
-	var damage : int = 0
-	var vis_cost : int = 0
-	
-	func _init(caster : Node) -> void:
-		self.caster = caster
-	
-	func select_validate(): #run validations, check vis, health, etc
-		var result = false #default so we cannot use this move
-		return result
-	
-	func select_validate_failed():
-		print_debug(\"Can't do that\")
-		#You can execute code here, run a Dialogic event to show them they can't use that, etc
-		pass
-	
-	func skillcheck(result):
-		if result == \"Miss\":
-			skillcheck_modifier = 0
-		elif result == \"Good\":
-			skillcheck_modifier = 1
-		elif result == \"Great\":
-			skillcheck_modifier = 2
-		elif result == \"Excellent\":
-			skillcheck_modifier = 3
-		else:
-			skillcheck_modifier = 1
-		
-		print_debug(\"Result of skillcheck is \",result)
-	
-	func cast_validate():
-		if skillcheck_modifier > 0:
-			return true
-		else:
-			return false
-			
-	func cast_validate_failed():
-		print_debug(\"It failed!\")
-	
-	func cast_main(): #Main function, calls on hit
-		pass
-	
-	func animation():
-		caster.animations.tree.get(\"parameters/playback\").travel(\"default_attack\")
-	
-	#Put status effect in here, and when we cast, we add our spell to their status_effects array based on conditions (only one status at a time, if it's used we send a message saying they're immune)
-	#They run their normal course, but are \"infected\" with our functions. Now the empty method calls 
-	#when they were healthy will reference any calls in our spell's vocab and we don't have to do anything on character-side
-	#E.g. Poison spell
-	#Has function status_effect_on_start
-# ---
-
-class ability_template_default: #Standard ability with vis cost and skillcheck
-	extends ability
-	
-	func _init() -> void:
-		target_type = Battle.target_type.OPPONENTS
-	
-	func select_validate():
-		if caster.my_component_vis.vis >= vis_cost:
-			return true
-		else:
-			print_debug(\"Not enough Vis!\")
-			return false
-	
-	func skillcheck(result): #TODO make categories of skillchecks to extend from
-		if result == \"Miss\":
-			skillcheck_modifier = 0
-		elif result == \"Good\":
-			skillcheck_modifier = 1
-		elif result == \"Great\":
-			skillcheck_modifier = 2
-		elif result == \"Excellent\":
-			skillcheck_modifier = 3
-		else:
-			skillcheck_modifier = 1
-
-class ability_spook:
-	extends ability_template_default
-	
-	func _init(caster : Node) -> void:
-		self.caster = caster
-		type = Battle.type.VOID
-		title = \"Spook\"
-		vis_cost = 2
-		damage = 1
-
-	func cast_main():
-		if skillcheck_modifier > 0:
-			print_debug(\"It was successful!\")
-			caster.my_component_vis.siphon(vis_cost)
-			for i in len(targets):
-				print_debug(caster.name, \" tried to spook \", targets[i].name,\"!\")
-				targets[i].my_component_health.damage(damage) #Flat damage
-				targets[i].my_component_ability.current_status_effect.add(status_fear.new(targets[i],skillcheck_modifier*2)) #duration is 2x of modifier
-		else:
-			cast_validate_failed()
-			
-	func animation():
-		caster.animations.tree.get(\"parameters/playback\").travel(\"default_attack_spook\")
-
-class ability_solar_flare:
-	extends ability_template_default
-	
-	func _init(caster : Node) -> void:
-		self.caster = caster
-		type = Battle.type.NOVA
-		title = \"Solar Flare\"
-		vis_cost = 2
-		damage = 1
-	
-	func cast_main():
-		if skillcheck_modifier > 0:
-			caster.my_component_vis.siphon(vis_cost)
-			for i in len(targets):
-				print_debug(caster.name, \" ignited \", targets[i].name,\"!\")
-				targets[i].my_component_health.damage(damage) #Flat damage
-				targets[i].my_component_ability.current_status_effect.add(status_burn.new(targets[i],skillcheck_modifier*2,1))
-		else:
-			cast_validate_failed()
-			
-	func animation():
-		caster.animations.tree.get(\"parameters/playback\").travel(\"default_attack\") #TODO make solar flare animation or FX
-
-class ability_tackle:
-	extends ability_template_default
-	
-	func _init(caster : Node) -> void:
-		self.caster = caster
-		damage = 1
-		type = Battle.type.NEUTRAL
-		target_type = Battle.target_type.OPPONENTS
-		title = \"Tackle\"
-	
-	func cast_main():
-		if skillcheck_modifier > 0:
-			caster.my_component_vis.siphon(vis_cost)
-			for i in len(targets):
-				print_debug(caster.name, \" Tackled \", targets[i].name,\"!\")
-				print_debug(\"It did \", round(skillcheck_modifier*damage), \" damage!\")
-				targets[i].my_component_health.damage(skillcheck_modifier*damage)
-		else:
-			cast_validate_failed()
-
-class ability_heart_stitch:
-	extends ability_template_default
-	
-	var old_targets : Array = []
-
-	func _init(caster : Node) -> void:
-		self.caster = caster
-		target_selector = Battle.target_selector.SINGLE_RIGHT
-		type = Battle.type.VOID
-		title = \"Heartstitch\"
-		vis_cost = 2
-		damage = 1
-	
-	func cast_main():
-		print_debug(caster.name, \" tried to stitch \", targets[0].name,\"!\")
-		if skillcheck_modifier > 0:
-			print_debug(\"It was successful!\")
-			caster.my_component_vis.siphon(vis_cost)
-			for i in len(targets):
-				targets[i].my_component_health.damage(damage) #Flat damage
-				targets[i].my_component_ability.current_status_effect.add(status_tether_heart.new(targets[i],targets,skillcheck_modifier*1))
-			for i in len(old_targets):
-				if old_targets[i]:
-					if old_targets[i].my_component_ability.current_status_effect.TETHER.title == title: #If we find they still have our old buff
-						old_targets[i].my_component_ability.current_status_effect.remove(old_targets[i].my_component_ability.current_status_effect.TETHER) #remove
-			old_targets = targets
-		else:
-			print_debug(\"It failed!\")
-			
-	func animation():
-		caster.animations.tree.get(\"parameters/playback\").travel(\"default_attack\") #TODO
-"
-
-[sub_resource type="GDScript" id="GDScript_0l2u8"]
-script/source = "class_name component_status
-extends Node
-
-@export var my_component_ability : component_ability
-"
-
-[sub_resource type="GDScript" id="GDScript_mvmr5"]
-script/source = "class_name component_health
-extends Node
-
-@export var max_health : int = 6
-var health : int
-
-func _ready() -> void:
-	health = max_health
-
-func damage(amt, mirror_damage : bool = false, type : Dictionary = Battle.type.NEUTRAL,):
-	if amt != 0:
-		if !mirror_damage: #To protect recursive when using heartstitch
-			Events.battle_entity_damaged.emit(owner,amt)
-		match type:
-			Battle.type.VOID:
-				#Send signal out that we recieved damage, who we are, and how much
-				print_debug(health,\" HP -> \",health - amt,\" HP\")
-				health -= amt
-				
-				if health <= 0:
-					owner.state_chart.send_event(\"on_death\")
-				else:
-					owner.state_chart.send_event(\"on_hurt\")
-			Battle.type.NEUTRAL:
-				print_debug(health,\" HP -> \",health - amt,\" HP\")
-				health -= amt
-				
-				if health <= 0:
-					owner.state_chart.send_event(\"on_death\")
-				else:
-					owner.state_chart.send_event(\"on_hurt\")
-			Battle.type.NOVA:
-				print_debug(health,\" HP -> \",health - amt,\" HP\")
-				health -= amt
-				
-				if health <= 0:
-					owner.state_chart.send_event(\"on_death\")
-				else:
-					owner.state_chart.send_event(\"on_hurt\")
-"
-
-[sub_resource type="GDScript" id="GDScript_vvwdn"]
-script/source = "class_name component_vis
-extends Node
-
-@export var max_vis : int = 6
-var vis : int
-
-func _ready() -> void:
-	vis = max_vis
-
-func siphon(amt): #removes vis
-	print_debug(vis,\" MP -> \",vis - amt,\" MP\")
-	vis -= amt
-"
-
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_input_controller", "state_chart", "animations", "collider", "status_hud", "my_component_health", "my_component_vis", "my_component_ability", "my_component_status", "my_component_state_controller_battle", "my_component_core")]
 physics_interpolation_mode = 1
+script = ExtResource("1_2kv6a")
+my_battle_gui = NodePath("Battle_GUI")
+my_component_input_controller = NodePath("Components/component_input_controller_manual")
+state_chart = NodePath("StateChart")
+animations = NodePath("Animations")
+collider = NodePath("CollisionShape3D")
+status_hud = NodePath("Status_HUD")
+my_component_health = NodePath("Components/component_health")
+my_component_vis = NodePath("Components/component_vis")
+my_component_ability = NodePath("Components/component_ability")
+my_component_status = NodePath("Components/component_status")
+my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
+stats = {
+"alignment": "Friends",
+"glossary": "player",
+"spacing": Vector3(0.8, 0, -0.1)
+}
+my_component_core = NodePath("Components/component_core_player")
 
-[node name="Status_HUD" parent="." instance=ExtResource("2_ivxqe")]
+[node name="Status_HUD" parent="." instance=ExtResource("2_gi1kf")]
 unique_name_in_owner = true
 
-[node name="StateChart" parent="." instance=ExtResource("23_lkweg")]
+[node name="StateChart" parent="." instance=ExtResource("3_hev1b")]
 unique_name_in_owner = true
 
-[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis") instance=ExtResource("3_mshaw")]
+[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis") instance=ExtResource("4_axrug")]
 my_component_state_controller_battle = NodePath("../Components/component_state_controller_battle")
 my_component_health = NodePath("../Components/component_health")
 my_component_vis = NodePath("../Components/component_vis")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.0282694, 0.0187277, 0.00789857)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028, 0.06, 0.008)
 shape = SubResource("CapsuleShape3D_h7j1u")
 
 [node name="Animations" type="Node3D" parent="."]
 unique_name_in_owner = true
-script = ExtResource("5_gkalq")
+script = ExtResource("5_33p5r")
 
 [node name="character_animation_sprite" type="AnimatedSprite3D" parent="Animations"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
@@ -1881,61 +1312,63 @@ libraries = {
 [node name="character_animation_tree" type="AnimationTree" parent="Animations"]
 active = false
 root_node = NodePath("../character_animation_sprite")
-tree_root = ExtResource("14_a3n3l")
+tree_root = ExtResource("15_wa7r3")
 anim_player = NodePath("../character_animation_player")
 parameters/Death/TimeScale/scale = 0.4
 parameters/Hurt/TimeScale/scale = 1.0
 parameters/Idle/BlendSpace2D/blend_position = Vector2(0.301537, 0.859873)
-parameters/Idle/TimeScale/scale = 0.2
+parameters/Idle/TimeScale/scale = 0.28
 parameters/Walk/BlendSpace2D/blend_position = Vector2(-0.0011825, 0.00709224)
 parameters/Walk/TimeScale/scale = 0.5
-script = ExtResource("15_13wkk")
+script = ExtResource("16_ukdol")
 
-[node name="Battle_GUI" parent="." instance=ExtResource("12_pmvac")]
+[node name="Battle_GUI" parent="." instance=ExtResource("17_y2bkf")]
 unique_name_in_owner = true
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("20_ibw1c")
+script = ExtResource("18_rp8yi")
 
 [node name="component_core_player" type="Node" parent="Components"]
-script = ExtResource("19_b5oop")
+script = ExtResource("19_kndtb")
 
 [node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
-script = SubResource("GDScript_5r1s6")
+script = ExtResource("20_i27bg")
 my_component_ability = NodePath("../component_ability")
 
 [node name="component_state_controller_explore" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
-script = ExtResource("10_tnwy7")
+script = ExtResource("21_iwr6i")
 my_component_input_controller = NodePath("../component_input_controller_manual")
 
-[node name="component_ability" type="Node" parent="Components"]
-script = SubResource("GDScript_51lx8")
+[node name="component_ability" type="Node" parent="Components" node_paths=PackedStringArray("my_component_status")]
+script = ExtResource("22_yokt3")
+my_component_status = NodePath("../component_status")
 
-[node name="component_status" type="Node" parent="Components"]
-script = SubResource("GDScript_0l2u8")
+[node name="component_status" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
+script = ExtResource("23_nm85q")
+my_component_ability = NodePath("../component_ability")
 
 [node name="component_health" type="Node" parent="Components"]
-script = SubResource("GDScript_mvmr5")
+script = ExtResource("24_a64lg")
 
 [node name="component_vis" type="Node" parent="Components"]
-script = SubResource("GDScript_vvwdn")
+script = ExtResource("25_t2vpy")
 
 [node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
-script = ExtResource("21_j14mx")
+script = ExtResource("26_sbkog")
 my_component_input_controller = NodePath("../component_input_controller_manual")
 
 [node name="component_input_controller_manual" type="Node" parent="Components"]
-script = ExtResource("22_munar")
+script = ExtResource("27_k062g")
 
 [node name="component_animation_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
-script = ExtResource("9_n2kgb")
+script = ExtResource("28_pglts")
 my_component_input_controller = NodePath("../component_input_controller_manual")
 
 [node name="component_physics" type="Node" parent="Components"]
-script = ExtResource("20_6nw5h")
+script = ExtResource("29_4dxkt")
 
 [connection signal="animation_finished" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_finished"]
 [connection signal="animation_started" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_started"]

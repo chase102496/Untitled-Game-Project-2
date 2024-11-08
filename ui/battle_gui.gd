@@ -31,7 +31,6 @@ extends Control
 #have it show our state when it is entered
 
 func _ready() -> void:
-	
 	#position.x += randi_range(100,200) #just to make sure there's no duplicate menus up
 	#position.y -= randi_range(100,200)
 	#connect to button signals

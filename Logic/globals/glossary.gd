@@ -1,9 +1,9 @@
 extends Node
 
 const entity : Dictionary = {
-	"player" : preload("res://scenes/player.tscn"),
-	"enemy" : preload("res://scenes/enemy.tscn"),
-	"dreamkin" : preload("res://scenes/dreamkin.tscn")
+	"player" : preload("res://scenes/characters/player.tscn"),
+	"enemy" : preload("res://scenes/characters/enemy.tscn"),
+	"dreamkin" : preload("res://scenes/characters/dreamkin.tscn")
 	}
 
 const particle : Dictionary = {

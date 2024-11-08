@@ -10,41 +10,40 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inpdq"]
 albedo_texture = ExtResource("3_4sg4e")
-uv1_scale = Vector3(10, 10, 10)
+roughness = 0.05
+uv1_triplanar = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_p1wm8"]
-size = Vector2(0.25, 0.25)
+size = Vector2(100, 100)
 
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_jv2gb"]
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0etq2"]
+points = PackedVector3Array(-50, 0, -50, -50, 0, 50, 50, 0, -50, 50, 0, 50)
 
 [node name="turn_arena" type="Node3D"]
 script = ExtResource("1_0n5a0")
 
 [node name="Camera" parent="." instance=ExtResource("2_vx8wr")]
-transform = Transform3D(-0.999701, 9.13814e-09, -8.6944e-08, 0, 0.994519, 0.104529, 8.73966e-08, 0.104528, -0.994523, 0, -0.595, -3)
+transform = Transform3D(-0.999701, 9.13814e-09, -8.6944e-08, 0, 0.994519, 0.104529, 8.73966e-08, 0.104528, -0.994523, 0, 1.205, -3)
 follow_mode = 0
 look_at_mode = 0
 attributes = ExtResource("3_5oysl")
 
 [node name="MeshInstance3D_Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, -1.80014, 0)
 material_override = SubResource("StandardMaterial3D_inpdq")
 mesh = SubResource("PlaneMesh_p1wm8")
 
-[node name="StaticBody3D_Ground" type="StaticBody3D" parent="MeshInstance3D_Ground"]
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D_Ground"]
 collision_layer = 3
 collision_mask = 3
 
-[node name="CollisionShape3D_Ground" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D_Ground"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-shape = SubResource("HeightMapShape3D_jv2gb")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D_Ground/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_0etq2")
 
 [node name="Turn_Manager" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.92716, 0)
 script = ExtResource("1_k1dsd")
 
 [node name="Friends" type="Marker3D" parent="Turn_Manager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.24434, 0, -0.979343)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.244, 0, -0.979)
 
 [node name="Debug_Sprite" type="Sprite3D" parent="Turn_Manager/Friends"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
@@ -52,7 +51,7 @@ visible = false
 texture = ExtResource("6_adfps")
 
 [node name="Foes" type="Marker3D" parent="Turn_Manager"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84751, 0, 1.67682)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.348, 0, 0.677)
 
 [node name="Debug_Sprite" type="Sprite3D" parent="Turn_Manager/Foes"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
@@ -62,15 +61,11 @@ texture = ExtResource("6_adfps")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("6_hj5ia")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.14503, 0.766948, 0.625106, 0, -0.631786, 0.775143, 0.989427, -0.112419, -0.0916278, 4.44401, 1.56837, 0)
-
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.17942, 0.983773, 0, -0.983773, -0.17942, 0, 10.7363, -3.53567)
+transform = Transform3D(1, 0, 0, 0, -0.542236, 0.840227, 0, -0.840227, -0.542236, 0, 13.2075, -6.38302)
 light_color = Color(1, 0.9565, 0.91, 1)
-light_energy = 50.0
-light_indirect_energy = 50.0
-light_volumetric_fog_energy = 2.0
+light_energy = 100.0
+light_volumetric_fog_energy = 5.0
 light_specular = 0.0
 spot_range = 19.1982
 spot_angle = 21.7129

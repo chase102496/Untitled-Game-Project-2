@@ -29,7 +29,6 @@ func _ready() -> void:
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
 
 func _physics_process(_delta: float) -> void:
-	await owner.ready
 	if typeof(owner.state_init_override) == 4: #If it's a string
 		owner.state_chart.send_event(owner.state_init_override)
 		owner.state_init_override = null
@@ -69,6 +68,7 @@ func _on_animation_finished(anim_name,character) -> void:
 					else:
 						pass
 					Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
+					Battle.update_positions() #fix positions since we outta queue
 					Events.battle_entity_death.emit(owner) #let everyone know we died rip
 					owner.queue_free() #deletus da fetus
 
@@ -89,7 +89,8 @@ func _on_state_entered_battle_waiting() -> void:
 func _on_state_entered_battle_start() -> void:
 	print_debug("-----------------------")
 	print_debug("Turn Start: ",owner.name)
-	
+	print(owner)
+	print(my_component_ability)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
 	my_component_ability.current_status_effect.status_event("on_duration")

@@ -77,10 +77,23 @@ func sort_screen(a,b): #Sorts based on screen X position (so left to right on sc
 		return false
 
 func update_positions(): #Updates all units positions to reflect a change (like death or swap)
+	var friends_offset := Vector3.ZERO
+	var foes_offset := Vector3.ZERO
 	for i in len(battle_list):
-		var unit = battle_list[i]
 		
-
+		var unit = battle_list[i]
+		var offset = unit.stats.spacing
+		
+		var tween = get_tree().create_tween()
+	
+		if unit.stats.alignment == Battle.alignment.FOES:
+			offset *= -1
+			tween.tween_property(unit,"position",foes_offset,0.5)
+			foes_offset =+ offset
+		else:
+			tween.tween_property(unit,"position",friends_offset,0.5)
+			friends_offset =+ offset
+		
 func get_target_selector_list(target : Node, selector : String, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
 	match selector:
