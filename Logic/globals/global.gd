@@ -13,4 +13,4 @@ func _on_scene_tree_ready() -> void:
 	pass
 
 func scene_transition(scene : NodePath) -> void:
-	print(scene)
+	print_debug(scene)

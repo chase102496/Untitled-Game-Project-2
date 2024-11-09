@@ -62,13 +62,16 @@ func _on_animation_finished(anim_name,character) -> void:
 						else:
 							push_error("ERROR")
 					#If we aren't just end turn
-					elif Battle.active_character == owner:
-						Events.turn_end.emit()
-					#if we just died and it wasn't our turn, do nothing
 					else:
-						pass
-					Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
-					Battle.update_positions() #fix positions since we outta queue
+						if Battle.active_character == owner:
+							Events.turn_end.emit()
+						#if we just died and it wasn't our turn, do nothing
+						else:
+							pass
+						Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
+						my_component_ability.current_status_effect.status_event("on_death") #trigger on death for all status stuff
+						my_component_ability.current_status_effect.clear()#remove all our status effects
+					
 					Events.battle_entity_death.emit(owner) #let everyone know we died rip
 					owner.queue_free() #deletus da fetus
 
@@ -89,8 +92,6 @@ func _on_state_entered_battle_waiting() -> void:
 func _on_state_entered_battle_start() -> void:
 	print_debug("-----------------------")
 	print_debug("Turn Start: ",owner.name)
-	print(owner)
-	print(my_component_ability)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
 	my_component_ability.current_status_effect.status_event("on_duration")
@@ -106,16 +107,24 @@ func _on_state_entered_battle_choose() -> void:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
 		"enemy":
 			await get_tree().create_timer(0.3).timeout
-			my_component_ability.cast_queue = my_component_ability.my_abilities.pick_random() #Pick random move
 			
+			var ability = my_component_ability.my_abilities.pick_random()
+			my_component_ability.cast_queue = ability #Pick random move
+			
+			var targets = Battle.get_target_type_list(owner,ability.target_type)
+			var target = targets.pick_random() #Pick random target based on abil
+			
+			my_component_ability.cast_queue.targets = Battle.get_target_selector_list(target,ability.target_selector,targets)
+			
+			owner.state_chart.send_event("on_skillcheck")
 			#TODO Check if queued ability is to be used on allies or enemies before choosing
 			#turn this into a script we run with battle list as the entire battle field param, and owner as caster
 			#the move will narrow down the list of viable targets based on the input and its move type (myteam, enemies, single target, aoe, self, all)
 			#the move will then run a script based on whether we are player/dreamkin or enemy and send gui our target array or randomly select from target array
 			#eg if x: do x
 			#x is single-target, so we either randomly select 1 person from
-			my_component_ability.cast_queue.targets = [Battle.get_team(Battle.alignment.FRIENDS).pick_random()] #Pick random opponent
-			owner.state_chart.send_event("on_skillcheck")
+			
+			
 		_:
 			push_error("Not a valid entity for battle: ",owner.name)
 
@@ -145,14 +154,7 @@ func _on_state_exited_battle_skillcheck() -> void:
 			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
 	
 func _on_state_entered_battle_execution() -> void:
-	if my_component_ability.cast_queue.cast_validate():
-		my_component_ability.cast_queue.animation()
-	else:
-		Events.battle_entity_cast_failed.emit(owner,owner.my_component_ability.cast_queue.target,owner.my_component_ability.cast_queue)
-		await get_tree().create_timer(0.5).timeout
-		my_component_ability.cast_queue.cast_validate_failed()
-		my_component_ability.cast_queue.animation()
-		#owner.state_chart.send_event("on_end") #move failed, skip execution
+	my_component_ability.cast_queue.animation()
 
 func _on_battle_entity_hit(entity_caster : Node, entity_target : Node, ability : Object) -> void:
 	if entity_caster == owner:

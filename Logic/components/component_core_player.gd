@@ -8,7 +8,6 @@ func initialize():
 	abil.my_abilities = [
 		abil.ability_tackle.new(owner),
 		abil.ability_spook.new(owner),
-		abil.ability_heart_stitch.new(owner),
+		abil.ability_heartstitch.new(owner),
 		abil.ability.new(owner)
 		]
-	owner.animations.tree.active = true

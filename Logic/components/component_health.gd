@@ -9,6 +9,9 @@ func _ready() -> void:
 
 func damage(amt, mirror_damage : bool = false, type : Dictionary = Battle.type.NEUTRAL,):
 	if amt != 0:
+		
+		Glossary.create_text_particle(owner,owner.animations.sprite.global_position,str(amt),"float_away",Color.INDIAN_RED)
+		
 		if !mirror_damage: #To protect recursive when using heartstitch
 			Events.battle_entity_damaged.emit(owner,amt)
 		match type:

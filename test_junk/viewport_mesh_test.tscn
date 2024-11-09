@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://qheah61q37uy"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_reyyu"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2gmu"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_reyyu")
+
+[sub_resource type="QuadMesh" id="QuadMesh_iku8i"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_i2gmu")
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("QuadMesh_iku8i")

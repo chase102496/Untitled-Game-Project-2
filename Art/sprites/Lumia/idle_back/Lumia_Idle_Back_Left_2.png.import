@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dk0u5sqsnxcbr"
-path.s3tc="res://.godot/imported/Lumia_Idle_Left_3.png-8b4469cb4ae860e842bd197e4d6f4690.s3tc.ctex"
+uid="uid://bm4n8jpxft6f2"
+path.s3tc="res://.godot/imported/Lumia_Idle_Back_Left_2.png-6208ad84cfc7b38e1c869586c52772c7.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Art/sprites/Lumia/Lumia_Idle_Left_3.png"
-dest_files=["res://.godot/imported/Lumia_Idle_Left_3.png-8b4469cb4ae860e842bd197e4d6f4690.s3tc.ctex"]
+source_file="res://Art/sprites/Lumia/idle_back/Lumia_Idle_Back_Left_2.png"
+dest_files=["res://.godot/imported/Lumia_Idle_Back_Left_2.png-6208ad84cfc7b38e1c869586c52772c7.s3tc.ctex"]
 
 [params]
 

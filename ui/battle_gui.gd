@@ -168,19 +168,15 @@ func _on_button_pressed_battle():
 	#TODO add back button for GUIs
 
 func _on_button_pressed_battle_ability(ability):
-	
-	selector_list = []
-	selected_ability = ability #for use later
-	
-	if ability.select_validate():
-		selector_list = Battle.get_target_type_list(owner,selected_ability.target_type,true)
-		state_chart.send_event("on_gui_select")
-	else:
-		ability.select_validate_failed()
+	if ability.caster == owner:
+		selector_list = []
+		selected_ability = ability #for use later
 		
-		#store obj in memory to cast ability later
-		#send state change to owner
-	#return if we cannot cast it and get the info from the ability
+		if ability.select_validate():
+			selector_list = Battle.get_target_type_list(owner,selected_ability.target_type,true)
+			state_chart.send_event("on_gui_select")
+		else:
+			ability.select_validate_failed()
 
 func _on_button_pressed_switch():
 	pass

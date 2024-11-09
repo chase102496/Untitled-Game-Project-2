@@ -28,5 +28,6 @@ extends CharacterBody3D
 @export var my_component_core : Node
 
 func _ready() -> void:
+	animations.tree.active = true
 	if my_component_core:
 		my_component_core.initialize()

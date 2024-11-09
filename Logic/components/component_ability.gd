@@ -32,7 +32,7 @@ class status_manager:
 	var TETHER #Primarily for Lumia's stitch mechanic
 	var SOULBOUND #Primarily for permanent bonds that start at battle initialize
 	
-	func add(effect : Object):
+	func add(effect : Object) -> void:
 		#check if they have a partner with the buff NAH
 		match effect.category:
 			"NORMAL":
@@ -52,7 +52,7 @@ class status_manager:
 					TETHER = effect
 					effect.fx_add()
 					print_debug("!status added!")
-				elif TETHER.priority < effect.priority:
+				elif TETHER.priority <= effect.priority:
 					remove(TETHER)
 					TETHER = effect
 					effect.fx_add()
@@ -74,7 +74,7 @@ class status_manager:
 			_:
 				push_error("COULD NOT ADD ",effect," TO ",effect.category)
 	
-	func remove(effect : Object):
+	func remove(effect : Object) -> void:
 		match effect.category:
 			"NORMAL":
 				if NORMAL:
@@ -100,7 +100,19 @@ class status_manager:
 			_:
 				push_error("COULD NOT REMOVE ",effect," TO ",effect.category)
 
-	func status_event(event : String, arg1 = null, arg2 = null, arg3 = null):
+	func clear() -> void:
+		print_debug("!clearing all status effects!")
+		if NORMAL:
+			NORMAL.fx_remove()
+			NORMAL = null
+		if TETHER:
+			TETHER.fx_remove()
+			TETHER = null
+		if SOULBOUND:
+			SOULBOUND.fx_remove()
+			SOULBOUND = null
+
+	func status_event(event : String, arg1 = null, arg2 = null, arg3 = null) -> void:
 		if NORMAL and NORMAL.has_method(event):
 			if arg3:
 				Callable(NORMAL,event).call(arg1,arg2,arg3)
@@ -147,14 +159,11 @@ class status:
 	func _init(host : Node) -> void:
 		self.host = host
 	
-	func test():
-		print("SUCCESS")
-	
 	func on_duration():
 		if duration > 0:
 			duration -= 1
 		else:
-			on_remove()
+			on_expire()
 	
 	func on_start(): #runs on start of turn
 		pass
@@ -171,9 +180,12 @@ class status:
 	func on_end(): #runs on end of turn
 		pass
 	
-	func on_remove(): #runs when status effect expires
+	func on_expire(): #runs when status effect expires
 		print_debug(title," wore off for ",host.name,"!")
 		host.my_component_ability.current_status_effect.remove(self)
+	
+	func on_death():
+		pass
 	
 	func fx_add():
 		pass
@@ -229,7 +241,7 @@ class status_burn:
 
 # TETHER
 
-class status_tether_heart:
+class status_heartstitch:
 	extends status
 	
 	var partners : Array
@@ -245,9 +257,16 @@ class status_tether_heart:
 	func on_host_health_change(entity,amount): #the bread n butta of heartstitch
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
 			for i in len(partners):
-				if partners[i] != host:
+				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
 					partners[i].my_component_health.damage(amount,true)
 					print_debug(partners[i].name," took ",amount," points of mirror damage!")
+	
+	func on_death():
+		pass
+		#for i in len(partners):
+			#if partners[i] != host: #remove us from all partners links except ours
+				#var inst = partners[i].my_component_ability.current_status_effect.TETHER.partners
+				#inst.pop_at(inst.find(host))
 	
 	func fx_add():
 		fx = Glossary.ui.heartstitch.instantiate()
@@ -284,7 +303,6 @@ class ability:
 	func select_validate_failed():
 		print_debug("Can't do that")
 		#You can execute code here, run a Dialogic event to show them they can't use that, etc
-		pass
 	
 	func skillcheck(result):
 		if result == "Miss":
@@ -307,7 +325,8 @@ class ability:
 			return false
 			
 	func cast_validate_failed():
-		print_debug("It failed!")
+		print_debug("Missed!")
+		Glossary.create_text_particle(caster,caster.animations.sprite.global_position,str("Miss!"),"float_away",Color.WHITE)
 	
 	func cast_main(): #Main function, calls on hit
 		pass
@@ -353,6 +372,8 @@ class ability_spook:
 	func _init(caster : Node) -> void:
 		self.caster = caster
 		type = Battle.type.VOID
+		target_selector = Battle.target_selector.SINGLE
+		target_type = Battle.target_type.OPPONENTS
 		title = "Spook"
 		vis_cost = 2
 		damage = 1
@@ -401,6 +422,7 @@ class ability_tackle:
 		self.caster = caster
 		damage = 1
 		type = Battle.type.NEUTRAL
+		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
 		title = "Tackle"
 	
@@ -414,7 +436,7 @@ class ability_tackle:
 		else:
 			cast_validate_failed()
 
-class ability_heart_stitch:
+class ability_heartstitch:
 	extends ability_template_default
 	
 	var old_targets : Array = []
@@ -422,6 +444,7 @@ class ability_heart_stitch:
 	func _init(caster : Node) -> void:
 		self.caster = caster
 		target_selector = Battle.target_selector.SINGLE_RIGHT
+		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.VOID
 		title = "Heartstitch"
 		vis_cost = 2
@@ -434,9 +457,9 @@ class ability_heart_stitch:
 			caster.my_component_vis.siphon(vis_cost)
 			for i in len(targets):
 				targets[i].my_component_health.damage(damage) #Flat damage
-				targets[i].my_component_ability.current_status_effect.add(status_tether_heart.new(targets[i],targets,skillcheck_modifier*1))
+				targets[i].my_component_ability.current_status_effect.add(status_heartstitch.new(targets[i],targets,skillcheck_modifier*1))
 			for i in len(old_targets):
-				if old_targets[i]:
+				if old_targets[i] and old_targets[i] not in targets:
 					if old_targets[i].my_component_ability.current_status_effect.TETHER.title == title: #If we find they still have our old buff
 						old_targets[i].my_component_ability.current_status_effect.remove(old_targets[i].my_component_ability.current_status_effect.TETHER) #remove
 			old_targets = targets

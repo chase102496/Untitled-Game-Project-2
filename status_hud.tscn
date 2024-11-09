@@ -2,17 +2,17 @@
 
 [ext_resource type="Script" path="res://Logic/scripts/status_hud.gd" id="1_yujgj"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_nq24v"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_oql26"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2gmu"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hl47y"]
 resource_local_to_scene = true
 transparency = 1
-albedo_texture = SubResource("ViewportTexture_nq24v")
+albedo_texture = SubResource("ViewportTexture_oql26")
 
 [sub_resource type="QuadMesh" id="QuadMesh_j4aiy"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_i2gmu")
+material = SubResource("StandardMaterial3D_hl47y")
 
 [node name="Status_HUD" type="Node3D"]
 script = ExtResource("1_yujgj")

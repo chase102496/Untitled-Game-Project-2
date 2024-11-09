@@ -82,17 +82,14 @@ func update_positions(): #Updates all units positions to reflect a change (like 
 	for i in len(battle_list):
 		
 		var unit = battle_list[i]
-		var offset = unit.stats.spacing
-		
 		var tween = get_tree().create_tween()
 	
 		if unit.stats.alignment == Battle.alignment.FOES:
-			offset *= -1
-			tween.tween_property(unit,"position",foes_offset,0.5)
-			foes_offset =+ offset
+			tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.position.y,foes_offset.z),0.5)
+			foes_offset -= unit.stats.spacing
 		else:
-			tween.tween_property(unit,"position",friends_offset,0.5)
-			friends_offset =+ offset
+			tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.position.y,friends_offset.z),0.5)
+			friends_offset += unit.stats.spacing
 		
 func get_target_selector_list(target : Node, selector : String, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
@@ -182,7 +179,7 @@ func check_ready():
 
 #Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
 #and the old and new scenes they will be transitioning from and to.
-func battle_initialize(unit_list : Array, stat_list : Array, scene_old, scene_new : String):
+func battle_initialize(unit_list : Array, scene_old, scene_new : String):
 	var unit_instance
 	battle_list = []
 	
@@ -190,10 +187,10 @@ func battle_initialize(unit_list : Array, stat_list : Array, scene_old, scene_ne
 	for i in len(unit_list):
 		var unit_name : String = unit_list[i]
 		var unit_scene : Object = Glossary.entity.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
-		var unit_stats : Dictionary = stat_list[i]
+		#var unit_stats : Dictionary = stat_list[i]
 		
 		unit_instance = unit_scene.instantiate()
-		unit_instance.stats.merge(unit_stats,true)
+		#unit_instance.stats.merge(unit_stats,true)
 		#FIXME Replace this eventually with a signal and args
 		
 		#signal emit

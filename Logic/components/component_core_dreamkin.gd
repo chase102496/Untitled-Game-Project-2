@@ -9,4 +9,3 @@ func initialize():
 		abil.ability.new(owner),
 		abil.ability.new(owner)
 		]
-	owner.animations.tree.active = true

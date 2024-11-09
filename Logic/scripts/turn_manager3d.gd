@@ -17,15 +17,15 @@ func _ready() -> void:
 		var parent = get_node(instance.stats.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
 		
+		var tween = get_tree().create_tween()
+		
 		if instance.stats.alignment == Battle.alignment.FOES:
-			instance.position.x = foes_offset.x
-			instance.position.z = foes_offset.z
-			instance.position.y = instance.collider.shape.height
+			instance.position.y = instance.collider.shape.height/2
+			tween.tween_property(instance,"position",Vector3(foes_offset.x,instance.position.y,foes_offset.z),0.2)
 			foes_offset -= instance.stats.spacing
 		else:
-			instance.position.x = friends_offset.x
-			instance.position.z = friends_offset.z
-			instance.position.y = instance.collider.shape.height
+			instance.position.y = instance.collider.shape.height/2
+			tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
 			friends_offset += instance.stats.spacing
 		
 		#FIXME Bandaid solution for state machine being slower than the initialization of my scene so it would not recieve the signal in the right order
@@ -39,6 +39,7 @@ func _on_turn_end():
 	#Set new character as next in queue, and incrementing the index
 	var new_index = (Battle.battle_list.find(Battle.active_character,0) + 1) % len(Battle.battle_list)
 	Battle.active_character = Battle.battle_list[new_index]
+	Battle.update_positions() #fix positions since we outta queue
 	Events.turn_start.emit()
 	
 func _on_battle_finished(result):
