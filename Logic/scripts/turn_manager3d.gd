@@ -13,6 +13,11 @@ func _ready() -> void:
 	var foes_offset := Vector3.ZERO
 	for i in len(Battle.battle_list):
 		
+		var tweenable = true
+		
+		if !is_instance_valid(Battle.battle_list[i]):
+			tweenable = false
+		
 		var instance = Battle.battle_list[i] #Our object to move into scene
 		var parent = get_node(instance.stats.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
@@ -21,11 +26,13 @@ func _ready() -> void:
 		
 		if instance.stats.alignment == Battle.alignment.FOES:
 			instance.position.y = instance.collider.shape.height/2
-			tween.tween_property(instance,"position",Vector3(foes_offset.x,instance.position.y,foes_offset.z),0.2)
+			if tweenable:
+				tween.tween_property(instance,"position",Vector3(foes_offset.x,instance.position.y,foes_offset.z),0.2)
 			foes_offset -= instance.stats.spacing
 		else:
 			instance.position.y = instance.collider.shape.height/2
-			tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
+			if tweenable:
+				tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
 			friends_offset += instance.stats.spacing
 		
 		#FIXME Bandaid solution for state machine being slower than the initialization of my scene so it would not recieve the signal in the right order

@@ -9,6 +9,10 @@ const type : Dictionary = {
 		"TITLE" : "",
 		"ICON" : ""
 	},
+	"TETHER" : {
+		"TITLE" : "Tether",
+		"ICON" : "※"
+	},
 	"NEUTRAL" : {
 		"TITLE" : "Neutral",
 		"ICON" : "●"
@@ -25,8 +29,8 @@ const type : Dictionary = {
 		"TITLE" : "Tera",
 		"ICON" : "⬡"
 	},
-	"ETHEREAL" : {
-		"TITLE" : "Ethereal",
+	"ETHER" : {
+		"TITLE" : "Ether",
 		"ICON" : "≋"
 	},
 }

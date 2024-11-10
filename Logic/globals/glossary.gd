@@ -9,7 +9,8 @@ const entity : Dictionary = {
 
 const particle : Dictionary = {
 	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
-	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn")
+	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn"),
+	"freeze" : preload("res://Art/particles/scenes/particle_freeze.tscn"),
 	}
 
 const text : Dictionary = {

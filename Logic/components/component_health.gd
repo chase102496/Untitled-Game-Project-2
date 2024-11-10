@@ -7,10 +7,11 @@ var health : int
 func _ready() -> void:
 	health = max_health
 
-func damage(amt, mirror_damage : bool = false, type : Dictionary = Battle.type.NEUTRAL,):
+func damage(amt, mirror_damage : bool = false, type : Dictionary = Battle.type.NEUTRAL):
+	
+	Glossary.create_text_particle(owner,owner.animations.sprite.global_position,str(amt),"float_away",Color.INDIAN_RED)
+	
 	if amt != 0:
-		
-		Glossary.create_text_particle(owner,owner.animations.sprite.global_position,str(amt),"float_away",Color.INDIAN_RED)
 		
 		if !mirror_damage: #To protect recursive when using heartstitch
 			Events.battle_entity_damaged.emit(owner,amt)

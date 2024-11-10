@@ -82,17 +82,27 @@ func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TU
 		owner.state_chart.send_event("on_start")
 	else:
 		owner.state_chart.send_event("on_waiting")
+
+func _on_battle_entity_damaged(entity : Node, amount : int) -> void:
+	my_component_ability.current_status_effects.status_event("on_battle_entity_damaged",[entity,amount])
+
+func _on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object) -> void:
+	my_component_ability.current_status_effects.status_event("on_battle_entity_hit",[entity_caster,entity_targets,ability])
 	
-func _on_battle_entity_damaged(entity : Node, amount : int):
-	my_component_ability.current_status_effects.status_event("on_host_health_change",[entity,amount])
+	if owner == entity_caster: #if we are casting
+		entity_caster.my_component_ability.cast_queue.cast_main()
+	elif owner in entity_targets: #if we're being hit with something
+		var result = false
+		#run our mitigation, and the 'true' is to return a result so we can tell if anything cares about mitigation in our status
+		var query_results = my_component_ability.current_status_effects.status_event("on_battle_entity_ability_mitigation",[entity_caster,owner,ability],true)
+		for i in len(query_results):
+			if query_results[i]: #if any of them aren't null
+				result = true #it means something cares and wants to handle mitigation itself
+		if !result: #means nothing cares and we should pass through as normal
+			entity_caster.my_component_ability.cast_queue.cast_internal(entity_caster,owner)
 
-func _on_battle_entity_hit(entity_caster : Node, entity_target : Node, ability : Object) -> void:
-	my_component_ability.current_status_effects.status_event("on_battle_entity_hit",[entity_caster,entity_target,ability])
-	if entity_caster == owner:
-		my_component_ability.cast_queue.cast_main()
-
-func _on_battle_entity_missed(entity_caster : Node, entity_target : Node, ability : Object) -> void:
-	my_component_ability.current_status_effects.status_event("on_battle_entity_missed",[entity_caster,entity_target,ability])
+func _on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
+	my_component_ability.current_status_effects.status_event("on_battle_entity_missed",[entity_caster,entity_targets,ability])
 	if entity_caster == owner:
 		owner.my_component_ability.cast_queue.cast_validate_failed()
 
