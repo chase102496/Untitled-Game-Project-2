@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1v66rrjk3u0a"
-path.bptc="res://.godot/imported/trace_03.png-b68121627c02cdc1944f589ad0b23825.bptc.ctex"
+uid="uid://cy7yktyo3w01q"
+path.bptc="res://.godot/imported/flame_06_rotated.png-27390e4d7dd1070114c05ae5b1ea8f0e.bptc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Art/particles/trace_03.png"
-dest_files=["res://.godot/imported/trace_03.png-b68121627c02cdc1944f589ad0b23825.bptc.ctex"]
+source_file="res://Art/particles/flame_06_rotated.png"
+dest_files=["res://.godot/imported/flame_06_rotated.png-27390e4d7dd1070114c05ae5b1ea8f0e.bptc.ctex"]
 
 [params]
 
@@ -32,4 +32,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

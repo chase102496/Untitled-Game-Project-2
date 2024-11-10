@@ -31,15 +31,16 @@ const type : Dictionary = {
 	},
 }
 
-const status_type : Dictionary = {
-	"NORMAL" : {
-		"TITLE" : "Normal",
-		"ICON" : ""
-	},
-	"TETHER" : {
-		"TITLE" : "Tether",
-		"ICON" : "⛓"
-	}
+const status_category : Dictionary = {
+	"NORMAL" : "NORMAL",
+	"TETHER" : "TETHER",
+	"PASSIVE" : "PASSIVE"
+}
+
+const status_behavior : Dictionary = { #When a status effect is applied to a target who already has it
+	"STACK" : "STACK", #Add duration on top of the existing one, but doesn't send new info to target besides that
+	"RESET" : "RESET", #Reset the duration to the new ability's duration, and sends new info to target like its partners for a tether
+	"RESIST" : "RESIST" #Do nothing
 }
 
 const target_selector : Dictionary = { #Decides who to actually apply the move on

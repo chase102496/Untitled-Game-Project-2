@@ -17,6 +17,7 @@ func _ready() -> void:
 	Events.turn_start.connect(_on_turn_start)
 	Events.battle_entity_hit.connect(_on_battle_entity_hit)
 	Events.battle_entity_damaged.connect(_on_battle_entity_damaged)
+	Events.battle_entity_missed.connect(_on_battle_entity_missed)
 	#Events.battle_entity_death.connect(_on_battle_entity_death)
 	#
 	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
@@ -33,7 +34,7 @@ func _physics_process(_delta: float) -> void:
 		owner.state_chart.send_event(owner.state_init_override)
 		owner.state_init_override = null
 
-#Battle
+#SIGNALS
 
 func _on_animation_started(anim_name,character) -> void:
 	if character == owner:
@@ -69,14 +70,11 @@ func _on_animation_finished(anim_name,character) -> void:
 						else:
 							pass
 						Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
-						my_component_ability.current_status_effect.status_event("on_death") #trigger on death for all status stuff
-						my_component_ability.current_status_effect.clear()#remove all our status effects
+						my_component_ability.current_status_effects.status_event("on_death") #trigger on death for all status stuff
+						my_component_ability.current_status_effects.clear()#remove all our status effects
 					
 					Events.battle_entity_death.emit(owner) #let everyone know we died rip
 					owner.queue_free() #deletus da fetus
-
-func _on_battle_entity_damaged(entity : Node, amount : int):
-	my_component_ability.current_status_effect.status_event("on_host_health_change",entity,amount)
 
 func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN
 	if Battle.active_character == owner:
@@ -84,6 +82,21 @@ func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TU
 		owner.state_chart.send_event("on_start")
 	else:
 		owner.state_chart.send_event("on_waiting")
+	
+func _on_battle_entity_damaged(entity : Node, amount : int):
+	my_component_ability.current_status_effects.status_event("on_host_health_change",[entity,amount])
+
+func _on_battle_entity_hit(entity_caster : Node, entity_target : Node, ability : Object) -> void:
+	my_component_ability.current_status_effects.status_event("on_battle_entity_hit",[entity_caster,entity_target,ability])
+	if entity_caster == owner:
+		my_component_ability.cast_queue.cast_main()
+
+func _on_battle_entity_missed(entity_caster : Node, entity_target : Node, ability : Object) -> void:
+	my_component_ability.current_status_effects.status_event("on_battle_entity_missed",[entity_caster,entity_target,ability])
+	if entity_caster == owner:
+		owner.my_component_ability.cast_queue.cast_validate_failed()
+
+# STATES
 
 func _on_state_entered_battle_waiting() -> void:
 	character_ready = true
@@ -94,8 +107,8 @@ func _on_state_entered_battle_start() -> void:
 	print_debug("Turn Start: ",owner.name)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
-	my_component_ability.current_status_effect.status_event("on_duration")
-	my_component_ability.current_status_effect.status_event("on_start")
+	my_component_ability.current_status_effects.status_event("on_duration")
+	my_component_ability.current_status_effects.status_event("on_start")
 	
 	owner.state_chart.send_event("on_choose") 
 
@@ -129,7 +142,6 @@ func _on_state_entered_battle_choose() -> void:
 			push_error("Not a valid entity for battle: ",owner.name)
 
 func _on_state_entered_battle_skillcheck() -> void:
-
 	match owner.stats.glossary:
 		"enemy": #weighted random skillcheck
 			var skillcheck_result = "Miss"
@@ -140,8 +152,6 @@ func _on_state_entered_battle_skillcheck() -> void:
 				skillcheck_result = "Great"
 			elif skill_rand >= 0.15:
 				skillcheck_result = "Good"
-			else:
-				Events.battle_entity_cast_failed.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue) #emit a failed notif
 				
 			my_component_ability.cast_queue.skillcheck(skillcheck_result)
 			owner.state_chart.send_event("on_execution")
@@ -156,16 +166,11 @@ func _on_state_exited_battle_skillcheck() -> void:
 func _on_state_entered_battle_execution() -> void:
 	my_component_ability.cast_queue.animation()
 
-func _on_battle_entity_hit(entity_caster : Node, entity_target : Node, ability : Object) -> void:
-	if entity_caster == owner:
-		my_component_ability.cast_queue.cast_main()
-		my_component_ability.current_status_effect.status_event("on_target_hit")
-
 func _on_state_entered_battle_end() -> void:
-	if my_component_ability.current_status_effect and !already_applied_end_status: #yucky cope var
+	if my_component_ability.current_status_effects and !already_applied_end_status: #yucky cope var
 		state_chart_memory = "on_end"
 		already_applied_end_status = true
-		my_component_ability.current_status_effect.status_event("on_end")
+		my_component_ability.current_status_effects.status_event("on_end")
 
 func _on_state_physics_processing_battle_end(_delta: float) -> void:
 	#End code goes here, then we ready up

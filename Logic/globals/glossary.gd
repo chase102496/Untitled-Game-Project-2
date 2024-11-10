@@ -17,7 +17,7 @@ const text : Dictionary = {
 	}
 
 func create_text_particle(host : Node, pos : Vector3 = Vector3.ZERO, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, size : int = 60):
-	var inst = Glossary.text.float_away.instantiate()
+	var inst = Glossary.text.get(type).instantiate()
 	host.add_child(inst)
 	var particle_label = inst.get_node("%particle_label")
 	particle_label.text = text

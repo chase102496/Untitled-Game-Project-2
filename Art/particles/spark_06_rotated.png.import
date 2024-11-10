@@ -2,26 +2,27 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clkum1dcm8gp6"
-path="res://.godot/imported/trace_03_rotated.png-b7dfab757a4f92f5b9d797b6ddacbdc3.ctex"
+uid="uid://bew73joijbii8"
+path.bptc="res://.godot/imported/spark_06_rotated.png-5d1f7158e1434c83729e21021fb62415.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://Art/particles/Rotated/trace_03_rotated.png"
-dest_files=["res://.godot/imported/trace_03_rotated.png-b7dfab757a4f92f5b9d797b6ddacbdc3.ctex"]
+source_file="res://Art/particles/spark_06_rotated.png"
+dest_files=["res://.godot/imported/spark_06_rotated.png-5d1f7158e1434c83729e21021fb62415.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

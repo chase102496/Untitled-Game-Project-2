@@ -3,25 +3,26 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dqst1ibx168h8"
-path="res://.godot/imported/trace_05.png-d301521bf91112a795a996fb96279571.ctex"
+path.bptc="res://.godot/imported/trace_05.png-d301521bf91112a795a996fb96279571.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Art/particles/trace_05.png"
-dest_files=["res://.godot/imported/trace_05.png-d301521bf91112a795a996fb96279571.ctex"]
+dest_files=["res://.godot/imported/trace_05.png-d301521bf91112a795a996fb96279571.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

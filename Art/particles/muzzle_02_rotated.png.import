@@ -2,26 +2,27 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bew73joijbii8"
-path="res://.godot/imported/spark_06_rotated.png-ca0e111d5d31c7a4e3f22202bf7fd6d1.ctex"
+uid="uid://bkhdu3pvfyhkq"
+path.bptc="res://.godot/imported/muzzle_02_rotated.png-08cb53e7a0e3664f7ea9c0730629af92.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://Art/particles/Rotated/spark_06_rotated.png"
-dest_files=["res://.godot/imported/spark_06_rotated.png-ca0e111d5d31c7a4e3f22202bf7fd6d1.ctex"]
+source_file="res://Art/particles/muzzle_02_rotated.png"
+dest_files=["res://.godot/imported/muzzle_02_rotated.png-08cb53e7a0e3664f7ea9c0730629af92.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

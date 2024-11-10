@@ -32,6 +32,8 @@ viewport_path = NodePath("SubViewport")
 resource_local_to_scene = true
 transparency = 1
 albedo_texture = SubResource("ViewportTexture_8u5ee")
+billboard_mode = 2
+billboard_keep_scale = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_vvn7n"]
 resource_local_to_scene = true
@@ -47,6 +49,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="particle_text_damage" type="Node3D"]
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.2)
 amount = 1
 fixed_fps = 60
 draw_order = 3

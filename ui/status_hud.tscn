@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b3707fwdhap4h"]
 
-[ext_resource type="Script" path="res://Logic/scripts/status_hud.gd" id="1_yujgj"]
+[ext_resource type="Script" path="res://Logic/scripts/status_hud.gd" id="1_ked1w"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_oql26"]
 viewport_path = NodePath("SubViewport")
@@ -9,13 +9,14 @@ viewport_path = NodePath("SubViewport")
 resource_local_to_scene = true
 transparency = 1
 albedo_texture = SubResource("ViewportTexture_oql26")
+billboard_mode = 2
 
 [sub_resource type="QuadMesh" id="QuadMesh_j4aiy"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_hl47y")
 
 [node name="Status_HUD" type="Node3D"]
-script = ExtResource("1_yujgj")
+script = ExtResource("1_ked1w")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)

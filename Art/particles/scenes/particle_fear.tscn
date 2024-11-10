@@ -1,14 +1,15 @@
 [gd_scene load_steps=9 format=3 uid="uid://dmrpjjw65g2x7"]
 
-[ext_resource type="Texture2D" uid="uid://bm61ihjtwcvt0" path="res://particles/flame_04.png" id="1_h8y50"]
+[ext_resource type="Texture2D" uid="uid://bc23lduouw5t8" path="res://Art/particles/light_02.png" id="1_dox0j"]
 
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_8fcjr"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_h8y50")
+albedo_texture = ExtResource("1_dox0j")
 billboard_mode = 3
+billboard_keep_scale = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
@@ -20,26 +21,25 @@ colors = PackedColorArray(0.50544, 0.0312, 0.78, 1, 0.337255, 0, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5mp6t"]
 gradient = SubResource("Gradient_le5yj")
 
-[sub_resource type="Curve" id="Curve_boeud"]
-min_value = -200.0
-max_value = 200.0
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="Curve" id="Curve_vppme"]
+_data = [Vector2(0, 0.802801), 0.0, 0.0, 0, 0, Vector2(0.504451, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_h4du0"]
-curve = SubResource("Curve_boeud")
+[sub_resource type="CurveTexture" id="CurveTexture_2n3p8"]
+curve = SubResource("Curve_vppme")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7mwrs"]
 resource_local_to_scene = true
-emission_shape_scale = Vector3(0.5, 1, 0.5)
+emission_shape_scale = Vector3(0.1, 0.25, 0.1)
 emission_shape = 1
-emission_sphere_radius = 0.25
+emission_sphere_radius = 0.5
+angle_min = 1.07288e-05
+angle_max = 180.0
 angular_velocity_min = 147.92
 angular_velocity_max = 147.92
-gravity = Vector3(0, 1.7, 0)
-linear_accel_min = 0.599998
-linear_accel_max = 0.599998
-linear_accel_curve = SubResource("CurveTexture_h4du0")
+gravity = Vector3(0, 1.3, 0)
+attractor_interaction_enabled = false
+scale_curve = SubResource("CurveTexture_2n3p8")
 color_ramp = SubResource("GradientTexture1D_5mp6t")
 
 [sub_resource type="QuadMesh" id="QuadMesh_bwovf"]
@@ -47,9 +47,8 @@ lightmap_size_hint = Vector2i(7, 7)
 
 [node name="particle_fear" type="GPUParticles3D"]
 material_override = SubResource("ORMMaterial3D_8fcjr")
-transparency = 0.9
-amount = 100
-lifetime = 0.9
+transparency = 0.95
+amount = 20
 process_material = SubResource("ParticleProcessMaterial_7mwrs")
 draw_pass_1 = SubResource("QuadMesh_bwovf")
 

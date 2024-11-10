@@ -2,26 +2,27 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cur5royaxmx5v"
-path="res://.godot/imported/muzzle_04_rotated.png-34f31e8ab2be3762f7216e32e4475f09.ctex"
+uid="uid://clkum1dcm8gp6"
+path.bptc="res://.godot/imported/trace_03_rotated.png-e4fa0791101cf7d94b30503f4978a251.bptc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://Art/particles/Rotated/muzzle_04_rotated.png"
-dest_files=["res://.godot/imported/muzzle_04_rotated.png-34f31e8ab2be3762f7216e32e4475f09.ctex"]
+source_file="res://Art/particles/trace_03_rotated.png"
+dest_files=["res://.godot/imported/trace_03_rotated.png-e4fa0791101cf7d94b30503f4978a251.bptc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

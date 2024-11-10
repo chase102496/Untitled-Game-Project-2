@@ -1,7 +1,7 @@
 [gd_scene load_steps=68 format=3 uid="uid://ct0v1pb5ehqc6"]
 
 [ext_resource type="Script" path="res://Logic/scripts/entity_copy.gd" id="1_j3uwc"]
-[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://status_hud.tscn" id="2_yaeft"]
+[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://ui/status_hud.tscn" id="2_yaeft"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="3_66sq2"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_h10n0"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_e2f4y"]
@@ -627,7 +627,7 @@ my_component_input_controller = NodePath("Components/component_input_controller_
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
-status_hud = NodePath("Status_HUD")
+status_hud = NodePath("Animations/character_animation_sprite/Status_HUD")
 my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
@@ -640,17 +640,15 @@ stats = {
 }
 my_component_core = NodePath("Components/component_core_dreamkin")
 
-[node name="Status_HUD" parent="." instance=ExtResource("2_yaeft")]
-unique_name_in_owner = true
-
 [node name="StateChart" parent="." instance=ExtResource("3_66sq2")]
 unique_name_in_owner = true
 
-[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis") instance=ExtResource("4_h10n0")]
+[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis", "my_component_ability") instance=ExtResource("4_h10n0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
 my_component_state_controller_battle = NodePath("../Components/component_state_controller_battle")
 my_component_health = NodePath("../Components/component_health")
 my_component_vis = NodePath("../Components/component_vis")
+my_component_ability = NodePath("../Components/component_ability")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.063571, 0.0287893, 0.00621723)
@@ -669,6 +667,10 @@ texture_filter = 0
 sprite_frames = SubResource("SpriteFrames_hyon4")
 animation = &"default_idle"
 frame = 1
+
+[node name="Status_HUD" parent="Animations/character_animation_sprite" instance=ExtResource("2_yaeft")]
+unique_name_in_owner = true
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
 root_node = NodePath("../character_animation_sprite")
