@@ -28,7 +28,7 @@ func animations_reset(dir : Vector2 = Vector2(0,0)) -> void:
 	owner.animations.tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
 
 func _on_state_entered_death() -> void:
-	owner.animations.tree.get("parameters/playback").travel("Death")
+	pass
 
 func _on_state_entered_battle_hurt() -> void:
 	owner.animations.tree.get("parameters/playback").travel("Hurt")

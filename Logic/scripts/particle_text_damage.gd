@@ -1,5 +1,7 @@
 extends GPUParticles3D
 
+var creator : Node #Who created us?
+
 func _ready() -> void:
 	emitting = true
 	one_shot = true

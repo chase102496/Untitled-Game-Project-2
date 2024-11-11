@@ -21,8 +21,9 @@ extends CharacterBody3D
 #Default stats
 @export var stats : Dictionary = {
 	"alignment" : Battle.alignment.FRIENDS, #Side of the field I will fight on
-	"glossary" : "player", #Unit category I was spawned from
-	"spacing" : Vector3(0,0,0), #spacing when unit is spawned in battle
+	"classification" : Battle.classification.PLAYER, #Grouping I am in
+	"glossary" : "player", #Exact unit category I was spawned from
+	"spacing" : Vector3(0,0,0) #spacing when unit is spawned in battle
 }
 #Core
 @export var my_component_core : Node

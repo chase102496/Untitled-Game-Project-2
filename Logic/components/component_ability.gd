@@ -22,9 +22,20 @@ func _ready() -> void:
 
 class status_manager:
 
-	var NORMAL #they can overwrite eachother based on priority
+	var NORMAL #they can overwrite eachother based on priority. Only one at a time
 	var TETHER #Primarily for Lumia's stitch mechanic
 	var PASSIVE : Array = [] #Primarily for semi-permanent status effects that start at battle initialize and don't interact with NORMAL and TETHER
+	
+	func search_title(title_query : String): #Returns first result matching the title of the input, or null if no result TODO BROKEN
+		if NORMAL and NORMAL.title == title_query:
+			return NORMAL
+		if TETHER and TETHER.title == title_query:
+			return TETHER
+		if len(PASSIVE) > 0:
+			for i in len(PASSIVE):
+				if PASSIVE[i].title == title_query:
+					return PASSIVE
+		return null
 	
 	func add_passive(effect : Object) -> void:
 		PASSIVE.append(effect)
@@ -123,18 +134,23 @@ class status:
 	var title : String = "---"
 	var fx : Node #Visual fx
 	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
+	var new_turn : bool #Whether we ran this once per turn already
+	
+	func once_per_turn():
+		if new_turn:
+			new_turn = false
+			return true
+		else:
+			return false
 	
 	func _init(host : Node) -> void:
 		self.host = host
 	
-	func on_duration(): #when duration ticks down
-		pass
-	
-	func on_battle_entity_damage_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
+	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		return false #false means we don't fuck with mitigation for this status effect
 	
 	func on_start(): #runs on start of turn
-		pass
+		new_turn = true
 	
 	func on_skillcheck(): #runs right before skillcheck
 		pass
@@ -168,14 +184,21 @@ class status_template_default:
 	extends status
 	
 	func on_duration():
-		if duration > 0:
-			duration -= 1
-		else:
+		duration -= 1
+		if duration <= 0:
 			on_expire()
-	
+
 	func on_expire():
 		print_debug(title," wore off for ",host.name,"!")
 		host.my_component_ability.current_status_effects.remove(self)
+	
+	func fx_add():
+		host.animations.sprite.add_child(fx)
+		fx.global_position = host.animations.sprite.global_position
+	
+	func fx_remove():
+		fx.queue_free()
+		fx = null
 
 # NORMAL
 class status_fear:
@@ -184,20 +207,12 @@ class status_fear:
 	func _init(host : Node,duration : int) -> void:
 		self.host = host
 		self.duration = duration
-		self.title = "Fear"
-		self.priority = 1
-	
-	func on_start():
-		host.my_component_ability.skillcheck_difficulty += 1
-	
-	func fx_add():
+		title = "Fear"
+		priority = 1
 		fx = Glossary.particle.fear.instantiate()
-		host.animations.sprite.add_child(fx)
-		fx.global_position = host.animations.sprite.global_position
 	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
+	func on_skillcheck():
+		host.my_component_ability.skillcheck_difficulty += 1
 
 class status_burn:
 	extends status_template_default
@@ -208,20 +223,13 @@ class status_burn:
 		self.host = host
 		self.duration = duration
 		self.damage = damage
-		self.title = "Burn"
+		title = "Burn"
+		fx = Glossary.particle.burn.instantiate()
 	
 	func on_end():
-		host.my_component_health.damage(damage)
-		print_debug("Burn did ",damage," damage!")
-	
-	func fx_add():
-		fx = Glossary.particle.burn.instantiate()
-		host.animations.sprite.add_child(fx)
-		fx.global_position = host.animations.sprite.global_position
-	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
+		if once_per_turn(): #If this is the first time applying this turn
+			host.my_component_health.damage(damage)
+			print_debug("Burn did ",damage," damage!")
 
 class status_freeze:
 	extends status_template_default
@@ -232,20 +240,36 @@ class status_freeze:
 		self.host = host
 		self.duration = duration
 		self.siphon_amount = siphon_amount
-		self.title = "Freeze"
+		title = "Freeze"
+		fx = Glossary.particle.freeze.instantiate()
 	
 	func on_end():
-		host.my_component_vis.siphon(siphon_amount)
-		print_debug("Freeze took ",siphon_amount," vis!")
+		if once_per_turn(): #If this is the first time applying this turn
+			host.my_component_vis.siphon(siphon_amount)
+			print_debug("Freeze took ",siphon_amount," vis!")
+
+class status_disabled: #Disabled, unable to act, and immune to damage. Essentially dead but still on the battle field
+	extends status_template_default
 	
-	func fx_add():
-		fx = Glossary.particle.freeze.instantiate()
-		host.animations.sprite.add_child(fx)
-		fx.global_position = host.animations.sprite.global_position
+	func _init(host : Node,duration : int) -> void:
+		self.host = host
+		self.duration = duration
+		title = "Disabled"
+		fx = Glossary.particle.disabled.instantiate()
 	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
+	func on_start():
+		host.state_chart.send_event("on_end") #skip our turn
+		print_debug(host.name," is disabled this turn")
+	
+	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
+		print_debug(entity_target.name," is immune to ",ability.title,"!")
+		Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Immune!"),"float_away")
+		return Battle.mitigation_type.IMMUNE
+	
+	func on_expire():
+		print_debug(host.name," is no longer disabled!")
+		host.my_component_ability.current_status_effects.remove(self)
+		Events.battle_entity_disabled_expire.emit(host) #Tell everyone our disable expired
 
 # TETHER
 
@@ -253,7 +277,6 @@ class status_heartstitch:
 	extends status_template_default
 	
 	var partners : Array
-	#var fx2 : Node
 	
 	func _init(host : Node,partners : Array,duration : int) -> void:
 		self.host = host #who is the initial target of the stitch
@@ -270,13 +293,6 @@ class status_heartstitch:
 					partners[i].my_component_health.damage(amount,true)
 					print_debug(partners[i].name," took ",amount," points of mirror damage!")
 	
-	func on_death():
-		pass
-		#for i in len(partners):
-			#if partners[i] != host: #remove us from all partners links except ours
-				#var inst = partners[i].my_component_ability.current_status_effects.TETHER.partners
-				#inst.pop_at(inst.find(host))
-	
 	func fx_add():
 		fx = Glossary.ui.heartstitch.instantiate()
 		host.status_hud.grid.add_child(fx)
@@ -286,6 +302,8 @@ class status_heartstitch:
 		fx = null
 
 # PASSIVE
+#Basically the same thing but PRIORITY here works differently. It runs through them when checking things that stack like ability mitigation.
+#the highest prio is checked first and if it finds something of interest it will handle it
 
 class status_ethereal:
 	extends status
@@ -295,18 +313,19 @@ class status_ethereal:
 		category = Battle.status_category.PASSIVE
 		title = "Ethereal"
 	
-	func on_battle_entity_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
+	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != Battle.type.TETHER:
 			print_debug(entity_target.name," is immune to ",ability.title,"!")
-			Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Immune!"),"float_away",Color.AQUAMARINE)
+			Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Immune!"),"float_away")
+			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
-			entity_caster.my_component_ability.cast_queue.cast_internal(entity_caster,entity_target)
-		return true #Means we want to handle mitigation
+			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
 
 class status_thorns:
 	extends status
 	
 	var damage : int
+	var reflect_target : Object = null
 	
 	func _init(host : Node,damage : int) -> void:
 		self.host = host
@@ -316,9 +335,51 @@ class status_thorns:
 	
 	func on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object):
 		if host in entity_targets and ability.type != Battle.type.TETHER:
-			entity_caster.my_component_health.damage(damage)
-			print_debug(host.name," reflected ",damage," damage back to ",entity_caster.name,"!")
+			reflect_target = entity_caster
+	
+	func on_battle_entity_turn_end(entity : Node):
+		if reflect_target:
+			reflect_target.my_component_health.damage(damage)
+			print_debug(host.name," reflected ",damage," damage back to ",reflect_target.name,"!")
+			reflect_target = null
 
+class status_regrowth:
+	extends status
+	
+	var death_protection_enabled : bool = false
+	
+	func _init(host : Node,) -> void:
+		self.host = host
+		category = Battle.status_category.PASSIVE
+		title = "Regrowth"
+	
+	func on_battle_entity_disabled_expire(entity : Node):
+		if entity == host: #If we just got out of a disable
+			if death_protection_enabled: #If we have death protection on
+					host.my_component_health.revive() #Revive us
+					death_protection_enabled = false
+	
+	func on_dying(): #We started the dying animation
+		var paired_teammates = Battle.search_glossary_name(host.stats.glossary,Battle.get_team(host.stats.alignment),false) #pull all similar characters with our glossary name
+		for i in len(paired_teammates):
+			paired_teammates[i].my_component_ability.current_status_effects.clear() #Clear status fx
+			paired_teammates[i].animations.tree.get("parameters/playback").travel("Death") #Begin their death anim
+	
+	func on_death_protection(amt : int, mirror_damage : bool = false, type : Dictionary = Battle.type.NEUTRAL):
+		var paired_teammates = Battle.search_glossary_name(host.stats.glossary,Battle.get_team(host.stats.alignment),false) #pull all similar characters with our glossary name
+		var living_teammates = false
+		
+		for i in len(paired_teammates):
+			if paired_teammates[i].my_component_health.health > 0:
+				living_teammates = true
+		
+		if living_teammates: #If we find ANY other matching teammate glossaries of us that are alive and not in disabled mode
+			if !death_protection_enabled: #If it hasn't already been triggered this death
+				death_protection_enabled = true #We are now in "incapacitated" mode
+				host.my_component_ability.current_status_effects.clear() #Clear status fx first
+				host.my_component_ability.current_status_effects.add(status_disabled.new(host,2),true) #Then disable us
+			return true #Always return true
+	
 # - Abilities - #
 class ability:
 
@@ -434,7 +495,7 @@ class ability_solar_flare:
 		self.caster = caster
 		type = Battle.type.NOVA
 		target_selector = Battle.target_selector.SINGLE
-		target_type = Battle.target_type.OPPONENTS
+		target_type = Battle.target_type.EVERYONE
 		title = "Solar Flare"
 		vis_cost = 2
 		damage = 1
@@ -503,7 +564,6 @@ class ability_heartstitch:
 		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.TETHER
 		title = "Heartstitch"
-		vis_cost = 2
 		damage = 1
 	
 	func cast_main():

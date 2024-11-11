@@ -1,16 +1,20 @@
 extends Node
 
 const entity : Dictionary = {
+	# Players
 	"player" : preload("res://scenes/characters/player.tscn"),
+	# Dreamkin
+	"dreamkin" : preload("res://scenes/characters/dreamkin.tscn"),
+	# Enemies
 	"enemy" : preload("res://scenes/characters/enemy.tscn"),
-	"enemy_briarback" : preload("res://scenes/characters/enemy_briarback.tscn"),
-	"dreamkin" : preload("res://scenes/characters/dreamkin.tscn")
+	"briarback" : preload("res://scenes/characters/briarback.tscn"),
 	}
 
 const particle : Dictionary = {
 	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
 	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn"),
 	"freeze" : preload("res://Art/particles/scenes/particle_freeze.tscn"),
+	"disabled" : preload("res://Art/particles/scenes/particle_disabled.tscn")
 	}
 
 const text : Dictionary = {
@@ -25,6 +29,7 @@ func create_text_particle(host : Node, pos : Vector3 = Vector3.ZERO, text : Stri
 	particle_label.label_settings.font_color = color
 	particle_label.label_settings.font_size = size
 	inst.global_position = pos
+	return particle_label
 
 const ui : Dictionary = {
 	"heartstitch" : preload("res://ui/status_effect_heartstitch.tscn")

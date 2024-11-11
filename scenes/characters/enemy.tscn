@@ -1169,7 +1169,8 @@ my_component_ability = NodePath("Components/component_ability")
 my_component_status = NodePath("Components/component_status")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 stats = {
-"alignment": "Foes",
+"alignment": "FOES",
+"classification": "ENEMY",
 "glossary": "enemy",
 "spacing": Vector3(0.6, 0, -0.1)
 }

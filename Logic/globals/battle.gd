@@ -41,39 +41,46 @@ const status_category : Dictionary = {
 	"PASSIVE" : "PASSIVE"
 }
 
+const classification : Dictionary = {
+	"PLAYER" : "PLAYER",
+	"DREAMKIN" : "DREAMKIN",
+	"ENEMY" : "ENEMY"
+}
+
+const alignment : Dictionary = {
+	"FRIENDS" : "FRIENDS",
+	"FOES" : "FOES"
+}
+
 const status_behavior : Dictionary = { #When a status effect is applied to a target who already has it
 	"STACK" : "STACK", #Add duration on top of the existing one, but doesn't send new info to target besides that
 	"RESET" : "RESET", #Reset the duration to the new ability's duration, and sends new info to target like its partners for a tether
 	"RESIST" : "RESIST" #Do nothing
 }
 
-const target_selector : Dictionary = { #Decides who to actually apply the move on
-	"SINGLE" : "Single", #One target
-	"SINGLE_RIGHT" : "Single Right", #One target, and the one to the right of them
-	"SINGLE_LEFT" : "Single Left",
-	"SINGLE_ADJACENT" : "Single Adjacent", #One target, and both adjacent targets
-	"TEAM" : "Team", #Target one side of the field
-	"ALL" : "All", #Whole field
-	"NONE" : "None" #Doesn't need a target to use move
+const target_selector : Dictionary = { #Populates the selection with a modifier, like two targets or more
+	"SINGLE" : "SINGLE", #One target
+	"SINGLE_RIGHT" : "SINGLE_RIGHT", #One target, and the one to the right of them
+	"SINGLE_LEFT" : "SINGLE_LEFT",
+	"SINGLE_ADJACENT" : "SINGLE_ADJACENT", #One target, and both adjacent targets
+	"TEAM" : "TEAM", #Target one side of the field
+	"ALL" : "ALL", #Whole field
+	"NONE" : "NONE" #Doesn't need a target to use move
 }
 
-const target_type : Dictionary = { #Populates our selection list
-	"SELF" : "Self",
-	"OTHERS" : "Others", #Everyone besides me
-	"ALLIES" : "Allies", #My team
-	"OPPONENTS" : "Opponents", #Enemy team
-	"OTHER_ALLIES" : "Other Allies", #My team minus me
-	"EVERYONE" : "Everyone"
+const target_type : Dictionary = { #Populates our available targets when using an ability
+	"SELF" : "SELF",
+	"OTHERS" : "OTHERS", #Everyone besides me
+	"ALLIES" : "ALLIES", #My team
+	"OPPONENTS" : "OPPONENTS", #Enemy team
+	"OTHER_ALLIES" : "OTHER_ALLIES", #My team minus me
+	"EVERYONE" : "EVERYONE"
 }
 
-const alignment : Dictionary = {
-	"FRIENDS" : "Friends",
-	"FOES" : "Foes"
-	}
-
-#func team_adjacent(character : Node,direction : int):
-	#var team = my_team(character)
-	##something +1 blah blah
+const mitigation_type : Dictionary = { #Informs our system if something mitigated an ability and what it did, or if it didn't do anything at all
+	"PASS" : "PASS",
+	"IMMUNE" : "IMMUNE"
+}
 
 func sort_screen(a,b): #Sorts based on screen X position (so left to right on screen)
 	if Global.camera_object.unproject_position(a.global_position).x < Global.camera_object.unproject_position(b.global_position).x:
@@ -95,7 +102,22 @@ func update_positions(): #Updates all units positions to reflect a change (like 
 		else:
 			tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.position.y,friends_offset.z),0.5)
 			friends_offset += unit.stats.spacing
-		
+
+func search_glossary_name(character_name : String, character_list : Array, first_result : bool = true): #Search glossary names of all characters specified and return matches
+	var character_result_list : Array = []
+	
+	for i in len(character_list):
+		if character_list[i].stats.glossary == character_name: #find the name
+			if first_result: #if first result is enabled
+				return character_list[i] #return it
+			else:
+				character_result_list.append(character_list[i])
+	
+	if !first_result:
+		return character_result_list
+	else:
+		return null
+
 func get_target_selector_list(target : Node, selector : String, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
 	match selector:

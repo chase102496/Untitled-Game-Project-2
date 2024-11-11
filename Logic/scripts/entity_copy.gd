@@ -21,6 +21,7 @@ extends CharacterBody3D
 #Default stats
 @export var stats : Dictionary = {
 	"alignment" : Battle.alignment.FRIENDS, #Side of the field I will fight on
+	"classification" : Battle.classification.PLAYER, #Type of thing I am, whether enemy or player, or whatever. A larger version of glossary essentially
 	"glossary" : "player", #Unit category I was spawned from
 	"spacing" : Vector3(0,0,0), #spacing when unit is spawned in battle
 }

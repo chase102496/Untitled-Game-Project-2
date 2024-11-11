@@ -634,7 +634,8 @@ my_component_ability = NodePath("Components/component_ability")
 my_component_status = NodePath("Components/component_status")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 stats = {
-"alignment": "Friends",
+"alignment": "FRIENDS",
+"classification": "DREAMKIN",
 "glossary": "dreamkin",
 "spacing": Vector3(0.8, 0, -0.1)
 }

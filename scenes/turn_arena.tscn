@@ -42,18 +42,18 @@ shape = SubResource("ConvexPolygonShape3D_0etq2")
 [node name="Turn_Manager" type="Node3D" parent="."]
 script = ExtResource("1_k1dsd")
 
-[node name="Friends" type="Marker3D" parent="Turn_Manager"]
+[node name="FRIENDS" type="Marker3D" parent="Turn_Manager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.244, 0, -0.979)
 
-[node name="Debug_Sprite" type="Sprite3D" parent="Turn_Manager/Friends"]
+[node name="Debug_Sprite" type="Sprite3D" parent="Turn_Manager/FRIENDS"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 visible = false
 texture = ExtResource("6_adfps")
 
-[node name="Foes" type="Marker3D" parent="Turn_Manager"]
+[node name="FOES" type="Marker3D" parent="Turn_Manager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.848, 0, 0.677)
 
-[node name="Debug_Sprite" type="Sprite3D" parent="Turn_Manager/Foes"]
+[node name="Debug_Sprite" type="Sprite3D" parent="Turn_Manager/FOES"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 visible = false
 texture = ExtResource("6_adfps")

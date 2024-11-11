@@ -4,7 +4,6 @@ extends Node
 @export var my_component_ability: component_ability
 
 @onready var character_ready : bool = true
-@onready var already_applied_end_status : bool = false
 @onready var state_chart_memory : String = ""
 
 func _ready() -> void:
@@ -15,10 +14,13 @@ func _ready() -> void:
 	
 	#Battle
 	Events.turn_start.connect(_on_turn_start)
+	Events.battle_entity_disabled_expire.connect(_on_battle_entity_disabled_expire)
+	Events.battle_team_start.connect(_on_battle_team_start)
 	Events.battle_entity_hit.connect(_on_battle_entity_hit)
 	Events.battle_entity_damaged.connect(_on_battle_entity_damaged)
 	Events.battle_entity_missed.connect(_on_battle_entity_missed)
-	#Events.battle_entity_death.connect(_on_battle_entity_death)
+	Events.battle_entity_turn_end.connect(_on_battle_entity_turn_end)
+	Events.battle_entity_death.connect(_on_battle_entity_death)
 	#
 	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
 	%StateChart/Main/Battle/Start.state_entered.connect(_on_state_entered_battle_start)
@@ -28,6 +30,7 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
 	%StateChart/Main/Battle/End.state_entered.connect(_on_state_entered_battle_end)
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
+	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
 func _physics_process(_delta: float) -> void:
 	if typeof(owner.state_init_override) == 4: #If it's a string
@@ -40,8 +43,16 @@ func _on_animation_started(anim_name,character) -> void:
 	if character == owner:
 		var regex = RegEx.new()
 		regex.compile("(default_)(attack|hurt|death)(_.*)?")
-		if regex.search(anim_name):
-			character_ready = false
+		var result = regex.search(anim_name)
+		if result:
+			character_ready = false #Set ready to false, we're doin something important
+			match result.get_string(2):
+				"attack":
+					pass
+				"hurt":
+					pass
+				"death":
+					my_component_ability.current_status_effects.status_event("on_dying")
 func _on_animation_finished(anim_name,character) -> void:
 	if character == owner:
 		var regex = RegEx.new()
@@ -54,34 +65,23 @@ func _on_animation_finished(anim_name,character) -> void:
 				"hurt":
 					owner.state_chart.send_event(state_chart_memory) #Statecharts has a bug so I bandaided it
 				"death":
-					#Check if we are the last one
-					if len(Battle.my_team(owner)) == 1:
-						if owner.stats.alignment == Battle.alignment.FOES:
-							Events.battle_finished.emit("Win")
-						elif owner.stats.alignment == Battle.alignment.FRIENDS:
-							Events.battle_finished.emit("Lose")
-						else:
-							push_error("ERROR")
-					#If we aren't just end turn
-					else:
-						if Battle.active_character == owner:
-							Events.turn_end.emit()
-						#if we just died and it wasn't our turn, do nothing
-						else:
-							pass
-						Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
-						my_component_ability.current_status_effects.status_event("on_death") #trigger on death for all status stuff
-						my_component_ability.current_status_effects.clear()#remove all our status effects
-					
-					Events.battle_entity_death.emit(owner) #let everyone know we died rip
-					owner.queue_free() #deletus da fetus
+					#Check if we are ACTUALLY dying TODO FIXME EEEEEEEEEEEE
+					#if state_chart_memory == "on_death":
+					owner.state_chart.send_event("on_death")
+
+func _on_battle_team_start(team : String):
+	my_component_ability.current_status_effects.status_event("on_battle_team_start",[team])
+	if team != owner.stats.alignment:
+		my_component_ability.current_status_effects.status_event("on_duration")
 
 func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN
 	if Battle.active_character == owner:
-		already_applied_end_status = false
 		owner.state_chart.send_event("on_start")
 	else:
 		owner.state_chart.send_event("on_waiting")
+
+func _on_battle_entity_disabled_expire(entity : Node) -> void:
+	my_component_ability.current_status_effects.status_event("on_battle_entity_disabled_expire",[entity])
 
 func _on_battle_entity_damaged(entity : Node, amount : int) -> void:
 	my_component_ability.current_status_effects.status_event("on_battle_entity_damaged",[entity,amount])
@@ -92,19 +92,29 @@ func _on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability
 	if owner == entity_caster: #if we are casting
 		entity_caster.my_component_ability.cast_queue.cast_main()
 	elif owner in entity_targets: #if we're being hit with something
-		var result = false
 		#run our mitigation, and the 'true' is to return a result so we can tell if anything cares about mitigation in our status
-		var query_results = my_component_ability.current_status_effects.status_event("on_battle_entity_ability_mitigation",[entity_caster,owner,ability],true)
-		for i in len(query_results):
-			if query_results[i]: #if any of them aren't null
-				result = true #it means something cares and wants to handle mitigation itself
-		if !result: #means nothing cares and we should pass through as normal
+		var query_results = my_component_ability.current_status_effects.status_event("on_ability_mitigation",[entity_caster,owner,ability],true)
+		
+		if len(query_results) > 0: #If any status effects care about mitigation in general
+			
+			for i in len(query_results):
+				if query_results[i] != Battle.mitigation_type.PASS: #If the ability catches and wants to do something besides pass
+					break #exit the loop, it will handle mitigation across the board
+				elif i == (len(query_results) - 1): #if we get to the last mitigation in our list because they all passed
+					entity_caster.my_component_ability.cast_queue.cast_internal(entity_caster,owner)
+		else: #means nothing cares and we should pass through as normal
 			entity_caster.my_component_ability.cast_queue.cast_internal(entity_caster,owner)
 
 func _on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
 	my_component_ability.current_status_effects.status_event("on_battle_entity_missed",[entity_caster,entity_targets,ability])
 	if entity_caster == owner:
 		owner.my_component_ability.cast_queue.cast_validate_failed()
+
+func _on_battle_entity_turn_end(entity : Node):
+	my_component_ability.current_status_effects.status_event("on_battle_entity_turn_end",[entity])
+
+func _on_battle_entity_death(entity : Node):
+	pass
 
 # STATES
 
@@ -117,18 +127,18 @@ func _on_state_entered_battle_start() -> void:
 	print_debug("Turn Start: ",owner.name)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
-	my_component_ability.current_status_effects.status_event("on_duration")
 	my_component_ability.current_status_effects.status_event("on_start")
 	
 	owner.state_chart.send_event("on_choose") 
 
 func _on_state_entered_battle_choose() -> void:
-	match owner.stats.glossary:
-		"player":
+	my_component_ability.current_status_effects.status_event("on_skillcheck")
+	match owner.stats.classification:
+		Battle.classification.PLAYER:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
-		"dreamkin":
+		Battle.classification.DREAMKIN:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
-		"enemy":
+		Battle.classification.ENEMY:
 			await get_tree().create_timer(0.3).timeout
 			
 			var ability = my_component_ability.my_abilities.pick_random()
@@ -146,14 +156,12 @@ func _on_state_entered_battle_choose() -> void:
 			#the move will then run a script based on whether we are player/dreamkin or enemy and send gui our target array or randomly select from target array
 			#eg if x: do x
 			#x is single-target, so we either randomly select 1 person from
-			
-			
 		_:
 			push_error("Not a valid entity for battle: ",owner.name)
 
 func _on_state_entered_battle_skillcheck() -> void:
-	match owner.stats.glossary:
-		"enemy": #weighted random skillcheck
+	match owner.stats.classification:
+		Battle.classification.ENEMY: #weighted random skillcheck
 			var skillcheck_result = "Miss"
 			var skill_rand = randf_range(0,1)/my_component_ability.skillcheck_difficulty #Modify it by skillcheck diff. Higher = smaller num = less good
 			if skill_rand >= 0.95:
@@ -167,20 +175,19 @@ func _on_state_entered_battle_skillcheck() -> void:
 			owner.state_chart.send_event("on_execution")
 
 func _on_state_exited_battle_skillcheck() -> void:
-	match owner.stats.glossary:
-		"player":
+	match owner.stats.classification:
+		Battle.classification.PLAYER:
 			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
-		"dreamkin":
+		Battle.classification.DREAMKIN:
 			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
 	
 func _on_state_entered_battle_execution() -> void:
 	my_component_ability.cast_queue.animation()
 
 func _on_state_entered_battle_end() -> void:
-	if my_component_ability.current_status_effects and !already_applied_end_status: #yucky cope var
-		state_chart_memory = "on_end"
-		already_applied_end_status = true
-		my_component_ability.current_status_effects.status_event("on_end")
+	state_chart_memory = "on_end" #For after applying shit we remember where we were
+	Events.battle_entity_turn_end.emit(owner) #Let everyone know we're about to end our turn
+	my_component_ability.current_status_effects.status_event("on_end") #Including status effects
 
 func _on_state_physics_processing_battle_end(_delta: float) -> void:
 	#End code goes here, then we ready up
@@ -188,3 +195,25 @@ func _on_state_physics_processing_battle_end(_delta: float) -> void:
 		owner.state_chart.send_event("on_waiting")
 		Events.turn_end.emit()
 	character_ready = true
+
+func _on_state_entered_death() -> void:
+	state_chart_memory = "on_death"
+	#Check if we are the last one
+	if len(Battle.my_team(owner)) == 1:
+		if owner.stats.alignment == Battle.alignment.FOES:
+			Events.battle_finished.emit("Win")
+		elif owner.stats.alignment == Battle.alignment.FRIENDS:
+			Events.battle_finished.emit("Lose")
+		else:
+			push_error("ERROR")
+		Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
+	else:
+		Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
+		my_component_ability.current_status_effects.status_event("on_death") #trigger on death for all status stuff
+		my_component_ability.current_status_effects.clear()#remove all our status effects
+		Events.battle_entity_death.emit(owner) #let everyone know we died rip
+		
+		if Battle.active_character == owner:
+			Events.turn_end.emit()
+			
+	owner.queue_free() #deletus da fetus

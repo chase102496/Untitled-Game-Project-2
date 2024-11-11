@@ -6,5 +6,6 @@ func initialize():
 	abil.my_abilities = [
 		abil.ability_spook.new(owner)
 	]
-	abil.current_status_effects.add_passive(abil.status_thorns.new(owner,1))
-	abil.current_status_effects.add_passive(abil.status_ethereal.new(owner))
+	#abil.current_status_effects.add_passive(abil.status_thorns.new(owner,1))
+	#abil.current_status_effects.add_passive(abil.status_ethereal.new(owner))
+	abil.current_status_effects.add_passive(abil.status_regrowth.new(owner))

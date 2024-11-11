@@ -15,7 +15,11 @@ signal turn_start #a turn has completely ended (even after their state on_end)
 
 signal skillcheck_hit(area,ability_queued) #We just hit our skillcheck animation
 
+signal battle_team_start(team : String) #When a team has started their turn
 
+signal battle_entity_disabled_expire(entity : Node) #When an entity came out of a disable
+
+signal battle_entity_turn_end(entity : Node)
 signal battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object)
 signal battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object) #someone was hit with an ability
 signal battle_entity_damaged(entity : Node, amount : int,type : String) #someone took damage
