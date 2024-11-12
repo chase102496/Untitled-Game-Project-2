@@ -1,5 +1,8 @@
 extends AnimationTree
 
+func _ready() -> void:
+	active = true
+
 func _on_animation_finished(anim_name: StringName) -> void:
 	Events.animation_finished.emit(anim_name,owner)
 

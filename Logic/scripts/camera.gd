@@ -25,10 +25,10 @@ func shot_transition(new_location):
 	# MAKE SURE YOU UNDERSTAND THE ORDER OF THE OBJECT IS THE ORDER THEY WILL TAKE TURNS IN LATER
 	pass
 
-func shot_rotate(relative_direction : String):
+func shot_rotate(dir : String):
 	var tween = get_tree().create_tween()
 	var def_y = owner.follow_offset.y
-	match relative_direction:
+	match dir:
 		"right":
 			tween.tween_property(owner,"follow_offset",Vector3(3,def_y,0),0.5)
 		"left":

@@ -124,7 +124,7 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_select"):
 		owner.my_component_ability.cast_queue = selected_ability #Set the spell for casting
 		
-		#selected_ability.target = selected_target #TODO REMOVE and set the spell's target list to our gui's target list
+		selected_ability.primary_target = selected_target
 		selected_ability.targets = Battle.get_target_selector_list(
 			selected_target,
 			selected_ability.target_selector,

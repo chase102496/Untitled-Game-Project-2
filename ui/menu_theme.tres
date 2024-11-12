@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=9 format=3 uid="uid://bitq02d30r24m"]
 
-[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://ui/Fancake.ttf" id="1_cw08f"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://ui/Fancake.ttf" id="1_iu7ec"]
 [ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://ui/menu_style_box.tres" id="1_sehmd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xust"]
@@ -30,7 +30,7 @@ Button/colors/icon_normal_color = Color(1, 1, 1, 0)
 Button/colors/icon_pressed_color = Color(1, 1, 1, 0)
 Button/constants/outline_size = 20
 Button/font_sizes/font_size = 30
-Button/fonts/font = ExtResource("1_cw08f")
+Button/fonts/font = ExtResource("1_iu7ec")
 Button/styles/disabled = SubResource("StyleBoxEmpty_2xust")
 Button/styles/focus = SubResource("StyleBoxEmpty_k8pwc")
 Button/styles/hover = SubResource("StyleBoxEmpty_3jkau")
@@ -42,7 +42,7 @@ HBoxContainer/constants/separation = 30
 Label/colors/font_outline_color = Color(0.04, 0.04, 0.04, 1)
 Label/constants/outline_size = 25
 Label/font_sizes/font_size = 48
-Label/fonts/font = ExtResource("1_cw08f")
+Label/fonts/font = ExtResource("1_iu7ec")
 PanelContainer/styles/normal = SubResource("StyleBoxFlat_wkxhl")
 PanelContainer/styles/panel = ExtResource("1_sehmd")
 VBoxContainer/constants/separation = 20

@@ -9,4 +9,7 @@ func _ready() -> void:
 
 func siphon(amt): #removes vis
 	print_debug(vis," MP -> ",vis - amt," MP")
-	vis -= amt
+	if vis > 0:
+		vis -= amt
+	else:
+		owner.my_component_health.damage(amt) #Do damage if we're out of vis

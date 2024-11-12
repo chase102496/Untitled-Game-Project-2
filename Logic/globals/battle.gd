@@ -79,7 +79,8 @@ const target_type : Dictionary = { #Populates our available targets when using a
 
 const mitigation_type : Dictionary = { #Informs our system if something mitigated an ability and what it did, or if it didn't do anything at all
 	"PASS" : "PASS",
-	"IMMUNE" : "IMMUNE"
+	"IMMUNE" : "IMMUNE",
+	"WEAK" : "WEAK"
 }
 
 func sort_screen(a,b): #Sorts based on screen X position (so left to right on screen)

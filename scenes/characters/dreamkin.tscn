@@ -1,6 +1,6 @@
-[gd_scene load_steps=68 format=3 uid="uid://ct0v1pb5ehqc6"]
+[gd_scene load_steps=66 format=3 uid="uid://ct0v1pb5ehqc6"]
 
-[ext_resource type="Script" path="res://Logic/scripts/entity_copy.gd" id="1_j3uwc"]
+[ext_resource type="Script" path="res://Logic/scripts/classes/dreamkin.gd" id="1_062rn"]
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://ui/status_hud.tscn" id="2_yaeft"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://scenes/state_chart.tscn" id="3_66sq2"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_h10n0"]
@@ -12,11 +12,9 @@
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="10_2cm8q"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://ui/battle_gui.tscn" id="11_4dw52"]
 [ext_resource type="Script" path="res://Logic/components/components.gd" id="12_72ndf"]
-[ext_resource type="Script" path="res://Logic/components/component_core_dreamkin.gd" id="13_8g28d"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="14_o2tpe"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_explore.gd" id="15_voted"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="16_hmijx"]
-[ext_resource type="Script" path="res://Logic/components/component_status.gd" id="17_hisj0"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="18_ems4m"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="19_1qh36"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="20_whmcc"]
@@ -617,21 +615,20 @@ _data = {
 "default_walk": SubResource("Animation_sxj7a")
 }
 
-[node name="Dreamkin" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_input_controller", "state_chart", "animations", "collider", "status_hud", "my_component_health", "my_component_vis", "my_component_ability", "my_component_status", "my_component_state_controller_battle", "my_component_core")]
+[node name="Dreamkin" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "state_chart", "animations", "collider", "status_hud", "my_component_input_controller", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
 physics_interpolation_mode = 1
 collision_layer = 2
 collision_mask = 2
-script = ExtResource("1_j3uwc")
+script = ExtResource("1_062rn")
 my_battle_gui = NodePath("Battle_GUI")
-my_component_input_controller = NodePath("Components/component_input_controller_follow")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
 status_hud = NodePath("Animations/character_animation_sprite/Status_HUD")
+my_component_input_controller = NodePath("Components/component_input_controller_follow")
 my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
-my_component_status = NodePath("Components/component_status")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 stats = {
 "alignment": "FRIENDS",
@@ -639,7 +636,6 @@ stats = {
 "glossary": "dreamkin",
 "spacing": Vector3(0.8, 0, -0.1)
 }
-my_component_core = NodePath("Components/component_core_dreamkin")
 
 [node name="StateChart" parent="." instance=ExtResource("3_66sq2")]
 unique_name_in_owner = true
@@ -697,9 +693,6 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("12_72ndf")
 
-[node name="component_core_dreamkin" type="Node" parent="Components"]
-script = ExtResource("13_8g28d")
-
 [node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
 script = ExtResource("14_o2tpe")
 my_component_ability = NodePath("../component_ability")
@@ -708,19 +701,16 @@ my_component_ability = NodePath("../component_ability")
 script = ExtResource("15_voted")
 my_component_input_controller = NodePath("../component_input_controller_follow")
 
-[node name="component_ability" type="Node" parent="Components" node_paths=PackedStringArray("my_component_status")]
+[node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("16_hmijx")
-my_component_status = NodePath("../component_status")
-
-[node name="component_status" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
-script = ExtResource("17_hisj0")
-my_component_ability = NodePath("../component_ability")
 
 [node name="component_health" type="Node" parent="Components"]
 script = ExtResource("18_ems4m")
+max_health = 16
 
 [node name="component_vis" type="Node" parent="Components"]
 script = ExtResource("19_1qh36")
+max_vis = 12
 
 [node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("20_whmcc")

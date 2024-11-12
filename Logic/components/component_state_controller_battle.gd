@@ -142,12 +142,13 @@ func _on_state_entered_battle_choose() -> void:
 			await get_tree().create_timer(0.3).timeout
 			
 			var ability = my_component_ability.my_abilities.pick_random()
-			my_component_ability.cast_queue = ability #Pick random move
+			my_component_ability.cast_queue = ability #Pick random move and assign
 			
 			var targets = Battle.get_target_type_list(owner,ability.target_type)
 			var target = targets.pick_random() #Pick random target based on abil
 			
 			my_component_ability.cast_queue.targets = Battle.get_target_selector_list(target,ability.target_selector,targets)
+			my_component_ability.cast_queue.primary_target = target
 			
 			owner.state_chart.send_event("on_skillcheck")
 			#TODO Check if queued ability is to be used on allies or enemies before choosing

@@ -16,14 +16,13 @@ extends CharacterBody3D
 @export var my_component_health: component_health
 @export var my_component_vis: component_vis
 @export var my_component_ability: component_ability
-@export var my_component_status: component_status
 @export var my_component_state_controller_battle: component_state_controller_battle
 #Default stats
 @export var stats : Dictionary = {
 	"alignment" : Battle.alignment.FRIENDS, #Side of the field I will fight on
-	"classification" : Battle.classification.PLAYER, #Type of thing I am, whether enemy or player, or whatever. A larger version of glossary essentially
-	"glossary" : "player", #Unit category I was spawned from
-	"spacing" : Vector3(0,0,0), #spacing when unit is spawned in battle
+	"classification" : Battle.classification.PLAYER, #Grouping I am in
+	"glossary" : "player", #Exact unit category I was spawned from
+	"spacing" : Vector3(0,0,0) #spacing when unit is spawned in battle
 }
 #Core
 @export var my_component_core : Node

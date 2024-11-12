@@ -19,7 +19,7 @@ animation = &"default_hurt"
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_ctr84"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_edqxh"]
-graph_offset = Vector2(-849, -174)
+graph_offset = Vector2(-1251, -125)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_tvv8m")
 nodes/Animation/position = Vector2(-720, 80)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_ctr84")
@@ -163,7 +163,7 @@ advance_mode = 2
 states/Death/node = SubResource("AnimationNodeBlendTree_5ckq2")
 states/Death/position = Vector2(900, 212)
 states/Hurt/node = SubResource("AnimationNodeBlendTree_edqxh")
-states/Hurt/position = Vector2(576, -55)
+states/Hurt/position = Vector2(583, -44)
 states/Idle/node = SubResource("AnimationNodeBlendTree_kitbh")
 states/Idle/position = Vector2(489, 100)
 states/Start/position = Vector2(280, 100)
@@ -174,4 +174,4 @@ states/default_attack/position = Vector2(489, 252)
 states/default_attack_spook/node = SubResource("AnimationNodeAnimation_csbuo")
 states/default_attack_spook/position = Vector2(666, 252)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walk", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Death", "End", SubResource("AnimationNodeStateMachineTransition_baf28"), "default_attack", "Idle", SubResource("AnimationNodeStateMachineTransition_jtg3s"), "Idle", "default_attack", SubResource("AnimationNodeStateMachineTransition_68erw"), "Idle", "default_attack_spook", SubResource("AnimationNodeStateMachineTransition_m06vk"), "default_attack_spook", "Idle", SubResource("AnimationNodeStateMachineTransition_k3bkr"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_fpk0u"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_8rfkj"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_08k8w"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_pw7l4"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_o6fwj"), "Hurt", "Death", SubResource("AnimationNodeStateMachineTransition_ouf3n")]
-graph_offset = Vector2(-470.389, -162)
+graph_offset = Vector2(-371.389, -287)
