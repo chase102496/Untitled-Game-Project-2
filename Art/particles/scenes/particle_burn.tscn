@@ -43,7 +43,7 @@ draw_pass_1 = SubResource("QuadMesh_bwovf")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.17105)
-light_energy = 2.0
+light_energy = 0.2
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 2.0
 light_size = 1.0

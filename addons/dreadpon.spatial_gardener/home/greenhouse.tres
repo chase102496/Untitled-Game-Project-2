@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_LOD_variant.gd" id="1_5y5mp"]
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse.gd" id="1_pkkfv"]
-[ext_resource type="ArrayMesh" uid="uid://c8xbl5n7fdeoh" path="res://scenes/environment/chroma/grass_chroma.tres" id="1_xf43b"]
+[ext_resource type="ArrayMesh" uid="uid://c8xbl5n7fdeoh" path="res://Scenes/environment/chroma/grass_chroma.tres" id="1_xf43b"]
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_plant.gd" id="3_pr61f"]
 [ext_resource type="Script" path="res://addons/dreadpon.spatial_gardener/greenhouse/greenhouse_plant_state.gd" id="4_mbojq"]
 

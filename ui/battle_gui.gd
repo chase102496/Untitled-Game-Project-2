@@ -6,24 +6,27 @@ extends Control
 
 @onready var selector_sprite : Node = $"Selector Sprite"
 
-@onready var ui_grid_menu : Node = $Container/Menu #Any menu that isn't a selector or skillcheck
+@onready var ui_grid_menu : Node = %Menu #Any menu that isn't a selector or skillcheck
 
-@onready var ui_grid_main : Node = $Container/Menu/Main #The screen that shows battle, items, switch, escape
-@onready var ui_grid_battle : Node = $Container/Menu/Battle
+@onready var ui_grid_main : Node = %Menu/Main #The screen that shows battle, items, switch, escape
+@onready var ui_grid_battle : Node = %Menu/Battle
 #@onready var ui_grid_switch : Node = $Container/Menu/Switch
 #@onready var ui_grid_item : Node = $Container/Menu/Item
 
-@onready var ui_skillcheck : Node = $Container/Skillcheck
-@onready var ui_skillcheck_cursor : Node = $Container/Skillcheck/Cursor/RayCast2D
-@onready var ui_skillcheck_cursor_anim : Node = $Container/Skillcheck/Cursor/AnimationPlayer
+@onready var ui_skillcheck : Node = %Skillcheck
+@onready var ui_skillcheck_cursor : Node = %Skillcheck/Cursor/RayCast2D
+@onready var ui_skillcheck_cursor_anim : Node = %Skillcheck/Cursor/AnimationPlayer
 @onready var ui_skillcheck_result : String = ""
 
-@onready var ui_button_battle : Node = $Container/Menu/Main/Battle
-@onready var ui_button_switch : Node = $Container/Menu/Main/Switch
-@onready var ui_button_item : Node = $Container/Menu/Main/Item
-@onready var ui_button_escape : Node = $Container/Menu/Main/Escape
+@onready var ui_button_battle : Node = %Menu/Main/Battle
+@onready var ui_button_switch : Node = %Menu/Main/Switch
+@onready var ui_button_item : Node = %Menu/Main/Item
+@onready var ui_button_escape : Node = %Menu/Main/Escape
 
-@onready var ui_button_battle_ability : PackedScene = preload("res://scenes/empty_ability_button.tscn")
+@onready var ui_description_box : PanelContainer = %Description
+@onready var ui_description_label : RichTextLabel = %"Description/VBoxContainer/Description Label"
+
+@onready var ui_button_battle_ability : PackedScene = preload("res://Scenes/empty_ability_button.tscn")
 
 @onready var state_chart : StateChart = get_node("StateChart")
 
@@ -31,6 +34,11 @@ extends Control
 #have it show our state when it is entered
 
 func _ready() -> void:
+	ui_skillcheck.hide()
+	ui_description_box.hide()
+	ui_grid_menu.hide()
+	ui_grid_main.hide()
+	ui_grid_battle.hide()
 	#position.x += randi_range(100,200) #just to make sure there's no duplicate menus up
 	#position.y -= randi_range(100,200)
 	#connect to button signals
@@ -76,7 +84,7 @@ func _on_state_entered_battle_gui_main():
 func _on_state_exited_battle_gui_main():
 	ui_grid_menu.hide()
 	ui_grid_main.hide()
-func _on_state_entered_battle_gui_battle(): #TODO maybe later make this flexible to both player and companion
+func _on_state_entered_battle_gui_battle():
 	ui_grid_menu.show()
 	ui_grid_battle.show()
 	
@@ -88,8 +96,10 @@ func _on_state_entered_battle_gui_battle(): #TODO maybe later make this flexible
 		var new_button = ui_button_battle_ability.instantiate()
 		new_button.text = owner.my_component_ability.my_abilities[i].title
 		new_button.ability = owner.my_component_ability.my_abilities[i]
-		new_button.show()
+		new_button.description_box = ui_description_box
+		new_button.description_label = ui_description_label
 		ui_grid_battle.add_child(new_button)
+		new_button.show()
 func _on_state_exited_battle_gui_battle():
 	ui_grid_menu.hide()
 	ui_grid_battle.hide()
@@ -98,19 +108,19 @@ func _on_state_exited_battle_gui_battle():
 
 func _on_state_entered_battle_gui_select():
 	selected_target = selector_list[0]
-	if !selector_sprite.visible:
-			selector_sprite.show()
 
 func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 
 	#Selector hand logic
-
-	var new_index = 0
-	var selector_sprite_offset = 1
 	
-	selector_sprite.global_position.x = selected_target.global_position.x
-	selector_sprite.global_position.y = selected_target.global_position.y + selector_sprite_offset
-	selector_sprite.global_position.z = selected_target.global_position.z
+	var new_index = 0
+	
+	selector_sprite.global_position.x = selected_target.animations.selector_anchor.global_position.x
+	selector_sprite.global_position.y = selected_target.animations.selector_anchor.global_position.y
+	selector_sprite.global_position.z = selected_target.animations.selector_anchor.global_position.z
+	
+	if !selector_sprite.visible:
+			selector_sprite.show()
 	
 	if Input.is_action_just_pressed("move_right"):
 		new_index = wrapi(selector_list.find(selected_target,0) + 1,0,len(selector_list))
@@ -120,7 +130,7 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 		selected_target = selector_list[new_index]
 
 	#Other
-
+	
 	if Input.is_action_just_pressed("ui_select"):
 		owner.my_component_ability.cast_queue = selected_ability #Set the spell for casting
 		
@@ -144,12 +154,19 @@ func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("ui_select"):
 		ui_skillcheck_cursor_anim.pause()
-		await get_tree().create_timer(1.0).timeout
-
+		
 		if ui_skillcheck_cursor.is_colliding():
 			ui_skillcheck_result = ui_skillcheck_cursor.get_collider().name
 		else:
 			ui_skillcheck_result = "Miss"
+		
+		match ui_skillcheck_result:
+			"Miss" : Glossary.create_text_particle(owner,owner.global_position,str("Whoops..."),"float_away",Color.SLATE_GRAY,0,20)
+			"Good" : Glossary.create_text_particle(owner,owner.global_position,str("Nice!"),"float_away",Color.SKY_BLUE,0,30)
+			"Great" : Glossary.create_text_particle(owner,owner.global_position,str("Great!"),"float_away",Color.MEDIUM_SLATE_BLUE,0,40)
+			"Excellent" : Glossary.create_text_particle(owner,owner.global_position,str("Excellent!"),"float_away",Color.PURPLE,0,50)
+		
+		await get_tree().create_timer(1.0).timeout
 
 		state_chart.send_event("on_gui_disabled")
 		owner.state_chart.send_event("on_execution")

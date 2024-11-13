@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://cfwrpxxi8ue18"]
 
-[ext_resource type="PackedScene" uid="uid://wag8ql6k71s4" path="res://scenes/environment/chroma/tree_chroma_1.tscn" id="1_mecrn"]
-[ext_resource type="PackedScene" uid="uid://dqwob7hb2sqob" path="res://scenes/environment/chroma/tree_chroma_2.tscn" id="2_q0kpx"]
-[ext_resource type="PackedScene" uid="uid://bwxv5alad551j" path="res://scenes/environment/chroma/tree_chroma_3.tscn" id="3_17rqq"]
-[ext_resource type="PackedScene" uid="uid://br1wpajrhue3x" path="res://scenes/environment/chroma/tree_chroma_4.tscn" id="4_8tn3g"]
-[ext_resource type="PackedScene" uid="uid://ckbru18t5dula" path="res://scenes/environment/chroma/tree_chroma_5.tscn" id="5_0xxl7"]
+[ext_resource type="PackedScene" uid="uid://cpw4pdc4080qo" path="res://Scenes/environment/chroma/tree_chroma_1.tscn" id="1_mecrn"]
+[ext_resource type="PackedScene" uid="uid://dqwob7hb2sqob" path="res://Scenes/environment/chroma/tree_chroma_2.tscn" id="2_q0kpx"]
+[ext_resource type="PackedScene" uid="uid://bwxv5alad551j" path="res://Scenes/environment/chroma/tree_chroma_3.tscn" id="3_17rqq"]
+[ext_resource type="PackedScene" uid="uid://br1wpajrhue3x" path="res://Scenes/environment/chroma/tree_chroma_4.tscn" id="4_8tn3g"]
+[ext_resource type="PackedScene" uid="uid://ckbru18t5dula" path="res://Scenes/environment/chroma/tree_chroma_5.tscn" id="5_0xxl7"]
 
 [node name="nature_mesh_library" type="Node3D"]
 

@@ -51,10 +51,3 @@ transparency = 0.95
 amount = 20
 process_material = SubResource("ParticleProcessMaterial_7mwrs")
 draw_pass_1 = SubResource("QuadMesh_bwovf")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-light_energy = 0.5
-light_indirect_energy = 0.0
-light_volumetric_fog_energy = 0.0
-light_negative = true
-light_specular = 0.0

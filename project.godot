@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Untitled-Game-Project-2"
-run/main_scene="res://levels/dream_garden.tscn"
+run/main_scene="res://Levels/dream_garden.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -40,8 +40,8 @@ directories/dtl_directory={
 "timeline": "res://timeline.dtl"
 }
 glossary/default_case_sensitive=true
-layout/style_list=["res://ui/dialogic_style_new.tres"]
-layout/default_style="res://ui/dialogic_style_new.tres"
+layout/style_list=["res://addons/dialogic/Resources/somnia.tres"]
+layout/default_style="res://addons/dialogic/Resources/somnia.tres"
 variables={}
 extensions_folder="res://addons/dialogic_additions"
 text/letter_speed=0.01

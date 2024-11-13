@@ -295,7 +295,7 @@ class status_heartstitch:
 	
 	func fx_add():
 		fx = Glossary.ui.heartstitch.instantiate()
-		host.status_hud.grid.add_child(fx)
+		host.animations.status_hud.grid.add_child(fx)
 	
 	func fx_remove():
 		fx.queue_free()
@@ -440,6 +440,7 @@ class ability:
 	var damage_calculated : int = 0 #Raw damage after all calculations
 	var vis_cost : int = 0
 	var chance : float = 1.0 #Chance of something happening, kinda a placeholder
+	var description : String = ""
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
@@ -493,6 +494,7 @@ class ability_template_default: #Standard ability with vis cost and skillcheck
 	
 	func _init() -> void:
 		target_type = Battle.target_type.OPPONENTS
+		description = "Default ability description"
 	
 	func select_validate():
 		return true #HACK now vis does damage to us if it's at 0 instead of removing this stat
@@ -528,6 +530,7 @@ class ability_spook:
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
 		title = "Spook"
+		description = "Unleashes an unsettling aura that disrupts the target's focus.\nHas a chance to fear target."
 
 	func cast_main():
 		caster.my_component_vis.siphon(vis_cost)
@@ -553,6 +556,7 @@ class ability_solar_flare:
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
 		title = "Solar Flare"
+		description = "Summons a dazzling burst of radiant energy that coats the target in molten flame.\nHas a chance to burn target."
 		
 		
 	func cast_internal_bonus(caster : Node, target : Node): #Does bonus damage, bonus burn damage, and 100% chance to proc burn
@@ -586,6 +590,7 @@ class ability_frigid_core:
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
 		title = "Frigid Core"
+		description = "Summons a chilling pulse of frozen energy inside the target.\nHas a chance to freeze."
 	
 	func cast_main():
 		pass
@@ -607,6 +612,7 @@ class ability_tackle:
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
 		title = "Tackle"
+		description = "A forceful rush at the target, dealing damage"
 	
 	func cast_main():
 		pass
@@ -627,6 +633,7 @@ class ability_heartstitch:
 		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.TETHER
 		title = "Heartstitch"
+		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		damage = 1
 		vis_cost = 1
 	

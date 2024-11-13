@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://b35mxcc3d74di"]
 
-[ext_resource type="PackedScene" uid="uid://bmmvgvbtdalfx" path="res://scenes/environment/templates/water.tscn" id="1_0tlw1"]
+[ext_resource type="PackedScene" uid="uid://bmmvgvbtdalfx" path="res://Scenes/environment/templates/water.tscn" id="1_0tlw1"]
 [ext_resource type="Shader" path="res://Art/shaders/water/water.gdshader" id="2_ws1sl"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qbhwi"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b7x2uimrghas2"]
 
-[ext_resource type="Script" path="res://scenes/debug_3d_text.gd" id="1_pok4a"]
+[ext_resource type="Script" path="res://Scenes/debug_3d_text.gd" id="1_pok4a"]
 
 [node name="DEBUG_3D_TEXT" type="Label3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.224335, -0.270939)

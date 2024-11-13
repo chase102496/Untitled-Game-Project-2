@@ -52,9 +52,9 @@ func _on_turn_end():
 func _on_battle_finished(result):
 	if result == "Win":
 		print_debug("Yay!")
-		get_tree().change_scene_to_file("res://levels/dream_garden.tscn")
+		get_tree().change_scene_to_file("res://Levels/dream_garden.tscn")
 	elif result == "Lose":
 		print_debug("womp womp")
-		get_tree().change_scene_to_file("res://levels/dream_garden.tscn")
+		get_tree().change_scene_to_file("res://Levels/dream_garden.tscn")
 	else:
 		push_error("ERROR")

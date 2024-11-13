@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=9 format=3 uid="uid://bitq02d30r24m"]
 
-[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://ui/Fancake.ttf" id="1_iu7ec"]
-[ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://ui/menu_style_box.tres" id="1_sehmd"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://UI/Fancake.ttf" id="1_iu7ec"]
+[ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://UI/menu_style_box.tres" id="1_sehmd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xust"]
 
@@ -17,10 +17,10 @@
 bg_color = Color(0.141176, 0.47451, 0.34902, 1)
 
 [resource]
-Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_color = Color(0.86, 0.86, 0.86, 1)
 Button/colors/font_disabled_color = Color(0.52, 0.52, 0.52, 0.501961)
-Button/colors/font_hover_color = Color(0.252, 0.84, 0.6146, 1)
-Button/colors/font_outline_color = Color(0.039, 0.13, 0.0966333, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0.21, 0.21, 0.21, 1)
 Button/colors/font_pressed_color = Color(0.252, 0.84, 0.6146, 1)
 Button/colors/icon_disabled_color = Color(1, 1, 1, 0)
 Button/colors/icon_focus_color = Color(1, 1, 1, 0)
@@ -38,11 +38,18 @@ Button/styles/normal = SubResource("StyleBoxEmpty_3n7wq")
 Button/styles/pressed = SubResource("StyleBoxEmpty_pu612")
 GridContainer/constants/h_separation = 28
 GridContainer/constants/v_separation = 14
-HBoxContainer/constants/separation = 30
-Label/colors/font_outline_color = Color(0.04, 0.04, 0.04, 1)
+HBoxContainer/constants/separation = 20
+Label/colors/font_color = Color(0.86, 0.86, 0.86, 1)
+Label/colors/font_outline_color = Color(0.21, 0.21, 0.21, 1)
 Label/constants/outline_size = 25
 Label/font_sizes/font_size = 48
 Label/fonts/font = ExtResource("1_iu7ec")
 PanelContainer/styles/normal = SubResource("StyleBoxFlat_wkxhl")
 PanelContainer/styles/panel = ExtResource("1_sehmd")
+RichTextLabel/colors/default_color = Color(0.86, 0.86, 0.86, 1)
+RichTextLabel/colors/table_odd_row_bg = Color(0.2124, 0.256453, 0.59, 1)
+RichTextLabel/constants/line_separation = 8
+RichTextLabel/constants/outline_size = 8
+RichTextLabel/font_sizes/normal_font_size = 20
+RichTextLabel/fonts/normal_font = ExtResource("1_iu7ec")
 VBoxContainer/constants/separation = 20

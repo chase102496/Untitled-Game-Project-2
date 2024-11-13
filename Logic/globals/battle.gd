@@ -11,27 +11,33 @@ const type : Dictionary = {
 	},
 	"TETHER" : {
 		"TITLE" : "Tether",
-		"ICON" : "※"
+		"ICON" : "※",
+		"COLOR" : Color("4acacf")
 	},
 	"NEUTRAL" : {
 		"TITLE" : "Neutral",
-		"ICON" : "●"
+		"ICON" : "●",
+		"COLOR" : Color("ffffff")
 	},
 	"VOID" : {
 		"TITLE" : "Void",
-		"ICON" : "✫"
+		"ICON" : "✫",
+		"COLOR" : Color("342d6bfd")
 	},
 	"NOVA" : {
 		"TITLE" : "Nova",
-		"ICON" : "✯"
+		"ICON" : "✯",
+		"COLOR" : Color("f2af5cfd")
 	},
 	"TERA" : {
 		"TITLE" : "Tera",
-		"ICON" : "⬡"
+		"ICON" : "⬡",
+		"COLOR" : Color("6b1e1efd")
 	},
 	"ETHER" : {
 		"TITLE" : "Ether",
-		"ICON" : "≋"
+		"ICON" : "≋",
+		"COLOR" : Color("4f1e6bfd")
 	},
 }
 

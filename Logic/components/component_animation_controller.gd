@@ -13,6 +13,9 @@ func _ready() -> void:
 	%StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
 	%StateChart/Main/Pause_Input.state_entered.connect(_on_state_entered_pause_input)
 	%StateChart/Main/Battle.state_entered.connect(_on_state_entered_battle)
+	%StateChart/Main/Battle.state_exited.connect(_on_state_exited_battle)
+	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
+	%StateChart/Main/Battle/Execution.state_exited.connect(_on_state_exited_battle_execution)
 	%StateChart/Main/Battle/Hurt.state_entered.connect(_on_state_entered_battle_hurt)
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
@@ -38,13 +41,23 @@ func _on_state_entered_pause_input() -> void:
 	owner.animations.tree.get("parameters/playback").travel("Idle")
 
 func _on_state_entered_battle() -> void:
-	#TODO use this for selection of attack sprite.modulate = Color(1,1,1,0.5)
+	owner.animations.status_hud.show()
 	#Sets us facing the right way, depending on our side
 	owner.animations.tree.get("parameters/playback").travel("Idle")
 	if owner.stats.alignment == Battle.alignment.FRIENDS:
 		animations_reset(Vector2(-1,1))
 	else:
 		animations_reset(Vector2(1,-1))
+
+func _on_state_exited_battle() -> void:
+	owner.animations.status_hud.hide()
+
+func _on_state_entered_battle_execution() -> void:
+	owner.animations.status_hud.hide()
+	
+func _on_state_exited_battle_execution() -> void:
+	owner.animations.status_hud.show()
+
 
 func _on_state_entered_explore_idle() -> void:
 	owner.animations.tree.get("parameters/playback").travel("Idle")

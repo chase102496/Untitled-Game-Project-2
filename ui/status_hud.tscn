@@ -1,26 +1,40 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3707fwdhap4h"]
+[gd_scene load_steps=7 format=3 uid="uid://b3707fwdhap4h"]
 
 [ext_resource type="Script" path="res://Logic/scripts/status_hud.gd" id="1_ked1w"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://UI/Fancake.ttf" id="2_5t26x"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_oql26"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_bqosp"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hl47y"]
-resource_local_to_scene = true
-transparency = 1
-albedo_texture = SubResource("ViewportTexture_oql26")
-billboard_mode = 2
+[sub_resource type="LabelSettings" id="LabelSettings_ofdtm"]
+font = ExtResource("2_5t26x")
+font_size = 150
+font_color = Color(0.956863, 0.0313726, 0.356863, 1)
+outline_size = 75
+outline_color = Color(0.0235294, 0, 0.329412, 1)
 
-[sub_resource type="QuadMesh" id="QuadMesh_j4aiy"]
-resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_hl47y")
+[sub_resource type="LabelSettings" id="LabelSettings_sh4s4"]
+font = ExtResource("2_5t26x")
+font_size = 150
+font_color = Color(0.0288, 0.55648, 0.96, 1)
+outline_size = 75
+outline_color = Color(0.0235294, 0, 0.329412, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4es0t"]
+font = ExtResource("2_5t26x")
+font_size = 20
+font_color = Color(0.0288, 0.55648, 0.96, 1)
+outline_size = 75
+outline_color = Color(0.0235294, 0, 0.329412, 1)
 
 [node name="Status_HUD" type="Node3D"]
 script = ExtResource("1_ked1w")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
-mesh = SubResource("QuadMesh_j4aiy")
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.2, 0)
+billboard = 2
+double_sided = false
+texture = SubResource("ViewportTexture_bqosp")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 transparent_bg = true
@@ -38,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.75, 0.75)
 
-[node name="status_grid" type="GridContainer" parent="SubViewport/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/PanelContainer"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -46,9 +60,35 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -265.0
-offset_top = -150.0
+offset_top = -370.0
 offset_right = 265.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="Health" type="Label" parent="SubViewport/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "♥ 00/00"
+label_settings = SubResource("LabelSettings_ofdtm")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Vis" type="Label" parent="SubViewport/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "◆ 00/00"
+label_settings = SubResource("LabelSettings_sh4s4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="SubViewport/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "
+"
+label_settings = SubResource("LabelSettings_4es0t")
+horizontal_alignment = 1
+
+[node name="status_grid" type="GridContainer" parent="SubViewport/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 columns = 3
 metadata/_edit_use_anchors_ = true

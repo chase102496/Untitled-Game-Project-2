@@ -2,16 +2,16 @@ extends Node
 
 const entity : Dictionary = {
 	# Players
-	"player" : preload("res://scenes/characters/player.tscn"),
+	"battle_entity_player" : preload("res://Scenes/characters/battle_entity_player.tscn"),
 	# Dreamkin
-	"dreamkin" : preload("res://scenes/characters/dreamkin.tscn"),
+	"battle_entity_dreamkin" : preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn"),
 	# Enemies
-	"enemy" : preload("res://scenes/characters/enemy.tscn"),
-	"elderoot" : preload("res://scenes/characters/elderoot.tscn"),
-	"core_warden" : preload("res://scenes/characters/core_warden.tscn"),
-	"shadebloom" : preload("res://scenes/characters/shadebloom.tscn"),
-	"shiverling" : preload("res://scenes/characters/shiverling.tscn"),
-	"cinderling" : preload("res://scenes/characters/cinderling.tscn"),
+	"battle_entity_enemy" : preload("res://Scenes/characters/battle_entity_enemy_default.tscn"),
+	"battle_entity_enemy_elderoot" : preload("res://Scenes/characters/battle_entity_enemy_elderoot.tscn"),
+	"battle_entity_enemy_core_warden" : preload("res://Scenes/characters/battle_entity_enemy_core_warden.tscn"),
+	"battle_entity_enemy_shadebloom" : preload("res://Scenes/characters/battle_entity_enemy_shadebloom.tscn"),
+	"battle_entity_enemy_shiverling" : preload("res://Scenes/characters/battle_entity_enemy_shiverling.tscn"),
+	"battle_entity_enemy_cinderling" : preload("res://Scenes/characters/battle_entity_enemy_cinderling.tscn")
 	}
 
 const particle : Dictionary = {
@@ -35,9 +35,10 @@ func create_text_particle(host : Node, pos : Vector3 = Vector3.ZERO, text : Stri
 	particle_label.text = text
 	particle_label.label_settings.font_color = color
 	particle_label.label_settings.font_size = size
+	
 	inst.global_position = pos
 	return particle_label
 
 const ui : Dictionary = {
-	"heartstitch" : preload("res://ui/status_effect_heartstitch.tscn")
+	"heartstitch" : preload("res://UI/status_effect_heartstitch.tscn")
 }

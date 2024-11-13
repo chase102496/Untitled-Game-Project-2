@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://d4mxx3aw4y6ae"]
 
-[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_7iwqr"]
-[ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://ui/animation_component.tscn" id="2_p2jmj"]
-[ext_resource type="Script" path="res://ui/button_start_game.gd" id="2_qr4nm"]
-[ext_resource type="Script" path="res://ui/button_quit_game.gd" id="4_solo6"]
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://UI/menu_theme.tres" id="1_7iwqr"]
+[ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://UI/animation_component.tscn" id="2_p2jmj"]
+[ext_resource type="Script" path="res://UI/button_start_game.gd" id="2_qr4nm"]
+[ext_resource type="Script" path="res://UI/button_quit_game.gd" id="4_solo6"]
 
 [node name="CenterContainer" type="CenterContainer"]
 anchors_preset = 15

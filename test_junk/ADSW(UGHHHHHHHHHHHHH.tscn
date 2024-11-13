@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0ijsq6rypam8"]
 
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cj5thivh7di1u" path="res://scenes/character_animation_tree.tres" id="1_t7h84"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cj5thivh7di1u" path="res://Scenes/character_animation_tree.tres" id="1_t7h84"]
 
 [node name="character_animation_tree" type="AnimationTree"]
 root_node = NodePath("../character_animation_sprite")
