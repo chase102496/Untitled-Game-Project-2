@@ -1,4 +1,4 @@
-class_name battle_entity_enemy_core_warden
+class_name battle_entity_enemy_duskling
 extends battle_entity_enemy_default
 
 func _ready() -> void:

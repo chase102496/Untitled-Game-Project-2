@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://dqjwyodaeyt1l"]
 
 [ext_resource type="PackedScene" uid="uid://dwydgp3r021ay" path="res://test_junk/hex_edge.tscn" id="1_8st0p"]
-[ext_resource type="PackedScene" uid="uid://c1ria312wfebc" path="res://Scenes/hex_grid_map.res" id="2_rtj0y"]
-[ext_resource type="MeshLibrary" uid="uid://bmcehrumv3l4" path="res://Art/models/Mesh Libraries/hex_mesh_library.tres" id="3_0bjf2"]
+[ext_resource type="PackedScene" uid="uid://c1ria312wfebc" path="res://Scenes/environment/terrain/hex_grid_map.res" id="2_rtj0y"]
+[ext_resource type="MeshLibrary" uid="uid://bmcehrumv3l4" path="res://Scenes/environment/terrain/hex_mesh_library.tres" id="3_0bjf2"]
 
 [sub_resource type="MultiMesh" id="MultiMesh_kxd7c"]
 transform_format = 1

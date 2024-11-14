@@ -1,6 +1,6 @@
 [gd_scene load_steps=154 format=3 uid="uid://dp7uehr0563lr"]
 
-[ext_resource type="Script" path="res://Logic/scripts/classes/world_entity_player.gd" id="1_xxqv0"]
+[ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="3_0pbev"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_jbfav"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="6_acssy"]

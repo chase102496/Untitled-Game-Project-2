@@ -1,7 +1,7 @@
 [gd_scene load_steps=94 format=3 uid="uid://c72pu67cws835"]
 
 [ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://Scenes/characters/battle_entity_enemy_default.tscn" id="1_ulg15"]
-[ext_resource type="Script" path="res://Logic/scripts/classes/battle_entity_enemy_cinderling.gd" id="2_ueqhl"]
+[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_cinderling.gd" id="2_ueqhl"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="3_ibse4"]
 [ext_resource type="Texture2D" uid="uid://sujr3w3xf7il" path="res://Art/sprites/The Adventurer - Free/Idle/idle_down.png" id="4_g82vh"]
 [ext_resource type="Texture2D" uid="uid://b3l4rcga8ncvo" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_down.png" id="5_uoyq8"]
@@ -700,5 +700,5 @@ libraries = {
 "": SubResource("AnimationLibrary_x3d6q")
 }
 
-[node name="component_health" parent="Components" index="2"]
-max_health = 8
+[node name="component_health" parent="Components" index="1"]
+max_health = 10

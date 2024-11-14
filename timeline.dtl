@@ -1,7 +1,22 @@
 [signal arg="on_pause_input"]
-[pulse] YAAAAAAAY [/pulse]
-- It finally works!
-	I know, right?!
-	- I guess...
-[pause=0.5] You guess[lspeed=0.1]...? [n] [lspeed] [shake] RUDE! [/shake]
-[signal arg="on_idle"]
+Hiya. Welcome to the demo for Stories of Somnia\: The Prism of Reawakening
+So far,[pause=0.3] we have the game mechanics about 50% done.
+label Question
+Wanna see some combat puzzles?
+- Yes!
+	Choose a puzzle\:
+	- Gloams Galore (Trivial)
+		do Battle.battle_initialize("player dreamkin_default enemy_gloam enemy_gloam enemy_gloam")
+	- The Wedge (Easy)
+		do Battle.battle_initialize("player dreamkin_default enemy_elderoot enemy_gloam enemy_gloam enemy_elderoot")
+	- The Meat Shield (Medium)
+		do Battle.battle_initialize("player dreamkin_default enemy_cinderling enemy_elderoot enemy_shadebloom enemy_elderoot enemy_shiverling")
+- Not really.
+	Oh, okay. Feel free to explore what's here,[pause=0.3] then
+	[signal arg="on_idle"]
+- What's a combat puzzle?
+	A combat puzzle is the core of Somnia's gameplay. You will have a limited set of abilities that serve as "tools" to solve a combat encounter.
+	... And what I mean by tools is fighting the enemy. There is always an optimal way to deal with enemies, and brute forcing through damage may work sometimes, but you'll enjoy the game more if you want to solve them.
+	Enemies have all sorts of abilities that can hinder your ability to deal with them normally. They may ignore a certain element, or all elements besides one.
+	They may even seem impossible to kill at first glance, but you'll find a way. There's lots of room to do the thinking yourself. This game does not do very much hand holding.
+	jump Question

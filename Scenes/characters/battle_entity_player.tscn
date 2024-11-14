@@ -1,6 +1,6 @@
 [gd_scene load_steps=113 format=3 uid="uid://djdg8wet86nat"]
 
-[ext_resource type="Script" path="res://Logic/scripts/classes/battle_entity_player.gd" id="1_vkci8"]
+[ext_resource type="Script" path="res://Logic/classes/battle_entity_player.gd" id="1_vkci8"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_ldwgg"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="3_5m26b"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_cg7qa"]

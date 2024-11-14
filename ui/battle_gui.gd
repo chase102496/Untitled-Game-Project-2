@@ -4,7 +4,7 @@ extends Control
 @onready var selected_ability : Object
 @onready var selected_target : Object
 
-@onready var selector_sprite : Node = $"Selector Sprite"
+@onready var selector_sprite : Node = $selector_sprite
 
 @onready var ui_grid_menu : Node = %Menu #Any menu that isn't a selector or skillcheck
 
@@ -43,6 +43,7 @@ func _ready() -> void:
 	#position.y -= randi_range(100,200)
 	#connect to button signals
 	ui_button_battle.pressed.connect(_on_button_pressed_battle)
+	ui_button_escape.pressed.connect(_on_button_pressed_escape)
 	
 	# TODO Sets up our abilities in the ui
 	#for i in $Container/Panel1/Battle.get_child_count():
@@ -51,8 +52,6 @@ func _ready() -> void:
 	ui_button_switch.pressed.connect(_on_button_pressed_switch)
 	#
 	ui_button_item.pressed.connect(_on_button_pressed_item)
-	#
-	ui_button_escape.pressed.connect(_on_button_pressed_escape)
 	#
 	#connect to enter and exit for start
 	Events.battle_gui_button_pressed.connect(_on_button_pressed_battle_ability)
@@ -202,4 +201,4 @@ func _on_button_pressed_item():
 	pass
 
 func _on_button_pressed_escape():
-	pass
+	Events.battle_finished.emit("Win")

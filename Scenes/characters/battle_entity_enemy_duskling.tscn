@@ -1,15 +1,15 @@
 [gd_scene load_steps=13 format=3 uid="uid://cj2ogbore3rtv"]
 
-[ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://Scenes/characters/battle_entity_enemy_default.tscn" id="1_rgimn"]
-[ext_resource type="Script" path="res://Logic/scripts/classes/battle_entity_enemy_core_warden.gd" id="2_duqdn"]
-[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="3_7mm47"]
-[ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="4_ue8en"]
-[ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="5_vyi05"]
-[ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Art/animations/Individual Animations/default_hurt.res" id="6_ukh0r"]
-[ext_resource type="Animation" uid="uid://btl2alwbosyqx" path="res://Art/animations/Individual Animations/default_idle_down.res" id="7_hy2s7"]
-[ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Art/animations/Individual Animations/default_idle_left_down.res" id="8_tk5yo"]
-[ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Art/animations/Individual Animations/default_idle_left_up.res" id="9_c6a8u"]
-[ext_resource type="Animation" uid="uid://cu0rr2yby7j6s" path="res://Art/animations/Individual Animations/default_idle_up.res" id="10_mmywo"]
+[ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://Scenes/characters/battle_entity_enemy_default.tscn" id="1_0nelj"]
+[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_duskling.gd" id="2_rrxm4"]
+[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="3_o7us8"]
+[ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="4_n4k8a"]
+[ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="5_bhwht"]
+[ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Art/animations/Individual Animations/default_hurt.res" id="6_1b834"]
+[ext_resource type="Animation" uid="uid://btl2alwbosyqx" path="res://Art/animations/Individual Animations/default_idle_down.res" id="7_wv1qk"]
+[ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Art/animations/Individual Animations/default_idle_left_down.res" id="8_damen"]
+[ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Art/animations/Individual Animations/default_idle_left_up.res" id="9_m8aut"]
+[ext_resource type="Animation" uid="uid://cu0rr2yby7j6s" path="res://Art/animations/Individual Animations/default_idle_up.res" id="10_n2ho1"]
 
 [sub_resource type="Animation" id="Animation_uxkkn"]
 length = 0.001
@@ -71,7 +71,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(0.26, 0.26, 0.26, 1)]
+"values": [Color(0, 0, 0, 0.729412)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -113,18 +113,18 @@ tracks/7/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eg1a4"]
 _data = {
 "RESET": SubResource("Animation_uxkkn"),
-"default_attack": ExtResource("3_7mm47"),
-"default_attack_spook": ExtResource("4_ue8en"),
-"default_death": ExtResource("5_vyi05"),
-"default_hurt": ExtResource("6_ukh0r"),
-"default_idle_down": ExtResource("7_hy2s7"),
-"default_idle_left_down": ExtResource("8_tk5yo"),
-"default_idle_left_up": ExtResource("9_c6a8u"),
-"default_idle_up": ExtResource("10_mmywo")
+"default_attack": ExtResource("3_o7us8"),
+"default_attack_spook": ExtResource("4_n4k8a"),
+"default_death": ExtResource("5_bhwht"),
+"default_hurt": ExtResource("6_1b834"),
+"default_idle_down": ExtResource("7_wv1qk"),
+"default_idle_left_down": ExtResource("8_damen"),
+"default_idle_left_up": ExtResource("9_m8aut"),
+"default_idle_up": ExtResource("10_n2ho1")
 }
 
-[node name="Core Warden" instance=ExtResource("1_rgimn")]
-script = ExtResource("2_duqdn")
+[node name="Duskling" instance=ExtResource("1_0nelj")]
+script = ExtResource("2_rrxm4")
 stats = {
 "alignment": "FOES",
 "classification": "ENEMY",
@@ -133,7 +133,7 @@ stats = {
 }
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
-modulate = Color(0.26, 0.26, 0.26, 1)
+modulate = Color(0, 0, 0, 0.729412)
 
 [node name="character_animation_player" parent="Animations" index="1"]
 libraries = {

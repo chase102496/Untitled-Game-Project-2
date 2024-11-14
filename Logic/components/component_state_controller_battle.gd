@@ -101,9 +101,9 @@ func _on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability
 				if query_results[i] != Battle.mitigation_type.PASS: #If the ability catches and wants to do something besides pass
 					break #exit the loop, it will handle mitigation across the board
 				elif i == (len(query_results) - 1): #if we get to the last mitigation in our list because they all passed
-					entity_caster.my_component_ability.cast_queue.cast_internal(entity_caster,owner)
+					entity_caster.my_component_ability.cast_queue.cast_pre_mitigation(entity_caster,owner)
 		else: #means nothing cares and we should pass through as normal
-			entity_caster.my_component_ability.cast_queue.cast_internal(entity_caster,owner)
+			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation(entity_caster,owner)
 
 func _on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
 	my_component_ability.current_status_effects.status_event("on_battle_entity_missed",[entity_caster,entity_targets,ability])
@@ -128,7 +128,6 @@ func _on_state_entered_battle_start() -> void:
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
 	my_component_ability.current_status_effects.status_event("on_start")
-	
 	owner.state_chart.send_event("on_choose") 
 
 func _on_state_entered_battle_choose() -> void:

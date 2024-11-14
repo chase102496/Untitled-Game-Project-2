@@ -14,8 +14,8 @@ const type : Dictionary = {
 		"ICON" : "※",
 		"COLOR" : Color("4acacf")
 	},
-	"NEUTRAL" : {
-		"TITLE" : "Neutral",
+	"BALANCE" : {
+		"TITLE" : "Balance",
 		"ICON" : "●",
 		"COLOR" : Color("ffffff")
 	},
@@ -24,18 +24,18 @@ const type : Dictionary = {
 		"ICON" : "✫",
 		"COLOR" : Color("342d6bfd")
 	},
-	"NOVA" : {
-		"TITLE" : "Nova",
+	"CHAOS" : {
+		"TITLE" : "Chaos",
 		"ICON" : "✯",
 		"COLOR" : Color("f2af5cfd")
 	},
-	"TERA" : {
-		"TITLE" : "Tera",
+	"ORDER" : {
+		"TITLE" : "Order",
 		"ICON" : "⬡",
 		"COLOR" : Color("6b1e1efd")
 	},
-	"ETHER" : {
-		"TITLE" : "Ether",
+	"FLOW" : {
+		"TITLE" : "Flow",
 		"ICON" : "≋",
 		"COLOR" : Color("4f1e6bfd")
 	},
@@ -65,13 +65,27 @@ const status_behavior : Dictionary = { #When a status effect is applied to a tar
 }
 
 const target_selector : Dictionary = { #Populates the selection with a modifier, like two targets or more
-	"SINGLE" : "SINGLE", #One target
-	"SINGLE_RIGHT" : "SINGLE_RIGHT", #One target, and the one to the right of them
-	"SINGLE_LEFT" : "SINGLE_LEFT",
-	"SINGLE_ADJACENT" : "SINGLE_ADJACENT", #One target, and both adjacent targets
-	"TEAM" : "TEAM", #Target one side of the field
-	"ALL" : "ALL", #Whole field
-	"NONE" : "NONE" #Doesn't need a target to use move
+	"SINGLE" : {
+		"DESCRIPTION" : "Targets only your selection"
+		}, #One target
+	"SINGLE_RIGHT" : { #One target, and the one to the right of them
+		"DESCRIPTION" : "Targets your selection and its RIGHT neighbor"
+		}, #One target
+	"SINGLE_LEFT" : {
+		"DESCRIPTION" : "Targets your selection and its LEFT neighbor"
+		}, #One target
+	"SINGLE_ADJACENT" : { #One target, and both adjacent targets
+		"DESCRIPTION" : "Targets your selection and both LEFT and RIGHT neighbors"
+		}, #One target
+	"TEAM" : { #Target one side of the field
+		"DESCRIPTION" : "Targets a team"
+		}, #One target
+	"ALL" : { #Whole field
+		"DESCRIPTION" : "Targets everyone"
+		}, #One target
+	"NONE" : { #Doesn't need a target to use move
+		"DESCRIPTION" : ""
+		}, #One target
 }
 
 const target_type : Dictionary = { #Populates our available targets when using an ability
@@ -94,6 +108,26 @@ func sort_screen(a,b): #Sorts based on screen X position (so left to right on sc
 		return true
 	else:
 		return false
+
+func swap_section(start: int, end: int):
+	# Validate input
+	if start < 0 or end >= battle_list.size() or start >= end:
+		push_error("Invalid input range")
+	
+	# Initialize pointers
+	var left = start
+	var right = end
+
+	# Swap elements until pointers meet
+	while left < right:
+		# Swap elements at left and right
+		var temp = battle_list[left]
+		battle_list[left] = battle_list[right]
+		battle_list[right] = temp
+
+		# Move pointers closer
+		left += 1
+		right -= 1
 
 func update_positions(): #Updates all units positions to reflect a change (like death or swap)
 	var friends_offset := Vector3.ZERO
@@ -125,7 +159,7 @@ func search_glossary_name(character_name : String, character_list : Array, first
 	else:
 		return null
 
-func get_target_selector_list(target : Node, selector : String, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
+func get_target_selector_list(target : Node, selector : Dictionary, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
 	match selector:
 		Battle.target_selector.SINGLE:
@@ -213,13 +247,28 @@ func check_ready():
 
 #Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
 #and the old and new scenes they will be transitioning from and to.
-func battle_initialize(unit_list : Array, scene_old, scene_new : String):
+func battle_initialize(unit_list, scene_new : String = "res://Levels/turn_arena.tscn"):
+	
+	var final_unit_list
+	
+	if unit_list is String: #For conversion from dialogic method
+		
+		final_unit_list = []
+		
+		var split_list = unit_list.split(" ")
+		
+		for i in split_list.size():
+			var fixed_str = str("battle_entity_",split_list[i])
+			final_unit_list.append(fixed_str)
+	else:
+		final_unit_list = unit_list
+	
 	var unit_instance
 	battle_list = []
 	
 	#Instantiating all the battle characters
-	for i in len(unit_list):
-		var unit_name : String = unit_list[i]
+	for i in len(final_unit_list):
+		var unit_name : String = final_unit_list[i]
 		var unit_scene : Object = Glossary.entity.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
 		#var unit_stats : Dictionary = stat_list[i]
 		
@@ -230,6 +279,6 @@ func battle_initialize(unit_list : Array, scene_old, scene_new : String):
 		#signal emit
 		battle_list.append(unit_instance)
 		
-	scene_old.change_scene_to_file(scene_new)
+	get_tree().change_scene_to_file(scene_new)
 	#broken \/
 	#Events.on_battle_initialize.emit(battle_list)

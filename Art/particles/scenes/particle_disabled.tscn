@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://disdxpo2eowp3"]
 
-[ext_resource type="Texture2D" uid="uid://630frv076o53" path="res://Art/particles/scratch_01.png" id="1_qgixi"]
+[ext_resource type="Texture2D" uid="uid://b66jmwuflbsmr" path="res://Art/particles/circle_01.png" id="1_7h01l"]
 
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_mun4g"]
 transparency = 1
 blend_mode = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_qgixi")
+albedo_texture = ExtResource("1_7h01l")
 billboard_mode = 3
 billboard_keep_scale = true
 particles_anim_h_frames = 1

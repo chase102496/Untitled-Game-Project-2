@@ -1,6 +1,6 @@
 [gd_scene load_steps=115 format=3 uid="uid://dgd4uawticqrg"]
 
-[ext_resource type="Script" path="res://Logic/scripts/classes/world_entity_npc_default.gd" id="1_prpni"]
+[ext_resource type="Script" path="res://Logic/classes/world_entity_npc_default.gd" id="1_prpni"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_6od8c"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_0vcg8"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="4_3yh7p"]
@@ -1316,13 +1316,14 @@ unique_name_in_owner = true
 script = ExtResource("3_0vcg8")
 
 [node name="interact_player" type="AnimationPlayer" parent="Animations"]
+root_node = NodePath("../interact_sprite")
 libraries = {
 "": SubResource("AnimationLibrary_vgfiw")
 }
 autoplay = "pointer_hover"
 
 [node name="interact_sprite" type="Sprite3D" parent="Animations"]
-transform = Transform3D(1.77578, -0.500581, 0, 0.500581, 1.77578, 0, 0, 0, 1.84499, -0.162792, 0.577494, 0)
+transform = Transform3D(1.73248, -0.488375, 0, 0.488375, 1.73248, 0, 0, 0, 1.8, -0.162792, 0.577494, 0)
 visible = false
 ignore_occlusion_culling = true
 offset = Vector2(-6, 10)

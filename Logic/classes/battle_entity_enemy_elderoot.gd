@@ -6,4 +6,4 @@ func _ready() -> void:
 	var abil = my_component_ability
 	abil.my_abilities.append(abil.ability_tackle.new(self))
 	abil.current_status_effects.add_passive(abil.status_regrowth.new(self))
-	abil.current_status_effects.add_passive(abil.status_weakness.new(self,Battle.type.NOVA))
+	abil.current_status_effects.add_passive(abil.status_weakness.new(self,Battle.type.CHAOS))

@@ -1,6 +1,6 @@
 [gd_scene load_steps=63 format=3 uid="uid://ct0v1pb5ehqc6"]
 
-[ext_resource type="Script" path="res://Logic/scripts/classes/battle_entity_dreamkin_default.gd" id="1_ol02j"]
+[ext_resource type="Script" path="res://Logic/classes/battle_entity_dreamkin_default.gd" id="1_ol02j"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_oay8k"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="3_4rcnf"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_j3sum"]
@@ -628,7 +628,7 @@ my_component_state_controller_battle = NodePath("Components/component_state_cont
 stats = {
 "alignment": "FRIENDS",
 "classification": "DREAMKIN",
-"glossary": "battle_entity_dreamkin",
+"glossary": "battle_entity_dreamkin_default",
 "spacing": Vector3(0.8, 0, -0.1)
 }
 

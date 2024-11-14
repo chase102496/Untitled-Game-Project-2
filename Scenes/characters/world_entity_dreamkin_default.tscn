@@ -1,6 +1,6 @@
 [gd_scene load_steps=62 format=3 uid="uid://dqy8clwwlvjcb"]
 
-[ext_resource type="Script" path="res://Logic/scripts/classes/world_entity_dreamkin_default.gd" id="1_5mjex"]
+[ext_resource type="Script" path="res://Logic/classes/world_entity_dreamkin_default.gd" id="1_5mjex"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_fjguv"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_l8ns7"]
 [ext_resource type="Texture2D" uid="uid://d4senx3uvusy" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Death.png" id="4_jb5sb"]

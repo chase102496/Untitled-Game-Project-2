@@ -1,6 +1,7 @@
-[gd_scene load_steps=86 format=3 uid="uid://d4f5i42fama8y"]
+[gd_scene load_steps=87 format=3 uid="uid://d4f5i42fama8y"]
 
 [ext_resource type="PackedScene" uid="uid://dgd4uawticqrg" path="res://Scenes/characters/world_entity_npc_default.tscn" id="1_mgljr"]
+[ext_resource type="Script" path="res://Logic/classes/world_entity_npc_tutorial.gd" id="2_6ylbx"]
 [ext_resource type="Texture2D" uid="uid://b4y2n7w11dkwo" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Center.png" id="5_1tu8t"]
 [ext_resource type="Texture2D" uid="uid://dkr02cfap046a" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Left_1.png" id="6_dkaq6"]
 [ext_resource type="Texture2D" uid="uid://hgcl7lamr4sm" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Left_2.png" id="7_ojx3w"]
@@ -9,9 +10,14 @@
 [ext_resource type="Texture2D" uid="uid://b3l4rcga8ncvo" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_down.png" id="10_mx7cs"]
 [ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_up.png" id="11_rducn"]
 [ext_resource type="Texture2D" uid="uid://bpnyewgehrpb5" path="res://Art/sprites/Lumia/idle_back/Lumia_Idle_Back_Center.png" id="12_mhkj4"]
+[ext_resource type="Animation" uid="uid://0oc25a5trdbd" path="res://Art/animations/Individual Animations/lumia_RESET.res" id="13_5q5s6"]
 [ext_resource type="Texture2D" uid="uid://ffvuhsjps3q0" path="res://Art/sprites/Lumia/idle_back/Lumia_Idle_Back_Left_1.png" id="13_tlfu3"]
+[ext_resource type="Animation" uid="uid://cngv5vhxvueu8" path="res://Art/animations/Individual Animations/lumia_idle_down.res" id="14_ueni3"]
 [ext_resource type="Texture2D" uid="uid://bm4n8jpxft6f2" path="res://Art/sprites/Lumia/idle_back/Lumia_Idle_Back_Left_2.png" id="14_vbl2r"]
+[ext_resource type="Animation" uid="uid://dinaee7rvji13" path="res://Art/animations/Individual Animations/lumia_idle_left_down.res" id="15_p0ebj"]
 [ext_resource type="Texture2D" uid="uid://dax2as0ql0jf0" path="res://Art/sprites/Lumia/idle_back/Lumia_Idle_Back_Left_3.png" id="15_q82yq"]
+[ext_resource type="Animation" uid="uid://dujtf0o66lrty" path="res://Art/animations/Individual Animations/lumia_idle_left_up.res" id="16_iybc2"]
+[ext_resource type="Animation" uid="uid://dw31nb0xcs52m" path="res://Art/animations/Individual Animations/lumia_idle_up.res" id="17_v84ao"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lxicb"]
 atlas = ExtResource("9_xgjew")
@@ -109,7 +115,7 @@ region = Rect2(288, 0, 48, 64)
 atlas = ExtResource("11_rducn")
 region = Rect2(336, 0, 48, 64)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_3fqn6"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_dixh0"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -233,254 +239,13 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Animation" id="Animation_uy78n"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle_down"]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.33, 0.33, 0.33)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:modulate")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath(".:transparency")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.5]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath(".:flip_h")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_fxqhx"]
-resource_name = "default_idle_down"
-length = 0.4
-loop_mode = 1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle_down"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 0, 1, 2, 3]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-
-[sub_resource type="Animation" id="Animation_dvgpj"]
-resource_name = "default_idle_left_down"
-length = 0.2667
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle_left_down"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
-[sub_resource type="Animation" id="Animation_y0cpj"]
-resource_name = "default_idle_left_up"
-length = 0.2667
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle_left_up"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
-[sub_resource type="Animation" id="Animation_cyrvd"]
-resource_name = "default_idle_up"
-length = 0.4
-loop_mode = 1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle_up"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 0, 1, 2, 3]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dqy5u"]
 _data = {
-"RESET": SubResource("Animation_uy78n"),
-"default_idle_down": SubResource("Animation_fxqhx"),
-"default_idle_left_down": SubResource("Animation_dvgpj"),
-"default_idle_left_up": SubResource("Animation_y0cpj"),
-"default_idle_up": SubResource("Animation_cyrvd")
+"RESET": ExtResource("13_5q5s6"),
+"default_idle_down": ExtResource("14_ueni3"),
+"default_idle_left_down": ExtResource("15_p0ebj"),
+"default_idle_left_up": ExtResource("16_iybc2"),
+"default_idle_up": ExtResource("17_v84ao")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jr7gi"]
@@ -660,14 +425,18 @@ transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_
 graph_offset = Vector2(-239.389, -178)
 
 [node name="Tutorial" instance=ExtResource("1_mgljr")]
+script = ExtResource("2_6ylbx")
 
 [node name="Animations" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0243699, 0.150867, 0)
 
+[node name="interact_player" parent="Animations" index="0"]
+root_node = NodePath("..")
+
 [node name="character_animation_sprite" parent="Animations" index="2"]
 transform = Transform3D(0.33, 0, 0, 0, 0.33, 0, 0, 0, 0.33, 0, 0, 0)
 transparency = 0.5
-sprite_frames = SubResource("SpriteFrames_3fqn6")
+sprite_frames = SubResource("SpriteFrames_dixh0")
 animation = &"default_idle_down"
 speed_scale = 0.5
 

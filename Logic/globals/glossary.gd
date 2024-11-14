@@ -4,14 +4,15 @@ const entity : Dictionary = {
 	# Players
 	"battle_entity_player" : preload("res://Scenes/characters/battle_entity_player.tscn"),
 	# Dreamkin
-	"battle_entity_dreamkin" : preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn"),
+	"battle_entity_dreamkin_default" : preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn"),
 	# Enemies
-	"battle_entity_enemy" : preload("res://Scenes/characters/battle_entity_enemy_default.tscn"),
+	"battle_entity_enemy_default" : preload("res://Scenes/characters/battle_entity_enemy_default.tscn"),
 	"battle_entity_enemy_elderoot" : preload("res://Scenes/characters/battle_entity_enemy_elderoot.tscn"),
-	"battle_entity_enemy_core_warden" : preload("res://Scenes/characters/battle_entity_enemy_core_warden.tscn"),
+	"battle_entity_enemy_core_warden" : preload("res://Scenes/characters/battle_entity_enemy_duskling.tscn"),
 	"battle_entity_enemy_shadebloom" : preload("res://Scenes/characters/battle_entity_enemy_shadebloom.tscn"),
 	"battle_entity_enemy_shiverling" : preload("res://Scenes/characters/battle_entity_enemy_shiverling.tscn"),
-	"battle_entity_enemy_cinderling" : preload("res://Scenes/characters/battle_entity_enemy_cinderling.tscn")
+	"battle_entity_enemy_cinderling" : preload("res://Scenes/characters/battle_entity_enemy_cinderling.tscn"),
+	"battle_entity_enemy_gloam" : preload("res://Scenes/characters/battle_entity_enemy_gloam.tscn"),
 	}
 
 const particle : Dictionary = {

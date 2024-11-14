@@ -1,6 +1,6 @@
 [gd_scene load_steps=141 format=3 uid="uid://bxq5n6t50slq7"]
 
-[ext_resource type="Script" path="res://Logic/scripts/classes/battle_entity_enemy_default.gd" id="1_4ui3r"]
+[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_default.gd" id="1_4ui3r"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_itali"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_1v0tl"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="4_7fq4l"]
@@ -759,6 +759,8 @@ graph_offset = Vector2(-303.389, -319)
 
 [node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
 physics_interpolation_mode = 1
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("1_4ui3r")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
@@ -845,9 +847,8 @@ max_health = 12
 [node name="component_vis" type="Node" parent="Components"]
 script = ExtResource("20_n7hpy")
 
-[node name="component_ability" type="Node" parent="Components" node_paths=PackedStringArray("my_component_status")]
+[node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("21_sqdn1")
-my_component_status = NodePath("")
 
 [node name="component_movement_controller" type="Node" parent="Components"]
 script = ExtResource("22_2acyp")
