@@ -37,7 +37,7 @@ func _physics_process(_delta: float) -> void:
 		owner.state_chart.send_event(owner.state_init_override)
 		owner.state_init_override = null
 
-#SIGNALS
+# SIGNALS
 
 func _on_animation_started(anim_name,character) -> void:
 	if character == owner:
@@ -68,6 +68,8 @@ func _on_animation_finished(anim_name,character) -> void:
 					#Check if we are ACTUALLY dying TODO FIXME EEEEEEEEEEEE
 					#if state_chart_memory == "on_death":
 					owner.state_chart.send_event("on_death")
+
+# GLOBAL EVENTS
 
 func _on_battle_team_start(team : String):
 	my_component_ability.current_status_effects.status_event("on_battle_team_start",[team])
@@ -116,7 +118,7 @@ func _on_battle_entity_turn_end(entity : Node):
 func _on_battle_entity_death(entity : Node):
 	pass
 
-# STATES
+# EVENTS FOR THIS ENTITY
 
 func _on_state_entered_battle_waiting() -> void:
 	character_ready = true
@@ -198,22 +200,4 @@ func _on_state_physics_processing_battle_end(_delta: float) -> void:
 
 func _on_state_entered_death() -> void:
 	state_chart_memory = "on_death"
-	#Check if we are the last one
-	if len(Battle.my_team(owner)) == 1:
-		if owner.stats.alignment == Battle.alignment.FOES:
-			Events.battle_finished.emit("Win")
-		elif owner.stats.alignment == Battle.alignment.FRIENDS:
-			Events.battle_finished.emit("Lose")
-		else:
-			push_error("ERROR")
-		Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
-	else:
-		Battle.battle_list.pop_at(Battle.battle_list.find(owner,0)) #remove us from queue
-		my_component_ability.current_status_effects.status_event("on_death") #trigger on death for all status stuff
-		my_component_ability.current_status_effects.clear()#remove all our status effects
-		Events.battle_entity_death.emit(owner) #let everyone know we died rip
-		
-		if Battle.active_character == owner:
-			Events.turn_end.emit()
-			
-	owner.queue_free() #deletus da fetus
+	Events.battle_entity_death.emit(owner) #let everyone know we died rip

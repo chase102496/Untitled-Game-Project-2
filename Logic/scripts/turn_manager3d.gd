@@ -5,6 +5,7 @@ extends Node3D
 #Init and set active character to the first in our child list and emit start of turn
 func _ready() -> void:
 	#Init for event bus, so we can recieve char end turn
+	Events.battle_entity_death.connect(_on_battle_entity_death)
 	Events.turn_end.connect(_on_turn_end)
 	Events.battle_finished.connect(_on_battle_finished)
 	
@@ -37,21 +38,40 @@ func _ready() -> void:
 	
 	Battle.update_positions()
 
-func _on_turn_end():
+func _on_battle_entity_death(entity : Node) -> void:
+	
+	if Battle.active_character == entity:
+		Events.turn_end.emit()
+	
+	if len(Battle.my_team(entity)) == 1: #If this is the last on its team when it dies
+		if entity.stats.alignment == Battle.alignment.FOES:
+			Events.battle_finished.emit("Win")
+		elif entity.stats.alignment == Battle.alignment.FRIENDS:
+			Events.battle_finished.emit("Lose")
+		else:
+			push_error("ERROR")
+		
+		Battle.battle_list.pop_at(Battle.battle_list.find(entity,0)) #remove us from queue
+	else:
+		Battle.battle_list.pop_at(Battle.battle_list.find(entity,0)) #remove us from queue
+		entity.my_component_ability.current_status_effects.status_event("on_death") #trigger on death for all status stuff
+	
+	Battle.update_positions() #fix positions since we outta queue
+	entity.queue_free() #deletus da fetus
+
+func _on_turn_end() -> void:
 	#Set new character as next in queue, and incrementing the index
 	var old_character = Battle.active_character
 	var new_index = (Battle.battle_list.find(Battle.active_character,0) + 1) % len(Battle.battle_list)
 	Battle.active_character = Battle.battle_list[new_index]
 	var new_character = Battle.active_character
 	
-	Battle.update_positions() #fix positions since we outta queue
-	
-	if old_character.stats.alignment != new_character.stats.alignment:
+	if old_character.stats.alignment != new_character.stats.alignment: #If we are now on the other team's turn sequence
 		Events.battle_team_start.emit(new_character.stats.alignment)
 	
 	Events.turn_start.emit()
 	
-func _on_battle_finished(result):
+func _on_battle_finished(result) -> void:
 	if result == "Win":
 		print_debug("Yay!")
 		get_tree().change_scene_to_file("res://Levels/dream_garden.tscn")

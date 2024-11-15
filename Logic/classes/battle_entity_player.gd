@@ -11,5 +11,5 @@ func _ready():
 	var abil = my_component_ability
 	abil.my_abilities.append(abil.ability_tackle.new(self))
 	abil.my_abilities.append(abil.ability_heartstitch.new(self))
-	abil.my_abilities.append(abil.ability_switchstitch.new(self))
-	abil.my_abilities.append(abil.ability_frigid_core.new(self,1,1))
+	#abil.my_abilities.append(abil.ability_switchstitch.new(self))
+	#abil.my_abilities.append(abil.ability_frigid_core.new(self,1,1))

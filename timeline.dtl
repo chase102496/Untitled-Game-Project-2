@@ -7,10 +7,12 @@ Wanna see some combat puzzles?
 	Choose a puzzle\:
 	- Gloams Galore (Trivial)
 		do Battle.battle_initialize("player dreamkin_default enemy_gloam enemy_gloam enemy_gloam")
-	- The Wedge (Easy)
+	- Little Wedge (Easy)
 		do Battle.battle_initialize("player dreamkin_default enemy_elderoot enemy_gloam enemy_gloam enemy_elderoot")
-	- The Meat Shield (Medium)
-		do Battle.battle_initialize("player dreamkin_default enemy_cinderling enemy_elderoot enemy_shadebloom enemy_elderoot enemy_shiverling")
+	- Weakest Link (Medium)
+		do Battle.battle_initialize("player dreamkin_default enemy_cinderling enemy_gloam enemy_shadebloom enemy_gloam enemy_shiverling")
+	- Tetris
+		do Battle.battle_initialize("player dreamkin_default ")
 - Not really.
 	Oh, okay. Feel free to explore what's here,[pause=0.3] then
 	[signal arg="on_idle"]

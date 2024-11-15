@@ -139,4 +139,4 @@ libraries = {
 }
 
 [node name="component_health" parent="Components" index="1"]
-max_health = 7
+max_health = 6

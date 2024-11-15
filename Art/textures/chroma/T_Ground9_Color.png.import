@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by5v53vsnh8wg"
-path.s3tc="res://.godot/imported/T_Ground9_Color.png-e7f41e61daf8dfd1110fd927daa68881.s3tc.ctex"
+path="res://.godot/imported/T_Ground9_Color.png-e7f41e61daf8dfd1110fd927daa68881.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Art/textures/chroma/T_Ground9_Color.png"
-dest_files=["res://.godot/imported/T_Ground9_Color.png-e7f41e61daf8dfd1110fd927daa68881.s3tc.ctex"]
+dest_files=["res://.godot/imported/T_Ground9_Color.png-e7f41e61daf8dfd1110fd927daa68881.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
