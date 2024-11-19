@@ -31,6 +31,7 @@ func _on_state_exited_explore():
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("interact"):
 		#owner.my_component_health.damage(1)
+		#PlayerData.save_data()
 		pass
 		
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -39,7 +40,7 @@ func _physics_process(delta: float) -> void:
 			Events.battle_finished.emit("Win")
 		elif get_tree().current_scene.name == "dream_garden":
 			
-			Battle.battle_initialize("player dreamkin_default enemy_gloam enemy_gloam enemy_gloam")
+			Battle.battle_initialize("enemy_gloam enemy_gloam enemy_gloam")
 			
 			#Battle.battle_initialize(["battle_entity_player","battle_entity_dreamkin",
 			#"battle_entity_enemy_cinderling",

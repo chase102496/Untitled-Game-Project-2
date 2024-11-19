@@ -125,12 +125,7 @@ _data = {
 
 [node name="Shadebloom" instance=ExtResource("1_jo5jv")]
 script = ExtResource("2_mdekj")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_shadebloom",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+glossary = "entity_enemy_shadebloom"
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
 modulate = Color(0.7, 0, 1, 1)

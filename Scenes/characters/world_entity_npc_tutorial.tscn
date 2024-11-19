@@ -426,6 +426,7 @@ graph_offset = Vector2(-239.389, -178)
 
 [node name="Tutorial" instance=ExtResource("1_mgljr")]
 script = ExtResource("2_6ylbx")
+glossary = "entity_npc_tutorial"
 
 [node name="Animations" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0243699, 0.150867, 0)

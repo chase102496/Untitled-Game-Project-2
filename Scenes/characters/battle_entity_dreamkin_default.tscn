@@ -625,12 +625,9 @@ my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
-stats = {
-"alignment": "FRIENDS",
-"classification": "DREAMKIN",
-"glossary": "battle_entity_dreamkin_default",
-"spacing": Vector3(0.8, 0, -0.1)
-}
+alignment = "FRIENDS"
+classification = "DREAMKIN"
+glossary = "entity_dreamkin_default"
 
 [node name="Battle_GUI" parent="." instance=ExtResource("2_oay8k")]
 unique_name_in_owner = true

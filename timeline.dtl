@@ -6,15 +6,15 @@ Wanna see some combat puzzles?
 - Yes!
 	Choose a puzzle\:
 	- Gloams Galore (Trivial)
-		do Battle.battle_initialize("player dreamkin_default enemy_gloam enemy_gloam enemy_gloam")
+		do Battle.battle_initialize("enemy_gloam enemy_gloam enemy_gloam")
 	- Little Wedge (Easy)
-		do Battle.battle_initialize("player dreamkin_default enemy_elderoot enemy_gloam enemy_gloam enemy_elderoot")
+		do Battle.battle_initialize("enemy_elderoot enemy_gloam enemy_gloam enemy_elderoot")
 	- Weakest Link (Medium)
-		do Battle.battle_initialize("player dreamkin_default enemy_cinderling enemy_gloam enemy_shadebloom enemy_gloam enemy_shiverling")
+		do Battle.battle_initialize("enemy_cinderling enemy_gloam enemy_shadebloom enemy_gloam enemy_shiverling")
 	- Tetris
-		do Battle.battle_initialize("player dreamkin_default ")
+		do Battle.battle_initialize("")
 - Not really.
-	Oh, okay. Feel free to explore what's here,[pause=0.3] then
+	Oh, okay.[pause=0.3]  Feel free to explore what's here,[pause=0.3] then
 	[signal arg="on_idle"]
 - What's a combat puzzle?
 	A combat puzzle is the core of Somnia's gameplay. You will have a limited set of abilities that serve as "tools" to solve a combat encounter.

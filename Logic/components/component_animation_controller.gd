@@ -44,7 +44,7 @@ func _on_state_entered_battle() -> void:
 	owner.animations.status_hud.show()
 	#Sets us facing the right way, depending on our side
 	owner.animations.tree.get("parameters/playback").travel("Idle")
-	if owner.stats.alignment == Battle.alignment.FRIENDS:
+	if owner.alignment == Battle.alignment.FRIENDS:
 		animations_reset(Vector2(-1,1))
 	else:
 		animations_reset(Vector2(1,-1))

@@ -684,12 +684,7 @@ _data = {
 
 [node name="Cinderling" instance=ExtResource("1_ulg15")]
 script = ExtResource("2_ueqhl")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_cinderling",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+glossary = "entity_enemy_cinderling"
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
 modulate = Color(1, 0.283333, 0, 1)

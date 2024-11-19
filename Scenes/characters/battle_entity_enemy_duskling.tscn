@@ -125,12 +125,7 @@ _data = {
 
 [node name="Duskling" instance=ExtResource("1_0nelj")]
 script = ExtResource("2_rrxm4")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_core_warden",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+glossary = "entity_enemy_duskling"
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
 modulate = Color(0, 0, 0, 0.729412)

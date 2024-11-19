@@ -1,8 +1,10 @@
-[gd_scene load_steps=62 format=3 uid="uid://dqy8clwwlvjcb"]
+[gd_scene load_steps=64 format=3 uid="uid://dqy8clwwlvjcb"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_dreamkin_default.gd" id="1_5mjex"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_fjguv"]
+[ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_yk86w"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_l8ns7"]
+[ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_o5u3o"]
 [ext_resource type="Texture2D" uid="uid://d4senx3uvusy" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Death.png" id="4_jb5sb"]
 [ext_resource type="Texture2D" uid="uid://sqrggdn7ckmy" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Floating_Idle.png" id="5_lkdqw"]
 [ext_resource type="Texture2D" uid="uid://bdjb6koyadhmf" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Swimming.png" id="6_nr1eb"]
@@ -613,7 +615,7 @@ _data = {
 
 [node name="Dreamkin" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world")]
 physics_interpolation_mode = 1
-collision_layer = 2
+collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_5mjex")
 my_component_movement_controller = NodePath("Components/component_movement_controller")
@@ -624,6 +626,12 @@ collider = NodePath("CollisionShape3D")
 my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
+alignment = "FRIENDS"
+classification = "DREAMKIN"
+glossary = "entity_dreamkin_default"
+
+[node name="DEBUG_3D_TEXT_WORLD" parent="." instance=ExtResource("2_yk86w")]
+script = ExtResource("3_o5u3o")
 
 [node name="StateChart" parent="." instance=ExtResource("2_fjguv")]
 unique_name_in_owner = true

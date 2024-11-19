@@ -15,8 +15,6 @@ var skillcheck_difficulty : float = 1.0
 	"damage_multiplier" : 1.0
 	}
 
-func _ready() -> void:
-	pass
 #------------------------------------------------------------------------------
 #DONT use name or owner, already taken
 #HACK _init is where you store stuff you'd only need way before battle, like damage, vis cost, etc
@@ -366,13 +364,13 @@ class status_regrowth:
 					death_protection_enabled = false
 	
 	func on_dying(): #We started the dying animation
-		var paired_teammates = Battle.search_glossary_name(host.stats.glossary,Battle.get_team(host.stats.alignment),false) #pull all similar characters with our glossary name
+		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
 		for i in len(paired_teammates):
 			paired_teammates[i].my_component_ability.current_status_effects.clear() #Clear status fx
 			paired_teammates[i].animations.tree.get("parameters/playback").travel("Death") #Begin their death anim
 	
 	func on_death_protection(amt : int, mirror_damage : bool = false, type : Dictionary = Battle.type.BALANCE):
-		var paired_teammates = Battle.search_glossary_name(host.stats.glossary,Battle.get_team(host.stats.alignment),false) #pull all similar characters with our glossary name
+		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
 		var living_teammates = false
 		
 		for i in len(paired_teammates): #If we find a single teammate about 0 HP
@@ -442,7 +440,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 		title = "Swarm"
 	
 	func on_start():
-		var paired_teammates = Battle.search_glossary_name(host.stats.glossary,Battle.get_team(host.stats.alignment),false)
+		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
 		mult_total = (len(paired_teammates) - 1)*mult_percent #teammates + mult percent for one teammate
 		host.my_component_ability.stats.damage_multiplier += mult_total
 	

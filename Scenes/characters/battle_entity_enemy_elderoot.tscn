@@ -125,12 +125,7 @@ _data = {
 
 [node name="Elderoot" instance=ExtResource("1_j7y5r")]
 script = ExtResource("2_cy1ed")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_elderoot",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+glossary = "entity_enemy_elderoot"
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
 modulate = Color(1, 0.883333, 0, 1)

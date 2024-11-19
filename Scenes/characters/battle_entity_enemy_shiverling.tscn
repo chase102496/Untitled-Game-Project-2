@@ -125,12 +125,7 @@ _data = {
 
 [node name="Shiverling" instance=ExtResource("1_4s0hg")]
 script = ExtResource("2_el5km")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_shiverling",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+glossary = "entity_enemy_shiverling"
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
 modulate = Color(0, 1, 0.85, 1)
@@ -140,5 +135,5 @@ libraries = {
 "": SubResource("AnimationLibrary_50mbq")
 }
 
-[node name="component_health" parent="Components" index="2"]
+[node name="component_health" parent="Components" index="1"]
 max_health = 20

@@ -15,19 +15,19 @@ func _ready() -> void:
 	for i in len(Battle.battle_list):
 		
 		var instance = Battle.battle_list[i] #Our object to move into scene
-		var parent = get_node(instance.stats.alignment) #Side of the battlefield to spawn on
+		var parent = get_node(instance.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
 		
 		var tween = get_tree().create_tween()
 		
-		if instance.stats.alignment == Battle.alignment.FOES:
+		if instance.alignment == Battle.alignment.FOES:
 			instance.position.y = instance.collider.shape.height/2
 			tween.tween_property(instance,"position",Vector3(foes_offset.x,instance.position.y,foes_offset.z),0.2)
-			foes_offset -= instance.stats.spacing
+			foes_offset -= instance.spacing
 		else:
 			instance.position.y = instance.collider.shape.height/2
 			tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
-			friends_offset += instance.stats.spacing
+			friends_offset += instance.spacing
 		
 		#FIXME Bandaid solution for state machine being slower than the initialization of my scene so it would not recieve the signal in the right order
 		instance.state_init_override = "on_waiting"
@@ -44,9 +44,9 @@ func _on_battle_entity_death(entity : Node) -> void:
 		Events.turn_end.emit()
 	
 	if len(Battle.my_team(entity)) == 1: #If this is the last on its team when it dies
-		if entity.stats.alignment == Battle.alignment.FOES:
+		if entity.alignment == Battle.alignment.FOES:
 			Events.battle_finished.emit("Win")
-		elif entity.stats.alignment == Battle.alignment.FRIENDS:
+		elif entity.alignment == Battle.alignment.FRIENDS:
 			Events.battle_finished.emit("Lose")
 		else:
 			push_error("ERROR")
@@ -66,8 +66,8 @@ func _on_turn_end() -> void:
 	Battle.active_character = Battle.battle_list[new_index]
 	var new_character = Battle.active_character
 	
-	if old_character.stats.alignment != new_character.stats.alignment: #If we are now on the other team's turn sequence
-		Events.battle_team_start.emit(new_character.stats.alignment)
+	if old_character.alignment != new_character.alignment: #If we are now on the other team's turn sequence
+		Events.battle_team_start.emit(new_character.alignment)
 	
 	Events.turn_start.emit()
 	

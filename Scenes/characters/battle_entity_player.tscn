@@ -1,4 +1,4 @@
-[gd_scene load_steps=113 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=114 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://Logic/classes/battle_entity_player.gd" id="1_vkci8"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_ldwgg"]
@@ -31,6 +31,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="30_t327a"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="32_1gig2"]
 [ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="33_eh1na"]
+[ext_resource type="Script" path="res://Logic/components/component_party.gd" id="33_s503q"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="34_rq8fg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h7j1u"]
@@ -1269,10 +1270,11 @@ _data = {
 "default_walk_up": SubResource("Animation_t7144")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
 physics_interpolation_mode = 1
 script = ExtResource("1_vkci8")
 my_battle_gui = NodePath("Battle_GUI")
+my_component_party = NodePath("Components/component_party")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
@@ -1280,12 +1282,9 @@ my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
-stats = {
-"alignment": "FRIENDS",
-"classification": "PLAYER",
-"glossary": "battle_entity_player",
-"spacing": Vector3(0.8, 0, -0.1)
-}
+alignment = "FRIENDS"
+classification = "PLAYER"
+glossary = "entity_player"
 
 [node name="Battle_GUI" parent="." instance=ExtResource("2_ldwgg")]
 unique_name_in_owner = true
@@ -1352,6 +1351,9 @@ script = ExtResource("24_samkw")
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("25_gv7hb")
+
+[node name="component_party" type="Node" parent="Components"]
+script = ExtResource("33_s503q")
 
 [node name="component_state_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_ability")]
 script = ExtResource("26_chp6y")

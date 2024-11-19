@@ -767,12 +767,9 @@ my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_default",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+alignment = "FOES"
+classification = "ENEMY"
+glossary = "entity_enemy_default"
 
 [node name="StateChart" parent="." instance=ExtResource("2_phudh")]
 unique_name_in_owner = true

@@ -123,12 +123,7 @@ _data = {
 
 [node name="Gloam" instance=ExtResource("1_gmhfa")]
 script = ExtResource("2_nrtc7")
-stats = {
-"alignment": "FOES",
-"classification": "ENEMY",
-"glossary": "battle_entity_enemy_gloam",
-"spacing": Vector3(0.6, 0, -0.1)
-}
+glossary = "entity_enemy_gloam"
 
 [node name="character_animation_sprite" parent="Animations" index="0"]
 modulate = Color(0.281252, 0.419601, 0.627848, 1)

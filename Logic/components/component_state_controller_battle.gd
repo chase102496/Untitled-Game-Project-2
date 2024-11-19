@@ -73,7 +73,7 @@ func _on_animation_finished(anim_name,character) -> void:
 
 func _on_battle_team_start(team : String):
 	my_component_ability.current_status_effects.status_event("on_battle_team_start",[team])
-	if team != owner.stats.alignment:
+	if team != owner.alignment:
 		my_component_ability.current_status_effects.status_event("on_duration")
 
 func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN
@@ -134,7 +134,7 @@ func _on_state_entered_battle_start() -> void:
 
 func _on_state_entered_battle_choose() -> void:
 	my_component_ability.current_status_effects.status_event("on_skillcheck")
-	match owner.stats.classification:
+	match owner.classification:
 		Battle.classification.PLAYER:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
 		Battle.classification.DREAMKIN:
@@ -162,7 +162,7 @@ func _on_state_entered_battle_choose() -> void:
 			push_error("Not a valid entity for battle: ",owner.name)
 
 func _on_state_entered_battle_skillcheck() -> void:
-	match owner.stats.classification:
+	match owner.classification:
 		Battle.classification.ENEMY: #weighted random skillcheck
 			var skillcheck_result = "Miss"
 			var skill_rand = randf_range(0,1)/my_component_ability.skillcheck_difficulty #Modify it by skillcheck diff. Higher = smaller num = less good
@@ -177,7 +177,7 @@ func _on_state_entered_battle_skillcheck() -> void:
 			owner.state_chart.send_event("on_execution")
 
 func _on_state_exited_battle_skillcheck() -> void:
-	match owner.stats.classification:
+	match owner.classification:
 		Battle.classification.PLAYER:
 			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
 		Battle.classification.DREAMKIN:

@@ -137,18 +137,18 @@ func update_positions(): #Updates all units positions to reflect a change (like 
 		var unit = battle_list[i]
 		var tween = get_tree().create_tween()
 	
-		if unit.stats.alignment == Battle.alignment.FOES:
+		if unit.alignment == Battle.alignment.FOES:
 			tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.position.y,foes_offset.z),0.5)
-			foes_offset -= unit.stats.spacing
+			foes_offset -= unit.spacing
 		else:
 			tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.position.y,friends_offset.z),0.5)
-			friends_offset += unit.stats.spacing
+			friends_offset += unit.spacing
 
 func search_glossary_name(character_name : String, character_list : Array, first_result : bool = true): #Search glossary names of all characters specified and return matches
 	var character_result_list : Array = []
 	
 	for i in len(character_list):
-		if character_list[i].stats.glossary == character_name: #find the name
+		if character_list[i].glossary == character_name: #find the name
 			if first_result: #if first result is enabled
 				return character_list[i] #return it
 			else:
@@ -184,7 +184,7 @@ func get_target_selector_list(target : Node, selector : Dictionary, target_type_
 				result.append(target_type_list[target_tertiary_index])
 		Battle.target_selector.TEAM:
 			for i in len(target_type_list):
-				if target_type_list[i].stats.alignment == target.stats.alignment:
+				if target_type_list[i].alignment == target.alignment:
 					result.append(target_type_list[i])
 		Battle.target_selector.ALL:
 			result = target_type_list
@@ -223,10 +223,10 @@ func get_target_type_list(caster : Node,type : String,sorted : bool = false): #r
 	return result
 
 func my_team(character : Node):
-	return get_team(character.stats.alignment)
+	return get_team(character.alignment)
 
 func opposing_team(character : Node):
-	if character.stats.alignment == Battle.alignment.FRIENDS:
+	if character.alignment == Battle.alignment.FRIENDS:
 		return get_team(Battle.alignment.FOES)
 	else:
 		return get_team(Battle.alignment.FRIENDS)
@@ -234,7 +234,7 @@ func opposing_team(character : Node):
 func get_team(alignment : String):
 	var team = []
 	for i in len(battle_list):
-		if battle_list[i].stats.alignment == alignment:
+		if battle_list[i].alignment == alignment:
 			team.append(battle_list[i])
 	return team
 
@@ -247,28 +247,34 @@ func check_ready():
 
 #Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
 #and the old and new scenes they will be transitioning from and to.
-func battle_initialize(unit_list, scene_new : String = "res://Levels/turn_arena.tscn"):
+func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):
 	
-	var final_unit_list
+	World.last_player_position = Global.player.global_position
 	
-	if unit_list is String: #For conversion from dialogic method
-		
-		final_unit_list = []
-		
-		var split_list = unit_list.split(" ")
-		
+	var final_entity_list : Array = []
+	
+	final_entity_list.append(str("battle_",Global.player.glossary))
+	if Global.player.my_component_party.party[0]: #If we have a primary dreamkin
+		final_entity_list.append(str("battle_",Global.player.my_component_party.party[0].glossary)) #Add our primary dreamkin's id
+	
+	if entity_list is String: #For conversion from dialogic method
+		var split_list = entity_list.split(" ")
 		for i in split_list.size():
 			var fixed_str = str("battle_entity_",split_list[i])
-			final_unit_list.append(fixed_str)
-	else:
-		final_unit_list = unit_list
-	
+			final_entity_list.append(fixed_str)
+	else: #If it's a list of strings
+		for i in entity_list.size():
+			if entity_list[i] is String:
+				final_entity_list.append(entity_list[i])
+			else:
+				push_error("ERROR: Entity list was not string when subdivided: ",entity_list)
+
 	var unit_instance
 	battle_list = []
 	
 	#Instantiating all the battle characters
-	for i in len(final_unit_list):
-		var unit_name : String = final_unit_list[i]
+	for i in len(final_entity_list):
+		var unit_name : String = final_entity_list[i]
 		var unit_scene : Object = Glossary.entity.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
 		#var unit_stats : Dictionary = stat_list[i]
 		

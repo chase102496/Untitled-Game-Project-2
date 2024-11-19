@@ -3,8 +3,12 @@ extends Node
 const entity : Dictionary = {
 	# Players
 	"battle_entity_player" : preload("res://Scenes/characters/battle_entity_player.tscn"),
+	"world_entity_player" : preload("res://Scenes/characters/world_entity_player.tscn"),
 	# Dreamkin
 	"battle_entity_dreamkin_default" : preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn"),
+	"world_entity_dreamkin_default" : preload("res://Scenes/characters/world_entity_dreamkin_default.tscn"),
+	#
+	"battle_entity_dreamkin_sparx" : preload("res://Scenes/characters/battle_entity_dreamkin_sparx.tscn"),
 	# Enemies
 	"battle_entity_enemy_default" : preload("res://Scenes/characters/battle_entity_enemy_default.tscn"),
 	"battle_entity_enemy_elderoot" : preload("res://Scenes/characters/battle_entity_enemy_elderoot.tscn"),
