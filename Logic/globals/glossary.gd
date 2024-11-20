@@ -1,9 +1,21 @@
 extends Node
 
+var world_entity_class : Dictionary = {
+	"entity_dreamkin_default" : world_entity_dreamkin_default,
+	#"battle_entity_dreamkin_sparx" : world_entity_dreamkin_sparx,
+}
+
+var battle_entity_class : Dictionary = {
+	"entity_dreamkin_default" : battle_entity_dreamkin_default,
+	#"battle_entity_dreamkin_sparx" : world_entity_dreamkin_sparx,
+}
+
 const entity : Dictionary = {
+	
 	# Players
 	"battle_entity_player" : preload("res://Scenes/characters/battle_entity_player.tscn"),
 	"world_entity_player" : preload("res://Scenes/characters/world_entity_player.tscn"),
+	
 	# Dreamkin
 	"battle_entity_dreamkin_default" : preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn"),
 	"world_entity_dreamkin_default" : preload("res://Scenes/characters/world_entity_dreamkin_default.tscn"),
@@ -18,6 +30,9 @@ const entity : Dictionary = {
 	"battle_entity_enemy_cinderling" : preload("res://Scenes/characters/battle_entity_enemy_cinderling.tscn"),
 	"battle_entity_enemy_gloam" : preload("res://Scenes/characters/battle_entity_enemy_gloam.tscn"),
 	}
+
+func create_entity_world(entity_name : String):
+	return entity["world_"+entity_name].instantiate()
 
 const particle : Dictionary = {
 	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),

@@ -71,7 +71,6 @@ text/autopauses={}
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/initial_position_type=2
-window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
@@ -86,6 +85,13 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/drea
 [filesystem]
 
 import/blender/enabled=false
+
+[global_group]
+
+save_data_all="Allows grouping of any objects that need to be saved across scenes and game states"
+save_data_scene=""
+load_data_all=""
+load_data_scene=""
 
 [input]
 
@@ -184,6 +190,21 @@ debug_lmb={
 modifier={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+interact_secondary={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":113,"location":0,"echo":false,"script":null)
+]
+}
+save={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+load={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":76,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

@@ -249,13 +249,14 @@ func check_ready():
 #and the old and new scenes they will be transitioning from and to.
 func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):
 	
-	World.last_player_position = Global.player.global_position
+	##Save our current world info to load up
+	PlayerData.save_data_scene()
 	
 	var final_entity_list : Array = []
 	
 	final_entity_list.append(str("battle_",Global.player.glossary))
-	if Global.player.my_component_party.get_party(): #If we have some party members
-		final_entity_list.append(str("battle_",Global.player.my_component_party.party[0].glossary)) #Add our primary dreamkin's id
+	#if Global.player.my_component_party.get_party(): #If we have some party members
+		#final_entity_list.append(str("battle_",Global.player.my_component_party.my_party[0].glossary)) #Add our primary dreamkin's id
 	
 	if entity_list is String: #For conversion from dialogic method
 		var split_list = entity_list.split(" ")
@@ -286,5 +287,7 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 		battle_list.append(unit_instance)
 		
 	get_tree().change_scene_to_file(scene_new)
+	
+	PlayerData.load_data_scene()
 	#broken \/
 	#Events.on_battle_initialize.emit(battle_list)

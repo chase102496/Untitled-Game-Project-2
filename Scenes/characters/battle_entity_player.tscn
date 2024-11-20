@@ -1270,7 +1270,7 @@ _data = {
 "default_walk_up": SubResource("Animation_t7144")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle") groups=["load_data_scene", "save_data_scene"]]
 physics_interpolation_mode = 1
 script = ExtResource("1_vkci8")
 my_battle_gui = NodePath("Battle_GUI")

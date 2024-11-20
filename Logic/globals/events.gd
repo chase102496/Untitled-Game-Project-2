@@ -1,7 +1,5 @@
 extends Node
 
-signal scene_tree_ready()
-
 signal battle_gui_button_pressed(ability)
 
 signal animation_finished(anim_name,character)

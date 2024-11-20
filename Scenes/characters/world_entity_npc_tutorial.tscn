@@ -431,8 +431,8 @@ glossary = "entity_npc_tutorial"
 [node name="Animations" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0243699, 0.150867, 0)
 
-[node name="interact_player" parent="Animations" index="0"]
-root_node = NodePath("..")
+[node name="interact_sprite" parent="Animations" index="1"]
+transform = Transform3D(1.89306, -0.533641, 0, 0.533641, 1.89306, 0, 0, 0, 1.96684, -0.162792, 0.577494, 0)
 
 [node name="character_animation_sprite" parent="Animations" index="2"]
 transform = Transform3D(0.33, 0, 0, 0, 0.33, 0, 0, 0, 0.33, 0, 0, 0)

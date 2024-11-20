@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://dqy8clwwlvjcb"]
+[gd_scene load_steps=65 format=3 uid="uid://dqy8clwwlvjcb"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_dreamkin_default.gd" id="1_5mjex"]
 [ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_fjguv"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_follow.gd" id="14_7gtkk"]
 [ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="15_0vm83"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="16_j8nai"]
+[ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="20_bdj6r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dltsc"]
 radius = 0.228715
@@ -613,13 +614,14 @@ _data = {
 "default_walk": SubResource("Animation_sxj7a")
 }
 
-[node name="Dreamkin" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world")]
+[node name="Dreamkin" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_ability", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world")]
 physics_interpolation_mode = 1
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_5mjex")
 my_component_movement_controller = NodePath("Components/component_movement_controller")
 my_component_input_controller = NodePath("Components/component_input_controller_follow")
+my_component_ability = NodePath("Components/component_ability")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
@@ -713,6 +715,9 @@ my_component_input_controller = NodePath("../component_input_controller_follow")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("16_j8nai")
+
+[node name="component_ability" type="Node" parent="Components"]
+script = ExtResource("20_bdj6r")
 
 [connection signal="animation_finished" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_finished"]
 [connection signal="animation_started" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_started"]

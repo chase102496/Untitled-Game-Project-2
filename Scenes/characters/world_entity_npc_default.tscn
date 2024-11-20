@@ -46,7 +46,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("interact_sprite:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1381,6 +1381,9 @@ script = ExtResource("21_g3u78")
 unique_name_in_owner = true
 script = ExtResource("22_0t6dl")
 
+[node name="component_interact" type="Node" parent="Components"]
+script = ExtResource("30_81u32")
+
 [node name="component_state_controller_world" type="Node" parent="Components"]
 script = ExtResource("23_0qagi")
 
@@ -1400,9 +1403,6 @@ script = ExtResource("28_q0ero")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("29_qpnwp")
-
-[node name="component_interact_controller" type="Node" parent="Components"]
-script = ExtResource("30_81u32")
 
 [connection signal="animation_finished" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_finished"]
 [connection signal="animation_started" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_started"]
