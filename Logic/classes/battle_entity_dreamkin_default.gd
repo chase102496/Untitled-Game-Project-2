@@ -3,8 +3,6 @@ extends battle_entity_default
 
 @export_group("Modules")
 @export var my_battle_gui : Control
-#@export_group("Components")
-#@export var my_component_input_controller : Node
 
 static var my_scene : PackedScene = preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn")
 

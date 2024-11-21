@@ -6,7 +6,9 @@ var filepath : String = "user://save/" #root filepath
 var data_all = resource_player_data.new()
 var filename_all : String = "resource_player_data_all.tres"
 
-var data_scene : Dictionary
+var data_scene : Dictionary = {
+	"player" : {}
+}
 
 ##For cross-scene use
 

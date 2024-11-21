@@ -16,7 +16,7 @@ extends CharacterBody3D
 @export_group("Other")
 @export var alignment : String
 @export var classification : String
-@export var glossary : String
 @export var spacing := Vector3(0.6,0,-0.1)
 
+@onready var glossary : String = Global.get_glossary_nickname(self)
 @onready var state_init_override = null

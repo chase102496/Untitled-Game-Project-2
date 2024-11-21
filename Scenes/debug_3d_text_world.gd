@@ -30,9 +30,17 @@ func _physics_process(delta: float) -> void:
 		history = prev
 		prev = state
 	
+	var party = ""
+	
+	if Global.player == owner:
+		party = owner.my_component_party.my_party
 	
 	text = str(
 	owner.name,
+	"\n",
+	party,
+	"\n",
+	owner.my_component_ability.get_data_all(),
 	"\n",
 	"Now: ", state.rsplit(":")[0],
 	"\n",

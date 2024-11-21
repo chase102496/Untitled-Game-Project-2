@@ -254,7 +254,7 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 	
 	var final_entity_list : Array = []
 	
-	final_entity_list.append(str("battle_",Global.player.glossary))
+	final_entity_list.append(Glossary.entity_transform(Global.player.glossary))
 	#if Global.player.my_component_party.get_party(): #If we have some party members
 		#final_entity_list.append(str("battle_",Global.player.my_component_party.my_party[0].glossary)) #Add our primary dreamkin's id
 	

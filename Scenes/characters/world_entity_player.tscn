@@ -1365,8 +1365,6 @@ my_component_vis = NodePath("Components/component_vis")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
 alignment = "FRIENDS"
 classification = "PLAYER"
-glossary = "entity_player"
-spacing = null
 
 [node name="DEBUG_3D_TEXT_WORLD" parent="." instance=ExtResource("2_1m0ao")]
 script = ExtResource("3_g8wgm")

@@ -1,15 +1,22 @@
 extends Node
 
-var world_entity_class : Dictionary = {
-	"entity_dreamkin_default" : world_entity_dreamkin_default,
+var ability_class : Dictionary = {
+	"ability_tackle" : component_ability.ability_tackle,
+	"ability_headbutt" : component_ability.ability_headbutt,
+	"ability_solar_flare" : component_ability.ability_solar_flare,
+	"ability_heartstitch" : component_ability.ability_heartstitch,
+	"ability_switchstitch" : component_ability.ability_switchstitch,
+	"ability_spook" : component_ability.ability_spook,
+	"ability_frigid_core" : component_ability.ability_frigid_core,
+}
+
+var entity_class : Dictionary = {
+	"world_entity_dreamkin_default" : world_entity_dreamkin_default,
+	"battle_entity_dreamkin_default" : battle_entity_dreamkin_default,
 	#"battle_entity_dreamkin_sparx" : world_entity_dreamkin_sparx,
 }
 
-var battle_entity_class : Dictionary = {
-	"entity_dreamkin_default" : battle_entity_dreamkin_default,
-	#"battle_entity_dreamkin_sparx" : world_entity_dreamkin_sparx,
-}
-
+#GOING TO BE DEPRECATED SOON, USE BATTLE_
 const entity : Dictionary = {
 	
 	# Players
@@ -30,6 +37,23 @@ const entity : Dictionary = {
 	"battle_entity_enemy_cinderling" : preload("res://Scenes/characters/battle_entity_enemy_cinderling.tscn"),
 	"battle_entity_enemy_gloam" : preload("res://Scenes/characters/battle_entity_enemy_gloam.tscn"),
 	}
+
+func find_entity_class(glossary : String, transform : bool = false):
+	var index = glossary
+	if transform:
+		index = entity_transform(glossary)
+	return entity_class[index]
+
+func entity_transform(glossary_name : String):
+	var result = ""
+	if "world" in glossary_name:
+		result = glossary_name.replace("world","battle")
+	elif "battle" in glossary_name:
+		result = glossary_name.replace("battle","world")
+	else:
+		push_error("Unable to find transformation for ",glossary_name)
+		
+	return result
 
 func create_entity_world(entity_name : String):
 	return entity["world_"+entity_name].instantiate()

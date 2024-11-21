@@ -449,7 +449,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	
 # - Abilities - #
 class ability:
-
+	
 	var skillcheck_modifier : int = 1
 	var caster : Node
 	var primary_target : Node
@@ -465,6 +465,16 @@ class ability:
 	var vis_cost : int = 0
 	var chance : float = 1.0 #Chance of something happening, kinda a placeholder
 	var description : String = ""
+	
+	func set_data(new_metadata : Dictionary):
+		for key in new_metadata:
+			var value = new_metadata[key]
+			set(key,value)
+
+	func get_data():
+		return {
+		"id" : "ability", #Class reference to create us later
+		}
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
@@ -513,6 +523,26 @@ class ability:
 	#Has function status_effect_on_start
 # ---
 
+##Returns all get_data() functions to store in a data list for a save file
+func get_data_all():
+	var result : Array = []
+	for i in my_abilities.size():
+		result.append(my_abilities[i].get_data())
+	return result
+
+##Sets all abilities to ones found in data list from save file
+func set_data_all(caster : Node, ability_data_list : Array):
+	my_abilities = []
+	for i in ability_data_list.size(): #iterate thru list
+		var inst = Glossary.ability_class[ability_data_list[i]["id"]].new(caster) #search glossary for the name we found in metadata
+		inst.set_data(ability_data_list[i])
+		my_abilities.append(inst)
+
+##Creates a new ability and places it in my_abilities TODO
+func create(name : String,args : Array):
+	pass
+
+#
 class ability_template_default: #Standard ability with vis cost and skillcheck
 	extends ability
 	
@@ -545,6 +575,14 @@ class ability_template_default: #Standard ability with vis cost and skillcheck
 class ability_spook:
 	extends ability_template_default
 	
+	func get_data():
+		return {
+		"id" : "ability_spook",
+		"damage" : damage,
+		"chance" : chance,
+		"vis_cost" : vis_cost
+		}
+	
 	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		self.caster = caster
 		self.damage = damage
@@ -570,6 +608,14 @@ class ability_spook:
 
 class ability_solar_flare:
 	extends ability_template_default
+	
+	func get_data():
+		return {
+		"id" : "ability_solar_flare",
+		"damage" : damage,
+		"chance" : chance,
+		"vis_cost" : vis_cost
+		}
 	
 	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		self.caster = caster
@@ -604,7 +650,13 @@ class ability_solar_flare:
 class ability_frigid_core:
 	extends ability_template_default
 	
-	#TODO add status chance for this and solar flare
+	func get_data():
+		return {
+		"id" : "ability_frigid_core",
+		"damage" : damage,
+		"chance" : chance,
+		"vis_cost" : vis_cost
+		}
 	
 	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		self.caster = caster
@@ -626,18 +678,25 @@ class ability_frigid_core:
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
 		target.my_component_health.damage(damage)
 		target.my_component_ability.current_status_effects.add(status_freeze.new(target,skillcheck_modifier*1,1))
-	
+
 class ability_tackle: #Scales with skillcheck
 	extends ability_template_default
+	
+	##What gets exported between scenes and games
+	func get_data():
+		return {
+		"id" : "ability_tackle",
+		"damage" : damage
+		}
 	
 	func _init(caster : Node, damage : int = 1) -> void:
 		self.caster = caster
 		self.damage = damage
+		title = "Tackle"
+		description = "A forceful rush at the target, dealing damage"
 		type = Battle.type.BALANCE
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
-		title = "Tackle"
-		description = "A forceful rush at the target, dealing damage"
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		print_debug(caster.name, " Tackled ", target.name,"!")
@@ -646,6 +705,12 @@ class ability_tackle: #Scales with skillcheck
 
 class ability_headbutt: #Scales with damage multiplier
 	extends ability_template_default
+	
+	func get_data():
+		return {
+		"id" : "ability_headbutt",
+		"damage" : damage
+		}
 	
 	func _init(caster : Node, damage : int = 1) -> void:
 		self.caster = caster
@@ -664,6 +729,11 @@ class ability_headbutt: #Scales with damage multiplier
 
 class ability_heartstitch:
 	extends ability_template_default
+	
+	func get_data():
+		return {
+		"id" : "ability_heartstitch",
+		}
 	
 	var old_targets : Array = []
 
@@ -697,6 +767,11 @@ class ability_heartstitch:
 
 class ability_switchstitch:
 	extends ability_template_default
+	
+	func get_data():
+		return {
+		"id" : "ability_switchstitch",
+		}
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
