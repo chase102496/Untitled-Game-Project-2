@@ -42,6 +42,8 @@ func _physics_process(delta: float) -> void:
 		
 	text = str(my_component_state_controller_battle.character_ready,
 	"\n",
+	owner.my_component_ability.get_data_all(),
+	"\n",
 	owner.name,
 	"\n",
 	"Status: ",status_effects_display,

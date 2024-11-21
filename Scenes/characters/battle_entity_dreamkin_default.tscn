@@ -627,7 +627,6 @@ my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 alignment = "FRIENDS"
 classification = "DREAMKIN"
-glossary = "entity_dreamkin_default"
 
 [node name="Battle_GUI" parent="." instance=ExtResource("2_oay8k")]
 unique_name_in_owner = true

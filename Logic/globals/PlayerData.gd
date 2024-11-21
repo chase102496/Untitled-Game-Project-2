@@ -16,7 +16,10 @@ func save_data_scene():
 	get_tree().call_group("save_data_scene","on_save_data_scene")
 
 func load_data_scene():
-	get_tree().call_group("load_data_scene","on_load_data_scene")
+	if !data_scene.player.is_empty():
+		get_tree().call_group("load_data_scene","on_load_data_scene")
+	else:
+		print_debug("+ No scene data found to load, initializing...")
 
 ##The actual save file
 

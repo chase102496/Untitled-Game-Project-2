@@ -10,13 +10,6 @@ var ability_class : Dictionary = {
 	"ability_frigid_core" : component_ability.ability_frigid_core,
 }
 
-var entity_class : Dictionary = {
-	"world_entity_dreamkin_default" : world_entity_dreamkin_default,
-	"battle_entity_dreamkin_default" : battle_entity_dreamkin_default,
-	#"battle_entity_dreamkin_sparx" : world_entity_dreamkin_sparx,
-}
-
-#GOING TO BE DEPRECATED SOON, USE BATTLE_
 const entity : Dictionary = {
 	
 	# Players
@@ -38,26 +31,25 @@ const entity : Dictionary = {
 	"battle_entity_enemy_gloam" : preload("res://Scenes/characters/battle_entity_enemy_gloam.tscn"),
 	}
 
-func find_entity_class(glossary : String, transform : bool = false):
+## Used to find an entity in our glossary, with optional transform
+func find_entity(glossary : String, set_prefix = null):
 	var index = glossary
-	if transform:
-		index = entity_transform(glossary)
-	return entity_class[index]
+	if set_prefix:
+		index = entity_transform(glossary,set_prefix)
+	return entity[index]
 
-func entity_transform(glossary_name : String):
+## Used to transform from battle to entity or vice versa
+func entity_transform(glossary_name : String, set_prefix : String):
 	var result = ""
 	if "world" in glossary_name:
-		result = glossary_name.replace("world","battle")
+		result = glossary_name.replace("world",set_prefix)
 	elif "battle" in glossary_name:
-		result = glossary_name.replace("battle","world")
+		result = glossary_name.replace("battle",set_prefix)
 	else:
 		push_error("Unable to find transformation for ",glossary_name)
 		
 	return result
-
-func create_entity_world(entity_name : String):
-	return entity["world_"+entity_name].instantiate()
-
+	
 const particle : Dictionary = {
 	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
 	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn"),

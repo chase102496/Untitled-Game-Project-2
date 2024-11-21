@@ -129,6 +129,10 @@ func swap_section(start: int, end: int):
 		left += 1
 		right -= 1
 
+func add_member(member : Node,pos : int):
+	battle_list.insert.call_deferred(pos,member)
+	update_positions.call_deferred()
+
 func update_positions(): #Updates all units positions to reflect a change (like death or swap)
 	var friends_offset := Vector3.ZERO
 	var foes_offset := Vector3.ZERO
@@ -254,9 +258,10 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 	
 	var final_entity_list : Array = []
 	
-	final_entity_list.append(Glossary.entity_transform(Global.player.glossary))
+	final_entity_list.append(Glossary.entity_transform(Global.player.glossary,"battle"))
+	
 	#if Global.player.my_component_party.get_party(): #If we have some party members
-		#final_entity_list.append(str("battle_",Global.player.my_component_party.my_party[0].glossary)) #Add our primary dreamkin's id
+	#	final_entity_list.append(Glossary.entity_transform(Global.player.my_component_party.my_party[0].glossary,"battle")) #Add our primary dreamkin's id
 	
 	if entity_list is String: #For conversion from dialogic method
 		var split_list = entity_list.split(" ")
@@ -270,24 +275,16 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 			else:
 				push_error("ERROR: Entity list was not string when subdivided: ",entity_list)
 
-	var unit_instance
 	battle_list = []
-	
 	#Instantiating all the battle characters
 	for i in len(final_entity_list):
 		var unit_name : String = final_entity_list[i]
-		var unit_scene : Object = Glossary.entity.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
-		#var unit_stats : Dictionary = stat_list[i]
-		
-		unit_instance = unit_scene.instantiate()
-		#unit_instance.stats.merge(unit_stats,true)
-		#FIXME Replace this eventually with a signal and args
+		var unit_scene : PackedScene  = Glossary.find_entity(unit_name)
+		var unit_instance = unit_scene.instantiate()
 		
 		#signal emit
 		battle_list.append(unit_instance)
 		
 	get_tree().change_scene_to_file(scene_new)
-	
-	PlayerData.load_data_scene()
 	#broken \/
 	#Events.on_battle_initialize.emit(battle_list)
