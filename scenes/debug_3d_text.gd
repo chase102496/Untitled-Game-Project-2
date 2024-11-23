@@ -39,12 +39,19 @@ func _physics_process(delta: float) -> void:
 
 	for i in len(status_manager.PASSIVE):
 		passive_effects_display.append(status_manager.PASSIVE[i].title)
-		
-	text = str(my_component_state_controller_battle.character_ready,
-	"\n",
-	owner.my_component_ability.get_data_all(),
-	"\n",
+	
+	var abil = owner.my_component_ability.get_data_ability_all()
+	var abil_names : Array = []
+	
+	for i in abil.size():
+		abil_names.append(abil[i].title)
+	
+	text = str(
 	owner.name,
+	"\n",
+	my_component_state_controller_battle.character_ready,
+	"\n",
+	abil_names,
 	"\n",
 	"Status: ",status_effects_display,
 	"\n",

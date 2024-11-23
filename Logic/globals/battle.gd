@@ -1,10 +1,22 @@
 extends Node
 
 var active_character : Node3D = null
+var active_character_index : int = 0
 var battle_list : Array = []
 var battle_list_ready : bool = true
 
 const type : Dictionary = {
+	"DESCRIPTION" :{
+		"COLOR" : Color("5c5c5c")
+	},
+	"HEALTH" :{
+		"ICON" : "♥",
+		"COLOR" : Color("f4085b")
+	},
+	"VIS" :{
+		"ICON" : "◆",
+		"COLOR" : Color("078ef5")
+	},
 	"EMPTY" : {
 		"TITLE" : "",
 		"ICON" : ""
@@ -40,6 +52,12 @@ const type : Dictionary = {
 		"COLOR" : Color("4f1e6bfd")
 	},
 }
+
+func type_color(type_string : String):
+	return str("[color=",Battle.type.get(type_string).COLOR.to_html(),"]")
+
+func type_color_dict(type_dict : Dictionary):
+	return str("[color=",type_dict.COLOR.to_html(),"]")
 
 const status_category : Dictionary = {
 	"NORMAL" : "NORMAL",
@@ -109,7 +127,7 @@ func sort_screen(a,b): #Sorts based on screen X position (so left to right on sc
 	else:
 		return false
 
-func swap_section(start: int, end: int):
+func mirror_section(start: int, end: int):
 	# Validate input
 	if start < 0 or end >= battle_list.size() or start >= end:
 		push_error("Invalid input range")
@@ -129,9 +147,13 @@ func swap_section(start: int, end: int):
 		left += 1
 		right -= 1
 
+func replace_member(new_member : Node,pos : int):
+	battle_list[pos] = new_member
+	update_positions()
+
 func add_member(member : Node,pos : int):
-	battle_list.insert.call_deferred(pos,member)
-	update_positions.call_deferred()
+	battle_list.insert(pos,member)
+	update_positions()
 
 func update_positions(): #Updates all units positions to reflect a change (like death or swap)
 	var friends_offset := Vector3.ZERO
@@ -140,13 +162,14 @@ func update_positions(): #Updates all units positions to reflect a change (like 
 		
 		var unit = battle_list[i]
 		var tween = get_tree().create_tween()
-	
-		if unit.alignment == Battle.alignment.FOES:
-			tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.position.y,foes_offset.z),0.5)
-			foes_offset -= unit.spacing
-		else:
-			tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.position.y,friends_offset.z),0.5)
-			friends_offset += unit.spacing
+		
+		if !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
+			if unit.alignment == Battle.alignment.FOES:
+				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.position.y,foes_offset.z),0.5)
+				foes_offset -= unit.spacing
+			else:
+				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.position.y,friends_offset.z),0.5)
+				friends_offset += unit.spacing
 
 func search_glossary_name(character_name : String, character_list : Array, first_result : bool = true): #Search glossary names of all characters specified and return matches
 	var character_result_list : Array = []
@@ -162,6 +185,13 @@ func search_glossary_name(character_name : String, character_list : Array, first
 		return character_result_list
 	else:
 		return null
+
+func search_classification(classification : String, alignment : String): #Returns a list of all the battle list units matching this classification
+	var result : Array = []
+	for i in get_team(alignment).size():
+		if battle_list[i].classification == classification:
+			result.append(battle_list[i])
+	return result
 
 func get_target_selector_list(target : Node, selector : Dictionary, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
@@ -286,5 +316,3 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 		battle_list.append(unit_instance)
 		
 	get_tree().change_scene_to_file(scene_new)
-	#broken \/
-	#Events.on_battle_initialize.emit(battle_list)

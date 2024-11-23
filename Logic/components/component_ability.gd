@@ -30,27 +30,29 @@ class status_manager:
 	func search_title(title_query : String): #Returns first result matching the title of the input, or null if no result TODO BROKEN
 		if NORMAL and NORMAL.title == title_query:
 			return NORMAL
-		if TETHER and TETHER.title == title_query:
+		elif TETHER and TETHER.title == title_query:
 			return TETHER
-		if len(PASSIVE) > 0:
+		elif len(PASSIVE) > 0:
 			for i in len(PASSIVE):
 				if PASSIVE[i].title == title_query:
 					return PASSIVE
-		return null
+		else:
+			return null
 	
-	func add_passive(effect : Object) -> void:
+	func add_passive(effect : Object):
 		PASSIVE.append(effect)
 		effect.fx_add()
 		print_debug("!passive added! - ",effect.title)
+		return PASSIVE[PASSIVE.find(effect)]
 		
 	func remove_passive(effect : Object) -> void:
 		PASSIVE.pop_at(PASSIVE.find(effect))
 		effect.fx_remove()
 		print_debug("!passive removed! - ",effect.title)
 	
-	#Normal add for non-lists
-	func add(effect : Object, ignore_priorities : bool = false) -> void:
-		var effect_str = effect.category
+	#Normal add for NORMAL and TETHER
+	func add(effect : Object, ignore_priorities : bool = false) -> Object:
+		var effect_str = effect.category #NORMAL or TETHER
 		var current_effect = get(effect_str)
 		
 		if !current_effect: #if there's no status effect
@@ -80,6 +82,8 @@ class status_manager:
 			print_debug("ignore_priorities = ",ignore_priorities)
 		else:
 			print_debug("!cannot overwrite current status effect! - ",effect.title)
+		
+		return get(effect_str)
 			
 	#Normal remove for non-lists
 	func remove(effect : Object) -> void:
@@ -93,13 +97,16 @@ class status_manager:
 		else:
 			print_debug("!no status effect to remove! - ",effect.title)
 
-	func clear() -> void:
+	func clear(clear_passive : bool = false) -> void:
 		print_debug("!removed all status effects! - ",NORMAL,TETHER)
 		if NORMAL:
 			remove(NORMAL)
 		if TETHER:
 			remove(TETHER)
-
+		if clear_passive:
+			for i in PASSIVE.size():
+				remove_passive(PASSIVE[i])
+	
 	func status_event(event : String, args : Array = [], value_return : bool = false):
 		var result_total : Array = []
 		
@@ -129,14 +136,35 @@ class status_manager:
 # - Status Effects - #
 class status:
 	var host : Node #The owner of the status effect. Who to apply it to
-	var behavior : String = Battle.status_behavior.RESIST
-	var category : String = Battle.status_category.NORMAL
-	var duration : int #How many turns it lasts
+	var behavior : String = Battle.status_behavior.RESIST #How overwriting status fx works
+	var category : String = Battle.status_category.NORMAL #NORMAL, TETHER, or PASSIVE
+	var duration : int = 0 #How many turns it lasts
 	var title : String = "---"
+	var description : String = ""
 	var fx : Node #Visual fx
 	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
 	var new_turn : bool #Whether we ran this once per turn already
+
+	func set_data(new_metadata : Dictionary):
+		for key in new_metadata:
+			var value = new_metadata[key]
+			set(key,value)
 	
+	func get_data_default():
+		return {
+			"title" : title,
+			"category" : category,
+			"behavior" : behavior,
+			"duration" : duration,
+			"description" : description
+			#"behavior" : behavior,
+		}
+	
+	func get_data():
+		return {
+		"id" : "status", #Class reference to create us later
+		}
+
 	func once_per_turn():
 		if new_turn:
 			new_turn = false
@@ -205,10 +233,16 @@ class status_template_default:
 class status_fear:
 	extends status_template_default
 	
-	func _init(host : Node,duration : int) -> void:
+	func get_data():
+		return {
+		"id" : "status_fear",
+		}
+	
+	func _init(host : Node,duration : int = 2) -> void:
 		self.host = host
 		self.duration = duration
 		title = "Fear"
+		description = "Causes the target to lose accuracy on attacks"
 		fx = Glossary.particle.fear.instantiate()
 	
 	func on_skillcheck():
@@ -217,13 +251,20 @@ class status_fear:
 class status_burn:
 	extends status_template_default
 	
+	func get_data():
+		return {
+		"id" : "status_burn",
+		"damage" : damage,
+		}
+	
 	var damage : int
 	
-	func _init(host : Node,duration : int,damage : int) -> void:
+	func _init(host : Node, duration : int = 2, damage : int = 1) -> void:
 		self.host = host
 		self.duration = duration
 		self.damage = damage
 		title = "Burn"
+		description = "Inflicts damage on the target at the end of their turn"
 		fx = Glossary.particle.burn.instantiate()
 	
 	func on_end():
@@ -234,13 +275,20 @@ class status_burn:
 class status_freeze:
 	extends status_template_default
 	
+	func get_data():
+		return {
+		"id" : "status_freeze",
+		"siphon_amount" : siphon_amount,
+		}
+	
 	var siphon_amount : int
 	
-	func _init(host : Node,duration : int,siphon_amount : int) -> void:
+	func _init(host : Node, duration : int = 2, siphon_amount : int = 1) -> void:
 		self.host = host
 		self.duration = duration
 		self.siphon_amount = siphon_amount
 		title = "Freeze"
+		description = "Creates a chasm of frost inside the target, sapping vis at the end of their turn"
 		fx = Glossary.particle.freeze.instantiate()
 	
 	func on_end():
@@ -251,10 +299,16 @@ class status_freeze:
 class status_disabled: #Disabled, unable to act, and immune to damage. Essentially dead but still on the battle field
 	extends status_template_default
 	
-	func _init(host : Node,duration : int) -> void:
+	func get_data():
+		return {
+		"id" : "status_disabled",
+		}
+	
+	func _init(host : Node, duration : int = 2) -> void:
 		self.host = host
 		self.duration = duration
 		title = "Disabled"
+		description = "Completely disables the target, preventing them from getting attacked and also from attacking"
 		priority = 999 #Nothing should overwrite us
 		fx = Glossary.particle.disabled.instantiate()
 	
@@ -286,6 +340,7 @@ class status_heartstitch:
 		behavior = Battle.status_behavior.RESET
 		category = Battle.status_category.TETHER
 		title = "Heartstitch"
+		description = "This target is sharing damage with another"
 	
 	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartstitch
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
@@ -309,13 +364,21 @@ class status_heartstitch:
 class status_ethereal: #Immune to everything but one type
 	extends status
 	
+	func get_data():
+		return {
+		"id" : "status_ethereal",
+		"title" : title,
+		"weakness" : weakness,
+		}
+	
 	var weakness : Dictionary
 	
-	func _init(host : Node,weakness : Dictionary) -> void:
+	func _init(host : Node, weakness : Dictionary = Battle.type.CHAOS) -> void:
 		self.host = host
 		self.weakness = weakness
 		category = Battle.status_category.PASSIVE
 		title = "Ethereal"
+		description = "This target is immune to all types of damage except one"
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != weakness:
@@ -328,14 +391,22 @@ class status_ethereal: #Immune to everything but one type
 class status_thorns:
 	extends status
 	
+	func get_data():
+		return {
+		"id" : "status_thorns",
+		"title" : title,
+		"damage" : damage,
+		}
+	
 	var damage : int
 	var reflect_target : Object = null
 	
-	func _init(host : Node,damage : int) -> void:
+	func _init(host : Node,damage : int = 1) -> void:
 		self.host = host
 		self.damage = damage
 		category = Battle.status_category.PASSIVE
 		title = "Thorns"
+		description = "This target will reflect damage back to the attacker"
 	
 	func on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object):
 		if host in entity_targets and ability.primary_target == host: #If we're the primary target and but we're being attacked
@@ -350,12 +421,18 @@ class status_thorns:
 class status_regrowth:
 	extends status
 	
+	func get_data():
+		return {
+		"id" : "status_regrowth",
+		}
+	
 	var death_protection_enabled : bool = false
 	
-	func _init(host : Node,) -> void:
+	func _init(host : Node) -> void:
 		self.host = host
 		category = Battle.status_category.PASSIVE
 		title = "Regrowth"
+		description = "This target will only die if all of its kind are killed alongside it"
 	
 	func on_battle_entity_disabled_expire(entity : Node):
 		if entity == host: #If we just got out of a disable
@@ -391,13 +468,20 @@ class status_regrowth:
 class status_immunity: #Creates a specific immunity where if it's matching the type, they are immune
 	extends status
 	
+	func get_data():
+		return {
+		"id" : "status_immunity",
+		"immunity" : immunity
+		}
+	
 	var immunity : Dictionary
 	
-	func _init(host : Node,immunity : Dictionary) -> void:
+	func _init(host : Node, immunity : Dictionary = Battle.type.BALANCE) -> void:
 		self.host = host
 		self.immunity = immunity
 		category = Battle.status_category.PASSIVE
 		title = "Immunity"
+		description = "This target is immune to an aspect"
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == immunity:
@@ -410,13 +494,20 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 class status_weakness: #Creates a specific type that we look for to do bonus things when hit
 	extends status
 	
+	func get_data():
+		return {
+		"id" : "status_weakness",
+		"weakness" : weakness
+		}
+	
 	var weakness : Dictionary
 	
-	func _init(host : Node,weakness : Dictionary) -> void:
+	func _init(host : Node, weakness : Dictionary = Battle.type.BALANCE) -> void:
 		self.host = host
 		self.weakness = weakness
 		category = Battle.status_category.PASSIVE
 		title = "Weakness"
+		description = "This target is weak to an aspect"
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == weakness:
@@ -430,14 +521,21 @@ class status_weakness: #Creates a specific type that we look for to do bonus thi
 class status_swarm: #Adds a percent to our damage based on how many of us are on the field (besides us)
 	extends status
 	
+	func get_data():
+		return {
+		"id" : "status_swarm",
+		"mult_percent" : mult_percent
+		}
+	
 	var mult_total : float
 	var mult_percent : float
 	
-	func _init(host : Node,mult_percent : float = 1.0) -> void:
+	func _init(host : Node, mult_percent : float = 1.0) -> void:
 		self.host = host
 		self.mult_percent = mult_percent #This adds to host's damage multiplier so 0.1 would be 10% increased for every enemy
 		category = Battle.status_category.PASSIVE
 		title = "Swarm"
+		description = "This target is doing damage based on how many of it are on the field"
 	
 	func on_start():
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
@@ -470,7 +568,19 @@ class ability:
 		for key in new_metadata:
 			var value = new_metadata[key]
 			set(key,value)
-
+	
+	func get_data_default():
+		return {
+			"title" : title,
+			"type" : type,
+			"description" : description,
+			"target_type" : target_type,
+			"target_selector" : target_selector,
+			#"skillcheck_modifier" : skillcheck_modifier,
+			#"vis_cost" : vis_cost,
+			#"damage" : damage,
+		}
+	
 	func get_data():
 		return {
 		"id" : "ability", #Class reference to create us later
@@ -523,16 +633,61 @@ class ability:
 	#Has function status_effect_on_start
 # ---
 
-##Returns all get_data() functions to store in a data list for a save file
-func get_data_all():
-	var result : Array = []
-	for i in my_abilities.size():
-		result.append(my_abilities[i].get_data())
+##Returns all get_data() functions on status effects to store in a data list for a save file
+func get_data_status_all() -> Dictionary:
+	var result : Dictionary = {}
+	
+	##NORMAL
+	var normal_status_unit : Dictionary = {} #Reset it
+	if current_status_effects.NORMAL: #Check if we have effects to add
+		normal_status_unit = current_status_effects.NORMAL.get_data_default()
+		normal_status_unit.merge(current_status_effects.NORMAL.get_data(),true)
+	result["NORMAL"] = normal_status_unit
+	##PASSIVES
+	var passive_status_list : Array = [] #Reset it
+	for i in current_status_effects.PASSIVE.size(): #Check if we have effects and iterate thru it
+		var passive_unit : Dictionary = {}
+		passive_unit = current_status_effects.PASSIVE[i].get_data_default() #Set default vars
+		passive_unit.merge(current_status_effects.PASSIVE[i].get_data(),true) #Include and overwrite any defaults like id, etc
+		passive_status_list.append(passive_unit) #Append this merged data to our entry in the array
+	result["PASSIVE"] = passive_status_list
+	
+	print_debug("Retrieved data for ",owner," ",result)
 	return result
 
-##Sets all abilities to ones found in data list from save file
-func set_data_all(caster : Node, ability_data_list : Array):
-	my_abilities = []
+#Creates new statuses and sets their params based on data file
+func set_data_status_all(host : Node, status_data : Dictionary):
+	##NORMAL
+	if current_status_effects.NORMAL: #Remove any current NORMAL status
+		current_status_effects.remove(current_status_effects.NORMAL)
+	if !status_data["NORMAL"].is_empty(): #Check if NORMAL data is empty
+		var normal_eff = current_status_effects.add(Glossary.status_class[status_data["NORMAL"]["id"]].new(host),true) #Create the normal status and overwrite old status
+		normal_eff.set_data(status_data["NORMAL"]) #Send the status our data for all its variables to change to
+		
+		print_debug("set data for ",status_data["NORMAL"]["id"])
+	##PASSIVE
+	for i in current_status_effects.PASSIVE.size(): #Remove any previous passives first
+		current_status_effects.remove_passive(current_status_effects.PASSIVE[i])
+	for i in status_data["PASSIVE"].size(): #Check if PASSIVE data is empty and also iterate thru array of dictionaries in PASSIVE
+		var passive_eff = current_status_effects.add_passive(Glossary.status_class[status_data["PASSIVE"][i]["id"]].new(host)) #Create the passive
+		passive_eff.set_data(status_data["PASSIVE"][i]) #Send the indexed status our data for all its variables to change to
+		
+		print_debug("set data for ",owner," ",status_data["PASSIVE"])
+	
+
+##Returns all get_data() functions on abilities to store in a data list for a save file
+func get_data_ability_all():
+	var result : Array = []
+	for i in my_abilities.size():
+		var sub_result : Dictionary = {}
+		sub_result = my_abilities[i].get_data_default() #Set default vars
+		sub_result.merge(my_abilities[i].get_data(),true) #Include and overwrite any defaults like id, etc
+		result.append(sub_result) #Append this merged data to our entry in the array
+	return result
+
+##Creates new abilties and sets their params based on data file
+func set_data_ability_all(caster : Node, ability_data_list : Array):
+	my_abilities = [] #Reset our abilities
 	for i in ability_data_list.size(): #iterate thru list
 		var inst = Glossary.ability_class[ability_data_list[i]["id"]].new(caster) #search glossary for the name we found in metadata
 		inst.set_data(ability_data_list[i])
@@ -790,7 +945,7 @@ class ability_switchstitch:
 		if target == primary_target:
 			var index_start = Battle.battle_list.find(targets.front())
 			var index_end = Battle.battle_list.find(targets.back())
-			Battle.swap_section(index_start,index_end)
+			Battle.mirror_section(index_start,index_end)
 			
 			for i in len(targets): #Only damages if the primary target tanks the damage
 				targets[i].my_component_health.damage(damage)

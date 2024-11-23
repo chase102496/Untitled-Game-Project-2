@@ -28,15 +28,17 @@ func _ready() -> void:
 			instance.position.y = instance.collider.shape.height/2
 			tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
 			friends_offset += instance.spacing
-		
-		#FIXME Bandaid solution for state machine being slower than the initialization of my scene so it would not recieve the signal in the right order
-		instance.state_init_override = "on_waiting"
-		
-	Battle.active_character = Battle.battle_list[0] #Setting initial turn order
+
+		if i != 0:
+			#instance.state_init_override = "on_waiting"
+			instance.state_chart.send_event.call_deferred("on_waiting")
+		else:
+			#instance.state_init_override = "on_start"
+			instance.state_chart.send_event.call_deferred("on_start")
+			Battle.active_character = instance
+			Battle.active_character_index = 0
 	
-	Battle.active_character.state_init_override = "on_start" #TODO Other bandaid that fits a lil better
-	
-	Battle.update_positions()
+	Battle.update_positions.call_deferred()
 
 func _on_battle_entity_death(entity : Node) -> void:
 	
@@ -62,14 +64,29 @@ func _on_battle_entity_death(entity : Node) -> void:
 func _on_turn_end() -> void:
 	#Set new character as next in queue, and incrementing the index
 	var old_character = Battle.active_character
-	var new_index = (Battle.battle_list.find(Battle.active_character,0) + 1) % len(Battle.battle_list)
+	var old_index = Battle.active_character_index
+	var new_index
+	
+	print_debug("@@@ Ending turn for ",old_character.name," @@@")
+	
+	#Validation check
+	if Battle.battle_list.find(old_character) == -1: #If we cannot find the old active character in the list,
+		new_index = (old_index + 1) % Battle.battle_list.size()
+		Battle.active_character = Battle.battle_list[new_index]
+	else:
+		new_index = (Battle.battle_list.find(Battle.active_character,0) + 1) % Battle.battle_list.size()
+	
+	#Updating active index and character
+	Battle.active_character_index = new_index
 	Battle.active_character = Battle.battle_list[new_index]
-	var new_character = Battle.active_character
+
+	#If we are now on the other team's turn sequence
+	if old_character.alignment != Battle.active_character.alignment:
+		Events.battle_team_start.emit(Battle.active_character.alignment)
 	
-	if old_character.alignment != new_character.alignment: #If we are now on the other team's turn sequence
-		Events.battle_team_start.emit(new_character.alignment)
+	print_debug("@@@ Starting turn for ",Battle.active_character.name," @@@")
 	
-	Events.turn_start.emit()
+	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
 	
 func _on_battle_finished(result) -> void:
 	if result == "Win":

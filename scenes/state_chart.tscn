@@ -15,16 +15,23 @@ process_priority = -1
 script = ExtResource("2_k71pm")
 initial_state = NodePath("Explore")
 
+[node name="Disabled" type="Node" parent="Main"]
+script = ExtResource("4_si2sx")
+
+[node name="Previous" type="Node" parent="Main"]
+script = ExtResource("5_ics1o")
+default_state = NodePath("../Explore/Idle")
+
+[node name="on_disabled" type="Node" parent="Main"]
+script = ExtResource("3_2w0ir")
+to = NodePath("../Disabled")
+event = &"on_disabled"
+delay_in_seconds = "0.0"
+
 [node name="on_idle" type="Node" parent="Main"]
 script = ExtResource("3_2w0ir")
 to = NodePath("../Explore/Idle")
 event = &"on_idle"
-delay_in_seconds = "0.0"
-
-[node name="on_pause_input" type="Node" parent="Main"]
-script = ExtResource("3_2w0ir")
-to = NodePath("../Pause_Input")
-event = &"on_pause_input"
 delay_in_seconds = "0.0"
 
 [node name="on_start" type="Node" parent="Main"]
@@ -43,6 +50,12 @@ delay_in_seconds = "0.0"
 script = ExtResource("2_k71pm")
 initial_state = NodePath("Idle")
 
+[node name="on_default" type="Node" parent="Main/Explore"]
+script = ExtResource("3_2w0ir")
+to = NodePath("../Idle")
+event = &"on_default"
+delay_in_seconds = "0.0"
+
 [node name="on_walking" type="Node" parent="Main/Explore"]
 script = ExtResource("3_2w0ir")
 to = NodePath("../Walking")
@@ -55,15 +68,6 @@ script = ExtResource("4_si2sx")
 [node name="Walking" type="Node" parent="Main/Explore"]
 script = ExtResource("4_si2sx")
 
-[node name="Pause_Input" type="Node" parent="Main"]
-script = ExtResource("4_si2sx")
-
-[node name="on_idle" type="Node" parent="Main/Pause_Input"]
-script = ExtResource("3_2w0ir")
-to = NodePath("../../Explore")
-event = &"on_idle"
-delay_in_seconds = "0.0"
-
 [node name="Battle" type="Node" parent="Main"]
 script = ExtResource("2_k71pm")
 initial_state = NodePath("Waiting")
@@ -71,6 +75,12 @@ initial_state = NodePath("Waiting")
 [node name="Previous" type="Node" parent="Main/Battle"]
 script = ExtResource("5_ics1o")
 default_state = NodePath("../Waiting")
+
+[node name="on_default" type="Node" parent="Main/Battle"]
+script = ExtResource("3_2w0ir")
+to = NodePath("../Waiting")
+event = &"on_default"
+delay_in_seconds = "0.0"
 
 [node name="on_end" type="Node" parent="Main/Battle"]
 script = ExtResource("3_2w0ir")

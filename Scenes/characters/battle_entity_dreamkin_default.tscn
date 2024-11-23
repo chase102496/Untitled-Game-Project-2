@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Logic/classes/battle_entity_dreamkin_default.gd" id="1_ol02j"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_oay8k"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="3_4rcnf"]
+[ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="3_v5qov"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_j3sum"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_u2cb3"]
 [ext_resource type="Texture2D" uid="uid://d4senx3uvusy" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Death.png" id="6_cvc87"]
@@ -15,8 +15,8 @@
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="13_wxg3m"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="15_5e1ve"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="16_4dapd"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_battle.gd" id="17_b1vf8"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="17_eaaxv"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="20_y4361"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="21_0iqmr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dltsc"]
@@ -614,7 +614,7 @@ _data = {
 
 [node name="Dreamkin" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
 physics_interpolation_mode = 1
-collision_layer = 2
+collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_ol02j")
 my_battle_gui = NodePath("Battle_GUI")
@@ -631,7 +631,7 @@ classification = "DREAMKIN"
 [node name="Battle_GUI" parent="." instance=ExtResource("2_oay8k")]
 unique_name_in_owner = true
 
-[node name="StateChart" parent="." instance=ExtResource("3_4rcnf")]
+[node name="StateChart" parent="." instance=ExtResource("3_v5qov")]
 unique_name_in_owner = true
 
 [node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis", "my_component_ability") instance=ExtResource("4_j3sum")]
@@ -706,8 +706,8 @@ max_health = 16
 script = ExtResource("17_eaaxv")
 max_vis = 12
 
-[node name="component_animation_controller" type="Node" parent="Components"]
-script = ExtResource("20_y4361")
+[node name="component_animation_controller_battle" type="Node" parent="Components"]
+script = ExtResource("17_b1vf8")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("21_0iqmr")

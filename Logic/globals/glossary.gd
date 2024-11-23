@@ -10,6 +10,24 @@ var ability_class : Dictionary = {
 	"ability_frigid_core" : component_ability.ability_frigid_core,
 }
 
+var status_class : Dictionary = {
+	##Normal
+	"status_fear" : component_ability.status_fear,
+	"status_burn" : component_ability.status_burn,
+	"status_freeze" : component_ability.status_freeze,
+	##Tethers
+	"status_heartstitch" : component_ability.status_heartstitch,
+	##Passives
+	"status_immunity" : component_ability.status_immunity, #Immune to specific aspect
+	"status_weakness" : component_ability.status_weakness, #Weak to specific aspect
+	"status_ethereal" : component_ability.status_ethereal, #Immune to all but one aspect
+	"status_disabled" : component_ability.status_disabled, #Immune to everything and disabled
+	"status_swarm" : component_ability.status_swarm, #Damage based on how many of it are on field
+	"status_regrowth" : component_ability.status_regrowth, #Doesn't die unless its kind are all dead aswell
+	"status_thorns" : component_ability.status_thorns, #Reflects damage on direct hit
+	##abil.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
+}
+
 const entity : Dictionary = {
 	
 	# Players

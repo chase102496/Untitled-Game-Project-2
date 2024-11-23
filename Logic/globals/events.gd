@@ -1,6 +1,6 @@
 extends Node
 
-signal battle_gui_button_pressed(ability)
+signal button_pressed_battle_ability(ability : Object)
 
 signal animation_finished(anim_name,character)
 signal animation_started(anim_name,character)

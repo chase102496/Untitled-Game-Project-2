@@ -1,0 +1,135 @@
+[gd_scene load_steps=6 format=3 uid="uid://djw4yjejthj5q"]
+
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="1_300x0"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="2_rtnfg"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="3_oi4d2"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="4_5psnm"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_inpcx"]
+
+[node name="StateChart" type="Node"]
+process_priority = -2
+script = ExtResource("1_300x0")
+
+[node name="Main" type="Node" parent="."]
+process_priority = -1
+script = ExtResource("2_rtnfg")
+initial_state = NodePath("Battle")
+
+[node name="on_start" type="Node" parent="Main"]
+script = ExtResource("5_inpcx")
+to = NodePath("../Battle/Start")
+event = &"on_start"
+delay_in_seconds = "0.0"
+
+[node name="on_waiting" type="Node" parent="Main"]
+script = ExtResource("5_inpcx")
+to = NodePath("../Battle/Waiting")
+event = &"on_waiting"
+delay_in_seconds = "0.0"
+
+[node name="Battle" type="Node" parent="Main"]
+script = ExtResource("2_rtnfg")
+initial_state = NodePath("Waiting")
+
+[node name="Previous" type="Node" parent="Main/Battle"]
+script = ExtResource("4_5psnm")
+default_state = NodePath("../Waiting")
+
+[node name="on_previous" type="Node" parent="Main/Battle"]
+script = ExtResource("5_inpcx")
+to = NodePath("../Previous")
+event = &"on_previous"
+delay_in_seconds = "0.0"
+
+[node name="on_end" type="Node" parent="Main/Battle"]
+script = ExtResource("5_inpcx")
+to = NodePath("../End")
+event = &"on_end"
+delay_in_seconds = "0.0"
+
+[node name="on_hurt" type="Node" parent="Main/Battle"]
+script = ExtResource("5_inpcx")
+to = NodePath("../Hurt")
+event = &"on_hurt"
+delay_in_seconds = "0.0"
+
+[node name="on_death" type="Node" parent="Main/Battle"]
+script = ExtResource("5_inpcx")
+to = NodePath("../Death")
+event = &"on_death"
+delay_in_seconds = "0.0"
+
+[node name="on_finished" type="Node" parent="Main/Battle"]
+script = ExtResource("5_inpcx")
+to = NodePath("../Finished")
+event = &"on_finished"
+delay_in_seconds = "0.0"
+
+[node name="Waiting" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="on_start" type="Node" parent="Main/Battle/Waiting"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Start")
+event = &"on_start"
+delay_in_seconds = "0.0"
+
+[node name="Start" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="on_choose" type="Node" parent="Main/Battle/Start"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Choose")
+event = &"on_choose"
+delay_in_seconds = "0.0"
+
+[node name="Choose" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="on_skillcheck" type="Node" parent="Main/Battle/Choose"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Skillcheck")
+event = &"on_skillcheck"
+delay_in_seconds = "0.0"
+
+[node name="on_execution" type="Node" parent="Main/Battle/Choose"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Execution")
+event = &"on_execution"
+delay_in_seconds = "0.0"
+
+[node name="Skillcheck" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="on_execution" type="Node" parent="Main/Battle/Skillcheck"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Execution")
+event = &"on_execution"
+delay_in_seconds = "0.0"
+
+[node name="Execution" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="End" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="on_waiting" type="Node" parent="Main/Battle/End"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Waiting")
+event = &"on_waiting"
+delay_in_seconds = "0.0"
+
+[node name="Hurt" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="on_waiting" type="Node" parent="Main/Battle/Hurt"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Waiting")
+event = &"on_waiting"
+delay_in_seconds = "0.0"
+
+[node name="Finished" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")
+
+[node name="Death" type="Node" parent="Main/Battle"]
+script = ExtResource("3_oi4d2")

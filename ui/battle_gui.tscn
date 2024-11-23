@@ -200,7 +200,10 @@ text = "↜ Escape"
 [node name="AnimationComponent" parent="HBoxContainer/Menu/Main/Escape" instance=ExtResource("3_75k8e")]
 
 [node name="Battle" type="GridContainer" parent="HBoxContainer/Menu"]
-visible = false
+layout_mode = 2
+columns = 2
+
+[node name="Switch" type="GridContainer" parent="HBoxContainer/Menu"]
 layout_mode = 2
 columns = 2
 
@@ -348,6 +351,12 @@ to = NodePath("../Skillcheck")
 event = &"on_gui_skillcheck"
 delay_in_seconds = "0.0"
 
+[node name="on_gui_switch" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../Switch")
+event = &"on_gui_switch"
+delay_in_seconds = "0.0"
+
 [node name="Disabled" type="Node" parent="StateChart/Battle GUI"]
 script = ExtResource("7_t4p3g")
 
@@ -378,5 +387,14 @@ delay_in_seconds = "0.0"
 [node name="Select" type="Node" parent="StateChart/Battle GUI"]
 script = ExtResource("7_t4p3g")
 
+[node name="on_gui_battle" type="Node" parent="StateChart/Battle GUI/Select"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Battle")
+event = &"on_gui_battle"
+delay_in_seconds = "0.0"
+
 [node name="Skillcheck" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
+
+[node name="Switch" type="Node" parent="StateChart/Battle GUI"]
 script = ExtResource("7_t4p3g")

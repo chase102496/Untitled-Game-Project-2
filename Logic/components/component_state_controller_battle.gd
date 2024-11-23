@@ -140,7 +140,7 @@ func _on_state_entered_battle_choose() -> void:
 		Battle.classification.DREAMKIN:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
 		Battle.classification.ENEMY:
-			await get_tree().create_timer(0.3).timeout
+			await get_tree().create_timer(0.2).timeout
 			
 			var ability = my_component_ability.my_abilities.pick_random()
 			my_component_ability.cast_queue = ability #Pick random move and assign

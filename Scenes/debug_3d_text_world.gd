@@ -26,21 +26,42 @@ func _physics_process(delta: float) -> void:
 	
 	var state = str(state_subchart_battle._active_state)
 	
+	var abil = owner.my_component_ability.get_data_ability_all()
+	var abil_names : Array = []
+	
+	for i in abil.size():
+		abil_names.append(abil[i].title)
+	
+	var dreamkin_summons = Global.player.my_component_party.my_summons
+	var dreamkin_party = Global.player.my_component_party.my_party
+	
+	var dreamkin_list = []
+	
+	for i in dreamkin_summons.size():
+		dreamkin_list.append(dreamkin_summons[i].name)
+	dreamkin_list.append(" / ")
+	for i in dreamkin_party.size():
+		dreamkin_list.append(dreamkin_party[i].name)
+	
+	var status_list = []
+	if owner.my_component_ability.current_status_effects.NORMAL:
+		status_list.append(owner.my_component_ability.current_status_effects.NORMAL.title)
+	status_list.append(" / ")
+	for i in owner.my_component_ability.current_status_effects.PASSIVE.size():
+		status_list.append(owner.my_component_ability.current_status_effects.PASSIVE[i].title)
+	
 	if prev != state:
 		history = prev
 		prev = state
 	
-	var party = ""
-	
-	if Global.player == owner:
-		party = owner.my_component_party.my_party
-	
 	text = str(
 	owner.name,
 	"\n",
-	party,
+	dreamkin_list,
 	"\n",
-	owner.my_component_ability.get_data_all(),
+	abil_names,
+	"\n",
+	status_list,
 	"\n",
 	"Now: ", state.rsplit(":")[0],
 	"\n",

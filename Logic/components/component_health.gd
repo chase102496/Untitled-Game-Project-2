@@ -20,6 +20,8 @@ func revive():
 
 func damage(amt : float, mirror_damage : bool = false, type : Dictionary = Battle.type.BALANCE):
 	
+	owner.show()
+	
 	var amt_rounded = round(amt)
 	
 	if health > 0:
