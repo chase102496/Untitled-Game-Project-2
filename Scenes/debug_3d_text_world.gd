@@ -10,7 +10,7 @@ extends Label3D
 @onready var state_subchart_battle
 
 func _ready() -> void:
-	state_subchart_battle = owner.get_node("StateChart/Main/Battle")
+	state_subchart_battle = owner.get_node("StateChart/Main/Explore")
 	#position.y += randf_range(0,0.6)
 	modulate = Color(randf_range(0.5,1),randf_range(0.5,1),randf_range(0.5,1))
 

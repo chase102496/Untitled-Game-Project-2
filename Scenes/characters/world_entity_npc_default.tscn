@@ -28,7 +28,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="24_2fgj7"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="25_usupo"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="26_5xld1"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="28_q0ero"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="28_q0ero"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="29_qpnwp"]
 [ext_resource type="Script" path="res://Logic/components/component_interact_controller.gd" id="30_81u32"]
 

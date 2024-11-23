@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_1m0ao"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="3_0pbev"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_g8wgm"]
+[ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="4_jugmf"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_jbfav"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="6_acssy"]
 [ext_resource type="Texture2D" uid="uid://dmdw1m4techw0" path="res://Art/sprites/The Adventurer - Free/Idle/idle_up.png" id="8_vepnh"]
@@ -24,7 +24,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="30_vt064"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="31_fpw8q"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="32_uhbt8"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="33_7rgvm"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="33_7rgvm"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="34_x4c2m"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h7j1u"]
@@ -1369,7 +1369,7 @@ classification = "PLAYER"
 [node name="DEBUG_3D_TEXT_WORLD" parent="." instance=ExtResource("2_1m0ao")]
 script = ExtResource("3_g8wgm")
 
-[node name="StateChart" parent="." instance=ExtResource("3_0pbev")]
+[node name="StateChart" parent="." instance=ExtResource("4_jugmf")]
 unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -1446,7 +1446,7 @@ my_component_input_controller = NodePath("../component_input_controller_manual")
 [node name="component_input_controller_manual" type="Node" parent="Components"]
 script = ExtResource("32_uhbt8")
 
-[node name="component_animation_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
+[node name="component_animation_controller_world" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("33_7rgvm")
 my_component_input_controller = NodePath("../component_input_controller_manual")
 

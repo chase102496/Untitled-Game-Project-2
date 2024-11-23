@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://dahgwygsnsabn"]
+
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="1_b4dtx"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="2_sifvc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="3_l3k1k"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="4_q0rjb"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_2iali"]
+
+[node name="StateChart" type="Node"]
+process_priority = -2
+script = ExtResource("1_b4dtx")
+
+[node name="Main" type="Node" parent="."]
+process_priority = -1
+script = ExtResource("2_sifvc")
+initial_state = NodePath("Explore")
+
+[node name="Disabled" type="Node" parent="Main"]
+script = ExtResource("3_l3k1k")
+
+[node name="Previous" type="Node" parent="Main"]
+script = ExtResource("4_q0rjb")
+default_state = NodePath("../Explore/Idle")
+
+[node name="on_disabled" type="Node" parent="Main"]
+script = ExtResource("5_2iali")
+to = NodePath("../Disabled")
+event = &"on_disabled"
+delay_in_seconds = "0.0"
+
+[node name="on_idle" type="Node" parent="Main"]
+script = ExtResource("5_2iali")
+to = NodePath("../Explore/Idle")
+event = &"on_idle"
+delay_in_seconds = "0.0"
+
+[node name="Explore" type="Node" parent="Main"]
+script = ExtResource("2_sifvc")
+initial_state = NodePath("Idle")
+
+[node name="on_default" type="Node" parent="Main/Explore"]
+script = ExtResource("5_2iali")
+to = NodePath("../Idle")
+event = &"on_default"
+delay_in_seconds = "0.0"
+
+[node name="on_walking" type="Node" parent="Main/Explore"]
+script = ExtResource("5_2iali")
+to = NodePath("../Walking")
+event = &"on_walking"
+delay_in_seconds = "0.0"
+
+[node name="Idle" type="Node" parent="Main/Explore"]
+script = ExtResource("3_l3k1k")
+
+[node name="Walking" type="Node" parent="Main/Explore"]
+script = ExtResource("3_l3k1k")

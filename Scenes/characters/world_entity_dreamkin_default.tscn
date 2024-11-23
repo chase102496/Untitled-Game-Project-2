@@ -1,10 +1,10 @@
 [gd_scene load_steps=65 format=3 uid="uid://dqy8clwwlvjcb"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_dreamkin_default.gd" id="1_5mjex"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_fjguv"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_yk86w"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_l8ns7"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_o5u3o"]
+[ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="4_h3g5t"]
 [ext_resource type="Texture2D" uid="uid://d4senx3uvusy" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Death.png" id="4_jb5sb"]
 [ext_resource type="Texture2D" uid="uid://sqrggdn7ckmy" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Floating_Idle.png" id="5_lkdqw"]
 [ext_resource type="Texture2D" uid="uid://bdjb6koyadhmf" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Red_Swimming.png" id="6_nr1eb"]
@@ -17,7 +17,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="12_pwqcs"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_bhr2c"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_follow.gd" id="14_7gtkk"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="15_0vm83"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="15_0vm83"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="16_j8nai"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="20_bdj6r"]
 
@@ -634,7 +634,7 @@ classification = "DREAMKIN"
 [node name="DEBUG_3D_TEXT_WORLD" parent="." instance=ExtResource("2_yk86w")]
 script = ExtResource("3_o5u3o")
 
-[node name="StateChart" parent="." instance=ExtResource("2_fjguv")]
+[node name="StateChart" parent="." instance=ExtResource("4_h3g5t")]
 unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -708,7 +708,7 @@ movespeed = 10
 script = ExtResource("14_7gtkk")
 my_component_movement_controller = NodePath("../component_movement_controller")
 
-[node name="component_animation_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
+[node name="component_animation_controller_world" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
 script = ExtResource("15_0vm83")
 my_component_input_controller = NodePath("../component_input_controller_follow")
 

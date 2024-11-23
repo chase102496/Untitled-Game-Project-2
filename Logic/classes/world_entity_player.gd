@@ -12,7 +12,7 @@ func _ready():
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
-	my_component_ability.current_status_effects.NORMAL = my_component_ability.status_fear.new(self)
+	my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
 	PlayerData.load_data_scene()
 
 func on_save(data):

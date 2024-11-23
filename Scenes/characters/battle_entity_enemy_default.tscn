@@ -22,7 +22,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="20_i52co"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="21_ltba3"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="22_m42cr"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="23_y51ow"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_battle.gd" id="23_4dyw3"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="24_b4ecq"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o5vmy"]
@@ -769,7 +769,6 @@ my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 alignment = "FOES"
 classification = "ENEMY"
-glossary = "entity_enemy_default"
 
 [node name="StateChart" parent="." instance=ExtResource("2_phudh")]
 unique_name_in_owner = true
@@ -849,7 +848,7 @@ script = ExtResource("21_ltba3")
 script = ExtResource("22_m42cr")
 
 [node name="component_animation_controller" type="Node" parent="Components"]
-script = ExtResource("23_y51ow")
+script = ExtResource("23_4dyw3")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("24_b4ecq")

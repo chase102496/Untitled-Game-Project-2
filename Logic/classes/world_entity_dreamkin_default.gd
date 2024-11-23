@@ -23,8 +23,8 @@ func _ready():
 	abil.my_abilities.append(abil.ability_tackle.new(self))
 	abil.my_abilities.append(abil.ability_solar_flare.new(self))
 	#
-	abil.current_status_effects.NORMAL = abil.status_fear.new(self)
-	abil.current_status_effects.PASSIVE.append(abil.status_immunity.new(self,Battle.type.CHAOS))
+	my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
+	my_component_ability.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 
 ##If we are being summoned, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):

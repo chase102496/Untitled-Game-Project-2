@@ -12,12 +12,6 @@ func _ready() -> void:
 	%StateChart/Main/Explore/Walking.state_entered.connect(_on_state_entered_explore_walking)
 	%StateChart/Main/Explore/Walking.state_physics_processing.connect(_on_state_physics_processing_explore_walking)
 	%StateChart/Main/Disabled.state_entered.connect(_on_state_entered_disabled)
-	%StateChart/Main/Battle.state_entered.connect(_on_state_entered_battle)
-	%StateChart/Main/Battle.state_exited.connect(_on_state_exited_battle)
-	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
-	%StateChart/Main/Battle/Execution.state_exited.connect(_on_state_exited_battle_execution)
-	%StateChart/Main/Battle/Hurt.state_entered.connect(_on_state_entered_battle_hurt)
-	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
 func camera_billboard() -> void:
 	owner.rotation.y = Global.camera.rotation.y
