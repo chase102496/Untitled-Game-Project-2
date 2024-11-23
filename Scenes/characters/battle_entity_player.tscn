@@ -1,8 +1,8 @@
-[gd_scene load_steps=114 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=113 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://Logic/classes/battle_entity_player.gd" id="1_vkci8"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_ldwgg"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="3_5m26b"]
+[ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="3_p4wfg"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_cg7qa"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_6yl0o"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="6_wg3qt"]
@@ -29,8 +29,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="28_80x7i"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="29_b5gyq"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="30_t327a"]
-[ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="32_1gig2"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="33_eh1na"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_battle.gd" id="31_ji0ib"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="33_s503q"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="34_rq8fg"]
 
@@ -1290,7 +1289,7 @@ unique_name_in_owner = true
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="StateChart" parent="." instance=ExtResource("3_5m26b")]
+[node name="StateChart" parent="." instance=ExtResource("3_p4wfg")]
 unique_name_in_owner = true
 
 [node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis", "my_component_ability") instance=ExtResource("4_cg7qa")]
@@ -1369,12 +1368,8 @@ max_health = 20
 script = ExtResource("30_t327a")
 max_vis = 12
 
-[node name="component_input_controller_manual" type="Node" parent="Components"]
-script = ExtResource("32_1gig2")
-
-[node name="component_animation_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
-script = ExtResource("33_eh1na")
-my_component_input_controller = NodePath("../component_input_controller_manual")
+[node name="component_animation_controller_battle" type="Node" parent="Components"]
+script = ExtResource("31_ji0ib")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("34_rq8fg")

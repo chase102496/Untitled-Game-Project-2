@@ -1,7 +1,7 @@
 [gd_scene load_steps=141 format=3 uid="uid://bxq5n6t50slq7"]
 
 [ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_default.gd" id="1_4ui3r"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_itali"]
+[ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="2_doxes"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_1v0tl"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="4_7fq4l"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="5_n0y6a"]
@@ -22,7 +22,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="20_n7hpy"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="21_sqdn1"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="22_2acyp"]
-[ext_resource type="Script" path="res://Logic/components/component_animation_controller.gd" id="23_umrli"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_battle.gd" id="23_jw5ym"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="24_hmshw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o5vmy"]
@@ -771,9 +771,8 @@ my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 alignment = "FOES"
 classification = "ENEMY"
-glossary = "entity_enemy_default"
 
-[node name="StateChart" parent="." instance=ExtResource("2_itali")]
+[node name="StateChart" parent="." instance=ExtResource("2_doxes")]
 unique_name_in_owner = true
 
 [node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis", "my_component_ability") instance=ExtResource("3_1v0tl")]
@@ -851,7 +850,7 @@ script = ExtResource("21_sqdn1")
 script = ExtResource("22_2acyp")
 
 [node name="component_animation_controller" type="Node" parent="Components"]
-script = ExtResource("23_umrli")
+script = ExtResource("23_jw5ym")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("24_hmshw")
