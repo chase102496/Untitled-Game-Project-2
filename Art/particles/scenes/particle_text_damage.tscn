@@ -15,8 +15,8 @@ curve = SubResource("Curve_kp78f")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x3yc7"]
 resource_local_to_scene = true
 lifetime_randomness = 0.2
-direction = Vector3(1, 0, 1)
-spread = 15.0
+direction = Vector3(0, 0, 0)
+spread = 0.0
 initial_velocity_min = 0.5
 initial_velocity_max = 0.5
 gravity = Vector3(0, 1, 0)
@@ -32,6 +32,7 @@ viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hopef"]
 resource_local_to_scene = true
+render_priority = 127
 transparency = 1
 albedo_texture = SubResource("ViewportTexture_8u5ee")
 billboard_mode = 2

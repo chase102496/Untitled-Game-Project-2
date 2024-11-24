@@ -30,10 +30,8 @@ func _ready() -> void:
 			friends_offset += instance.spacing
 
 		if i != 0:
-			#instance.state_init_override = "on_waiting"
 			instance.state_chart.send_event.call_deferred("on_waiting")
 		else:
-			#instance.state_init_override = "on_start"
 			instance.state_chart.send_event.call_deferred("on_start")
 			Battle.active_character = instance
 			Battle.active_character_index = 0
@@ -87,15 +85,15 @@ func _on_turn_end() -> void:
 	print_debug("@@@ Starting turn for ",Battle.active_character.name," @@@")
 	
 	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
-	
+
 func _on_battle_finished(result) -> void:
 	if result == "Win":
 		PlayerData.save_data_scene()
 		print_debug("Yay!")
-		get_tree().change_scene_to_file("res://Levels/dream_garden.tscn")
+		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 	elif result == "Lose":
 		PlayerData.save_data_scene()
 		print_debug("womp womp")
-		get_tree().change_scene_to_file("res://Levels/dream_garden.tscn")
+		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 	else:
 		push_error("ERROR")

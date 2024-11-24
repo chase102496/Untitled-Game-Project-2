@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfnt3yc8sihhd"]
+
+[ext_resource type="Shader" path="res://test_junk/clouds_test.gdshader" id="1_bq7o3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_utr30"]
+render_priority = 0
+shader = ExtResource("1_bq7o3")
+shader_parameter/use_custom_texture = 0.0
+shader_parameter/clouds_speed = 5.0
+shader_parameter/clouds_direction = 0.2
+shader_parameter/clouds_scale = 13.42
+shader_parameter/clouds_cutoff = 0.63
+shader_parameter/clouds_fuzziness = 0.32
+shader_parameter/clouds_color = Color(0.62, 0.816333, 1, 1)
+shader_parameter/edge_fade = 0.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i3o3o"]
+material = SubResource("ShaderMaterial_utr30")
+flip_faces = true
+top_radius = 30.0
+bottom_radius = 30.0
+height = 30.0
+cap_top = false
+cap_bottom = false
+
+[node name="CloudBox" type="MeshInstance3D"]
+mesh = SubResource("CylinderMesh_i3o3o")

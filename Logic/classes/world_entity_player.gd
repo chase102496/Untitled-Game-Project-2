@@ -12,7 +12,7 @@ func _ready():
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
-	my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
+	#my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
 	PlayerData.load_data_scene()
 
 func on_save(data):
@@ -66,20 +66,15 @@ func _physics_process(delta: float) -> void:
 			#for i in my_component_party.get_party().size():
 				#my_component_party.my_party[i].my_component_health.damage(1)
 		my_component_party.recall(0)
-		
-		pass
 
 	if Input.is_action_just_pressed("move_backward"):
 		my_component_party.summon(0,"world")
-		pass
 		
 	if Input.is_action_just_pressed("move_jump"):
 		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
 			owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			)
-		#my_component_party.add_party(#global_position+Vector3(randf_range(0,2),0,randf_range(0,2))
-			#Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(owner,global_position+Vector3(randf_range(0,2),0,randf_range(0,2)))
-			#)
 	
 	if Input.is_action_just_pressed("ui_cancel"):
-		Battle.battle_initialize("enemy_gloam enemy_gloam enemy_gloam")
+		Battle.battle_initialize("enemy_gloam enemy_gloam")
+		#TODO make instance version of initialize similar to ability and status where we determine all the junk at creation not just a name

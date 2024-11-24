@@ -79,18 +79,23 @@ const text : Dictionary = {
 	"float_away" : preload("res://Art/particles/scenes/particle_text_damage.tscn")
 	}
 
-func create_text_particle(host : Node, pos : Vector3 = Vector3.ZERO, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, delay : float = 0.0, size : int = 60):
+func create_text_particle(anchor : Node, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, delay : float = 0.0, size : int = 60):
 	if delay > 0:
 		await get_tree().create_timer(delay).timeout
 	
+	##Creation stuff
 	var inst = Glossary.text.get(type).instantiate()
-	host.add_child(inst)
 	var particle_label = inst.get_node("%particle_label")
 	particle_label.text = text
 	particle_label.label_settings.font_color = color
 	particle_label.label_settings.font_size = size
 	
-	inst.global_position = pos
+	##Anchor stuff
+	anchor.add_child(inst)
+	#inst.global_position = anchor.global_position
+	##Adjustments
+	#inst.global_position.z += sign(Global.camera.global_position.z - inst.global_position.z) #Nudges us a bit toward the camera so we won't be behind the object
+	
 	return particle_label
 
 const ui : Dictionary = {

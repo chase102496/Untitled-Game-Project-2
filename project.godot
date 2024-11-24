@@ -26,6 +26,7 @@ Glossary="*res://Logic/globals/Glossary.gd"
 DrawLine3D="*res://Logic/globals/drawline3d.gd"
 PlayerData="*res://Logic/globals/PlayerData.gd"
 World="*res://Logic/globals/World.gd"
+SceneManager="*res://Scenes/scene_manager/scene_manager.tscn"
 
 [debug]
 

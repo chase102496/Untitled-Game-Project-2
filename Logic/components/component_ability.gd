@@ -184,14 +184,14 @@ class status:
 	func on_skillcheck(): #runs right before skillcheck
 		pass
 	
-	func on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
-		pass
-	
-	func on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object): #when someone gets hit (anyone)
-		pass
-	
-	func on_battle_entity_damaged(entity,amount): #runs when the host of the status effect's health changes
-		pass
+	#func on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
+		#pass
+	#
+	#func on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object): #when someone gets hit (anyone)
+		#pass
+	#
+	#func on_battle_entity_damaged(entity,amount): #runs when the host of the status effect's health changes
+		#pass
 	
 	func on_end(): #runs on end of turn
 		pass
@@ -318,7 +318,7 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		print_debug(entity_target.name," is immune to ",ability.title,"!")
-		Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Immune!"),"float_away")
+		Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
 		return Battle.mitigation_type.IMMUNE
 	
 	func on_expire():
@@ -383,7 +383,7 @@ class status_ethereal: #Immune to everything but one type
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != weakness:
 			print_debug(entity_target.name," is immune to ",ability.title,"!")
-			Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Immune!"),"float_away")
+			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
@@ -486,7 +486,7 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == immunity:
 			print_debug(entity_target.name," is immune to ",ability.title,"!")
-			Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Immune!"),"float_away")
+			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
@@ -513,7 +513,7 @@ class status_weakness: #Creates a specific type that we look for to do bonus thi
 		if ability.type == weakness:
 			print_debug(entity_target.name," is weak to ",ability.title,"!")
 			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation_bonus(entity_caster,host)
-			Glossary.create_text_particle(entity_target,entity_target.animations.sprite.global_position,str("Weakness!"),"float_away",Color.PURPLE,0.3)
+			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Weakness!"),"float_away",Color.PURPLE,0.3)
 			return Battle.mitigation_type.WEAK
 		else:
 			return Battle.mitigation_type.PASS
@@ -528,11 +528,12 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 		}
 	
 	var mult_total : float
-	var mult_percent : float
+	var mult_percent : float #This adds to host's damage multiplier so 0.1 would be 10% increased for every one of them on the field
 	
 	func _init(host : Node, mult_percent : float = 1.0) -> void:
+		
 		self.host = host
-		self.mult_percent = mult_percent #This adds to host's damage multiplier so 0.1 would be 10% increased for every enemy
+		self.mult_percent = mult_percent
 		category = Battle.status_category.PASSIVE
 		title = "Swarm"
 		description = "This target is doing damage based on how many of it are on the field"
@@ -540,7 +541,9 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	func on_start():
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
 		mult_total = (len(paired_teammates) - 1)*mult_percent #teammates + mult percent for one teammate
+		print("MULT: ",mult_total)
 		host.my_component_ability.stats.damage_multiplier += mult_total
+		print("DAMAGE TOTAL MULT: ",host.my_component_ability.stats.damage_multiplier)
 	
 	func on_end():
 		host.my_component_ability.stats.damage_multiplier -= mult_total
@@ -612,7 +615,7 @@ class ability:
 			
 	func cast_validate_failed():
 		print_debug("Missed!")
-		Glossary.create_text_particle(caster,caster.animations.sprite.global_position,str("Missed!"),"float_away",Color.WHITE)
+		Glossary.create_text_particle(caster.animations.selector_anchor,str("Missed!"),"float_away",Color.WHITE)
 	
 	func cast_main(): #Main function, calls on hit
 		pass
@@ -904,6 +907,7 @@ class ability_heartstitch:
 	
 	func cast_main():
 		caster.my_component_vis.siphon(vis_cost)
+		
 		for i in len(old_targets): #remove instances from old targets
 			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
 				var teth = old_targets[i].my_component_ability.current_status_effects.TETHER
@@ -912,10 +916,16 @@ class ability_heartstitch:
 		old_targets = targets
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
+		##Make sure we're in the targets, idk why this is here tbh
 		if target in targets:
 			print_debug(caster.name, " tried to stitch ", target.name,"!")
 			target.my_component_health.damage(damage,true)
-			target.my_component_ability.current_status_effects.add(status_heartstitch.new(target,targets,skillcheck_modifier*2))
+			
+			##Verification for needing actual stitch
+			if targets.size() >= 2:
+				target.my_component_ability.current_status_effects.add(status_heartstitch.new(target,targets,skillcheck_modifier*2))
+			else:
+				print_debug("No valid target to stitch to - ",targets)
 	
 	func animation():
 		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO
@@ -951,4 +961,3 @@ class ability_switchstitch:
 				targets[i].my_component_health.damage(damage)
 			
 			Battle.update_positions()
-		

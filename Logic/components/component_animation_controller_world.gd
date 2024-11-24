@@ -1,4 +1,4 @@
-class_name component_animation_controller
+class_name component_animation_controller_world
 extends Node
 
 @export var my_component_input_controller : Node

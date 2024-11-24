@@ -30,12 +30,10 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
 	%StateChart/Main/Battle/End.state_entered.connect(_on_state_entered_battle_end)
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
+	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_entered_battle_dying)
+	%StateChart/Main/Battle/Dying.state_physics_processing.connect(_on_state_physics_processing_battle_dying)
+	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_exited_battle_dying)
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
-
-func _physics_process(_delta: float) -> void:
-	if typeof(owner.state_init_override) == 4: #If it's a string
-		owner.state_chart.send_event(owner.state_init_override)
-		owner.state_init_override = null
 
 # SIGNALS
 
@@ -52,6 +50,7 @@ func _on_animation_started(anim_name,character) -> void:
 				"hurt":
 					pass
 				"death":
+					owner.state_chart.send_event("on_dying")
 					my_component_ability.current_status_effects.status_event("on_dying")
 func _on_animation_finished(anim_name,character) -> void:
 	if character == owner:
@@ -65,8 +64,6 @@ func _on_animation_finished(anim_name,character) -> void:
 				"hurt":
 					owner.state_chart.send_event(state_chart_memory) #Statecharts has a bug so I bandaided it
 				"death":
-					#Check if we are ACTUALLY dying TODO FIXME EEEEEEEEEEEE
-					#if state_chart_memory == "on_death":
 					owner.state_chart.send_event("on_death")
 
 # GLOBAL EVENTS
@@ -118,7 +115,7 @@ func _on_battle_entity_turn_end(entity : Node):
 func _on_battle_entity_death(entity : Node):
 	pass
 
-# EVENTS FOR THIS ENTITY
+# STATE EVENTS FOR THIS ENTITY
 
 func _on_state_entered_battle_waiting() -> void:
 	character_ready = true
@@ -192,12 +189,26 @@ func _on_state_entered_battle_end() -> void:
 	my_component_ability.current_status_effects.status_event("on_end") #Including status effects
 
 func _on_state_physics_processing_battle_end(_delta: float) -> void:
+	
+	#Do a check similar to on_death in health, where we poll all our status effects for an end turn thing. If there is one, run that and have it handle turn_end
+	
 	#End code goes here, then we ready up
 	if Battle.check_ready():
 		owner.state_chart.send_event("on_waiting")
 		Events.turn_end.emit()
+	
 	character_ready = true
+
+func _on_state_entered_battle_dying() -> void:
+	pass
+
+func _on_state_physics_processing_battle_dying(_delta: float) -> void:
+	pass
+
+func _on_state_exited_battle_dying() -> void:
+	pass
 
 func _on_state_entered_death() -> void:
 	state_chart_memory = "on_death"
+	character_ready = false
 	Events.battle_entity_death.emit(owner) #let everyone know we died rip

@@ -123,15 +123,14 @@ _data = {
 
 [node name="Gloam" instance=ExtResource("1_gmhfa")]
 script = ExtResource("2_nrtc7")
-glossary = "entity_enemy_gloam"
 
-[node name="character_animation_sprite" parent="Animations" index="0"]
+[node name="character_animation_sprite" parent="Animations" index="1"]
 modulate = Color(0.281252, 0.419601, 0.627848, 1)
 
-[node name="character_animation_player" parent="Animations" index="1"]
+[node name="character_animation_player" parent="Animations" index="2"]
 libraries = {
 "": SubResource("AnimationLibrary_6hkwk")
 }
 
 [node name="component_health" parent="Components" index="1"]
-max_health = 6
+max_health = 4

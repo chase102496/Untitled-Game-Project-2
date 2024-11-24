@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://d06k7ap7c65ve"]
+
+[ext_resource type="PackedScene" uid="uid://c044kghj0y7u0" path="res://Scenes/scene_manager/scene_manager.tscn" id="1_gaskp"]
+[ext_resource type="PackedScene" uid="uid://cm35r1y2qhd18" path="res://Levels/dream_garden.tscn" id="2_27voi"]
+
+[node name="Node" type="Node"]
+
+[node name="SceneManager" parent="." instance=ExtResource("1_gaskp")]
+
+[node name="dream_garden" parent="." instance=ExtResource("2_27voi")]

@@ -177,10 +177,10 @@ func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 			ui_skillcheck_result = "Miss"
 		
 		match ui_skillcheck_result:
-			"Miss" : Glossary.create_text_particle(owner,owner.global_position,str("Whoops..."),"float_away",Color.SLATE_GRAY,0,20)
-			"Good" : Glossary.create_text_particle(owner,owner.global_position,str("Nice!"),"float_away",Color.SKY_BLUE,0,30)
-			"Great" : Glossary.create_text_particle(owner,owner.global_position,str("Great!"),"float_away",Color.MEDIUM_SLATE_BLUE,0,40)
-			"Excellent" : Glossary.create_text_particle(owner,owner.global_position,str("Excellent!"),"float_away",Color.PURPLE,0,50)
+			"Miss" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Whoops..."),"float_away",Color.SLATE_GRAY,0,20)
+			"Good" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Nice!"),"float_away",Color.SKY_BLUE,0,30)
+			"Great" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Great!"),"float_away",Color.MEDIUM_SLATE_BLUE,0,40)
+			"Excellent" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Excellent!"),"float_away",Color.PURPLE,0,50)
 		
 		await get_tree().create_timer(1.0).timeout
 
@@ -241,7 +241,12 @@ func _on_button_pressed_battle_ability(ability : Object):
 ## Switch
 
 func _on_button_pressed_switch():
-	state_chart.send_event("on_gui_switch")
+	##Verify we can switch Dreamkin
+	#Later this will include a debuff where we can't swap too
+	if Global.player.my_component_party.my_party.size() > 0:
+		state_chart.send_event("on_gui_switch")
+	else:
+		print_debug("No party members to swap to!")
 
 func _on_button_pressed_switch_dreamkin(dreamkin : Object):
 	

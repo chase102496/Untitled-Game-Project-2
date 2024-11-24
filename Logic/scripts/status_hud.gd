@@ -9,6 +9,7 @@ extends Node3D
 @onready var vis : Label = $SubViewport/PanelContainer/VBoxContainer/Vis
 
 func _ready() -> void:
+	hide()
 	owner.mouse_entered.connect(_on_mouse_entered)
 	owner.mouse_exited.connect(_on_mouse_exited)
 

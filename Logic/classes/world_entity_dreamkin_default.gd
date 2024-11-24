@@ -10,20 +10,17 @@ extends world_entity_default
 var type = Battle.type.BALANCE
 
 ##For debug or making dreamkin in code, or summoning from thin air with no reference
-func init(my_parent : Node, my_position : Vector3, initial_state : String = ""):
+func init(my_parent : Node, my_position : Vector3):
 	my_parent.add_child.call_deferred(self)
 	global_translate.call_deferred(my_position)
-	if initial_state != "":
-		set_deferred("state_init_override",initial_state)
 	return self
 
 func _ready():
 	name = str(name," ",randi_range(0,99))
 	var abil = my_component_ability
 	abil.my_abilities.append(abil.ability_tackle.new(self))
-	abil.my_abilities.append(abil.ability_solar_flare.new(self))
+	abil.my_abilities.append(abil.ability_solar_flare.new(self,1,1.0))
 	#
-	my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
 	my_component_ability.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 
 ##If we are being summoned, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()

@@ -53,16 +53,10 @@ to = NodePath("../Hurt")
 event = &"on_hurt"
 delay_in_seconds = "0.0"
 
-[node name="on_death" type="Node" parent="Main/Battle"]
+[node name="on_dying" type="Node" parent="Main/Battle"]
 script = ExtResource("5_inpcx")
-to = NodePath("../Death")
-event = &"on_death"
-delay_in_seconds = "0.0"
-
-[node name="on_finished" type="Node" parent="Main/Battle"]
-script = ExtResource("5_inpcx")
-to = NodePath("../Finished")
-event = &"on_finished"
+to = NodePath("../Dying")
+event = &"on_dying"
 delay_in_seconds = "0.0"
 
 [node name="Waiting" type="Node" parent="Main/Battle"]
@@ -128,8 +122,14 @@ to = NodePath("../../Waiting")
 event = &"on_waiting"
 delay_in_seconds = "0.0"
 
-[node name="Finished" type="Node" parent="Main/Battle"]
+[node name="Dying" type="Node" parent="Main/Battle"]
 script = ExtResource("3_oi4d2")
+
+[node name="on_death" type="Node" parent="Main/Battle/Dying"]
+script = ExtResource("5_inpcx")
+to = NodePath("../../Death")
+event = &"on_death"
+delay_in_seconds = "0.0"
 
 [node name="Death" type="Node" parent="Main/Battle"]
 script = ExtResource("3_oi4d2")

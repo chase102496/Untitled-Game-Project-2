@@ -315,4 +315,4 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 		#signal emit
 		battle_list.append(unit_instance)
 		
-	get_tree().change_scene_to_file(scene_new)
+	SceneManager.transition_to(scene_new)

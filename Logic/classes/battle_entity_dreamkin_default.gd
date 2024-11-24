@@ -6,11 +6,9 @@ extends battle_entity_default
 
 var type = Battle.type.BALANCE
 
-func init(my_parent : Node, my_position : Vector3, initial_state : String = ""):
+func init(my_parent : Node, my_position : Vector3):
 	my_parent.add_child.call_deferred(self)
 	global_translate.call_deferred(my_position)
-	if initial_state != "":
-		set_deferred("state_init_override",initial_state)
 	return self
 
 ## Checks if we are eligible to go into battle

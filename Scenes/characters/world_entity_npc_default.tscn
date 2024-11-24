@@ -1305,7 +1305,6 @@ my_component_vis = NodePath("Components/component_vis")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
 alignment = "FRIENDS"
 classification = "NPC"
-glossary = "entity_npc_default"
 
 [node name="StateChart" parent="." instance=ExtResource("2_6od8c")]
 unique_name_in_owner = true
@@ -1317,6 +1316,16 @@ shape = SubResource("CapsuleShape3D_h7j1u")
 [node name="Animations" type="Node3D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_0vcg8")
+
+[node name="character_sprite_position" type="Node3D" parent="Animations"]
+
+[node name="selector_anchor" type="Marker3D" parent="Animations/character_sprite_position"]
+
+[node name="status_hud" parent="Animations/character_sprite_position" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider") instance=ExtResource("20_7c1mt")]
+visible = false
+my_component_health = NodePath("../../../Components/component_health")
+my_component_vis = NodePath("../../../Components/component_vis")
+collider = NodePath("../../../CollisionShape3D")
 
 [node name="interact_player" type="AnimationPlayer" parent="Animations"]
 root_node = NodePath("../interact_sprite")
@@ -1347,16 +1356,10 @@ sprite_frames = SubResource("SpriteFrames_5y1yy")
 animation = &"default_idle_left_down"
 frame = 1
 
-[node name="status_hud" parent="Animations/character_animation_sprite" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider") instance=ExtResource("20_7c1mt")]
-unique_name_in_owner = true
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-visible = false
-my_component_health = NodePath("../../../Components/component_health")
-my_component_vis = NodePath("../../../Components/component_vis")
-collider = NodePath("../../../CollisionShape3D")
-
-[node name="selector_anchor" type="Marker3D" parent="Animations/character_animation_sprite"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, -1.86265e-09)
+[node name="RemoteTransform3DPosition" type="RemoteTransform3D" parent="Animations/character_animation_sprite"]
+remote_path = NodePath("../../character_sprite_position")
+update_rotation = false
+update_scale = false
 
 [node name="character_animation_player" type="AnimationPlayer" parent="Animations"]
 root_node = NodePath("../character_animation_sprite")
