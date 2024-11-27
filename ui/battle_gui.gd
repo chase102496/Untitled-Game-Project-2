@@ -284,5 +284,7 @@ func _on_button_pressed_switch_dreamkin(dreamkin : Object):
 func _on_button_pressed_item():
 	pass
 
+## Escape
+
 func _on_button_pressed_escape():
-	Events.battle_finished.emit("Win")
+	SceneManager.transition_to_prev()

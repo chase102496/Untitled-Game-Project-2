@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b1fspre3pncai"]
+
+[node name="wall_default" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_mask = 0

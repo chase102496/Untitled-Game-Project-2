@@ -28,6 +28,29 @@ var status_class : Dictionary = {
 	##abil.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 }
 
+const item_category : Dictionary = {
+	"GEAR" : {
+		"TITLE" : "Gear",
+		"ICON" : "",
+		"COLOR" : Color("4acacf")
+	},
+	"DREAMKIN" : {
+		"TITLE" : "Dreamkin",
+		"ICON" : "",
+		"COLOR" : Color("4acacf")
+	},
+	"ITEM" : {
+		"TITLE" : "Items",
+		"ICON" : "",
+		"COLOR" : Color("4acacf")
+	},
+	"KEY" : {
+		"TITLE" : "Keys",
+		"ICON" : "",
+		"COLOR" : Color("4acacf")
+	}
+}
+
 const entity : Dictionary = {
 	
 	# Players

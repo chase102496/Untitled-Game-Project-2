@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://xmqt0vwhs8g3"]
+
+[ext_resource type="Texture2D" uid="uid://bq84k3iiimpli" path="res://Imports/textures/SM_VerticalColumn_01_MI_TrimSheet_Wood_01_Dark_0_albedo.png" id="1_1akpn"]
+[ext_resource type="Texture2D" uid="uid://di32c6q8sxojf" path="res://Imports/textures/SM_Window_Wall_02_MI_Tavern_TrimSheet_01_0_albedo.png" id="1_u46dj"]
+[ext_resource type="Texture2D" uid="uid://d4ihuk4xdeila" path="res://Imports/textures/SM_VerticalColumn_01_MI_TrimSheet_Wood_01_Dark_0_normal.png" id="2_2wrox"]
+[ext_resource type="Texture2D" uid="uid://b7yp676xnr4x1" path="res://Imports/textures/SM_Window_Wall_02_MI_Tavern_TrimSheet_01_0_normal.png" id="2_4isfh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kxq50"]
+resource_name = "SM_Roof_01_MI_TrimSheet_Wood_01_Light_0"
+albedo_texture = ExtResource("1_u46dj")
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("2_4isfh")
+uv1_scale = Vector3(0.75, 0.75, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2tteh"]
+resource_name = "SM_Roof_01_MI_TrimSheet_Wood_01_Light_0"
+albedo_texture = ExtResource("1_1akpn")
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("2_2wrox")
+distance_fade_mode = 1
+distance_fade_max_distance = 25.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_51j0t"]
+_surfaces = [{
+"aabb": AABB(-2, -4.43473e-07, -1.53477e-15, 2, 4, 4),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 3, 0),
+"name": "SM_Roof_01_MI_TrimSheet_Wood_01_Light_0",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 254, 255, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 0, 0, 255, 255, 254, 255, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0)
+}, {
+"aabb": AABB(-1.8, -4.43473e-07, 1.19657e-15, 2, 4, 4),
+"format": 34896613377,
+"index_count": 6,
+"index_data": PackedByteArray(1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 3, 0),
+"name": "SM_Roof_01_MI_TrimSheet_Wood_01_Light_0",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 255, 255, 254, 255, 0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_gcrtp"]
+resource_name = "SM_Roof_01_mesh"
+_surfaces = [{
+"aabb": AABB(-2, -4.43473e-07, -1.53477e-15, 2, 4, 4),
+"attribute_data": PackedByteArray(255, 255, 255, 255, 193, 192, 172, 185, 104, 85, 108, 85, 255, 255, 255, 255, 104, 85, 255, 255, 255, 255, 172, 185, 255, 255, 108, 85, 193, 192, 255, 255),
+"format": 34896613431,
+"index_count": 6,
+"index_data": PackedByteArray(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 3, 0),
+"material": SubResource("StandardMaterial3D_kxq50"),
+"name": "SM_Roof_01_MI_TrimSheet_Wood_01_Light_0",
+"primitive": 3,
+"uv_scale": Vector4(2.67969, 2.99609, 1.97656, 1.98633),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 254, 255, 0, 0, 178, 242, 255, 255, 0, 0, 255, 255, 178, 242, 0, 0, 255, 255, 254, 255, 178, 242, 254, 255, 0, 0, 0, 0, 178, 242, 193, 70, 124, 114, 193, 70, 124, 114, 193, 70, 124, 114, 193, 70, 124, 114)
+}, {
+"aabb": AABB(-1.8, -4.43473e-07, 1.19657e-15, 2, 4, 4),
+"attribute_data": PackedByteArray(52, 51, 0, 0, 255, 130, 255, 255, 52, 51, 239, 255, 255, 255, 255, 255, 255, 255, 239, 255, 255, 255, 172, 185, 255, 255, 0, 0, 255, 130, 172, 185),
+"format": 34896613431,
+"index_count": 6,
+"index_data": PackedByteArray(1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 3, 0),
+"material": SubResource("StandardMaterial3D_2tteh"),
+"name": "SM_Roof_01_MI_TrimSheet_Wood_01_Light_0",
+"primitive": 3,
+"uv_scale": Vector4(2.79492, 2, 1, 1.98633),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 254, 255, 0, 0, 104, 203, 0, 0, 255, 255, 254, 255, 104, 203, 255, 255, 0, 0, 255, 255, 104, 203, 254, 255, 0, 0, 0, 0, 104, 203, 61, 185, 157, 92, 61, 185, 157, 92, 61, 185, 157, 92, 61, 185, 157, 92)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_51j0t")
+
+[node name="sm_roof" type="Node3D"]
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_gcrtp")
+skeleton = NodePath("")

@@ -177,7 +177,7 @@ texture_filter = 2
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 action_mode = 0
-text = "🗘 Switch"
+text = "❖ Dreamkin"
 
 [node name="AnimationComponent" parent="HBoxContainer/Menu/Main/Switch" instance=ExtResource("3_75k8e")]
 

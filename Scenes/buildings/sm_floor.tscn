@@ -1,0 +1,92 @@
+[gd_scene load_steps=11 format=4 uid="uid://dvku07wgug8bg"]
+
+[ext_resource type="PackedScene" uid="uid://b1fspre3pncai" path="res://Scenes/defaults/wall_default.tscn" id="1_2h2ld"]
+[ext_resource type="Texture2D" uid="uid://c7ppfvsypyvbd" path="res://Imports/textures/SM_Wall_MI_TrimSheet_Wood_02_1_albedo.png" id="2_dd57a"]
+[ext_resource type="Texture2D" uid="uid://fd7jexsminea" path="res://Imports/textures/SM_Wall_MI_TrimSheet_Wood_02_1_normal.png" id="3_bguex"]
+[ext_resource type="Texture2D" uid="uid://ct7fddla2vnye" path="res://Imports/textures/SM_Wall_MI_Tavern_TrimSheet_01_0_albedo.png" id="4_cp8um"]
+[ext_resource type="Texture2D" uid="uid://de6hb4mly72ra" path="res://Imports/textures/SM_Wall_MI_Tavern_TrimSheet_01_0_normal.png" id="5_pjp78"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ygo3"]
+resource_name = "SM_Wall_MI_TrimSheet_Wood_02_1"
+albedo_texture = ExtResource("2_dd57a")
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("3_bguex")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_to8ir"]
+resource_name = "SM_Wall_MI_Tavern_TrimSheet_01_0"
+albedo_texture = ExtResource("4_cp8um")
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("5_pjp78")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ttrny"]
+_surfaces = [{
+"aabb": AABB(0.2, -3.10747e-14, -8.42418e-07, 1e-05, 4, 4),
+"format": 34896670721,
+"index_count": 6,
+"index_data": PackedByteArray("AQAAAAIAAgAAAAMA"),
+"name": "SM_Wall_MI_TrimSheet_Wood_02_1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAD+/wAAAABNL////v8AANMwAAD//wAAwwAAAAAAAAA=")
+}, {
+"aabb": AABB(-2.14431e-08, 1.94403e-22, -6.51683e-07, 1e-05, 4, 4),
+"format": 34896670721,
+"index_count": 6,
+"index_data": PackedByteArray("AQAAAAIAAAABAAMA"),
+"name": "SM_Wall_MI_Tavern_TrimSheet_01_0",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAD+/wAAAAAWMAAA//8AAJsv///+/wAAegAAAAAAAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_d70dg"]
+resource_name = "SM_Wall_mesh"
+_surfaces = [{
+"aabb": AABB(0.2, -3.10747e-14, -8.42418e-07, 1e-05, 4, 4),
+"attribute_data": PackedByteArray("//9TVcnA//8AAHw/ACAEPAAAAAAAAAAAU1VTVf////8AAAI/ACAEPAAAAAAAAAAAU1X/////EMEAAAI/ACD4PgAAAAAAAAAA/////8nAEMEAAHw/ACD4PgAAAAAAAAAA"),
+"format": 34896670839,
+"index_count": 6,
+"index_data": PackedByteArray("AQAAAAIAAgAAAAMA"),
+"material": SubResource("StandardMaterial3D_6ygo3"),
+"name": "SM_Wall_MI_TrimSheet_Wood_02_1",
+"primitive": 3,
+"uv_scale": Vector4(3, 3, 1.97754, 1.98828),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAD+/wAA/79NL////v//v9MwAAD///+/wwAAAAAA/78AgAAAAIAAAACAAAAAgAAA")
+}, {
+"aabb": AABB(-2.14431e-08, 1.94403e-22, -6.51683e-07, 1e-05, 4, 4),
+"attribute_data": PackedByteArray("MwAzAM0Cf/4AIAQ8ACAEPAAAAAAAAAAAv/+//79/X4EAIPg+ACD4PgAAAAAAAAAAv/8zAM0CX4EAIPg+ACAEPAAAAAAAAAAAMwC//79/f/4AIAQ8ACD4PgAAAAAAAAAA"),
+"format": 34896670839,
+"index_count": 6,
+"index_data": PackedByteArray("AQAAAAIAAAABAAMA"),
+"material": SubResource("StandardMaterial3D_to8ir"),
+"name": "SM_Wall_MI_Tavern_TrimSheet_01_0",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AAD+/wAA/78WMAAA////v5sv///+//+/egAAAAAA/78AgP//AID//wCA//8AgP//")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_ttrny")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_krea4"]
+size = Vector3(4, 0.2, 4)
+
+[node name="wall_default" instance=ExtResource("1_2h2ld")]
+
+[node name="Mesh" type="MeshInstance3D" parent="." index="0"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 8.74228e-09, -0.2, 0)
+mesh = SubResource("ArrayMesh_d70dg")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -0.1, 2)
+shape = SubResource("BoxShape3D_krea4")

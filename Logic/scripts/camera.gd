@@ -29,9 +29,9 @@ func shot_rotate(dir : String):
 	var tween = get_tree().create_tween()
 	var def_y = owner.follow_offset.y
 	match dir:
-		"right":
-			tween.tween_property(owner,"follow_offset",Vector3(3,def_y,0),0.5)
 		"left":
+			tween.tween_property(owner,"follow_offset",Vector3(3,def_y,0),0.5)
+		"right":
 			tween.tween_property(owner,"follow_offset",Vector3(-3,def_y,0),0.5)
 		"back":
 			tween.tween_property(owner,"follow_offset",Vector3(0,def_y,3),0.5)

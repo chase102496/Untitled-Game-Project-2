@@ -6,6 +6,7 @@ extends world_entity_default
 @export var my_component_input_controller: component_input_controller_manual
 @export var my_component_party : component_party
 @export var my_component_ability : component_ability
+@export var my_component_inventory : component_inventory
 
 func _ready():
 	Global.player = self
@@ -13,7 +14,25 @@ func _ready():
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
 	#my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
-	PlayerData.load_data_scene()
+	
+	#Position should be a scene-based save
+	#When we go through a pathway leading from one scene to another, the previous scene dictates where we will spawn in the new scene
+		#Can be stored as data.global_position just like we would right before a battle. Then, the other world can handle that data.
+		#We can save each entry point in a world as a Vector3 in a Glossary of all world locations
+	#When we go from a battle scene to a world scene, the world's position save dictates where we will spawn
+		#Can be stored as data.gloval_position right before we enter battle, and is loaded on battle end
+		
+	#When we leave a scene for whatever reason, the only time we ever need to save our position is if we're entering battle or a cutscene or something, otherwise ignore global pos save
+	
+	#When we enter a scene for whatever reason, we always need a data point for where to put the player.
+	
+	#Each scene will have a default global position to load the player. This will be a Vector3 export variable
+	
+	##Debug
+	if my_component_party.my_party.size() == 0:
+		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
+				)
 
 func on_save(data):
 	##Player
@@ -61,20 +80,22 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("load"):
 		PlayerData.load_data_all()
 	
-	if Input.is_action_just_pressed("move_forward"):
-		#if my_component_party.get_party():
-			#for i in my_component_party.get_party().size():
-				#my_component_party.my_party[i].my_component_health.damage(1)
-		my_component_party.recall(0)
-
-	if Input.is_action_just_pressed("move_backward"):
-		my_component_party.summon(0,"world")
-		
-	if Input.is_action_just_pressed("move_jump"):
-		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
-			owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-			)
+	#if Input.is_action_just_pressed("move_forward"):
+		##if my_component_party.get_party():
+			##for i in my_component_party.get_party().size():
+				##my_component_party.my_party[i].my_component_health.damage(1)
+		#my_component_party.recall(0)
+#
+	#if Input.is_action_just_pressed("move_backward"):
+		#my_component_party.summon(0,"world")
+		#
+	#if Input.is_action_just_pressed("move_jump"):
+		#my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
+			#)
 	
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("num0"):
 		Battle.battle_initialize("enemy_gloam enemy_gloam")
+	if Input.is_action_just_pressed("num1"):
+		SceneManager.transition_to("res://Levels/hotus_house.tscn")
 		#TODO make instance version of initialize similar to ability and status where we determine all the junk at creation not just a name

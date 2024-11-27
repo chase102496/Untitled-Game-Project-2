@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://dob6e00rfmew2"]
+
+[ext_resource type="PackedScene" uid="uid://qklm0d27lwlg" path="res://Scenes/camera.tscn" id="1_4jphv"]
+[ext_resource type="Texture2D" uid="uid://bqtf1oaofrx2r" path="res://Art/panorama/panorama_image (2).png" id="2_upsj7"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_oa1ei"]
+panorama = ExtResource("2_upsj7")
+
+[sub_resource type="Sky" id="Sky_ncf8r"]
+sky_material = SubResource("PanoramaSkyMaterial_oa1ei")
+
+[sub_resource type="Environment" id="Environment_d3icw"]
+background_mode = 2
+background_color = Color(0.108, 0.2214, 0.27, 1)
+sky = SubResource("Sky_ncf8r")
+ambient_light_source = 3
+glow_enabled = true
+glow_intensity = 0.15
+glow_blend_mode = 4
+fog_light_color = Color(0.1508, 0.25818, 0.26, 1)
+fog_light_energy = 5.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0325
+volumetric_fog_albedo = Color(0.235503, 0.189935, 0.3064, 1)
+volumetric_fog_emission = Color(0.655212, 0.47399, 0.993068, 1)
+volumetric_fog_emission_energy = 0.2
+volumetric_fog_length = 30.0
+adjustment_enabled = true
+adjustment_brightness = 1.03
+adjustment_contrast = 1.2
+adjustment_saturation = 1.12
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_2tdy4"]
+dof_blur_far_enabled = true
+dof_blur_near_enabled = true
+dof_blur_near_distance = 4.0
+dof_blur_near_transition = 6.0
+dof_blur_amount = 0.05
+
+[node name="Camera" instance=ExtResource("1_4jphv")]
+follow_offset = Vector3(0, 1, -2)
+
+[node name="Camera3D" parent="." index="1"]
+environment = SubResource("Environment_d3icw")
+attributes = SubResource("CameraAttributesPractical_2tdy4")

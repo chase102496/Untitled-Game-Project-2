@@ -1,0 +1,212 @@
+[gd_scene load_steps=13 format=3 uid="uid://drf7k34ckvd6a"]
+
+[ext_resource type="PackedScene" uid="uid://drps1tkd7bs0" path="res://Tavern/Meshes/SM_Wall.glb" id="1_occyr"]
+[ext_resource type="Shader" uid="uid://3j55781w5evh" path="res://Shaders/MI_TrimSheet_Wood_02.tres" id="2_la48w"]
+[ext_resource type="Texture2D" uid="uid://s4c7hn7fuih8" path="res://Tavern/Textures/T_TrimSheet_Wood_02_B.png" id="3_c5tc3"]
+[ext_resource type="Texture2D" uid="uid://b2bymhr3wax21" path="res://Tavern/Textures/T_Fill_B.png" id="4_wjed0"]
+[ext_resource type="Texture2D" uid="uid://wyvujp4oitfv" path="res://Tavern/Textures/T_TrimSheet_Wood_02_N.png" id="5_8x1hp"]
+[ext_resource type="Texture2D" uid="uid://4r6ijsa412d1" path="res://Tavern/Textures/T_TrimSheet_Wood_01_ORM.png" id="6_vmwtc"]
+[ext_resource type="Shader" uid="uid://81hvc0y2u7oj" path="res://Shaders/MI_Tavern_TrimSheet_01.tres" id="7_axj1c"]
+[ext_resource type="Texture2D" uid="uid://c7hhqijnivd5h" path="res://Tavern/Textures/T_TrimSheet_Tavern_01_B.png" id="8_dct6g"]
+[ext_resource type="Texture2D" uid="uid://bj02mmrkht524" path="res://Tavern/Textures/T_TrimSheet_Tavern_01_N.png" id="9_rg2tn"]
+[ext_resource type="Texture2D" uid="uid://xe530dqs7q8l" path="res://Tavern/Textures/T_TrimSheet_Tavern_01_ORM.png" id="10_kp5ba"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5iqj8"]
+resource_name = "MI_TrimSheet_Wood_02"
+render_priority = 0
+shader = ExtResource("2_la48w")
+shader_parameter/WPOEffectsOn__VS = false
+shader_parameter/Wind_True_orSwing_False__VS = false
+shader_parameter/VisualizeMask__VS = false
+shader_parameter/UseVertexPaintAsMask__VS = false
+shader_parameter/AddVertexPaintOnMask__VS = true
+shader_parameter/MaskPositionOffset_VS = -0.02
+shader_parameter/MaskContrast_VS = 1.0
+shader_parameter/MaskMultiply_VS = 1.0
+shader_parameter/Sat_Bright_Cont_VS = Vector4(1, 1.5, 0, 1)
+shader_parameter/BaseColorTint_VS = Vector4(0.603828, 0.519288, 0.437651, 0)
+shader_parameter/BaseColor_Tint_Intensity_VS = 1.0
+shader_parameter/UV_Tiling_Scale_RG_AndOffset_BA__VS = Vector4(1, 1, 1, 0)
+shader_parameter/Texture_Rotation_VS = 0.0
+shader_parameter/UseSeperateORM__VS = false
+shader_parameter/Metalness_Intensity_VS = 1.0
+shader_parameter/SpecularIntensity_VS = 0.1
+shader_parameter/Roughness_Intensity_VS = 1.0
+shader_parameter/EmissiveOn__VS = true
+shader_parameter/EmissiveFlickerOn__VS = false
+shader_parameter/EmissiveTint_VS = Vector4(1, 1, 1, 0)
+shader_parameter/Emissive_Tint_Intensity_VS = 1.0
+shader_parameter/Emissive_Intensity_VS = 0.0
+shader_parameter/RandomFlicker__VS = false
+shader_parameter/FlickerFrequency_VS = 0.5
+shader_parameter/SharpFlicker__VS = false
+shader_parameter/NormalIntensity_VS = 1.0
+shader_parameter/EnableWPOWind__VS = true
+shader_parameter/NoiseTiling_ByAxis_VS = Vector4(0.3, 0.3, 0.3, 1)
+shader_parameter/WindSpeedX_VS = 0.3
+shader_parameter/WindSpeedY_VS = 0.0
+shader_parameter/WindIntensity_VS = 0.2
+shader_parameter/WindIntensity_ByAxis_VS = Vector4(1, 0.5, -1, 1)
+shader_parameter/SwingEffectOn__VS = true
+shader_parameter/SwingYAxisOn__VS = true
+shader_parameter/BendAmount_Y_VS = 2.0
+shader_parameter/BendSpeed_Y_VS = 0.2
+shader_parameter/BendAmount_Z_VS = 2.0
+shader_parameter/BendSpeed_Z_VS = 0.3
+shader_parameter/AO_Intensity_VS = 1.0
+shader_parameter/DitheringOn__VS = false
+shader_parameter/DitheringValue_VS = 1.0
+shader_parameter/DitheringFalloff_VS = 5.0
+shader_parameter/WPOEffectsOn_ = false
+shader_parameter/Wind_True_orSwing_False_ = false
+shader_parameter/VisualizeMask_ = false
+shader_parameter/UseVertexPaintAsMask_ = false
+shader_parameter/AddVertexPaintOnMask_ = true
+shader_parameter/MaskPositionOffset = -0.02
+shader_parameter/MaskContrast = 1.0
+shader_parameter/MaskMultiply = 1.0
+shader_parameter/Sat_Bright_Cont = Vector4(1, 1.5, 0, 1)
+shader_parameter/BaseColorTint = Vector4(0.603828, 0.519288, 0.437651, 0)
+shader_parameter/BaseColor_Tint_Intensity = 1.0
+shader_parameter/UV_Tiling_Scale_RG_AndOffset_BA_ = Vector4(1, 1, 1, 0)
+shader_parameter/Texture_Rotation = 0.0
+shader_parameter/UseSeperateORM_ = false
+shader_parameter/Metalness_Intensity = 1.0
+shader_parameter/SpecularIntensity = 0.1
+shader_parameter/Roughness_Intensity = 1.0
+shader_parameter/EmissiveOn_ = true
+shader_parameter/EmissiveFlickerOn_ = false
+shader_parameter/EmissiveTint = Vector4(1, 1, 1, 0)
+shader_parameter/Emissive_Tint_Intensity = 1.0
+shader_parameter/Emissive_Intensity = 0.0
+shader_parameter/RandomFlicker_ = false
+shader_parameter/FlickerFrequency = 0.5
+shader_parameter/SharpFlicker_ = false
+shader_parameter/NormalIntensity = 1.0
+shader_parameter/EnableWPOWind_ = true
+shader_parameter/NoiseTiling_ByAxis = Vector4(0.3, 0.3, 0.3, 1)
+shader_parameter/WindSpeedX = 0.3
+shader_parameter/WindSpeedY = 0.0
+shader_parameter/WindIntensity = 0.2
+shader_parameter/WindIntensity_ByAxis = Vector4(1, 0.5, -1, 1)
+shader_parameter/SwingEffectOn_ = true
+shader_parameter/SwingYAxisOn_ = true
+shader_parameter/BendAmount_Y = 2.0
+shader_parameter/BendSpeed_Y = 0.2
+shader_parameter/BendAmount_Z = 2.0
+shader_parameter/BendSpeed_Z = 0.3
+shader_parameter/AO_Intensity = 1.0
+shader_parameter/DitheringOn_ = false
+shader_parameter/DitheringValue = 1.0
+shader_parameter/DitheringFalloff = 5.0
+shader_parameter/Base_VS = ExtResource("3_c5tc3")
+shader_parameter/ORM_VS = ExtResource("6_vmwtc")
+shader_parameter/EmissiveMap_VS = ExtResource("4_wjed0")
+shader_parameter/NormalMap_VS = ExtResource("5_8x1hp")
+shader_parameter/Base = ExtResource("3_c5tc3")
+shader_parameter/ORM = ExtResource("6_vmwtc")
+shader_parameter/EmissiveMap = ExtResource("4_wjed0")
+shader_parameter/NormalMap = ExtResource("5_8x1hp")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bbpgf"]
+resource_name = "MI_Tavern_TrimSheet_01"
+render_priority = 0
+shader = ExtResource("7_axj1c")
+shader_parameter/WPOEffectsOn__VS = false
+shader_parameter/Wind_True_orSwing_False__VS = false
+shader_parameter/VisualizeMask__VS = false
+shader_parameter/UseVertexPaintAsMask__VS = false
+shader_parameter/AddVertexPaintOnMask__VS = true
+shader_parameter/MaskPositionOffset_VS = -0.02
+shader_parameter/MaskContrast_VS = 1.0
+shader_parameter/MaskMultiply_VS = 1.0
+shader_parameter/Sat_Bright_Cont_VS = Vector4(1, 1, 0, 1)
+shader_parameter/BaseColorTint_VS = Vector4(0.322917, 0.287935, 0.192077, 0)
+shader_parameter/BaseColor_Tint_Intensity_VS = 1.0
+shader_parameter/UV_Tiling_Scale_RG_AndOffset_BA__VS = Vector4(1, 1, 1, 0)
+shader_parameter/Texture_Rotation_VS = 0.0
+shader_parameter/UseSeperateORM__VS = false
+shader_parameter/Metalness_Intensity_VS = 1.0
+shader_parameter/SpecularIntensity_VS = 0.5
+shader_parameter/Roughness_Intensity_VS = 1.0
+shader_parameter/EmissiveOn__VS = true
+shader_parameter/EmissiveFlickerOn__VS = false
+shader_parameter/EmissiveTint_VS = Vector4(1, 1, 1, 0)
+shader_parameter/Emissive_Tint_Intensity_VS = 1.0
+shader_parameter/Emissive_Intensity_VS = 0.0
+shader_parameter/RandomFlicker__VS = false
+shader_parameter/FlickerFrequency_VS = 0.5
+shader_parameter/SharpFlicker__VS = false
+shader_parameter/NormalIntensity_VS = 1.0
+shader_parameter/EnableWPOWind__VS = true
+shader_parameter/NoiseTiling_ByAxis_VS = Vector4(0.3, 0.3, 0.3, 1)
+shader_parameter/WindSpeedX_VS = 0.3
+shader_parameter/WindSpeedY_VS = 0.0
+shader_parameter/WindIntensity_VS = 0.2
+shader_parameter/WindIntensity_ByAxis_VS = Vector4(1, 0.5, -1, 1)
+shader_parameter/SwingEffectOn__VS = true
+shader_parameter/SwingYAxisOn__VS = true
+shader_parameter/BendAmount_Y_VS = 2.0
+shader_parameter/BendSpeed_Y_VS = 0.2
+shader_parameter/BendAmount_Z_VS = 2.0
+shader_parameter/BendSpeed_Z_VS = 0.3
+shader_parameter/AO_Intensity_VS = 1.0
+shader_parameter/DitheringOn__VS = false
+shader_parameter/DitheringValue_VS = 1.0
+shader_parameter/DitheringFalloff_VS = 5.0
+shader_parameter/WPOEffectsOn_ = false
+shader_parameter/Wind_True_orSwing_False_ = false
+shader_parameter/VisualizeMask_ = false
+shader_parameter/UseVertexPaintAsMask_ = false
+shader_parameter/AddVertexPaintOnMask_ = true
+shader_parameter/MaskPositionOffset = -0.02
+shader_parameter/MaskContrast = 1.0
+shader_parameter/MaskMultiply = 1.0
+shader_parameter/Sat_Bright_Cont = Vector4(1, 1, 0, 1)
+shader_parameter/BaseColorTint = Vector4(0.322917, 0.287935, 0.192077, 0)
+shader_parameter/BaseColor_Tint_Intensity = 1.0
+shader_parameter/UV_Tiling_Scale_RG_AndOffset_BA_ = Vector4(1, 1, 1, 0)
+shader_parameter/Texture_Rotation = 0.0
+shader_parameter/UseSeperateORM_ = false
+shader_parameter/Metalness_Intensity = 1.0
+shader_parameter/SpecularIntensity = 0.5
+shader_parameter/Roughness_Intensity = 1.0
+shader_parameter/EmissiveOn_ = true
+shader_parameter/EmissiveFlickerOn_ = false
+shader_parameter/EmissiveTint = Vector4(1, 1, 1, 0)
+shader_parameter/Emissive_Tint_Intensity = 1.0
+shader_parameter/Emissive_Intensity = 0.0
+shader_parameter/RandomFlicker_ = false
+shader_parameter/FlickerFrequency = 0.5
+shader_parameter/SharpFlicker_ = false
+shader_parameter/NormalIntensity = 1.0
+shader_parameter/EnableWPOWind_ = true
+shader_parameter/NoiseTiling_ByAxis = Vector4(0.3, 0.3, 0.3, 1)
+shader_parameter/WindSpeedX = 0.3
+shader_parameter/WindSpeedY = 0.0
+shader_parameter/WindIntensity = 0.2
+shader_parameter/WindIntensity_ByAxis = Vector4(1, 0.5, -1, 1)
+shader_parameter/SwingEffectOn_ = true
+shader_parameter/SwingYAxisOn_ = true
+shader_parameter/BendAmount_Y = 2.0
+shader_parameter/BendSpeed_Y = 0.2
+shader_parameter/BendAmount_Z = 2.0
+shader_parameter/BendSpeed_Z = 0.3
+shader_parameter/AO_Intensity = 1.0
+shader_parameter/DitheringOn_ = false
+shader_parameter/DitheringValue = 1.0
+shader_parameter/DitheringFalloff = 5.0
+shader_parameter/Base_VS = ExtResource("8_dct6g")
+shader_parameter/ORM_VS = ExtResource("10_kp5ba")
+shader_parameter/EmissiveMap_VS = ExtResource("4_wjed0")
+shader_parameter/NormalMap_VS = ExtResource("9_rg2tn")
+shader_parameter/Base = ExtResource("8_dct6g")
+shader_parameter/ORM = ExtResource("10_kp5ba")
+shader_parameter/EmissiveMap = ExtResource("4_wjed0")
+shader_parameter/NormalMap = ExtResource("9_rg2tn")
+
+[node name="SM_Wall" instance=ExtResource("1_occyr")]
+
+[node name="Mesh" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_5iqj8")
+surface_material_override/1 = SubResource("ShaderMaterial_bbpgf")

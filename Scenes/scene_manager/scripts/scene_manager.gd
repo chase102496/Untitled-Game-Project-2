@@ -3,7 +3,8 @@ extends CanvasLayer
 signal transitioned_in()
 signal transitioned_out()
 
-var current_scene: Node: set=set_current_scene
+var current_scene : Node: set=set_current_scene
+var prev_scene_path : String = ""
 var busy : bool = false
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -29,16 +30,23 @@ func transition_out() -> void:
 	create_tween().tween_property(margin_container, "scale", Vector2.ZERO, 0.3)
 	animation_player.play("out")
 
+func transition_to_prev() -> void:
+	transition_to(prev_scene_path)
+
 func transition_to(scene: String) -> void:
 	
 	##Make sure we don't try to load another scene
 	if !busy:
 		busy = true
 		
+		## Save previous scene path for memory\
+		var prefix = "res://Levels/"
+		var suffix = ".tscn"
+		SceneManager.prev_scene_path = str(prefix, current_scene.name, suffix)
+		print(SceneManager.prev_scene_path)
+		
 		transition_in()
 		await transitioned_in
-		
-		
 		
 		var new_scene = load(scene).instantiate()
 		current_scene = new_scene

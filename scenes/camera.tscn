@@ -28,13 +28,13 @@ frustum_offset = Vector2(0, 0)
 near = 0.05
 far = 4000.0
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_hmjsv"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_oa1ei"]
 panorama = ExtResource("7_knix3")
 
 [sub_resource type="Sky" id="Sky_ncf8r"]
-sky_material = SubResource("PanoramaSkyMaterial_hmjsv")
+sky_material = SubResource("PanoramaSkyMaterial_oa1ei")
 
-[sub_resource type="Environment" id="Environment_ln0v0"]
+[sub_resource type="Environment" id="Environment_njoxs"]
 background_mode = 2
 background_color = Color(0.108, 0.2214, 0.27, 1)
 sky = SubResource("Sky_ncf8r")
@@ -49,18 +49,19 @@ volumetric_fog_density = 0.0325
 volumetric_fog_albedo = Color(0.235503, 0.189935, 0.3064, 1)
 volumetric_fog_emission = Color(0.655212, 0.47399, 0.993068, 1)
 volumetric_fog_emission_energy = 0.2
-volumetric_fog_length = 1024.0
-volumetric_fog_sky_affect = 0.26
+volumetric_fog_length = 30.0
 adjustment_enabled = true
 adjustment_brightness = 1.03
 adjustment_contrast = 1.2
 adjustment_saturation = 1.12
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_0dn2o"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_h82rd"]
 dof_blur_far_enabled = true
-dof_blur_far_distance = 15.0
-dof_blur_far_transition = -1.0
+dof_blur_far_transition = 6.0
 dof_blur_near_enabled = true
+dof_blur_near_distance = 4.0
+dof_blur_near_transition = 6.0
+dof_blur_amount = 0.04
 
 [node name="Camera" type="Node3D"]
 transform = Transform3D(-0.999701, 0, 0, 0, 0.97014, 0.242536, 0, 0.242535, -0.970144, 0, 0, 0)
@@ -80,8 +81,8 @@ look_at_offset = Vector3(0, 0.75, 0)
 script = ExtResource("1_l2ekv")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-environment = SubResource("Environment_ln0v0")
-attributes = SubResource("CameraAttributesPractical_0dn2o")
+environment = SubResource("Environment_njoxs")
+attributes = SubResource("CameraAttributesPractical_h82rd")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
 script = ExtResource("5_42dvy")
