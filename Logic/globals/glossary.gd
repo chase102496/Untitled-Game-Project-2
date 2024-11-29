@@ -28,27 +28,39 @@ var status_class : Dictionary = {
 	##abil.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 }
 
-const item_category : Dictionary = {
+var item_class : Dictionary = {
+	"item_nectar" : component_inventory.item_nectar
+}
+
+var item_category : Dictionary = {
 	"GEAR" : {
 		"TITLE" : "Gear",
-		"ICON" : "",
-		"COLOR" : Color("4acacf")
+		"ICON" : "⌘",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 0
 	},
 	"DREAMKIN" : {
 		"TITLE" : "Dreamkin",
-		"ICON" : "",
-		"COLOR" : Color("4acacf")
+		"ICON" : "❖",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 1
 	},
-	"ITEM" : {
+	"ITEMS" : {
 		"TITLE" : "Items",
-		"ICON" : "",
-		"COLOR" : Color("4acacf")
+		"ICON" : "⍟",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 2
 	},
-	"KEY" : {
+	"KEYS" : {
 		"TITLE" : "Keys",
-		"ICON" : "",
-		"COLOR" : Color("4acacf")
+		"ICON" : "🝰",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 3
 	}
+}
+
+const sprite : Dictionary = {
+	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
 }
 
 const entity : Dictionary = {

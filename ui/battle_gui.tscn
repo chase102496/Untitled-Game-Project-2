@@ -327,74 +327,75 @@ collide_with_bodies = false
 script = ExtResource("6_rhj8w")
 
 [node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_e75bu")
 
-[node name="Battle GUI" type="Node" parent="StateChart"]
+[node name="Battle_GUI" type="Node" parent="StateChart"]
 script = ExtResource("6_154vc")
 initial_state = NodePath("Disabled")
 
-[node name="on_gui_disabled" type="Node" parent="StateChart/Battle GUI"]
+[node name="on_gui_disabled" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../Disabled")
 event = &"on_gui_disabled"
 delay_in_seconds = "0.0"
 
-[node name="on_gui_main" type="Node" parent="StateChart/Battle GUI"]
+[node name="on_gui_main" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../Main")
 event = &"on_gui_main"
 delay_in_seconds = "0.0"
 
-[node name="on_gui_skillcheck" type="Node" parent="StateChart/Battle GUI"]
+[node name="on_gui_skillcheck" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../Skillcheck")
 event = &"on_gui_skillcheck"
 delay_in_seconds = "0.0"
 
-[node name="on_gui_switch" type="Node" parent="StateChart/Battle GUI"]
+[node name="on_gui_switch" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../Switch")
 event = &"on_gui_switch"
 delay_in_seconds = "0.0"
 
-[node name="Disabled" type="Node" parent="StateChart/Battle GUI"]
+[node name="Disabled" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")
 
-[node name="Main" type="Node" parent="StateChart/Battle GUI"]
+[node name="Main" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")
 
-[node name="on_gui_battle" type="Node" parent="StateChart/Battle GUI/Main"]
+[node name="on_gui_battle" type="Node" parent="StateChart/Battle_GUI/Main"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../../Battle")
 event = &"on_gui_battle"
 delay_in_seconds = "0.0"
 
-[node name="Battle" type="Node" parent="StateChart/Battle GUI"]
+[node name="Battle" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")
 
-[node name="on_gui_main" type="Node" parent="StateChart/Battle GUI/Battle"]
+[node name="on_gui_main" type="Node" parent="StateChart/Battle_GUI/Battle"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../../Main")
 event = &"on_gui_main"
 delay_in_seconds = "0.0"
 
-[node name="on_gui_select" type="Node" parent="StateChart/Battle GUI/Battle"]
+[node name="on_gui_select" type="Node" parent="StateChart/Battle_GUI/Battle"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../../Select")
 event = &"on_gui_select"
 delay_in_seconds = "0.0"
 
-[node name="Select" type="Node" parent="StateChart/Battle GUI"]
+[node name="Select" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")
 
-[node name="on_gui_battle" type="Node" parent="StateChart/Battle GUI/Select"]
+[node name="on_gui_battle" type="Node" parent="StateChart/Battle_GUI/Select"]
 script = ExtResource("8_rxcdg")
 to = NodePath("../../Battle")
 event = &"on_gui_battle"
 delay_in_seconds = "0.0"
 
-[node name="Skillcheck" type="Node" parent="StateChart/Battle GUI"]
+[node name="Skillcheck" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")
 
-[node name="Switch" type="Node" parent="StateChart/Battle GUI"]
+[node name="Switch" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")

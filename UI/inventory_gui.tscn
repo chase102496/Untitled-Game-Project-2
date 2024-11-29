@@ -1,8 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1s71hosugqju"]
+[gd_scene load_steps=12 format=3 uid="uid://b1s71hosugqju"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://UI/menu_theme.tres" id="1_027ve"]
+[ext_resource type="Script" path="res://UI/inventory_gui.gd" id="2_b6dus"]
 [ext_resource type="StyleBox" uid="uid://b0gg650riimlg" path="res://UI/menu_style_box_no_shadow.tres" id="2_eui1b"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_l2cim"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_gemym"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_jujvs"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_dkhww"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="8_nxsqo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nagy7"]
 content_margin_left = 20.0
@@ -37,7 +42,6 @@ expand_margin_bottom = 20.0
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_47wkm"]
 
 [node name="Inventory_GUI" type="Control"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,6 +49,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_027ve")
+script = ExtResource("2_b6dus")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
@@ -59,6 +64,7 @@ layout_mode = 2
 theme_override_constants/separation = 32
 
 [node name="Tabs" type="TabBar" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 current_tab = 0
 tab_alignment = 1
@@ -69,6 +75,9 @@ tab_0/title = "  ⌘ Gear  "
 tab_1/title = "  ❖ Dreamkin  "
 tab_2/title = "  ⍟ Items   "
 tab_3/title = "  🝰 Keys  "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -142,3 +151,72 @@ Test description. This does something cool."
 fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false
+
+[node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_gemym")
+
+[node name="Inventory_GUI" type="Node" parent="StateChart"]
+script = ExtResource("6_jujvs")
+initial_state = NodePath("Disabled")
+
+[node name="Disabled" type="Node" parent="StateChart/Inventory_GUI"]
+script = ExtResource("7_dkhww")
+
+[node name="on_gui_toggle" type="Node" parent="StateChart/Inventory_GUI/Disabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../../Enabled")
+event = &"on_gui_toggle"
+delay_in_seconds = "0.0"
+
+[node name="Enabled" type="Node" parent="StateChart/Inventory_GUI"]
+script = ExtResource("6_jujvs")
+initial_state = NodePath("Gear")
+
+[node name="on_gui_disabled" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../../Disabled")
+event = &"on_gui_disabled"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_toggle" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../../Disabled")
+event = &"on_gui_toggle"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_gear" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../Gear")
+event = &"on_gui_gear"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_dreamkin" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../Dreamkin")
+event = &"on_gui_dreamkin"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_items" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../Items")
+event = &"on_gui_items"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_keys" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../Keys")
+event = &"on_gui_keys"
+delay_in_seconds = "0.0"
+
+[node name="Gear" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("7_dkhww")
+
+[node name="Dreamkin" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("7_dkhww")
+
+[node name="Items" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("7_dkhww")
+
+[node name="Keys" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
+script = ExtResource("7_dkhww")

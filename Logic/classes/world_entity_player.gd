@@ -7,6 +7,7 @@ extends world_entity_default
 @export var my_component_party : component_party
 @export var my_component_ability : component_ability
 @export var my_component_inventory : component_inventory
+@export var my_inventory_gui : Control
 
 func _ready():
 	Global.player = self
@@ -14,6 +15,11 @@ func _ready():
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
 	#my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
+	
+	#TODO FIX THIS TO RUN POSITION ON A PER-TRANSFER BASIS WHERE THE OLD WORLD -> NEW WORLD, the OLD WORLD tells us where we're spawning in the new one.
+	#PlayerData.load_data_scene() 
+	#PlayerData.load_data_scene(position of player new spawn)
+	#OR, we edit the actual data package on pre-scene transition, in the scenetransition Singleton
 	
 	#Position should be a scene-based save
 	#When we go through a pathway leading from one scene to another, the previous scene dictates where we will spawn in the new scene
@@ -89,10 +95,10 @@ func _physics_process(delta: float) -> void:
 	#if Input.is_action_just_pressed("move_backward"):
 		#my_component_party.summon(0,"world")
 		#
-	#if Input.is_action_just_pressed("move_jump"):
-		#my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
-			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-			#)
+	if Input.is_action_just_pressed("move_jump"):
+		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+			owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
+			)
 	
 	if Input.is_action_just_pressed("num0"):
 		Battle.battle_initialize("enemy_gloam enemy_gloam")

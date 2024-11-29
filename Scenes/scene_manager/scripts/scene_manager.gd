@@ -52,7 +52,7 @@ func transition_to(scene: String) -> void:
 		current_scene = new_scene
 
 		new_scene.load_scene()
-
+		
 		if new_scene.emits_loaded_signal:
 			await new_scene.loaded
 
@@ -61,6 +61,7 @@ func transition_to(scene: String) -> void:
 
 		new_scene.activate()
 		busy = false
+		
 	else:
 		push_error("Tried to load scene while busy! - ",scene)
 

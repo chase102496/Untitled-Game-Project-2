@@ -135,6 +135,7 @@ class status_manager:
 
 # - Status Effects - #
 class status:
+	var id : String
 	var host : Node #The owner of the status effect. Who to apply it to
 	var behavior : String = Battle.status_behavior.RESIST #How overwriting status fx works
 	var category : String = Battle.status_category.NORMAL #NORMAL, TETHER, or PASSIVE
@@ -152,19 +153,18 @@ class status:
 	
 	func get_data_default():
 		return {
+			"id" : id,
 			"title" : title,
 			"category" : category,
 			"behavior" : behavior,
 			"duration" : duration,
 			"description" : description
-			#"behavior" : behavior,
 		}
 	
 	func get_data():
-		return {
-		"id" : "status", #Class reference to create us later
-		}
+		return {}
 
+	## If we only wanna run this once per turn. Used if we modify state of host somehow, so it doesn't forget it already ran us
 	func once_per_turn():
 		if new_turn:
 			new_turn = false
@@ -183,15 +183,6 @@ class status:
 	
 	func on_skillcheck(): #runs right before skillcheck
 		pass
-	
-	#func on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
-		#pass
-	#
-	#func on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object): #when someone gets hit (anyone)
-		#pass
-	#
-	#func on_battle_entity_damaged(entity,amount): #runs when the host of the status effect's health changes
-		#pass
 	
 	func on_end(): #runs on end of turn
 		pass
@@ -234,15 +225,15 @@ class status_fear:
 	extends status_template_default
 	
 	func get_data():
-		return {
-		"id" : "status_fear",
-		}
+		return {}
 	
 	func _init(host : Node,duration : int = 2) -> void:
-		self.host = host
-		self.duration = duration
+		#Defaults
+		id = "status_fear"
 		title = "Fear"
 		description = "Causes the target to lose accuracy on attacks"
+		self.host = host
+		self.duration = duration
 		fx = Glossary.particle.fear.instantiate()
 	
 	func on_skillcheck():
@@ -253,18 +244,19 @@ class status_burn:
 	
 	func get_data():
 		return {
-		"id" : "status_burn",
 		"damage" : damage,
 		}
 	
 	var damage : int
 	
 	func _init(host : Node, duration : int = 2, damage : int = 1) -> void:
+		#Defaults
+		id = "status_burn"
+		title = "Burn"
+		description = "Inflicts damage on the target at the end of their turn"
 		self.host = host
 		self.duration = duration
 		self.damage = damage
-		title = "Burn"
-		description = "Inflicts damage on the target at the end of their turn"
 		fx = Glossary.particle.burn.instantiate()
 	
 	func on_end():
@@ -277,18 +269,19 @@ class status_freeze:
 	
 	func get_data():
 		return {
-		"id" : "status_freeze",
 		"siphon_amount" : siphon_amount,
 		}
 	
 	var siphon_amount : int
 	
 	func _init(host : Node, duration : int = 2, siphon_amount : int = 1) -> void:
+		#Defaults
+		id = "status_freeze"
+		title = "Freeze"
+		description = "Creates a chasm of frost inside the target, sapping vis at the end of their turn"
 		self.host = host
 		self.duration = duration
 		self.siphon_amount = siphon_amount
-		title = "Freeze"
-		description = "Creates a chasm of frost inside the target, sapping vis at the end of their turn"
 		fx = Glossary.particle.freeze.instantiate()
 	
 	func on_end():
@@ -300,15 +293,14 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 	extends status_template_default
 	
 	func get_data():
-		return {
-		"id" : "status_disabled",
-		}
+		return {}
 	
 	func _init(host : Node, duration : int = 2) -> void:
-		self.host = host
-		self.duration = duration
+		id = "status_disabled"
 		title = "Disabled"
 		description = "Completely disables the target, preventing them from getting attacked and also from attacking"
+		self.host = host
+		self.duration = duration
 		priority = 999 #Nothing should overwrite us
 		fx = Glossary.particle.disabled.instantiate()
 	
@@ -334,13 +326,14 @@ class status_heartstitch:
 	var partners : Array
 	
 	func _init(host : Node,partners : Array,duration : int) -> void:
+		id = "status_heartstitch"
+		title = "Heartstitch"
+		description = "This target is sharing damage with another"
 		self.host = host #who is the initial target of the stitch
 		self.partners = partners #who is paired to the host
 		self.duration = duration
 		behavior = Battle.status_behavior.RESET
 		category = Battle.status_category.TETHER
-		title = "Heartstitch"
-		description = "This target is sharing damage with another"
 	
 	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartstitch
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
@@ -366,7 +359,6 @@ class status_ethereal: #Immune to everything but one type
 	
 	func get_data():
 		return {
-		"id" : "status_ethereal",
 		"title" : title,
 		"weakness" : weakness,
 		}
@@ -374,11 +366,12 @@ class status_ethereal: #Immune to everything but one type
 	var weakness : Dictionary
 	
 	func _init(host : Node, weakness : Dictionary = Battle.type.CHAOS) -> void:
+		id = "status_ethereal"
+		title = "Ethereal"
+		description = "This target is immune to all types of damage except one"
 		self.host = host
 		self.weakness = weakness
 		category = Battle.status_category.PASSIVE
-		title = "Ethereal"
-		description = "This target is immune to all types of damage except one"
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != weakness:
@@ -393,7 +386,6 @@ class status_thorns:
 	
 	func get_data():
 		return {
-		"id" : "status_thorns",
 		"title" : title,
 		"damage" : damage,
 		}
@@ -402,11 +394,12 @@ class status_thorns:
 	var reflect_target : Object = null
 	
 	func _init(host : Node,damage : int = 1) -> void:
+		id = "status_thorns"
+		title = "Thorns"
+		description = "This target will reflect damage back to the attacker"
 		self.host = host
 		self.damage = damage
 		category = Battle.status_category.PASSIVE
-		title = "Thorns"
-		description = "This target will reflect damage back to the attacker"
 	
 	func on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object):
 		if host in entity_targets and ability.primary_target == host: #If we're the primary target and but we're being attacked
@@ -423,16 +416,16 @@ class status_regrowth:
 	
 	func get_data():
 		return {
-		"id" : "status_regrowth",
 		}
 	
 	var death_protection_enabled : bool = false
 	
 	func _init(host : Node) -> void:
-		self.host = host
-		category = Battle.status_category.PASSIVE
+		id = "status_regrowth"
 		title = "Regrowth"
 		description = "This target will only die if all of its kind are killed alongside it"
+		self.host = host
+		category = Battle.status_category.PASSIVE
 	
 	func on_battle_entity_disabled_expire(entity : Node):
 		if entity == host: #If we just got out of a disable
@@ -470,18 +463,18 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 	
 	func get_data():
 		return {
-		"id" : "status_immunity",
 		"immunity" : immunity
 		}
 	
 	var immunity : Dictionary
 	
 	func _init(host : Node, immunity : Dictionary = Battle.type.BALANCE) -> void:
+		id = "status_immunity"
+		title = "Immunity"
+		description = "This target is immune to an aspect"
 		self.host = host
 		self.immunity = immunity
 		category = Battle.status_category.PASSIVE
-		title = "Immunity"
-		description = "This target is immune to an aspect"
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == immunity:
@@ -496,18 +489,18 @@ class status_weakness: #Creates a specific type that we look for to do bonus thi
 	
 	func get_data():
 		return {
-		"id" : "status_weakness",
 		"weakness" : weakness
 		}
 	
 	var weakness : Dictionary
 	
 	func _init(host : Node, weakness : Dictionary = Battle.type.BALANCE) -> void:
+		id = "status_weakness"
+		title = "Weakness"
+		description = "This target is weak to an aspect"
 		self.host = host
 		self.weakness = weakness
 		category = Battle.status_category.PASSIVE
-		title = "Weakness"
-		description = "This target is weak to an aspect"
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == weakness:
@@ -523,7 +516,6 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	
 	func get_data():
 		return {
-		"id" : "status_swarm",
 		"mult_percent" : mult_percent
 		}
 	
@@ -531,12 +523,12 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	var mult_percent : float #This adds to host's damage multiplier so 0.1 would be 10% increased for every one of them on the field
 	
 	func _init(host : Node, mult_percent : float = 1.0) -> void:
-		
+		id = "status_swarm"
+		title = "Swarm"
+		description = "This target is doing damage based on how many of it are on the field"
 		self.host = host
 		self.mult_percent = mult_percent
 		category = Battle.status_category.PASSIVE
-		title = "Swarm"
-		description = "This target is doing damage based on how many of it are on the field"
 	
 	func on_start():
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
@@ -551,6 +543,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 # - Abilities - #
 class ability:
 	
+	var id : String ##ID should match the class name
 	var skillcheck_modifier : int = 1
 	var caster : Node
 	var primary_target : Node
@@ -572,8 +565,11 @@ class ability:
 			var value = new_metadata[key]
 			set(key,value)
 	
+	## Default data pulled for every item
+	## Just here for removing some redundant code
 	func get_data_default():
 		return {
+			"id" : id,
 			"title" : title,
 			"type" : type,
 			"description" : description,
@@ -584,10 +580,9 @@ class ability:
 			#"damage" : damage,
 		}
 	
+	## Any additional data we want to pull besides the defaults
 	func get_data():
-		return {
-		"id" : "ability", #Class reference to create us later
-		}
+		return {}
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
@@ -735,13 +730,16 @@ class ability_spook:
 	
 	func get_data():
 		return {
-		"id" : "ability_spook",
 		"damage" : damage,
 		"chance" : chance,
 		"vis_cost" : vis_cost
 		}
 	
 	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+		#Default changes
+		id = "ability_spook"
+		title = "Spook"
+		description = "Unleashes an unsettling aura that disrupts the target's focus.\nHas a chance to fear target."
 		self.caster = caster
 		self.damage = damage
 		self.chance = chance
@@ -749,8 +747,8 @@ class ability_spook:
 		type = Battle.type.VOID
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
-		title = "Spook"
-		description = "Unleashes an unsettling aura that disrupts the target's focus.\nHas a chance to fear target."
+		
+		
 
 	func cast_main():
 		caster.my_component_vis.siphon(vis_cost)
@@ -769,13 +767,16 @@ class ability_solar_flare:
 	
 	func get_data():
 		return {
-		"id" : "ability_solar_flare",
 		"damage" : damage,
 		"chance" : chance,
 		"vis_cost" : vis_cost
 		}
 	
 	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+		#Default changes
+		id = "ability_solar_flare"
+		title = "Solar Flare"
+		description = "Summons a dazzling burst of radiant energy that coats the target in molten flame.\nHas a chance to burn target."
 		self.caster = caster
 		self.damage = damage
 		self.chance = chance
@@ -783,9 +784,6 @@ class ability_solar_flare:
 		type = Battle.type.CHAOS
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
-		title = "Solar Flare"
-		description = "Summons a dazzling burst of radiant energy that coats the target in molten flame.\nHas a chance to burn target."
-		
 		
 	func cast_pre_mitigation_bonus(caster : Node, target : Node): #Does bonus damage, bonus burn damage, and 100% chance to proc burn
 		print_debug(caster.name, " scorched ", target.name," for double damage!")
@@ -810,13 +808,16 @@ class ability_frigid_core:
 	
 	func get_data():
 		return {
-		"id" : "ability_frigid_core",
 		"damage" : damage,
 		"chance" : chance,
 		"vis_cost" : vis_cost
 		}
 	
 	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+		#Default changes
+		id = "ability_solar_flare"
+		title = "Frigid Core"
+		description = "Summons a chilling pulse of frozen energy inside the target.\nHas a chance to freeze."
 		self.caster = caster
 		self.damage = damage
 		self.chance = chance
@@ -824,9 +825,7 @@ class ability_frigid_core:
 		type = Battle.type.VOID
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
-		title = "Frigid Core"
-		description = "Summons a chilling pulse of frozen energy inside the target.\nHas a chance to freeze."
-	
+		
 	func cast_main():
 		pass
 		#TODO add vis removal here
@@ -843,15 +842,16 @@ class ability_tackle: #Scales with skillcheck
 	##What gets exported between scenes and games
 	func get_data():
 		return {
-		"id" : "ability_tackle",
 		"damage" : damage
 		}
 	
 	func _init(caster : Node, damage : int = 1) -> void:
-		self.caster = caster
-		self.damage = damage
+		#Default changes
+		id = "ability_tackle"
 		title = "Tackle"
 		description = "A forceful rush at the target, dealing damage"
+		self.caster = caster
+		self.damage = damage
 		type = Battle.type.BALANCE
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
@@ -866,18 +866,19 @@ class ability_headbutt: #Scales with damage multiplier
 	
 	func get_data():
 		return {
-		"id" : "ability_headbutt",
 		"damage" : damage
 		}
 	
 	func _init(caster : Node, damage : int = 1) -> void:
+		#Default changes
+		id = "ability_headbutt"
+		title = "Headbutt"
+		description = "Charges the target, dealing damage"
 		self.caster = caster
 		self.damage = damage
 		type = Battle.type.BALANCE
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
-		title = "Headbutt"
-		description = "Charges the target, dealing damage"
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		var mult = caster.my_component_ability.stats.damage_multiplier
@@ -889,19 +890,19 @@ class ability_heartstitch:
 	extends ability_template_default
 	
 	func get_data():
-		return {
-		"id" : "ability_heartstitch",
-		}
+		return {}
 	
 	var old_targets : Array = []
 
 	func _init(caster : Node) -> void:
+		#Default changes
+		id = "ability_heartstitch"
+		title = "Heart-stitch"
+		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		self.caster = caster
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.TETHER
-		title = "Heart-stitch"
-		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		damage = 1
 		vis_cost = 1
 	
@@ -934,17 +935,17 @@ class ability_switchstitch:
 	extends ability_template_default
 	
 	func get_data():
-		return {
-		"id" : "ability_switchstitch",
-		}
+		return {}
 	
 	func _init(caster : Node) -> void:
+		#Default changes
+		id = "ability_switchstitch"
+		title = "Switch-stitch"
+		description = "Forces two targeted enemies to swap positions"
 		self.caster = caster
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.FLOW
-		title = "Switch-stitch"
-		description = "Forces two targeted enemies to swap positions"
 		damage = 1
 		vis_cost = 1
 	

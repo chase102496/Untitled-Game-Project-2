@@ -1,6 +1,7 @@
 extends Node
 
 signal button_pressed_battle_ability(ability : Object)
+signal button_pressed_inventory_item(item : Object)
 
 signal animation_finished(anim_name,character)
 signal animation_started(anim_name,character)

@@ -5,7 +5,6 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_up657"]
 resource_name = "SM_Frame_01_MI_Candelabra_Frames_0"
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_crx8j")
 roughness = 0.5
 normal_enabled = true

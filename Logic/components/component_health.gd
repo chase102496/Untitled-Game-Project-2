@@ -15,10 +15,17 @@ func revive():
 	#Events.battle_entity_revived.emit(owner)
 	health = max_health
 
-#func heal(amt : int):
+func heal(amt : int):
+	
+	var amt_rounded = int(round(amt))
+	
+	Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_rounded),"float_away",Color.GREEN)
+	
+	health = clamp(health + amt_rounded,0,max_health)
+		
 	#Events.battle_entity_healed.emit(owner,amt)
 
-func damage(amt : float, mirror_damage : bool = false, type : Dictionary = Battle.type.BALANCE):
+func damage(amt : float, from_tether : bool = false, type : Dictionary = Battle.type.BALANCE):
 	
 	var amt_rounded = int(round(amt))
 	
@@ -32,10 +39,9 @@ func damage(amt : float, mirror_damage : bool = false, type : Dictionary = Battl
 			var old_health = health
 			
 			##Apply damage
-			health -= amt_rounded
-			health = clamp(health,0,max_health)
+			health = clamp(health - amt_rounded,0,max_health)
 			
-			if !mirror_damage: #To protect recursive when using heartstitch
+			if !from_tether: #To protect recursive when using heartstitch
 				Events.battle_entity_damaged.emit(owner,amt_rounded)
 			
 			print_debug(old_health," HP -> ",health," HP")
@@ -44,7 +50,7 @@ func damage(amt : float, mirror_damage : bool = false, type : Dictionary = Battl
 		if health == 0: #If we're dying
 			
 			##Query our death protection statuses to see if any want to intervene with a message before we die
-			var death_protection_result = owner.my_component_ability.current_status_effects.status_event("on_death_protection",[amt_rounded,mirror_damage,type],true)
+			var death_protection_result = owner.my_component_ability.current_status_effects.status_event("on_death_protection",[amt_rounded,from_tether,type],true)
 			
 			##If they do, ignore our normal death process and have the status fx handle it
 			if death_protection_result.size() > 0:

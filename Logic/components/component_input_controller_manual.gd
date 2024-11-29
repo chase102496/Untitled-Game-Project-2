@@ -24,6 +24,9 @@ func _on_state_physics_processing_explore(_delta: float) -> void:
 		#TODO
 		jump_damper = true
 		jump = false
+	
+	if Input.is_action_just_pressed("ui_cancel"):
+		owner.my_inventory_gui.state_chart.send_event("on_gui_toggle")
 
 func _on_state_exited_explore():
 	direction = Vector2.ZERO

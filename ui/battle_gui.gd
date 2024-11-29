@@ -29,7 +29,7 @@ extends Control
 @onready var ui_button_battle_ability : PackedScene = preload("res://UI/empty_ability_button.tscn")
 @onready var ui_button_switch_dreamkin : PackedScene = preload("res://UI/empty_dreamkin_button.tscn")
 
-@onready var state_chart : StateChart = get_node("StateChart")
+@onready var state_chart : StateChart = %StateChart
 
 signal button_pressed_switch_dreamkin(dreamkin : Object)
 
@@ -50,24 +50,24 @@ func _ready() -> void:
 	## Main
 	Events.button_pressed_battle_ability.connect(_on_button_pressed_battle_ability)
 	button_pressed_switch_dreamkin.connect(_on_button_pressed_switch_dreamkin)
-	get_node("StateChart/Battle GUI/Main").state_entered.connect(_on_state_entered_battle_gui_main)
-	get_node("StateChart/Battle GUI/Main").state_exited.connect(_on_state_exited_battle_gui_main)
-	get_node("StateChart/Battle GUI/Disabled").state_entered.connect(_on_state_entered_battle_gui_disabled)
-	get_node("StateChart/Battle GUI/Disabled").state_exited.connect(_on_state_exited_battle_gui_disabled)
+	%StateChart/Battle_GUI/Main.state_entered.connect(_on_state_entered_battle_gui_main)
+	%StateChart/Battle_GUI/Main.state_exited.connect(_on_state_exited_battle_gui_main)
+	%StateChart/Battle_GUI/Disabled.state_entered.connect(_on_state_entered_battle_gui_disabled)
+	%StateChart/Battle_GUI/Disabled.state_exited.connect(_on_state_exited_battle_gui_disabled)
 	## Battle
-	get_node("StateChart/Battle GUI/Battle").state_entered.connect(_on_state_entered_battle_gui_battle)
-	get_node("StateChart/Battle GUI/Battle").state_physics_processing.connect(_on_state_physics_provessing_battle_gui_battle)
-	get_node("StateChart/Battle GUI/Battle").state_exited.connect(_on_state_exited_battle_gui_battle)
-	get_node("StateChart/Battle GUI/Select").state_entered.connect(_on_state_entered_battle_gui_select)
-	get_node("StateChart/Battle GUI/Select").state_exited.connect(_on_state_exited_battle_gui_select)
-	get_node("StateChart/Battle GUI/Select").state_physics_processing.connect(_on_state_physics_processing_battle_gui_select)
-	get_node("StateChart/Battle GUI/Skillcheck").state_entered.connect(_on_state_entered_battle_gui_skillcheck)
-	get_node("StateChart/Battle GUI/Skillcheck").state_physics_processing.connect(_on_state_physics_processing_battle_gui_skillcheck) #long af
-	get_node("StateChart/Battle GUI/Skillcheck").state_exited.connect(_on_state_exited_battle_gui_skillcheck)
+	%StateChart/Battle_GUI/Battle.state_entered.connect(_on_state_entered_battle_gui_battle)
+	%StateChart/Battle_GUI/Battle.state_physics_processing.connect(_on_state_physics_processing_battle_gui_battle)
+	%StateChart/Battle_GUI/Battle.state_exited.connect(_on_state_exited_battle_gui_battle)
+	%StateChart/Battle_GUI/Select.state_entered.connect(_on_state_entered_battle_gui_select)
+	%StateChart/Battle_GUI/Select.state_exited.connect(_on_state_exited_battle_gui_select)
+	%StateChart/Battle_GUI/Select.state_physics_processing.connect(_on_state_physics_processing_battle_gui_select)
+	%StateChart/Battle_GUI/Skillcheck.state_entered.connect(_on_state_entered_battle_gui_skillcheck)
+	%StateChart/Battle_GUI/Skillcheck.state_physics_processing.connect(_on_state_physics_processing_battle_gui_skillcheck) #long af
+	%StateChart/Battle_GUI/Skillcheck.state_exited.connect(_on_state_exited_battle_gui_skillcheck)
 	Events.skillcheck_hit.connect(_on_skillcheck_hit)
 	## Switch
-	get_node("StateChart/Battle GUI/Switch").state_entered.connect(_on_state_entered_battle_gui_switch)
-	get_node("StateChart/Battle GUI/Switch").state_exited.connect(_on_state_exited_battle_gui_switch)
+	%StateChart/Battle_GUI/Switch.state_entered.connect(_on_state_entered_battle_gui_switch)
+	%StateChart/Battle_GUI/Switch.state_exited.connect(_on_state_exited_battle_gui_switch)
 
 ## --- States ----
 
@@ -104,7 +104,7 @@ func _on_state_entered_battle_gui_battle():
 		ui_grid_battle.add_child(new_button)
 		new_button.show() #Show buttons
 
-func _on_state_physics_provessing_battle_gui_battle(delta: float) -> void:
+func _on_state_physics_processing_battle_gui_battle(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		state_chart.send_event("on_gui_main")
 
