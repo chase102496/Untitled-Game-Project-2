@@ -1,7 +1,12 @@
 extends Node
 
 signal button_pressed_battle_ability(ability : Object)
+
 signal button_pressed_inventory_item(item : Object)
+signal mouse_entered_inventory_item(item : Object)
+signal mouse_exited_inventory_item(item : Object)
+
+signal button_pressed_inventory_item_option(item : Object, option : String, target : Node)
 
 signal animation_finished(anim_name,character)
 signal animation_started(anim_name,character)

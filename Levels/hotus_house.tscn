@@ -567,17 +567,19 @@ transform = Transform3D(2.66667, 0, 0, 0, 2.66667, 0, 0, 0, 2.66667, -3.77588, 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, -3.125, 0)
 mesh = SubResource("PlaneMesh_fg4ag")
 
-[node name="tree_chroma_2_0" parent="." instance=ExtResource("29_j7m2b")]
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="tree_chroma_2_0" parent="Environment" instance=ExtResource("29_j7m2b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.375, -2.125, 6.875)
 
-[node name="tree_chroma_2_4" parent="." instance=ExtResource("29_j7m2b")]
+[node name="tree_chroma_2_4" parent="Environment" instance=ExtResource("29_j7m2b")]
 transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, -15.1253, -2.125, 1.59878)
 
-[node name="tree_chroma_2_1" parent="." instance=ExtResource("29_j7m2b")]
+[node name="tree_chroma_2_1" parent="Environment" instance=ExtResource("29_j7m2b")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -18.625, -2.125, -6.125)
 
-[node name="tree_chroma_2_2" parent="." instance=ExtResource("29_j7m2b")]
+[node name="tree_chroma_2_2" parent="Environment" instance=ExtResource("29_j7m2b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.625, -2.125, 2.625)
 
-[node name="tree_chroma_2_3" parent="." instance=ExtResource("29_j7m2b")]
+[node name="tree_chroma_2_3" parent="Environment" instance=ExtResource("29_j7m2b")]
 transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -25.375, -2.125, -3.375)

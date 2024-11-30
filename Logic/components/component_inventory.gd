@@ -8,19 +8,28 @@ var my_items : Array = []
 ##Placeholder reminder for imports and exports to save file functions!
 
 ## Returns all items in the given category
-func get_items_category(category_name : Dictionary):
+func get_items_from_category(category_name : Dictionary):
 	var result : Array = []
 	for item in my_items:
 		if item.category == category_name:
 			result.append(item)
 	return result
 
-#func add_item(inst : Object):
-	#for item in my_items:
-		#if item.
+func add_item(inst : Object):
+	
+	## See if matching item exists and both are stackable
+	if inst.stackable:
+		for item in my_items:
+			if item.id == inst.id and item.stackable:
+				item.on_stack(inst.quantity)
+				return #Exit function
+	
+	## If we never encounter a match or it's not stackable, just add it normally
+	my_items.append(inst)
+	
 
 func remove_item(inst : Object):
-	pass
+	my_items.pop_at(my_items.find(inst))
 
 ## --- Item Class ---
 
@@ -32,10 +41,11 @@ class item:
 	var flavor : String # No, not an ice cream flavor kind of flavor. Flavor text, just for fun.
 	var description : String
 	var sprite : PackedScene #Sprite to be instantiated when item is shown on screen via inventory
-	var unstackable : bool = false #If we want it to have its own slot in our inventory
+	var stackable : bool = true #If we want it to have its own slot in our inventory
 	var quantity : int = 1
 	var max_quantity : int = 99
-	var options : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+	var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+	var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
 	
 	func _init(host : Node) -> void:
 		self.host = host
@@ -52,7 +62,7 @@ class item:
 			"title" : title,
 			"flavor" : category,
 			"description" : description,
-			"unstackable" : unstackable,
+			"stackable" : stackable,
 			"quantity" : quantity,
 			"max_quantity" : max_quantity,
 		}
@@ -63,7 +73,7 @@ class item:
 	## On increase, usually when we add an item that matches us in the inv
 	## Need this to keep track of items internally and avoid overhead on inv manager
 	func on_stack(amt : int = 1) -> void:
-		if unstackable:
+		if !stackable:
 			push_error("Attempting to stack an item that shouldn't be stacked")
 		else:
 			quantity += amt
@@ -98,22 +108,91 @@ class item_nectar:
 		id = "item_nectar"
 		title = "Nectar"
 		flavor = "You couldn't just call it a health potion?"
-		description = "A droplet containing a golden liquid that shimmers like sunlight caught in honey. Looks yummy"
+		description = "A reddish-gold liquid that flows thicker than honey. Best enjoyed near a cozy fire."
 		self.host = host
 		self.heal_amount = heal_amount
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
 		sprite = Glossary.sprite.placeholder
 		
-		## List of functions that pop up when we select this item in our inventory. References existing scripts
-		options = {
-			"use" : on_option_use,
-			"remove" : on_remove
+		## List of functions that pop up in world when we select this item in our inventory. References existing scripts
+		options_world = {
+			"Use" : {
+				"script" : on_option_use_world,
+				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
+				},
+			"Delete" : {
+				"script" : on_remove
+			}
+		}
+		
+		options_battle = {
+			"Use" : {
+				"script" : on_option_use_battle,
+				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
+				}
 		}
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
-	func on_option_use():
-		host.my_component_health.heal(heal_amount)
+	func on_option_use_world(target : Node = host):
+		target.my_component_health.heal(heal_amount)
 		#FX GO HERE
-		on_consume(1)
+		on_consume()
+		host.my_inventory_gui.refresh()
+	
+	func on_option_use_battle(target : Node = host):
+		target.my_component_health.heal(heal_amount)
+		#FX GO HERE
+		on_consume()
+
+class item_dewdrop:
+	extends item
+
+	var recovery_amount
+	
+	func get_data():
+		return {
+			"recovery_amount" : recovery_amount
+		}
+	
+	func _init(host : Node, recovery_amount : int = 1, quantity : int = 1) -> void:
+		id = "item_dewdrop"
+		title = "Dewdrop"
+		flavor = "Warning: Staring too long may result in existential crises or sudden nap attacks."
+		description = "A silvery droplet that constantly shifts hues, peering inside shows a distant, shimmering painting of something."
+		self.host = host
+		self.recovery_amount = recovery_amount
+		self.quantity = quantity
+		category = Glossary.item_category.ITEMS
+		sprite = Glossary.sprite.placeholder
+		
+		options_world = {
+			"Use" : {
+				"script" : on_option_use_world,
+				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
+				},
+			"Delete" : {
+				"script" : on_remove
+			}
+		}
+		
+		options_battle = {
+			"Use" : {
+				"script" : on_option_use_battle,
+				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
+				}
+		}
+	
+	## An option displayed in our menu when we click on this item
+	## Can literally be named whatever you want
+	func on_option_use_world(target : Node = host):
+		target.my_component_vis.restore(recovery_amount)
+		#FX GO HERE
+		on_consume()
+		host.my_inventory_gui.refresh()
+	
+	func on_option_use_battle(target : Node = host):
+		target.my_component_vis.restore(recovery_amount)
+		#FX GO HERE
+		on_consume()

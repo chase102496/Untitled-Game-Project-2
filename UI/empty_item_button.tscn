@@ -9,6 +9,7 @@ texture_filter = 2
 theme = ExtResource("1_4xqmi")
 action_mode = 0
 text = "Empty Ability"
+alignment = 0
 script = ExtResource("2_dv5ie")
 
 [node name="AnimationComponent" parent="." instance=ExtResource("3_p18bi")]

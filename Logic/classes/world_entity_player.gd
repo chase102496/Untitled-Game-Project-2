@@ -16,6 +16,15 @@ func _ready():
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
 	#my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
 	
+	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
+	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
+	
+	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,2))
+	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+	
+	my_component_health.damage(5)
+	my_component_vis.siphon(5)
+	
 	#TODO FIX THIS TO RUN POSITION ON A PER-TRANSFER BASIS WHERE THE OLD WORLD -> NEW WORLD, the OLD WORLD tells us where we're spawning in the new one.
 	#PlayerData.load_data_scene() 
 	#PlayerData.load_data_scene(position of player new spawn)

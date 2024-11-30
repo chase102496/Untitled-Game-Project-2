@@ -60,6 +60,19 @@ func get_party_data(index : int):
 	var dreamkin_party_data = party_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
 	return dreamkin_party_data #Return the Dictionary
 
+##Returns a combination of summoned dreamkin + party dreamkin together in one array. Used for updating live data usually
+func get_hybrid_data_all():
+	var result : Array = []
+	result += my_summons
+	result += my_party
+	return result
+
+#func get_hybrid_data(index : int):
+	#return get_hybrid_data_all()[index]
+#
+#func set_hybrid_data(index : int):
+	#get_hybrid_data_all()[index]
+
 ## --- Manipulation ---
 
 ##Adds a dreamkin to our party based on dreamkin object data

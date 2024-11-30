@@ -1,5 +1,22 @@
 extends Node
 
+func text_style_color_html(type_dict : Dictionary):
+	return str("[color=",type_dict.COLOR.to_html(),"]")
+
+var text_style : Dictionary = {
+	"FLAVOR" :{
+		"COLOR" : Color("5c5c5c")
+	},
+	"HEALTH" :{
+		"ICON" : "♥",
+		"COLOR" : Color("f4085b")
+	},
+	"VIS" :{
+		"ICON" : "◆",
+		"COLOR" : Color("078ef5")
+	},
+}
+
 var ability_class : Dictionary = {
 	"ability_tackle" : component_ability.ability_tackle,
 	"ability_headbutt" : component_ability.ability_headbutt,

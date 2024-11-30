@@ -26,7 +26,8 @@ func _on_state_physics_processing_explore(_delta: float) -> void:
 		jump = false
 	
 	if Input.is_action_just_pressed("ui_cancel"):
+		owner.state_chart.send_event("on_disabled_toggle")
 		owner.my_inventory_gui.state_chart.send_event("on_gui_toggle")
 
-func _on_state_exited_explore():
+func _on_state_exited_explore() -> void:
 	direction = Vector2.ZERO

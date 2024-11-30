@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://b1s71hosugqju"]
+[gd_scene load_steps=13 format=3 uid="uid://b1s71hosugqju"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://UI/menu_theme.tres" id="1_027ve"]
 [ext_resource type="Script" path="res://UI/inventory_gui.gd" id="2_b6dus"]
 [ext_resource type="StyleBox" uid="uid://b0gg650riimlg" path="res://UI/menu_style_box_no_shadow.tres" id="2_eui1b"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_l2cim"]
+[ext_resource type="PackedScene" uid="uid://b7l3a0l3jygtx" path="res://UI/empty_option_button.tscn" id="3_w6ucd"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_gemym"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_jujvs"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_dkhww"]
@@ -77,6 +78,7 @@ tab_2/title = "  ⍟ Items   "
 tab_3/title = "  🝰 Keys  "
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
@@ -98,46 +100,30 @@ horizontal_scroll_mode = 0
 [node name="List" type="VBoxContainer" parent="PanelContainer/VBoxContainer/Panel/View/ScrollContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/Panel/View/ScrollContainer/List"]
-layout_mode = 2
-text = "Item 1"
-
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer/Panel/View/ScrollContainer/List"]
-layout_mode = 2
-text = "Item 2"
-
-[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer/Panel/View/ScrollContainer/List"]
-layout_mode = 2
-text = "Item 3"
-
-[node name="Button4" type="Button" parent="PanelContainer/VBoxContainer/Panel/View/ScrollContainer/List"]
-layout_mode = 2
-text = "Item 4"
-
 [node name="Info" type="VBoxContainer" parent="PanelContainer/VBoxContainer/Panel/View"]
 layout_mode = 2
 
-[node name="Description" type="PanelContainer" parent="PanelContainer/VBoxContainer/Panel/View/Info"]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/Panel/View/Info"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = ExtResource("2_eui1b")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/Panel/View/Info/Description"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Panel/View/Info/Description/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer/VBoxContainer"]
 layout_mode = 2
 texture = ExtResource("2_l2cim")
 stretch_mode = 4
 
-[node name="Details" type="VBoxContainer" parent="PanelContainer/VBoxContainer/Panel/View/Info/Description/VBoxContainer"]
+[node name="Details" type="VBoxContainer" parent="PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Panel/View/Info/Description/VBoxContainer/Details"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer/VBoxContainer/Details"]
 layout_mode = 2
 text = "Item name"
 
-[node name="Description Label" type="RichTextLabel" parent="PanelContainer/VBoxContainer/Panel/View/Info/Description/VBoxContainer/Details"]
+[node name="Description" type="RichTextLabel" parent="PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer/VBoxContainer/Details"]
 clip_contents = false
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
@@ -151,6 +137,29 @@ Test description. This does something cool."
 fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false
+
+[node name="Options" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Options"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+offset_left = 767.0
+offset_top = 223.0
+offset_right = 807.0
+offset_bottom = 295.0
+
+[node name="List" type="VBoxContainer" parent="Options/PanelContainer2"]
+layout_mode = 2
+
+[node name="empty_option_button" parent="Options/PanelContainer2/List" instance=ExtResource("3_w6ucd")]
+layout_mode = 2
+text = "Testing"
 
 [node name="StateChart" type="Node" parent="."]
 unique_name_in_owner = true
