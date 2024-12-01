@@ -261,7 +261,7 @@ class status_burn:
 	
 	func on_end():
 		if once_per_turn(): #If this is the first time applying this turn
-			host.my_component_health.damage(damage)
+			host.my_component_health.change(-damage)
 			print_debug("Burn did ",damage," damage!")
 
 class status_freeze:
@@ -286,7 +286,7 @@ class status_freeze:
 	
 	func on_end():
 		if once_per_turn(): #If this is the first time applying this turn
-			host.my_component_vis.siphon(siphon_amount)
+			host.my_component_vis.change(-siphon_amount)
 			print_debug(host," lost ",siphon_amount," vis from freeze!")
 
 class status_disabled: #Disabled, unable to act, and immune to damage. Essentially dead but still on the battle field
@@ -339,7 +339,7 @@ class status_heartstitch:
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
 			for i in len(partners):
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
-					partners[i].my_component_health.damage(amount,true)
+					partners[i].my_component_health.change(-amount,true)
 					print_debug(partners[i].name," took ",amount," points of mirror damage!")
 	
 	func fx_add():
@@ -407,7 +407,7 @@ class status_thorns:
 	
 	func on_battle_entity_turn_end(entity : Node):
 		if reflect_target:
-			reflect_target.my_component_health.damage(damage)
+			reflect_target.my_component_health.change(-damage)
 			print_debug(host.name," reflected ",damage," damage back to ",reflect_target.name,"!")
 			reflect_target = null
 
@@ -751,11 +751,11 @@ class ability_spook:
 		
 
 	func cast_main():
-		caster.my_component_vis.siphon(vis_cost)
+		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		print_debug(caster.name, " tried to spook ", target.name,"!")
-		target.my_component_health.damage(skillcheck_modifier*damage)
+		target.my_component_health.change(-skillcheck_modifier*damage)
 		if apply_status_success():
 			target.my_component_ability.current_status_effects.add(status_fear.new(target,skillcheck_modifier*2))
 	
@@ -788,17 +788,17 @@ class ability_solar_flare:
 	func cast_pre_mitigation_bonus(caster : Node, target : Node): #Does bonus damage, bonus burn damage, and 100% chance to proc burn
 		print_debug(caster.name, " scorched ", target.name," for double damage!")
 		target.my_component_ability.current_status_effects.add(status_burn.new(target,skillcheck_modifier*2,damage*2))
-		target.my_component_health.damage(damage*2)
+		target.my_component_health.change(-damage*2)
 		
 	
 	func cast_main(): #now runs all the excess that isn't affecting a specific target
-		caster.my_component_vis.siphon(vis_cost)
+		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node): #this it the spell run from the target's POV. It is run from the hit signal
 		print_debug(caster.name, " ignited ", target.name,"!")
 		if apply_status_success():
 			target.my_component_ability.current_status_effects.add(status_burn.new(target,skillcheck_modifier*2,damage))
-		target.my_component_health.damage(damage)
+		target.my_component_health.change(-damage)
 		
 	func animation():
 		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO make solar flare animation or FX
@@ -833,7 +833,7 @@ class ability_frigid_core:
 	func cast_pre_mitigation(caster : Node, target : Node):
 		print_debug(caster.name, " froze ", target.name,"!")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
-		target.my_component_health.damage(damage)
+		target.my_component_health.change(-damage)
 		target.my_component_ability.current_status_effects.add(status_freeze.new(target,skillcheck_modifier*1,1))
 
 class ability_tackle: #Scales with skillcheck
@@ -859,7 +859,7 @@ class ability_tackle: #Scales with skillcheck
 	func cast_pre_mitigation(caster : Node, target : Node):
 		print_debug(caster.name, " Tackled ", target.name,"!")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
-		target.my_component_health.damage(skillcheck_modifier*damage)
+		target.my_component_health.change(-skillcheck_modifier*damage)
 
 class ability_headbutt: #Scales with damage multiplier
 	extends ability_template_default
@@ -884,7 +884,7 @@ class ability_headbutt: #Scales with damage multiplier
 		var mult = caster.my_component_ability.stats.damage_multiplier
 		print_debug(caster.name, " Charged ", target.name,"!")
 		print_debug("It did ", round(damage*mult), " damage!")
-		target.my_component_health.damage(damage*mult)
+		target.my_component_health.change(-damage*mult)
 
 class ability_heartstitch:
 	extends ability_template_default
@@ -907,7 +907,7 @@ class ability_heartstitch:
 		vis_cost = 1
 	
 	func cast_main():
-		caster.my_component_vis.siphon(vis_cost)
+		caster.my_component_vis.change(-vis_cost)
 		
 		for i in len(old_targets): #remove instances from old targets
 			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
@@ -920,7 +920,7 @@ class ability_heartstitch:
 		##Make sure we're in the targets, idk why this is here tbh
 		if target in targets:
 			print_debug(caster.name, " tried to stitch ", target.name,"!")
-			target.my_component_health.damage(damage,true)
+			target.my_component_health.change(-damage,true)
 			
 			##Verification for needing actual stitch
 			if targets.size() >= 2:
@@ -950,7 +950,7 @@ class ability_switchstitch:
 		vis_cost = 1
 	
 	func cast_main():
-		caster.my_component_vis.siphon(vis_cost)
+		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		if target == primary_target:
@@ -959,6 +959,6 @@ class ability_switchstitch:
 			Battle.mirror_section(index_start,index_end)
 			
 			for i in len(targets): #Only damages if the primary target tanks the damage
-				targets[i].my_component_health.damage(damage)
+				targets[i].my_component_health.change(-damage)
 			
 			Battle.update_positions()

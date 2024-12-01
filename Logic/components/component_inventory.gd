@@ -31,7 +31,7 @@ func add_item(inst : Object):
 func remove_item(inst : Object):
 	my_items.pop_at(my_items.find(inst))
 
-## --- Item Class ---
+## --- Item Classes ---
 
 class item:
 	var id : String
@@ -44,8 +44,8 @@ class item:
 	var stackable : bool = true #If we want it to have its own slot in our inventory
 	var quantity : int = 1
 	var max_quantity : int = 99
-	var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
-	var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+	#var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+	#var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
 
 	enum target_type { # This is how we determine what the item can be used on, for various functions
 		PLAYER, SUMMONS, PARTY, ALL
@@ -109,55 +109,72 @@ class item:
 	func on_remove() -> void:
 		host.my_component_inventory.remove_item(self)
 
+class item_consumable:
+	extends item
+	
+	## List of functions that pop up in world when we select this item in our inventory. References existing scripts, and their params to grab
+	## Legend
+	# "choices" is mandatory for each level with a dictionary, and is just a string that leads us in a direction
+	# "next" indicates we don't care what we choose, this is the next path forward
+	# "branch" will take us on whatever selection we chose, it must match verbatim the choice
+	# "choices_params" is an optional parameter that will pass all of its selections to the final script. This must be the same length as "choices" in the same level
+	var options_world = {
+			"Use" : Callable(self,"on_consume"),
+			"Delete" : {
+				"choices" : ["Confirm","Cancel"],
+				"branch": {
+						"Confirm" : Callable(self,"on_consume"),
+						"Cancel" : null
+				}
+			},
+			"Delete All" : {
+				"choices" : ["Confirm","Cancel"],
+				"branch": {
+						"Confirm" : Callable(self,"on_remove"),
+						"Cancel" : null
+				},
+			}
+		}
+
 ## --- Items ---
 
 class item_nectar:
-	extends item
+	extends item_consumable
 	
-	var heal_amount
+	var recovery_amount
 	
 	func get_data():
 		return {
-			"heal_amount" : heal_amount
+			"recovery_amount" : recovery_amount
 		}
 	
-	func _init(host : Node, heal_amount : int = 1, quantity : int = 1) -> void:
+	func _init(host : Node, recovery_amount : int = 1, quantity : int = 1) -> void:
 		id = "item_nectar"
 		title = "Nectar"
 		flavor = "You couldn't just call it a health potion?"
 		description = "A reddish-gold liquid that flows thicker than honey. Best enjoyed near a cozy fire."
 		self.host = host
-		self.heal_amount = heal_amount
+		self.recovery_amount = recovery_amount
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
 		sprite = Glossary.sprite.placeholder
 		
-		## List of functions that pop up in world when we select this item in our inventory. References existing scripts, and their params to grab
-		options_world = {
-			"Use" : {
-				"choices_display" : Callable(self,"get_choices_display").bind(target_type.ALL),
-				"choices" : Callable(self,"get_choices").bind(target_type.ALL),
-				"next" : {
-					"choices_display" : ["Confirm","Cancel"],
-					"choices" : [true,false],
-					"end" : Callable(self,"on_option_use_world")
-					}
-				},
-			"Delete" : on_remove
+		options_world["Use"] = {
+			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
+			"choices_params" : Callable(self,"get_choices").bind(target_type.ALL),
+			"next" : Callable(self,"on_option_use_world")
 		}
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
-	func on_option_use_world(target : Node = host, confirm : bool = true):
-		#Parse all the submenu stuff here based on what we selected use -> target -> confirm
-		if confirm:
-			Interface.heal(target,heal_amount)
-			#FX GO HERE
-			on_consume()
-			host.my_inventory_gui.refresh()
+	func on_option_use_world(target : Node = host):
+		Interface.change_health(target,recovery_amount)
+		#FX GO HERE
+		on_consume()
+		host.my_inventory_gui.refresh()
 
 class item_dewdrop:
-	extends item
+	extends item_consumable
 
 	var recovery_amount
 	
@@ -176,21 +193,16 @@ class item_dewdrop:
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
 		sprite = Glossary.sprite.placeholder
-		
-		options_world = {
-			"Use" : {
-				"script" : on_option_use_world,
-				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
-				},
-			"Delete" : {
-				"script" : on_remove
-			}
+		options_world["Use"] = {
+			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
+			"choices_params" : Callable(self,"get_choices").bind(target_type.ALL),
+			"next" : Callable(self,"on_option_use_world")
 		}
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
 	func on_option_use_world(target : Node = host):
-		Interface.heal(target,recovery_amount)
+		Interface.change_vis(target,recovery_amount)
 		#FX GO HERE
 		on_consume()
 		host.my_inventory_gui.refresh()

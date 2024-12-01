@@ -15,55 +15,38 @@ func revive():
 	#Events.battle_entity_revived.emit(owner)
 	health = max_health
 
-func heal(amt : int):
+func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	
-	var amt_rounded = int(round(amt))
+	var old_health = health
 	
-	Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_rounded),"float_away",Color.GREEN)
+	## Healing
+	if amt > 0:
+		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.GREEN)
+	## Damage
+	elif amt < 0:
+		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.RED)
+		#To protect recursive when using heartstitch
+		if !from_tether:
+			Events.battle_entity_damaged.emit(owner,amt)
 	
-	health = clamp(health + amt_rounded,0,max_health)
+	health = clamp(health + amt,0,max_health)
+	
+	print_debug(old_health," HP -> ",health," HP")
+	
+	##Death handling
+	if health == 0: #If we're dying
+		##Query our death protection statuses to see if any want to intervene with a message before we die
+		var death_protection_result = owner.my_component_ability.current_status_effects.status_event("on_death_protection",[amt,from_tether,type],true)
 		
-	#Events.battle_entity_healed.emit(owner,amt)
-
-func damage(amt : float, from_tether : bool = false, type : Dictionary = Battle.type.BALANCE):
+		##If they do, ignore our normal death process and have the status fx handle it
+		if death_protection_result.size() == 0:
+			owner.animations.tree.get("parameters/playback").travel("Death") #queue us for death
+		
+	else:
+		owner.state_chart.send_event("on_hurt")
 	
-	var amt_rounded = int(round(amt))
 	
-	##Damage handling
-	if health > 0:
-		
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_rounded),"float_away",Color.INDIAN_RED)
-		
-		if amt != 0:
-			
-			var old_health = health
-			
-			##Apply damage
-			health = clamp(health - amt_rounded,0,max_health)
-			
-			if !from_tether: #To protect recursive when using heartstitch
-				Events.battle_entity_damaged.emit(owner,amt_rounded)
-			
-			print_debug(old_health," HP -> ",health," HP")
-			
-		##Death handling
-		if health == 0: #If we're dying
-			
-			##Query our death protection statuses to see if any want to intervene with a message before we die
-			var death_protection_result = owner.my_component_ability.current_status_effects.status_event("on_death_protection",[amt_rounded,from_tether,type],true)
-			
-			##If they do, ignore our normal death process and have the status fx handle it
-			if death_protection_result.size() > 0:
-				pass
-			##If they don't, just send us to death state
-			else:
-				owner.animations.tree.get("parameters/playback").travel("Death") #queue us for death
-		else:
-			
-			owner.state_chart.send_event("on_hurt")
-		
-	else: #if we're already dead and damage is trying to get to us
-		pass #ignore damage
 	
 
+	
 	

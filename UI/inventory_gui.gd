@@ -75,6 +75,11 @@ func get_nested_value(dict: Dictionary, path: Array) -> Variant:
 			return null  # Path is invalid
 	return current
 
+func options_close():
+	inventory_gui_options.hide()
+	free_children(inventory_gui_options_list)
+	refresh()
+
 ## --- Buttons ---
 
 ## State functions
@@ -134,44 +139,55 @@ func _on_mouse_exited_inventory_item(item : Object):
 func _on_button_pressed_inventory_item_option(item : Object, option_path : Array, choices_path : Array):
 	
 	var current = get_nested_value(item.options_world,option_path) #Grabs the contents of our current path the button is in
-	if current is Callable:
+	
+	##If we find nothing, just close the menu, we probably hit cancel
+	if !current:
+		options_close()
+	
+	##If we find that it's only a callable, call it
+	elif current is Callable:
 		current.callv(choices_path) #Call the end's script and insert our args we selected along the way
-		inventory_gui_options.hide()
-		free_children(inventory_gui_options_list)
-		
-	elif "choices" in current: #If we fund choices within this selection we just selected, and there's another nested dir
+		options_close()
+	
+	##If we find choices within this selection
+	elif "choices" in current:
 		
 		free_children(inventory_gui_options_list) #FREE THE CHILDREN, JIMMY!
 		
-		## Checking if we need to pull live data, if so, call it
 		var returned_choices
+		## Check if we need to pull live data, if so, call it
+		# Pulls an string array of our choices
 		if current["choices"] is Callable:
 			returned_choices = current["choices"].call()
-		## Else, it's an array. Just assign it
 		else:
 			returned_choices = current["choices"]
-			
-		## Run through all choices, which is an array
+		
+		var returned_choices_params
+		if "choices_params" in current:
+			## Checking if we need to pull live data, if so, call it
+			# Pulls an array to eventually insert into the final callable
+			if current["choices_params"] is Callable:
+				returned_choices_params = current["choices_params"].call()
+			## Else, it's an array. Just assign it
+			else:
+				returned_choices_params = current["choices_params"]
+		
+		## Run through all choices displayed, which is an array
 		for i in returned_choices.size(): 
 			var new_button = ui_button_inventory_item_option.instantiate() #Create new button
+			new_button.text = returned_choices[i]
 			
 			## Look ahead and assign that next step in our menu
-			if "next" in current:
-				new_button.option_path = option_path + ["next"]
-			elif "end" in current:
-				new_button.option_path = option_path + ["end"]
+			if "branch" in current:
+				new_button.option_path = option_path + ["branch",new_button.text] #Assign us to the branch that we specify from "choices"
+			elif "next" in current:
+				new_button.option_path = option_path + ["next"] #Assign us to the next path, instead of a specific branch since there isn't one
 			
-			new_button.choices_path = choices_path + [returned_choices[i]] #Add our specific choice
-			
-			## Dynamic display to show something besides raw data array, in-sync index with "choices"
-			## e.g. current["choices_display"][3] represents current["choices"][3]
-			if "choices_display" in current:
-				if current["choices_display"] is Callable:
-					new_button.text = current["choices_display"].call()[i]
-				else:
-					new_button.text = current["choices_display"][i]
+			## Adds a parameter based on this button to our final script's arguments
+			if returned_choices_params: #If we found a param list
+				new_button.choices_path = choices_path + [returned_choices_params[i]] #Add our specific choice
 			else:
-				new_button.text = str(returned_choices[i])
+				new_button.choices_path = choices_path #Keeps our existing choices from prev button
 			
 			new_button.item = item #Make sure it still has the item as a reference
 			inventory_gui_options_list.add_child(new_button) #Add it as a child so it can be displayed properly

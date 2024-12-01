@@ -45,11 +45,11 @@ class party_dreamkin:
 		else:
 			return false
 	
-	func heal(amt : int):
+	func change_health(amt : int):
 		health = clamp(health + amt,0,max_health)
 	
-	func damage(amt : int):
-		health = clamp(health - amt,0,max_health)
+	func change_vis(amt : int):
+		vis = clamp(vis - amt,0,max_vis)
 		
 ## --- Getters ---
 

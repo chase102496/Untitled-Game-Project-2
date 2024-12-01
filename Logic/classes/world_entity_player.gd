@@ -22,8 +22,8 @@ func _ready():
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	
-	my_component_health.damage(5)
-	my_component_vis.siphon(5)
+	my_component_health.change(-5)
+	my_component_vis.change(-5)
 	
 	#TODO FIX THIS TO RUN POSITION ON A PER-TRANSFER BASIS WHERE THE OLD WORLD -> NEW WORLD, the OLD WORLD tells us where we're spawning in the new one.
 	#PlayerData.load_data_scene() 
@@ -98,7 +98,7 @@ func _physics_process(delta: float) -> void:
 	#if Input.is_action_just_pressed("move_forward"):
 		##if my_component_party.get_party():
 			##for i in my_component_party.get_party().size():
-				##my_component_party.my_party[i].my_component_health.damage(1)
+				##my_component_party.my_party[i].my_component_health.change(-1)
 		#my_component_party.recall(0)
 #
 	#if Input.is_action_just_pressed("move_backward"):
