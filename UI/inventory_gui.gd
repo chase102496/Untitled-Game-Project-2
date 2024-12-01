@@ -15,15 +15,6 @@ extends Control
 @onready var ui_button_inventory_item : PackedScene = preload("res://UI/empty_item_button.tscn")
 @onready var ui_button_inventory_item_option : PackedScene = preload("res://UI/empty_option_button.tscn")
 
-#Working on: Adding buttons for each item in the inventory tab.
-#empty_item_button.gd
-#inventory_gui.gd
-#component_inventory.gd
-#Next steps:
-#- Connect the button signal to the inventory manager.
-#- Test item interactions when a button is clicked.
-#- Figuring out how to display the sprite. TextureRect or Code my own display method for animated sprites?
-
 @onready var state_chart : StateChart = %StateChart
 
 func _ready() -> void:
@@ -50,18 +41,43 @@ func _ready() -> void:
 	%StateChart/Inventory_GUI/Enabled/Items.state_exited.connect(_on_state_exited_inventory_gui_items)
 	%StateChart/Inventory_GUI/Enabled/Keys.state_exited.connect(_on_state_exited_inventory_gui_keys)
 
+## --- Utility Functions ---
+
 func convert_tab_to_glossary(tab : int):
 	for key in Glossary.item_category:
 		if Glossary.item_category[key].TAB == tab:
 			return key
 
-func clear_inventory_options():
-	for child in inventory_gui_options_list.get_children():
+func free_children(parent : Node):
+	for child in parent.get_children():
 			child.queue_free()
+
+func create_button_category_list(category : Dictionary):
+	free_children(inventory_gui_item_list)
+	for item in my_component_inventory.get_items_from_category(category):
+		var new_button = ui_button_inventory_item.instantiate()
+		new_button.item = item
+		inventory_gui_item_list.add_child(new_button)
+		new_button.show()
+
+func refresh():
+	var prev = inventory_gui_tabs.current_tab
+	state_chart.send_event("on_gui_toggle")
+	state_chart.send_event("on_gui_toggle")
+	inventory_gui_tabs.current_tab = prev
+
+func get_nested_value(dict: Dictionary, path: Array) -> Variant:
+	var current = dict
+	for key in path:
+		if current.has(key):
+			current = current[key]
+		else:
+			return null  # Path is invalid
+	return current
 
 ## --- Buttons ---
 
-## Items
+## State functions
 
 func _on_inventory_gui_tab_selected(tab : int):
 	match convert_tab_to_glossary(tab):
@@ -74,25 +90,27 @@ func _on_inventory_gui_tab_selected(tab : int):
 		"KEYS":
 			state_chart.send_event("on_gui_keys")
 
+## Item buttons
+
 func _on_button_pressed_inventory_item(item : Object):
 	
-	clear_inventory_options()
+	free_children(inventory_gui_options_list)
 	
 	## Placing options window near the relevant item in the list
 	var pos_button = Vector2.ZERO
-	
 	## Grab position of button we clicked
 	for child in inventory_gui_item_list.get_children():
 		if child.item == item:
 			pos_button = child.global_position
-	
-	## Just adjusting position. Makes it easier to click and see. Displays directly below selected item
+	## Adjusting position. Makes it easier to click and see. Displays directly below selected item
 	inventory_gui_options_panel.global_position = pos_button + (Vector2(0,inventory_gui_options_panel.get_size().y)/2)
 	
 	## Make button for each option
 	for option in item.options_world:
 		var new_button = ui_button_inventory_item_option.instantiate()
-		new_button.option = option
+		new_button.option_path = [option]
+		new_button.choices_path = []
+		new_button.text = option
 		new_button.item = item
 		inventory_gui_options_list.add_child(new_button)
 	
@@ -111,45 +129,57 @@ func _on_mouse_entered_inventory_item(item : Object):
 func _on_mouse_exited_inventory_item(item : Object):
 	inventory_gui_item_list_info.hide()
 
-## Item Options
+## Option buttons
 
-func _on_button_pressed_inventory_item_option(item : Object, option : String, target : Node):
+func _on_button_pressed_inventory_item_option(item : Object, option_path : Array, choices_path : Array):
 	
-	
-	
-	##If we're selecting a target to use the item on, and we've already picked an option
-	#if target:
-		#item.options_world[option].call(target) #call(chosen_character)
-		#inventory_gui_options.hide()
-	##If we need to check if there's targets to calculate before immediately using the item
-	#elif "valid_targets" in item.options_world[option]:
-		#
-		#var results : Array = []
-		#
-		### Run through the array of all classification types
-		#for classification in item.options_world[option]:
-			###Iterate through live dreamkin and their classification
-			#for dreamkin in Global.player.my_component_party.get_hybrid_data_all():
-				#if dreamkin.classification in item.options_world[option]["valid_targets"]:
-					#results.append(dreamkin)
-			#if Global.player in item.options_world[option]["valid_targets"]:
-				#results.append(Global.player)
-		#
-		#clear_inventory_options()
-		#
-		#for result in results:
-			#var new_button = ui_button_inventory_item_option.instantiate()
-			#new_button.option = option
-			#new_button.item = item
-			#new_button.target = result
-			#inventory_gui_options_list.add_child(new_button)
-	#
-	### If we can just immediately use the item
-	#else:
-		item.options_world[option]["script"].call()
+	var current = get_nested_value(item.options_world,option_path) #Grabs the contents of our current path the button is in
+	if current is Callable:
+		current.callv(choices_path) #Call the end's script and insert our args we selected along the way
 		inventory_gui_options.hide()
+		free_children(inventory_gui_options_list)
+		
+	elif "choices" in current: #If we fund choices within this selection we just selected, and there's another nested dir
+		
+		free_children(inventory_gui_options_list) #FREE THE CHILDREN, JIMMY!
+		
+		## Checking if we need to pull live data, if so, call it
+		var returned_choices
+		if current["choices"] is Callable:
+			returned_choices = current["choices"].call()
+		## Else, it's an array. Just assign it
+		else:
+			returned_choices = current["choices"]
+			
+		## Run through all choices, which is an array
+		for i in returned_choices.size(): 
+			var new_button = ui_button_inventory_item_option.instantiate() #Create new button
+			
+			## Look ahead and assign that next step in our menu
+			if "next" in current:
+				new_button.option_path = option_path + ["next"]
+			elif "end" in current:
+				new_button.option_path = option_path + ["end"]
+			
+			new_button.choices_path = choices_path + [returned_choices[i]] #Add our specific choice
+			
+			## Dynamic display to show something besides raw data array, in-sync index with "choices"
+			## e.g. current["choices_display"][3] represents current["choices"][3]
+			if "choices_display" in current:
+				if current["choices_display"] is Callable:
+					new_button.text = current["choices_display"].call()[i]
+				else:
+					new_button.text = current["choices_display"][i]
+			else:
+				new_button.text = str(returned_choices[i])
+			
+			new_button.item = item #Make sure it still has the item as a reference
+			inventory_gui_options_list.add_child(new_button) #Add it as a child so it can be displayed properly
+			
+	else:
+		push_error("Invalid path for ", item, " - ", option_path, " - ",choices_path)
 
-## --- States ---
+## ---      STATES      ---
 
 ## Enabled
 
@@ -160,7 +190,7 @@ func _on_state_physics_processing_inventory_gui_enabled(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		state_chart.send_event("on_gui_toggle") #Disable the inventory
 		owner.state_chart.send_event("on_disabled_toggle") #Enable the player
-		
+
 ## Disabled
 
 func _on_state_entered_inventory_gui_disabled():
@@ -175,16 +205,11 @@ func _on_state_exited_inventory_gui_disabled():
 
 func _on_state_entered_inventory_gui_gear():
 	
-	for item in my_component_inventory.get_items_from_category(Glossary.item_category.GEAR):
-		var new_button = ui_button_inventory_item.instantiate()
-		new_button.item = item
-		inventory_gui_item_list.add_child(new_button)
-		new_button.show()
+	create_button_category_list(Glossary.item_category.GEAR)
 	
 func _on_state_exited_inventory_gui_gear():
 	
-	for child in inventory_gui_item_list.get_children():
-		child.queue_free()
+	free_children(inventory_gui_item_list)
 
 ## Dreamkin
 
@@ -196,29 +221,21 @@ func _on_state_exited_inventory_gui_dreamkin():
 
 ## Items
 
-func refresh():
-	var prev = inventory_gui_tabs.current_tab
-	state_chart.send_event("on_gui_toggle")
-	state_chart.send_event("on_gui_toggle")
-	inventory_gui_tabs.current_tab = prev
-
 func _on_state_entered_inventory_gui_items():
 	
-	for item in my_component_inventory.get_items_from_category(Glossary.item_category.ITEMS):
-		var new_button = ui_button_inventory_item.instantiate()
-		new_button.item = item
-		inventory_gui_item_list.add_child(new_button)
-		new_button.show()
+	create_button_category_list(Glossary.item_category.ITEMS)
 	
 func _on_state_exited_inventory_gui_items():
 
-	for child in inventory_gui_item_list.get_children():
-		child.queue_free()
+	free_children(inventory_gui_item_list)
 
 ## Keys
 
 func _on_state_entered_inventory_gui_keys():
-	pass
+	
+	create_button_category_list(Glossary.item_category.KEYS)
+
 func _on_state_exited_inventory_gui_keys():
-	pass
+
+	free_children(inventory_gui_item_list)
 	

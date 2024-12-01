@@ -27,13 +27,6 @@ class party_dreamkin:
 			var value = data.values()[i]
 			self.set(key,value)
 	
-	func select_validate():
-		if health > 0:
-			return true
-		else:
-			print_debug("Unable to summon, fainted!")
-			return false
-	
 	##Export just our variable as a single dictionary
 	func get_dreamkin_data_dictionary():
 		var my_script = get_script()
@@ -45,33 +38,45 @@ class party_dreamkin:
 			data[property_name] = property_value
 		
 		return data
-
+	
+	func select_validate():
+		if health > 0:
+			return true
+		else:
+			return false
+	
+	func heal(amt : int):
+		health = clamp(health + amt,0,max_health)
+	
+	func damage(amt : int):
+		health = clamp(health - amt,0,max_health)
+		
 ## --- Getters ---
 
-##Get data from active summon
+##Get data from active summon list
 func get_summon_data(index : int):
 	var summon_inst = my_summons[index] #Grab the summon member
 	var dreamkin_summon_data = summon_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
 	return dreamkin_summon_data #Return the Dictionary
 
-##Get data from party member
+##Get data from party member list
 func get_party_data(index : int):
 	var party_inst = my_party[index] #Grab the party member
 	var dreamkin_party_data = party_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
 	return dreamkin_party_data #Return the Dictionary
 
-##Returns a combination of summoned dreamkin + party dreamkin together in one array. Used for updating live data usually
+##Get data with both summons and party members stuffed into one array
 func get_hybrid_data_all():
-	var result : Array = []
-	result += my_summons
-	result += my_party
-	return result
+	return my_summons + my_party
 
-#func get_hybrid_data(index : int):
-	#return get_hybrid_data_all()[index]
-#
-#func set_hybrid_data(index : int):
-	#get_hybrid_data_all()[index]
+##Returns the names of all Dreamkin summoned and in party as strings in array
+func get_hybrid_name_all():
+	var result : Array = []
+	for summon_inst in my_summons:
+		result.append(summon_inst.name)
+	for party_inst in my_party:
+		result.append(party_inst.name)
+	return result
 
 ## --- Manipulation ---
 
@@ -98,11 +103,14 @@ func add_summon_dreamkin(instance : Node, summoned : bool = true):
 func summon(index : int, battle_or_world : String):
 	if index < my_party.size():
 		var party_inst = my_party[index] #Grab the right party member
-		var summon_inst = Glossary.find_entity(party_inst.glossary,battle_or_world).instantiate().party_summon(party_inst)
-		##Add to my_summons, remove from my_party
-		my_summons.append(summon_inst)
-		my_party.pop_at(index)
-		return summon_inst
+		if party_inst.select_validate():
+			var summon_inst = Glossary.find_entity(party_inst.glossary,battle_or_world).instantiate().party_summon(party_inst)
+			##Add to my_summons, remove from my_party
+			my_summons.append(summon_inst)
+			my_party.pop_at(index)
+			return summon_inst
+		else:
+			print_debug(party_inst.name, " is unconscious!")
 	else:
 		print_debug("No party members available to summon!")
 

@@ -16,7 +16,7 @@ func select_validate():
 	if my_component_health.health > 0:
 		return true
 	else:
-		print_debug("!Ineligible for battle!")
+		print_debug("!cannot be summoned!")
 
 ##If we are being summoned, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):

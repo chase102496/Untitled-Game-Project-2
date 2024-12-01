@@ -46,9 +46,26 @@ class item:
 	var max_quantity : int = 99
 	var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
 	var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+
+	enum target_type { # This is how we determine what the item can be used on, for various functions
+		PLAYER, SUMMONS, PARTY, ALL
+	}
 	
 	func _init(host : Node) -> void:
 		self.host = host
+	
+	##Return the string names of whatever selections we want, in an array
+	func get_choices_display(type : target_type):
+		match type:
+			target_type.ALL:
+				return [Global.player.name] + host.my_component_party.get_hybrid_name_all()
+	
+	##Return the actual objects of whatever selections we want, in an array
+	func get_choices(type : target_type):
+		match type:
+			target_type.ALL:
+				return [Global.player] + host.my_component_party.get_hybrid_data_all()
+		
 	
 	func set_data(new_metadata : Dictionary):
 		for key in new_metadata:
@@ -115,36 +132,29 @@ class item_nectar:
 		category = Glossary.item_category.ITEMS
 		sprite = Glossary.sprite.placeholder
 		
-		## List of functions that pop up in world when we select this item in our inventory. References existing scripts
+		## List of functions that pop up in world when we select this item in our inventory. References existing scripts, and their params to grab
 		options_world = {
 			"Use" : {
-				"script" : on_option_use_world,
-				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
+				"choices_display" : Callable(self,"get_choices_display").bind(target_type.ALL),
+				"choices" : Callable(self,"get_choices").bind(target_type.ALL),
+				"next" : {
+					"choices_display" : ["Confirm","Cancel"],
+					"choices" : [true,false],
+					"end" : Callable(self,"on_option_use_world")
+					}
 				},
-			"Delete" : {
-				"script" : on_remove
-			}
-		}
-		
-		options_battle = {
-			"Use" : {
-				"script" : on_option_use_battle,
-				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
-				}
+			"Delete" : on_remove
 		}
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
-	func on_option_use_world(target : Node = host):
-		target.my_component_health.heal(heal_amount)
-		#FX GO HERE
-		on_consume()
-		host.my_inventory_gui.refresh()
-	
-	func on_option_use_battle(target : Node = host):
-		target.my_component_health.heal(heal_amount)
-		#FX GO HERE
-		on_consume()
+	func on_option_use_world(target : Node = host, confirm : bool = true):
+		#Parse all the submenu stuff here based on what we selected use -> target -> confirm
+		if confirm:
+			Interface.heal(target,heal_amount)
+			#FX GO HERE
+			on_consume()
+			host.my_inventory_gui.refresh()
 
 class item_dewdrop:
 	extends item
@@ -176,23 +186,11 @@ class item_dewdrop:
 				"script" : on_remove
 			}
 		}
-		
-		options_battle = {
-			"Use" : {
-				"script" : on_option_use_battle,
-				"valid_targets" : [Battle.classification.PLAYER,Battle.classification.DREAMKIN]
-				}
-		}
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
 	func on_option_use_world(target : Node = host):
-		target.my_component_vis.restore(recovery_amount)
+		Interface.heal(target,recovery_amount)
 		#FX GO HERE
 		on_consume()
 		host.my_inventory_gui.refresh()
-	
-	func on_option_use_battle(target : Node = host):
-		target.my_component_vis.restore(recovery_amount)
-		#FX GO HERE
-		on_consume()

@@ -280,6 +280,8 @@ func _on_button_pressed_switch_dreamkin(dreamkin : Object):
 			state_chart.send_event("on_gui_disabled") #Disable gui
 			Events.turn_end.emit.call_deferred() #End turn without any phases
 			#owner.state_chart.send_event("on_end") #End our turn
+	else:
+		print(dreamkin.name," is unconscious!")
 
 func _on_button_pressed_item():
 	pass
