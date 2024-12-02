@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://UI/menu_theme.tres" id="1_al4xi"]
 [ext_resource type="Script" path="res://UI/battle_gui.gd" id="1_jw2rn"]
-[ext_resource type="Texture2D" uid="uid://dgvkniyh48b7f" path="res://Art/sprites/hand_thin_small_point.svg" id="2_obblc"]
+[ext_resource type="Texture2D" uid="uid://baulnrnwj0y00" path="res://Art/sprites/cursor_hand_new.png" id="2_up7di"]
 [ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://UI/animation_component.tscn" id="3_75k8e"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_e75bu"]
 [ext_resource type="Texture2D" uid="uid://dayliakedilhw" path="res://Art/sprites/Skillcheck GUI/12-0 Clock 2x2.png" id="5_jdbcn"]
@@ -31,7 +31,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.166667, 0.432899),
 "transitions": PackedFloat32Array(1, 1, 2.2974),
 "update": 0,
-"values": [Vector3(1.8, 1.8, 1.8), Vector3(2, 2, 2), Vector3(1.8, 1.8, 1.8)]
+"values": [Vector3(0.15, 0.15, 0.15), Vector3(0.17, 0.17, 0.17), Vector3(0.15, 0.15, 0.15)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vgfiw"]
@@ -129,16 +129,16 @@ libraries = {
 autoplay = "pointer_hover"
 
 [node name="selector_sprite" type="Sprite3D" parent="."]
-transform = Transform3D(1.73248, -0.488375, 0, 0.488375, 1.73248, 0, 0, 0, 1.8, 0, 0, 0)
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
 visible = false
 ignore_occlusion_culling = true
-offset = Vector2(-6, 10)
+offset = Vector2(-80, 120)
 flip_h = true
 flip_v = true
 no_depth_test = true
 texture_filter = 0
 render_priority = 10
-texture = ExtResource("2_obblc")
+texture = ExtResource("2_up7di")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

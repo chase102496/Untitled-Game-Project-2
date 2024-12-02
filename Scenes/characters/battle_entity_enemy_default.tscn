@@ -791,6 +791,7 @@ script = ExtResource("4_rulta")
 [node name="character_sprite_position" type="Node3D" parent="Animations"]
 
 [node name="selector_anchor" type="Marker3D" parent="Animations/character_sprite_position"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.3, 0)
 
 [node name="status_hud" parent="Animations/character_sprite_position" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider") instance=ExtResource("14_ts3oi")]
 visible = false

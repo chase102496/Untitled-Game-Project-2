@@ -1,5 +1,6 @@
 extends Control
 
+@export var my_component_party : component_party
 @export var my_component_inventory : component_inventory
 @onready var inventory_gui_tabs = %Tabs
 
@@ -12,18 +13,10 @@ extends Control
 @onready var inventory_gui_options_panel = $Options/PanelContainer2
 @onready var inventory_gui_options_list = $Options/PanelContainer2/List
 
-@onready var ui_button_inventory_item : PackedScene = preload("res://UI/empty_item_button.tscn")
-@onready var ui_button_inventory_item_option : PackedScene = preload("res://UI/empty_option_button.tscn")
-
 @onready var state_chart : StateChart = %StateChart
 
 func _ready() -> void:
-	##Buttons
-	Events.button_pressed_inventory_item.connect(_on_button_pressed_inventory_item)
-	Events.mouse_entered_inventory_item.connect(_on_mouse_entered_inventory_item)
-	Events.mouse_exited_inventory_item.connect(_on_mouse_exited_inventory_item)
-	
-	Events.button_pressed_inventory_item_option.connect(_on_button_pressed_inventory_item_option)
+	#Events.button_pressed_inventory_item_option.connect(_on_button_pressed_inventory_item_option)
 	
 	inventory_gui_tabs.tab_selected.connect(_on_inventory_gui_tab_selected)
 	
@@ -55,8 +48,23 @@ func free_children(parent : Node):
 func create_button_category_list(category : Dictionary):
 	free_children(inventory_gui_item_list)
 	for item in my_component_inventory.get_items_from_category(category):
-		var new_button = ui_button_inventory_item.instantiate()
-		new_button.item = item
+		var new_button = Glossary.ui.empty_properties_button.instantiate()
+		
+		## Assign
+		new_button.properties.item = item
+		
+		## Display
+		if item.quantity > 1:
+			new_button.text = str(item.title,"  x",item.quantity)
+		else:
+			new_button.text = item.title
+		
+		## Signal
+		new_button.button_pressed_properties.connect(_on_button_pressed_inventory_item)
+		new_button.button_enter_hover_properties.connect(_on_button_entered_inventory_item)
+		new_button.button_exit_hover_properties.connect(_on_button_exited_inventory_item)
+		
+		## Finalize
 		inventory_gui_item_list.add_child(new_button)
 		new_button.show()
 
@@ -97,7 +105,9 @@ func _on_inventory_gui_tab_selected(tab : int):
 
 ## Item buttons
 
-func _on_button_pressed_inventory_item(item : Object):
+func _on_button_pressed_inventory_item(properties : Dictionary):
+	
+	var item = properties.item
 	
 	free_children(inventory_gui_options_list)
 	
@@ -105,23 +115,35 @@ func _on_button_pressed_inventory_item(item : Object):
 	var pos_button = Vector2.ZERO
 	## Grab position of button we clicked
 	for child in inventory_gui_item_list.get_children():
-		if child.item == item:
+		if child.properties.item == item:
 			pos_button = child.global_position
 	## Adjusting position. Makes it easier to click and see. Displays directly below selected item
 	inventory_gui_options_panel.global_position = pos_button + (Vector2(0,inventory_gui_options_panel.get_size().y)/2)
 	
 	## Make button for each option
 	for option in item.options_world:
-		var new_button = ui_button_inventory_item_option.instantiate()
-		new_button.option_path = [option]
-		new_button.choices_path = []
+		var new_button = Glossary.ui.empty_properties_button.instantiate()
+		
+		## Assign
+		new_button.properties.option_path = [option]
+		new_button.properties.choices_path = []
+		new_button.properties.item = item
+		
+		## Display
 		new_button.text = option
-		new_button.item = item
+		
+		## Signal
+		new_button.button_pressed_properties.connect(_on_button_pressed_inventory_item_option)
+		
+		## Finalize
 		inventory_gui_options_list.add_child(new_button)
 	
 	inventory_gui_options.show()
 
-func _on_mouse_entered_inventory_item(item : Object):
+func _on_button_entered_inventory_item(properties : Dictionary):
+	
+	var item = properties.item
+	
 	inventory_gui_item_list_info_label.text = item.title
 	inventory_gui_item_list_info_description_label.text = str(
 		Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color]",
@@ -131,12 +153,15 @@ func _on_mouse_entered_inventory_item(item : Object):
 		)
 	inventory_gui_item_list_info.show()
 	
-func _on_mouse_exited_inventory_item(item : Object):
+func _on_button_exited_inventory_item(properties : Dictionary):
 	inventory_gui_item_list_info.hide()
 
 ## Option buttons
 
-func _on_button_pressed_inventory_item_option(item : Object, option_path : Array, choices_path : Array):
+func _on_button_pressed_inventory_item_option(properties : Dictionary):
+	var item = properties.item
+	var option_path = properties.option_path
+	var choices_path = properties.choices_path
 	
 	var current = get_nested_value(item.options_world,option_path) #Grabs the contents of our current path the button is in
 	
@@ -174,22 +199,27 @@ func _on_button_pressed_inventory_item_option(item : Object, option_path : Array
 		
 		## Run through all choices displayed, which is an array
 		for i in returned_choices.size(): 
-			var new_button = ui_button_inventory_item_option.instantiate() #Create new button
+			var new_button = Glossary.ui.empty_properties_button.instantiate() #Create new button
 			new_button.text = returned_choices[i]
 			
 			## Look ahead and assign that next step in our menu
 			if "branch" in current:
-				new_button.option_path = option_path + ["branch",new_button.text] #Assign us to the branch that we specify from "choices"
+				new_button.properties.option_path = option_path + ["branch",new_button.text] #Assign us to the branch that we specify from "choices"
 			elif "next" in current:
-				new_button.option_path = option_path + ["next"] #Assign us to the next path, instead of a specific branch since there isn't one
+				new_button.properties.option_path = option_path + ["next"] #Assign us to the next path, instead of a specific branch since there isn't one
 			
 			## Adds a parameter based on this button to our final script's arguments
 			if returned_choices_params: #If we found a param list
-				new_button.choices_path = choices_path + [returned_choices_params[i]] #Add our specific choice
+				new_button.properties.choices_path = choices_path + [returned_choices_params[i]] #Add our specific choice
 			else:
-				new_button.choices_path = choices_path #Keeps our existing choices from prev button
+				new_button.properties.choices_path = choices_path #Keeps our existing choices from prev button
 			
-			new_button.item = item #Make sure it still has the item as a reference
+			new_button.properties.item = item #Make sure it still has the item as a reference
+			
+			## Add signal
+			new_button.button_pressed_properties.connect(_on_button_pressed_inventory_item_option)
+			
+			## Finalize
 			inventory_gui_options_list.add_child(new_button) #Add it as a child so it can be displayed properly
 			
 	else:
@@ -238,7 +268,6 @@ func _on_state_exited_inventory_gui_dreamkin():
 ## Items
 
 func _on_state_entered_inventory_gui_items():
-	
 	create_button_category_list(Glossary.item_category.ITEMS)
 	
 func _on_state_exited_inventory_gui_items():

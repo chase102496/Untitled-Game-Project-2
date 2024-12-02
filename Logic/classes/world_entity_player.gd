@@ -19,7 +19,6 @@ func _ready():
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
 	
-	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	
 	my_component_health.change(-5)
@@ -45,6 +44,12 @@ func _ready():
 	
 	##Debug
 	if my_component_party.my_party.size() == 0:
+		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
+				)
+		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
+				)
 		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
 				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 				)

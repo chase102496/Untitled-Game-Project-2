@@ -151,5 +151,6 @@ func create_text_particle(anchor : Node, text : String = "TEST", type : String =
 	return particle_label
 
 const ui : Dictionary = {
-	"heartstitch" : preload("res://UI/status_effect_heartstitch.tscn")
+	"heartstitch" : preload("res://UI/status_effect_heartstitch.tscn"),
+	"empty_properties_button" : preload("res://UI/empty_properties_button.tscn")
 }

@@ -11,7 +11,7 @@ func _ready() -> void:
 	pressed.connect(_on_button_pressed)
 	mouse_entered.connect(_on_button_mouse_entered)
 	mouse_exited.connect(_on_button_mouse_exited)
-	text = str(dreamkin.type.ICON," ",dreamkin.name)
+	text = str(dreamkin.type.ICON,dreamkin.name)
 
 func _on_button_pressed() -> void:
 	##Validation

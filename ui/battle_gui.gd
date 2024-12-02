@@ -26,12 +26,7 @@ extends Control
 @onready var ui_description_box : PanelContainer = %Description
 @onready var ui_description_label : RichTextLabel = %"Description/VBoxContainer/Description Label"
 
-@onready var ui_button_battle_ability : PackedScene = preload("res://UI/empty_ability_button.tscn")
-@onready var ui_button_switch_dreamkin : PackedScene = preload("res://UI/empty_dreamkin_button.tscn")
-
 @onready var state_chart : StateChart = %StateChart
-
-signal button_pressed_switch_dreamkin(dreamkin : Object)
 
 func _ready() -> void:
 	##UI Hiding
@@ -47,9 +42,10 @@ func _ready() -> void:
 	ui_button_escape.pressed.connect(_on_button_pressed_escape)
 	ui_button_switch.pressed.connect(_on_button_pressed_switch)
 	ui_button_item.pressed.connect(_on_button_pressed_item)
-	## Main
+	## Events
+	Events.skillcheck_hit.connect(_on_skillcheck_hit)
 	Events.button_pressed_battle_ability.connect(_on_button_pressed_battle_ability)
-	button_pressed_switch_dreamkin.connect(_on_button_pressed_switch_dreamkin)
+	## Main
 	%StateChart/Battle_GUI/Main.state_entered.connect(_on_state_entered_battle_gui_main)
 	%StateChart/Battle_GUI/Main.state_exited.connect(_on_state_exited_battle_gui_main)
 	%StateChart/Battle_GUI/Disabled.state_entered.connect(_on_state_entered_battle_gui_disabled)
@@ -64,9 +60,9 @@ func _ready() -> void:
 	%StateChart/Battle_GUI/Skillcheck.state_entered.connect(_on_state_entered_battle_gui_skillcheck)
 	%StateChart/Battle_GUI/Skillcheck.state_physics_processing.connect(_on_state_physics_processing_battle_gui_skillcheck) #long af
 	%StateChart/Battle_GUI/Skillcheck.state_exited.connect(_on_state_exited_battle_gui_skillcheck)
-	Events.skillcheck_hit.connect(_on_skillcheck_hit)
 	## Switch
 	%StateChart/Battle_GUI/Switch.state_entered.connect(_on_state_entered_battle_gui_switch)
+	%StateChart/Battle_GUI/Switch.state_physics_processing.connect(_on_state_physics_processing_battle_gui_switch)
 	%StateChart/Battle_GUI/Switch.state_exited.connect(_on_state_exited_battle_gui_switch)
 
 ## --- States ----
@@ -92,17 +88,28 @@ func _on_state_entered_battle_gui_battle():
 	ui_grid_battle.show() #Show battle grid of buttons
 	
 	#removing old abilities
-	for i in ui_grid_battle.get_child_count():
-			ui_grid_battle.get_child(i).queue_free()
+	for child in ui_grid_battle.get_children():
+			child.queue_free()
 	#adding new ones
 	for i in len(owner.my_component_ability.my_abilities):
-		var new_button = ui_button_battle_ability.instantiate()
-		new_button.text = owner.my_component_ability.my_abilities[i].title
-		new_button.ability = owner.my_component_ability.my_abilities[i]
-		new_button.description_box = ui_description_box
-		new_button.description_label = ui_description_label
+		
+		var new_button = Glossary.ui.empty_properties_button.instantiate()
+		var new_ability = owner.my_component_ability.my_abilities[i]
+		
+		new_button.text = str(new_ability.type.ICON," ",new_ability.title)
+		new_button.properties.ability = owner.my_component_ability.my_abilities[i]
+		
+		##REMOVE
+		new_button.properties.description_box = ui_description_box
+		new_button.properties.description_label = ui_description_label
+		
+		## Signals
+		new_button.button_pressed_properties.connect(_on_button_pressed_battle_ability)
+		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_battle_ability)
+		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_battle_ability)
+		
 		ui_grid_battle.add_child(new_button)
-		new_button.show() #Show buttons
+		new_button.show()
 
 func _on_state_physics_processing_battle_gui_battle(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
@@ -201,19 +208,29 @@ func _on_state_entered_battle_gui_switch():
 	ui_grid_switch.show()
 	
 	#removing old dreamkin buttons
-	for i in ui_grid_switch.get_child_count():
-			ui_grid_switch.get_child(i).button_pressed_switch_dreamkin.disconnect(_on_button_pressed_switch_dreamkin)
-			ui_grid_switch.get_child(i).queue_free()
+	for child in ui_grid_switch.get_children():
+		child.queue_free()
 	#adding new ones
-	for i in Global.player.my_component_party.my_party.size(): #TODO Won't work if player is dead rn
-		var new_button = ui_button_switch_dreamkin.instantiate()
-		new_button.text = Global.player.my_component_party.my_party[i].name
-		new_button.dreamkin = Global.player.my_component_party.my_party[i]
-		new_button.description_box = ui_description_box
-		new_button.description_label = ui_description_label
+	for i in Global.player.my_component_party.my_party.size(): #TODO Won't work if player is actually dead rn
+		
+		## Setup
+		var dreamkin_inst = Global.player.my_component_party.my_party[i]
+		var new_button = Glossary.ui.empty_properties_button.instantiate()
+		new_button.text = str(dreamkin_inst.type.ICON," ",dreamkin_inst.name)
+		new_button.properties.dreamkin = dreamkin_inst
+		
+		## Signals
+		new_button.button_pressed_properties.connect(_on_button_pressed_switch_dreamkin)
+		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_switch_dreamkin)
+		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_switch_dreamkin)
+		
+		## Finalize
 		ui_grid_switch.add_child(new_button)
-		new_button.show() #Show buttons
-		new_button.button_pressed_switch_dreamkin.connect(_on_button_pressed_switch_dreamkin)
+		new_button.show()
+
+func _on_state_physics_processing_battle_gui_switch(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		state_chart.send_event("on_gui_battle")
 
 func _on_state_exited_battle_gui_switch():
 	ui_panel_menu.hide()
@@ -227,16 +244,34 @@ func _on_button_pressed_battle():
 	state_chart.send_event("on_gui_battle")
 	#TODO add back button for GUIs
 
-func _on_button_pressed_battle_ability(ability : Object):
-	if ability.caster == owner:
-		selector_list = []
-		selected_ability = ability #for use later
-		
-		if ability.select_validate():
-			selector_list = Battle.get_target_type_list(owner,selected_ability.target_type,true)
-			state_chart.send_event("on_gui_select")
-		else:
-			ability.select_validate_failed()
+func _on_button_pressed_battle_ability(properties : Dictionary):
+	
+	var ability = properties.ability
+
+	selector_list = []
+	selected_ability = ability
+	
+	if ability.select_validate():
+		selector_list = Battle.get_target_type_list(owner,selected_ability.target_type,true)
+		state_chart.send_event("on_gui_select")
+	else:
+		ability.select_validate_failed()
+
+func _on_button_enter_hover_battle_ability(properties : Dictionary):
+	
+	var ability = properties.ability
+	
+	ui_description_label.text = str(
+		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",ability.vis_cost,"  ",Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.type.TITLE,"\n",
+		ability.description,"\n",
+		"\n",
+		Battle.type_color("DESCRIPTION"),ability.target_selector.DESCRIPTION,"[/color]","\n",
+	)
+	ui_description_box.show()
+
+func _on_button_exit_hover_battle_ability(properties : Dictionary):
+	ui_description_box.hide()
+	ui_description_label.text = ""
 
 ## Switch
 
@@ -248,40 +283,66 @@ func _on_button_pressed_switch():
 	else:
 		print_debug("No party members to swap to!")
 
-func _on_button_pressed_switch_dreamkin(dreamkin : Object):
+func _on_button_pressed_switch_dreamkin(properties : Dictionary):
+	
+	var dreamkin = properties.dreamkin
+	
+	##This event is global, so if you ever have two of it keep that in mind. It won't work for each individually
 	
 	if dreamkin.select_validate(): #They are eligible to go into battle
 		
 		var dreamkin_list = Battle.search_classification("DREAMKIN",Battle.alignment.FRIENDS) #Find other Dreamkin in battle on our team
+		var new_dreamkin_inst = Global.player.my_component_party.summon(Global.player.my_component_party.my_party.find(dreamkin),"battle") #Find new dreamkin's index, and summon it
 		
 		if dreamkin_list.size() > 1: #Impossible or bug, should only have 1 active dreamkin
 			push_error("ERROR: Detecting >2 Dreamkin on Battlefield - ",dreamkin_list)
 		else:
 			if dreamkin_list.size() == 1: #There is another active dreamkin
 				var old_dreamkin = dreamkin_list[0]
-				var old_dreamkin_battle_index = Battle.battle_list.find(old_dreamkin) #Grab the battle index for the old dreamkin we are swapping out
-				var new_dreamkin_inst = Global.player.my_component_party.summon(Global.player.my_component_party.my_party.find(dreamkin),"battle") #Find new dreamkin's index, and summon it
+				var old_dreamkin_battle_index = Battle.battle_list.find(old_dreamkin) #Grab the battle index for the old dreamkin we are swapping out	
 				Battle.replace_member(new_dreamkin_inst,old_dreamkin_battle_index) #Update battle list to include that new summon
-				
-				print(Global.player.my_component_party.my_party.find(old_dreamkin))
-				
 				Global.player.my_component_party.recall(Global.player.my_component_party.my_summons.find(old_dreamkin)) #Find the old dreamkin that was on the field and recall it
-				
+			
 			else: #No dreamkin on battlefield
 				
 				if Global.player in Battle.battle_list: #If our player is alive still
-					Battle.add_member(dreamkin,Battle.battle_list.find(Global.player)+1) #Add us after player
-					
+					Battle.add_member(new_dreamkin_inst,Battle.battle_list.find(Global.player)+1) #Add us after player
+				
 				else: #We are the last one (somehow)
-					Battle.add_member(dreamkin,0)
+					Battle.add_member(new_dreamkin_inst,0)
 			
 			print_debug("Swapping out Dreamkin...")
 			
 			state_chart.send_event("on_gui_disabled") #Disable gui
+			
+			await new_dreamkin_inst._ready
 			Events.turn_end.emit.call_deferred() #End turn without any phases
 			#owner.state_chart.send_event("on_end") #End our turn
 	else:
 		print(dreamkin.name," is unconscious!")
+
+func _on_button_enter_hover_switch_dreamkin(properties : Dictionary):
+	var dreamkin = properties.dreamkin
+	var abil_list = ""
+	
+	for i in dreamkin.my_abilities.size():
+		abil_list += str(Battle.type_color_dict(dreamkin.my_abilities[i].type),dreamkin.my_abilities[i].type.ICON,"[/color] ",dreamkin.my_abilities[i].title,
+		"\n")
+	
+	ui_description_label.text = str(
+		#Battle.type_color_dict(dreamkin.type),dreamkin.type.ICON,"[/color] ",dreamkin.name,"\n",
+		Battle.type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",dreamkin.health,"/",dreamkin.max_health,"  ",
+		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",dreamkin.vis,"/",dreamkin.max_vis,"\n",
+		abil_list
+	)
+	
+	ui_description_box.show()
+
+func _on_button_exit_hover_switch_dreamkin(properties : Dictionary):
+	ui_description_box.hide()
+	ui_description_label.text = ""
+
+## Item
 
 func _on_button_pressed_item():
 	pass

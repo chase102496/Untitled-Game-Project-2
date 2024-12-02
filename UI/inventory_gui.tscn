@@ -159,7 +159,7 @@ layout_mode = 2
 
 [node name="empty_option_button" parent="Options/PanelContainer2/List" instance=ExtResource("3_w6ucd")]
 layout_mode = 2
-text = "Testing"
+text = "Option 1"
 
 [node name="StateChart" type="Node" parent="."]
 unique_name_in_owner = true

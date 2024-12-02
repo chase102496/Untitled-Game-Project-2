@@ -1,19 +1,27 @@
 extends Node
 
-signal button_pressed_battle_ability(ability : Object)
+## --- GUI ---
 
+signal button_pressed_battle_ability(ability : Object)
 signal button_pressed_inventory_item(item : Object)
 signal mouse_entered_inventory_item(item : Object)
 signal mouse_exited_inventory_item(item : Object)
 
+signal button_pressed_switch_dreamkin(dreamkin : Object)
+
 signal button_pressed_inventory_item_option(item : Object, option_path : Array, choices_path : Array)
+
+## --- Animations ---
 
 signal animation_finished(anim_name,character)
 signal animation_started(anim_name,character)
 
+## --- State charts, not in use rn I think
+
 signal state_chart_ready(character,state_chart_name) #Can use if something is being a BITCH
 
-#Battle signal skeleton
+## --- Battle Signals
+
 signal turn_end #a fresh turn has started (even before their state on_start)
 signal turn_start #a turn has completely ended (even after their state on_end)
 

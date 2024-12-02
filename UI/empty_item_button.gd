@@ -1,20 +1,22 @@
 extends Button
 
-var item
+## For general use
+var properties : Dictionary = {}
 
-@onready var description_sprite #= blah
+signal button_pressed_properties(properties : Dictionary)
+signal button_enter_hover_properties(properties : Dictionary)
+signal button_exit_hover_properties(properties : Dictionary)
 
 func _ready() -> void:
 	pressed.connect(_on_button_pressed)
 	mouse_entered.connect(_on_button_mouse_entered)
 	mouse_exited.connect(_on_button_mouse_exited)
-	text = str(item.title,"  x",item.quantity)
 
 func _on_button_pressed() -> void:
-	Events.button_pressed_inventory_item.emit(item)
+	button_pressed_properties.emit(properties)
 
 func _on_button_mouse_entered() -> void:
-	Events.mouse_entered_inventory_item.emit(item)
+	button_enter_hover_properties.emit(properties)
 
 func _on_button_mouse_exited() -> void:
-	Events.mouse_exited_inventory_item.emit(item)
+	button_exit_hover_properties.emit(properties)
