@@ -1,7 +1,13 @@
 extends Node
 
+var unique_id : int = randi_range(0,50)
+
 func text_style_color_html(type_dict : Dictionary):
 	return str("[color=",type_dict.COLOR.to_html(),"]")
+
+func get_unique_id():
+	unique_id += 1
+	return unique_id
 
 var text_style : Dictionary = {
 	"FLAVOR" :{
@@ -42,11 +48,11 @@ var status_class : Dictionary = {
 	"status_swarm" : component_ability.status_swarm, #Damage based on how many of it are on field
 	"status_regrowth" : component_ability.status_regrowth, #Doesn't die unless its kind are all dead aswell
 	"status_thorns" : component_ability.status_thorns, #Reflects damage on direct hit
-	##abil.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 }
 
 var item_class : Dictionary = {
-	"item_nectar" : component_inventory.item_nectar
+	"item_nectar" : component_inventory.item_nectar,
+	"item_dewdrop" : component_inventory.item_dewdrop
 }
 
 var item_category : Dictionary = {

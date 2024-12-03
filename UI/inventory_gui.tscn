@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://b1s71hosugqju"]
+[gd_scene load_steps=12 format=3 uid="uid://b1s71hosugqju"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://UI/menu_theme.tres" id="1_027ve"]
 [ext_resource type="Script" path="res://UI/inventory_gui.gd" id="2_b6dus"]
 [ext_resource type="StyleBox" uid="uid://b0gg650riimlg" path="res://UI/menu_style_box_no_shadow.tres" id="2_eui1b"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_l2cim"]
-[ext_resource type="PackedScene" uid="uid://b7l3a0l3jygtx" path="res://UI/empty_option_button.tscn" id="3_w6ucd"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_gemym"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_jujvs"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_dkhww"]
@@ -43,12 +42,15 @@ expand_margin_bottom = 20.0
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_47wkm"]
 
 [node name="Inventory_GUI" type="Control"]
+layout_direction = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme = ExtResource("1_027ve")
 script = ExtResource("2_b6dus")
 
@@ -76,10 +78,6 @@ tab_0/title = "  ⌘ Gear  "
 tab_1/title = "  ❖ Dreamkin  "
 tab_2/title = "  ⍟ Items   "
 tab_3/title = "  🝰 Keys  "
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-visible = false
-layout_mode = 2
 
 [node name="Panel" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -138,7 +136,8 @@ fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false
 
-[node name="Options" type="Control" parent="."]
+[node name="Options_Barrier" type="Control" parent="."]
+layout_direction = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -146,20 +145,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="Options"]
-custom_minimum_size = Vector2(120, 50)
-layout_mode = 2
-offset_left = 767.0
-offset_top = 223.0
-offset_right = 807.0
-offset_bottom = 295.0
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_direction = 2
+layout_mode = 1
+offset_left = 755.0
+offset_top = 294.0
+offset_right = 795.0
+offset_bottom = 334.0
 
-[node name="List" type="VBoxContainer" parent="Options/PanelContainer2"]
+[node name="List" type="VBoxContainer" parent="PanelContainer2"]
 layout_mode = 2
-
-[node name="empty_option_button" parent="Options/PanelContainer2/List" instance=ExtResource("3_w6ucd")]
-layout_mode = 2
-text = "Option 1"
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="StateChart" type="Node" parent="."]
 unique_name_in_owner = true

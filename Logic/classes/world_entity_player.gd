@@ -21,11 +21,8 @@ func _ready():
 	
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	
-	my_component_health.change(-5)
-	my_component_vis.change(-5)
-	
 	#TODO FIX THIS TO RUN POSITION ON A PER-TRANSFER BASIS WHERE THE OLD WORLD -> NEW WORLD, the OLD WORLD tells us where we're spawning in the new one.
-	#PlayerData.load_data_scene() 
+	
 	#PlayerData.load_data_scene(position of player new spawn)
 	#OR, we edit the actual data package on pre-scene transition, in the scenetransition Singleton
 	
@@ -41,21 +38,24 @@ func _ready():
 	#When we enter a scene for whatever reason, we always need a data point for where to put the player.
 	
 	#Each scene will have a default global position to load the player. This will be a Vector3 export variable
+
+	PlayerData.load_data_scene()
 	
 	##Debug
 	if my_component_party.my_party.size() == 0:
 		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
 				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-				)
+				,false)
 		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
 				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-				)
+				,false)
 		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
 				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-				)
+				,false)
 
 func on_save(data):
 	##Player
+	data.scene_name = SceneManager.current_scene.name
 	data.global_position = global_position
 	data.health = my_component_health.health
 	data.max_health = my_component_health.max_health
@@ -67,10 +67,17 @@ func on_save(data):
 	data.current_status_effects = my_component_ability.get_data_status_all()
 	##Dreamkin
 	data.my_party = my_component_party.export_party()
+	##Inventory
+	data.my_inventory = my_component_inventory.get_data_inventory_all()
 
 func on_load(data):
 	##Player
-	global_position = data.global_position
+	#If we're loading the same exact scene, then we want to also load our position.
+	#It's either after exiting battle, or loading a save file from title screen
+	if SceneManager.current_scene.name == data.scene_name:
+		global_position = data.global_position
+	else:
+		pass #This is where we recieve global pos info from old world saved in a global var
 	my_component_health.health = data.health
 	my_component_health.max_health = data.max_health
 	my_component_vis.vis = data.vis
@@ -81,6 +88,8 @@ func on_load(data):
 	my_component_ability.set_data_status_all(self,data.current_status_effects)
 	##Dreamkin
 	my_component_party.import_party(data.my_party)
+	##Inventory
+	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
 func on_save_data_scene():
 	on_save(PlayerData.data_scene.player)
@@ -96,8 +105,10 @@ func on_load_data_all():
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("save"):
+		#my_component_party.recall(0)
 		PlayerData.save_data_all()
 	if Input.is_action_just_pressed("load"):
+		#my_component_party.summon(0,"world")
 		PlayerData.load_data_all()
 	
 	#if Input.is_action_just_pressed("move_forward"):
@@ -109,13 +120,15 @@ func _physics_process(delta: float) -> void:
 	#if Input.is_action_just_pressed("move_backward"):
 		#my_component_party.summon(0,"world")
 		#
-	if Input.is_action_just_pressed("move_jump"):
-		my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
-			owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-			)
+	#if Input.is_action_just_pressed("move_jump"):
+		#my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
+			#)
 	
 	if Input.is_action_just_pressed("num0"):
 		Battle.battle_initialize("enemy_gloam enemy_gloam")
 	if Input.is_action_just_pressed("num1"):
 		SceneManager.transition_to("res://Levels/hotus_house.tscn")
+	if Input.is_action_just_pressed("num2"):
+		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 		#TODO make instance version of initialize similar to ability and status where we determine all the junk at creation not just a name

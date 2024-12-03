@@ -4,12 +4,16 @@ extends Node
 var my_summons : Array = [] #Our actual party members summoned currently
 var my_party : Array = [] #The reference data of all our party members
 
+var default_world_summon : int #The unique_id of your favorited dreamkin for summoning in the world
+var default_battle_summon : int #The unique_id of your favorited dreamkin for summoning in battle
+
 ##Class framework that holds dreamkin data. Saved as a class so we can still manipulate it in our party with custom functions
 class party_dreamkin:
 	extends Object
 	
 	#Some typing to make sure data isn't wonky
 	var name : String
+	var unique_id : int
 	var global_position : Vector3
 	var glossary : String
 	var type : Dictionary
@@ -19,13 +23,26 @@ class party_dreamkin:
 	var max_vis : int
 	var my_abilities : Array
 	var current_status_effects : Dictionary
+	var options_world : Dictionary = {}
+	var options_battle : Dictionary = {}
 	
-	##Sets whatever is in the dictionary directly to US
+	## Sets whatever is in the dictionary directly to US
 	func _init(data : Dictionary) -> void:
 		for i in data.size():
 			var key = data.keys()[i]
 			var value = data.values()[i]
 			self.set(key,value)
+		
+		## Options when selected in inventory
+		options_world = {
+			"Summon" : Callable(self,"summon_world"),
+		}
+	
+	func summon_world():
+		Global.player.my_component_party.recall_all()
+		var my_index = Global.player.my_component_party.my_party.find(self)
+		Global.player.my_component_party.summon(my_index,"world")
+		Global.player.my_inventory_gui.refresh()
 	
 	##Export just our variable as a single dictionary
 	func get_dreamkin_data_dictionary():
@@ -53,13 +70,13 @@ class party_dreamkin:
 		
 ## --- Getters ---
 
-##Get data from active summon list
+##Get obj data from active summon list
 func get_summon_data(index : int):
 	var summon_inst = my_summons[index] #Grab the summon member
 	var dreamkin_summon_data = summon_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
 	return dreamkin_summon_data #Return the Dictionary
 
-##Get data from party member list
+##Get obj data from party member list
 func get_party_data(index : int):
 	var party_inst = my_party[index] #Grab the party member
 	var dreamkin_party_data = party_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
@@ -78,6 +95,25 @@ func get_hybrid_name_all():
 		result.append(party_inst.name)
 	return result
 
+##Gets the results of any dreamkin anywhere in our summons or party based on a unique identifier
+func get_dreamkin_unique(unique_id : int):
+	for dreamkin in get_hybrid_data_all():
+		if dreamkin.unique_id == unique_id:
+			return dreamkin
+	return null
+
+##Get read-only data from any dreamkin, summon or party, and convert to dreamkin party object if not already
+##Can also convert orphan dreamkin that aren't in our party
+##Basically just converts anything you pull into party data, so you can read it consistently
+##NOT used to manipulate data, just to read it
+func get_universal_data(dreamkin):
+	if dreamkin is Node:
+		return party_dreamkin.new(dreamkin.get_dreamkin_data_dictionary())
+	elif dreamkin is Object:
+		return dreamkin
+	else:
+		push_error("Could not convert dreamkin to party object - ",dreamkin)
+
 ## --- Manipulation ---
 
 ##Adds a dreamkin to our party based on dreamkin object data
@@ -91,9 +127,12 @@ func add_party_dreamkin(obj : Object):#, summoned : bool = false):
 ##Adds a dreamkin to our party or summons based on an in-world instance
 #Maybe later make auto detection for world type to determine if battle or world?
 func add_summon_dreamkin(instance : Node, summoned : bool = true):
+
 	my_summons.append(instance)
+	
 	##Recall our dreamkin to its object form
 	if !summoned:
+		await instance.ready
 		recall(my_summons.find(instance))
 
 ## --- Main Methods ---
@@ -114,9 +153,23 @@ func summon(index : int, battle_or_world : String):
 	else:
 		print_debug("No party members available to summon!")
 
+##Load party to a summon, but with an object ref instead of index
+func summon_inst(dreamkin : Object, battle_or_world : String):
+	var index = my_summons.find(dreamkin)
+	summon(index,battle_or_world)
+
+##Load party to a summon, and recall all other dreamkin if they exist
+func summon_and_recall(dreamkin : Object, battle_or_world : String):
+	recall_all()
+	summon_inst(dreamkin,battle_or_world)
+
+func summon_all(battle_or_world : String):
+	for i in my_summons.size():
+		summon(i,battle_or_world)
+
 ##Save summon to our party
 func recall(index : int):
-	if index < my_summons.size():
+	if index < my_summons.size() and index >= 0:
 		##Get data for active summon at index
 		var party_data = get_summon_data(index)
 		##Convert data to object to put into party
@@ -128,7 +181,16 @@ func recall(index : int):
 		summon_inst.queue_free()
 		return party_inst #Return the new party dreamkin object
 	else:
-		print_debug("No party members available to recall!")
+		print_debug("Could not recall #",index," out of bounds ",my_party)
+
+##Save summon to our party, instance instead of index
+func recall_inst(dreamkin : Node):
+	var index = my_summons.find(dreamkin)
+	recall(index)
+
+func recall_all():
+	for i in my_summons.size():
+		recall(i)
 
 ##Export all of our dreamkin into an array of dictionaries
 func export_party():

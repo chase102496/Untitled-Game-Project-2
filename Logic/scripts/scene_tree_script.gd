@@ -5,7 +5,7 @@ signal loaded()
 @export var emits_loaded_signal: bool = true
 
 func _ready() -> void:
-	print(SceneManager.current_scene)
+	print_debug("Scene Loaded ",SceneManager.current_scene)
 
 func activate() -> void:
 	pass

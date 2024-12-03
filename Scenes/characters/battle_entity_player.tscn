@@ -1,4 +1,4 @@
-[gd_scene load_steps=113 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=114 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://Logic/classes/battle_entity_player.gd" id="1_vkci8"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_ldwgg"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="24_samkw"]
 [ext_resource type="Script" path="res://Logic/components/components.gd" id="25_gv7hb"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="26_chp6y"]
+[ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="26_jxo4h"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="28_80x7i"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="29_b5gyq"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="30_t327a"]
@@ -1269,11 +1270,12 @@ _data = {
 "default_walk_up": SubResource("Animation_t7144")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle") groups=["load_data_scene", "save_data_scene"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "my_component_inventory", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle") groups=["load_data_scene", "save_data_scene"]]
 physics_interpolation_mode = 1
 script = ExtResource("1_vkci8")
 my_battle_gui = NodePath("Battle_GUI")
 my_component_party = NodePath("Components/component_party")
+my_component_inventory = NodePath("Components/component_inventory")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
@@ -1352,6 +1354,9 @@ script = ExtResource("24_samkw")
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("25_gv7hb")
+
+[node name="component_inventory" type="Node" parent="Components"]
+script = ExtResource("26_jxo4h")
 
 [node name="component_party" type="Node" parent="Components"]
 script = ExtResource("33_s503q")

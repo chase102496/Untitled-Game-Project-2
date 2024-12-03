@@ -22,6 +22,7 @@ func select_validate():
 func party_summon(data : Object):
 	Global.player.get_parent().add_child(self)
 	
+	set_deferred("unique_id",data.unique_id)
 	set_deferred("name",data.name)
 	set_deferred("global_position",Global.player.global_position)
 	set_deferred("glossary",data.glossary)
@@ -39,6 +40,7 @@ func party_summon(data : Object):
 func get_dreamkin_data_dictionary():
 	var data : Dictionary = {}
 	
+	data.unique_id = unique_id
 	data.name = name
 	data.glossary = glossary
 	data.type = type

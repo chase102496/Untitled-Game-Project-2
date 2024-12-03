@@ -19,3 +19,4 @@ extends CharacterBody3D
 @export var spacing := Vector3(0.6,0,-0.1)
 
 @onready var glossary : String = Global.get_glossary_nickname(self)
+@onready var unique_id : int = Glossary.get_unique_id()

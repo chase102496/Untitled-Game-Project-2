@@ -3,15 +3,31 @@ extends Node
 
 ## --- Inventory Manager ---
 
-var my_items : Array = []
+var my_inventory : Array = []
 
 ##Placeholder reminder for imports and exports to save file functions!
 
-## Returns all items in the given category
-func get_items_from_category(category_name : Dictionary):
+func get_data_inventory_all():
 	var result : Array = []
-	for item in my_items:
-		if item.category == category_name:
+	for item in my_inventory:
+		var sub_result : Dictionary = {}
+		sub_result = item.get_data_default() #Set default vars
+		sub_result.merge(item.get_data(),true) #Include and overwrite any defaults like id, etc
+		result.append(sub_result) #Append this merged data to our entry in the array
+	return result
+
+func set_data_inventory_all(host : Node, inventory_data_list : Array):
+	my_inventory = [] #Reset our abilities
+	for item in inventory_data_list: #iterate thru list
+		var inst = Glossary.item_class[item["id"]].new(host) #search glossary for the name we found in metadata
+		inst.set_data(item)
+		my_inventory.append(inst)
+
+## Returns all items in the given category
+func get_items_from_category(category_title : String):
+	var result : Array = []
+	for item in my_inventory:
+		if item.category.TITLE == category_title:
 			result.append(item)
 	return result
 
@@ -19,17 +35,16 @@ func add_item(inst : Object):
 	
 	## See if matching item exists and both are stackable
 	if inst.stackable:
-		for item in my_items:
+		for item in my_inventory:
 			if item.id == inst.id and item.stackable:
 				item.on_stack(inst.quantity)
 				return #Exit function
 	
 	## If we never encounter a match or it's not stackable, just add it normally
-	my_items.append(inst)
-	
+	my_inventory.append(inst)
 
 func remove_item(inst : Object):
-	my_items.pop_at(my_items.find(inst))
+	my_inventory.pop_at(my_inventory.find(inst))
 
 ## --- Item Classes ---
 
@@ -44,8 +59,8 @@ class item:
 	var stackable : bool = true #If we want it to have its own slot in our inventory
 	var quantity : int = 1
 	var max_quantity : int = 99
-	#var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
-	#var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+	var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
+	var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
 
 	enum target_type { # This is how we determine what the item can be used on, for various functions
 		PLAYER, SUMMONS, PARTY, ALL
@@ -78,10 +93,13 @@ class item:
 			"category" : category,
 			"title" : title,
 			"flavor" : category,
+			"sprite" : category,
 			"description" : description,
 			"stackable" : stackable,
 			"quantity" : quantity,
 			"max_quantity" : max_quantity,
+			#"options_world" : options_world, TODO
+			#"options_battle" : options_battle,
 		}
 	
 	func get_data():
@@ -118,22 +136,21 @@ class item_consumable:
 	# "next" indicates we don't care what we choose, this is the next path forward
 	# "branch" will take us on whatever selection we chose, it must match verbatim the choice
 	# "choices_params" is an optional parameter that will pass all of its selections to the final script. This must be the same length as "choices" in the same level
-	var options_world = {
-			"Use" : Callable(self,"on_consume"),
-			"Delete" : {
+	func inherit():
+		options_world["Use"] = Callable(self,"on_consume")
+		options_world["Delete"] = {
 				"choices" : ["Confirm","Cancel"],
 				"branch": {
 						"Confirm" : Callable(self,"on_consume"),
 						"Cancel" : null
 				}
-			},
-			"Delete All" : {
+		}
+		options_world["Delete All"] = {
 				"choices" : ["Confirm","Cancel"],
 				"branch": {
 						"Confirm" : Callable(self,"on_remove"),
 						"Cancel" : null
-				},
-			}
+				}
 		}
 
 ## --- Items ---
@@ -149,6 +166,7 @@ class item_nectar:
 		}
 	
 	func _init(host : Node, recovery_amount : int = 1, quantity : int = 1) -> void:
+		inherit()
 		id = "item_nectar"
 		title = "Nectar"
 		flavor = "You couldn't just call it a health potion?"
@@ -184,6 +202,7 @@ class item_dewdrop:
 		}
 	
 	func _init(host : Node, recovery_amount : int = 1, quantity : int = 1) -> void:
+		inherit()
 		id = "item_dewdrop"
 		title = "Dewdrop"
 		flavor = "Warning: Staring too long may result in existential crises or sudden nap attacks."

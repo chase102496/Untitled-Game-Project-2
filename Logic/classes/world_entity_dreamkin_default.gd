@@ -6,10 +6,14 @@ extends world_entity_default
 @export var my_component_input_controller: component_input_controller_follow
 @export var my_component_ability : component_ability
 
-##Default type
-var type = Battle.type.BALANCE
+##Default vars
+var type : Dictionary = Battle.type.BALANCE
+var options_world := {
+	"Recall" : Callable(Global.player.my_component_party,"recall_inst").bind(self),
+	}
+var options_battle : Dictionary = {}
 
-##For debug or making dreamkin in code, or summoning from thin air with no reference
+##If we are being created, not from a party object but from nothing
 func init(my_parent : Node, my_position : Vector3):
 	my_parent.add_child.call_deferred(self)
 	global_translate.call_deferred(my_position)
@@ -20,14 +24,15 @@ func _ready():
 	var abil = my_component_ability
 	abil.my_abilities.append(abil.ability_tackle.new(self))
 	abil.my_abilities.append(abil.ability_solar_flare.new(self,1,1.0))
-	#
 	my_component_ability.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 
-##If we are being summoned, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
+##If we are being summoned from a party object, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):
 	Global.player.get_parent().add_child(self)
+	
+	set_deferred("unique_id",data.unique_id)
 	set_deferred("name",data.name)
-	set_deferred("global_position",Global.player.global_position+Vector3(randf_range(0.2,1),0,randf_range(0.2,1)))
+	set_deferred("global_position",Global.player.global_position+Vector3(randf_range(0.2,0.8),0,randf_range(0.2,0.8)))
 	set_deferred("glossary",data.glossary)
 	set_deferred("type",data.type)
 	my_component_health.set_deferred("health",data.health)
@@ -43,6 +48,7 @@ func party_summon(data : Object):
 func get_dreamkin_data_dictionary():
 	var data : Dictionary = {}
 	
+	data.unique_id = unique_id
 	data.name = name
 	data.global_position = global_position
 	data.glossary = glossary

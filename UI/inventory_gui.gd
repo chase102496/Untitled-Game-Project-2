@@ -9,9 +9,9 @@ extends Control
 @onready var inventory_gui_item_list_info_label = $PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer/VBoxContainer/Details/Label
 @onready var inventory_gui_item_list_info_description_label = $PanelContainer/VBoxContainer/Panel/View/Info/PanelContainer/VBoxContainer/Details/Description
 
-@onready var inventory_gui_options = $Options
-@onready var inventory_gui_options_panel = $Options/PanelContainer2
-@onready var inventory_gui_options_list = $Options/PanelContainer2/List
+@onready var inventory_gui_options_barrier = $Options_Barrier
+@onready var inventory_gui_options_panel = $PanelContainer2
+@onready var inventory_gui_options_list = $PanelContainer2/List
 
 @onready var state_chart : StateChart = %StateChart
 
@@ -44,10 +44,16 @@ func convert_tab_to_glossary(tab : int):
 func free_children(parent : Node):
 	for child in parent.get_children():
 			child.queue_free()
+			
+	inventory_gui_options_panel.queue_sort()
 
-func create_button_category_list(category : Dictionary):
+func create_button_category_list(category_title : String):
 	free_children(inventory_gui_item_list)
-	for item in my_component_inventory.get_items_from_category(category):
+	
+	var dict = my_component_inventory.get_items_from_category(category_title)
+	dict.sort()
+
+	for item in dict:
 		var new_button = Glossary.ui.empty_properties_button.instantiate()
 		
 		## Assign
@@ -61,8 +67,8 @@ func create_button_category_list(category : Dictionary):
 		
 		## Signal
 		new_button.button_pressed_properties.connect(_on_button_pressed_inventory_item)
-		new_button.button_enter_hover_properties.connect(_on_button_entered_inventory_item)
-		new_button.button_exit_hover_properties.connect(_on_button_exited_inventory_item)
+		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_inventory_item)
+		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_inventory_item)
 		
 		## Finalize
 		inventory_gui_item_list.add_child(new_button)
@@ -84,44 +90,28 @@ func get_nested_value(dict: Dictionary, path: Array) -> Variant:
 	return current
 
 func options_close():
-	inventory_gui_options.hide()
+	inventory_gui_options_barrier.hide()
+	inventory_gui_options_panel.hide()
 	free_children(inventory_gui_options_list)
-	refresh()
+	refresh.call_deferred()
 
-## --- Buttons ---
-
-## State functions
-
-func _on_inventory_gui_tab_selected(tab : int):
-	match convert_tab_to_glossary(tab):
-		"GEAR":
-			state_chart.send_event("on_gui_gear")
-		"DREAMKIN":
-			state_chart.send_event("on_gui_dreamkin")
-		"ITEMS":
-			state_chart.send_event("on_gui_items")
-		"KEYS":
-			state_chart.send_event("on_gui_keys")
-
-## Item buttons
-
-func _on_button_pressed_inventory_item(properties : Dictionary):
+func options_create_list(properties : Dictionary):
 	
 	var item = properties.item
 	
 	free_children(inventory_gui_options_list)
-	
+
 	## Placing options window near the relevant item in the list
 	var pos_button = Vector2.ZERO
 	## Grab position of button we clicked
 	for child in inventory_gui_item_list.get_children():
 		if child.properties.item == item:
-			pos_button = child.global_position
+			pos_button = child.global_position + Vector2(0,child.get_size().y)
 	## Adjusting position. Makes it easier to click and see. Displays directly below selected item
-	inventory_gui_options_panel.global_position = pos_button + (Vector2(0,inventory_gui_options_panel.get_size().y)/2)
+	inventory_gui_options_panel.global_position = pos_button
 	
 	## Make button for each option
-	for option in item.options_world:
+	for option in item.options_world: #How do we handle modifying this?
 		var new_button = Glossary.ui.empty_properties_button.instantiate()
 		
 		## Assign
@@ -137,10 +127,31 @@ func _on_button_pressed_inventory_item(properties : Dictionary):
 		
 		## Finalize
 		inventory_gui_options_list.add_child(new_button)
-	
-	inventory_gui_options.show()
+		
+	inventory_gui_options_panel.show()
+	inventory_gui_options_barrier.show()
 
-func _on_button_entered_inventory_item(properties : Dictionary):
+## --- Buttons ---
+
+## Changing states tabs
+
+func _on_inventory_gui_tab_selected(tab : int):
+	match convert_tab_to_glossary(tab):
+		"GEAR":
+			state_chart.send_event("on_gui_gear")
+		"DREAMKIN":
+			state_chart.send_event("on_gui_dreamkin")
+		"ITEMS":
+			state_chart.send_event("on_gui_items")
+		"KEYS":
+			state_chart.send_event("on_gui_keys")
+
+## Item buttons
+
+func _on_button_pressed_inventory_item(properties : Dictionary):
+	options_create_list(properties)
+
+func _on_button_enter_hover_inventory_item(properties : Dictionary):
 	
 	var item = properties.item
 	
@@ -153,8 +164,33 @@ func _on_button_entered_inventory_item(properties : Dictionary):
 		)
 	inventory_gui_item_list_info.show()
 	
-func _on_button_exited_inventory_item(properties : Dictionary):
+func _on_button_exit_hover_inventory_item(properties : Dictionary):
 	inventory_gui_item_list_info.hide()
+
+## Dreamkin buttons
+
+func _on_button_pressed_dreamkin(properties : Dictionary):
+	options_create_list(properties)
+	
+func _on_button_enter_hover_dreamkin(properties : Dictionary):
+	var dreamkin = my_component_party.get_universal_data(properties.item)
+	var abil_list = ""
+	
+	for i in dreamkin.my_abilities.size():
+		abil_list += str(Battle.type_color_dict(dreamkin.my_abilities[i].type),dreamkin.my_abilities[i].type.ICON,"[/color] ",dreamkin.my_abilities[i].title,
+		"\n")
+	
+	inventory_gui_item_list_info_label.text = str(dreamkin.type.ICON," ",dreamkin.name)
+	
+	inventory_gui_item_list_info_description_label.text = str(
+		#Battle.type_color_dict(dreamkin.type),dreamkin.type.ICON,"[/color] ",dreamkin.name,"\n",
+		Battle.type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",dreamkin.health,"/",dreamkin.max_health,"  ",
+		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",dreamkin.vis,"/",dreamkin.max_vis,"\n",
+		abil_list
+	)
+
+func _on_button_exit_hover_dreamkin(properties : Dictionary):
+	pass
 
 ## Option buttons
 
@@ -173,6 +209,7 @@ func _on_button_pressed_inventory_item_option(properties : Dictionary):
 	elif current is Callable:
 		current.callv(choices_path) #Call the end's script and insert our args we selected along the way
 		options_close()
+		
 	
 	##If we find choices within this selection
 	elif "choices" in current:
@@ -234,15 +271,21 @@ func _on_state_entered_inventory_gui_enabled():
 
 func _on_state_physics_processing_inventory_gui_enabled(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
-		state_chart.send_event("on_gui_toggle") #Disable the inventory
-		owner.state_chart.send_event("on_disabled_toggle") #Enable the player
+		if inventory_gui_options_barrier.visible:
+			options_close()
+		else:
+			state_chart.send_event("on_gui_toggle") #Disable the inventory
+			owner.state_chart.send_event("on_disabled_toggle") #Enable the player
 
 ## Disabled
 
 func _on_state_entered_inventory_gui_disabled():
 	hide()
-	inventory_gui_options.hide() #Hide options if it was open
+	inventory_gui_options_barrier.hide() #Hide options blocker if it was open
+	inventory_gui_options_panel.hide() #Hide options if it was open
 	inventory_gui_tabs.current_tab = 0 #Reset tabs to first
+	free_children(inventory_gui_item_list)
+	free_children(inventory_gui_options_list)
 	
 func _on_state_exited_inventory_gui_disabled():
 	pass
@@ -250,17 +293,31 @@ func _on_state_exited_inventory_gui_disabled():
 ## Gear
 
 func _on_state_entered_inventory_gui_gear():
-	
-	create_button_category_list(Glossary.item_category.GEAR)
+	free_children(inventory_gui_item_list)
+	create_button_category_list(Glossary.item_category.GEAR.TITLE)
 	
 func _on_state_exited_inventory_gui_gear():
-	
-	free_children(inventory_gui_item_list)
+	pass
 
 ## Dreamkin
 
 func _on_state_entered_inventory_gui_dreamkin():
-	pass
+	free_children(inventory_gui_item_list)
+	for dreamkin in my_component_party.get_hybrid_data_all():
+		
+		## Setup
+		var new_button = Glossary.ui.empty_properties_button.instantiate()
+		new_button.text = str(dreamkin.type.ICON," ",dreamkin.name)
+		new_button.properties.item = dreamkin
+		
+		## Signals
+		new_button.button_pressed_properties.connect(_on_button_pressed_dreamkin)
+		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_dreamkin)
+		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_dreamkin)
+		
+		## Finalize
+		inventory_gui_item_list.add_child(new_button)
+		new_button.show()
 
 func _on_state_exited_inventory_gui_dreamkin():
 	pass
@@ -268,19 +325,17 @@ func _on_state_exited_inventory_gui_dreamkin():
 ## Items
 
 func _on_state_entered_inventory_gui_items():
-	create_button_category_list(Glossary.item_category.ITEMS)
+	free_children(inventory_gui_item_list)
+	create_button_category_list(Glossary.item_category.ITEMS.TITLE)
 	
 func _on_state_exited_inventory_gui_items():
-
-	free_children(inventory_gui_item_list)
+	pass
 
 ## Keys
 
 func _on_state_entered_inventory_gui_keys():
-	
-	create_button_category_list(Glossary.item_category.KEYS)
+	free_children(inventory_gui_item_list)
+	create_button_category_list(Glossary.item_category.KEYS.TITLE)
 
 func _on_state_exited_inventory_gui_keys():
-
-	free_children(inventory_gui_item_list)
-	
+	pass

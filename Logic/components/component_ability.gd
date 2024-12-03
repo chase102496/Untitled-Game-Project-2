@@ -339,7 +339,7 @@ class status_heartstitch:
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
 			for i in len(partners):
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
-					partners[i].my_component_health.change(-amount,true)
+					partners[i].my_component_health.change(amount,true)
 					print_debug(partners[i].name," took ",amount," points of mirror damage!")
 	
 	func fx_add():
@@ -533,9 +533,9 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	func on_start():
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
 		mult_total = (len(paired_teammates) - 1)*mult_percent #teammates + mult percent for one teammate
-		print("MULT: ",mult_total)
+		print_debug("MULT: ",mult_total)
 		host.my_component_ability.stats.damage_multiplier += mult_total
-		print("DAMAGE TOTAL MULT: ",host.my_component_ability.stats.damage_multiplier)
+		print_debug("DAMAGE TOTAL MULT: ",host.my_component_ability.stats.damage_multiplier)
 	
 	func on_end():
 		host.my_component_ability.stats.damage_multiplier -= mult_total
@@ -650,7 +650,7 @@ func get_data_status_all() -> Dictionary:
 		passive_status_list.append(passive_unit) #Append this merged data to our entry in the array
 	result["PASSIVE"] = passive_status_list
 	
-	print_debug("Retrieved data for ",owner," ",result)
+	#print_debug("Retrieved data for ",owner," ",result)
 	return result
 
 #Creates new statuses and sets their params based on data file
@@ -662,7 +662,7 @@ func set_data_status_all(host : Node, status_data : Dictionary):
 		var normal_eff = current_status_effects.add(Glossary.status_class[status_data["NORMAL"]["id"]].new(host),true) #Create the normal status and overwrite old status
 		normal_eff.set_data(status_data["NORMAL"]) #Send the status our data for all its variables to change to
 		
-		print_debug("set data for ",status_data["NORMAL"]["id"])
+		#print_debug("set data for ",status_data["NORMAL"]["id"])
 	##PASSIVE
 	for i in current_status_effects.PASSIVE.size(): #Remove any previous passives first
 		current_status_effects.remove_passive(current_status_effects.PASSIVE[i])
@@ -670,7 +670,7 @@ func set_data_status_all(host : Node, status_data : Dictionary):
 		var passive_eff = current_status_effects.add_passive(Glossary.status_class[status_data["PASSIVE"][i]["id"]].new(host)) #Create the passive
 		passive_eff.set_data(status_data["PASSIVE"][i]) #Send the indexed status our data for all its variables to change to
 		
-		print_debug("set data for ",owner," ",status_data["PASSIVE"])
+		#print_debug("set data for ",owner," ",status_data["PASSIVE"])
 	
 
 ##Returns all get_data() functions on abilities to store in a data list for a save file

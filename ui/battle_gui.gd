@@ -350,4 +350,4 @@ func _on_button_pressed_item():
 ## Escape
 
 func _on_button_pressed_escape():
-	SceneManager.transition_to_prev()
+	Battle.battle_finalize()

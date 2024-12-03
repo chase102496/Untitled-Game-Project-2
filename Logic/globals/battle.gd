@@ -316,3 +316,8 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 		battle_list.append(unit_instance)
 		
 	SceneManager.transition_to(scene_new)
+
+func battle_finalize():
+	PlayerData.save_data_scene()
+	SceneManager.transition_to_prev()
+	

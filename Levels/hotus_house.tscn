@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bj6ivelocirrn"]
+[gd_scene load_steps=43 format=3 uid="uid://bj6ivelocirrn"]
 
 [ext_resource type="Script" path="res://Logic/scripts/scene_tree_script.gd" id="1_54bp6"]
 [ext_resource type="Environment" uid="uid://cea82iqv8py6c" path="res://Scenes/dream_garden_environment.tres" id="1_dvys4"]
@@ -10,9 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://dkivrd8hff1xh" path="res://Scenes/buildings/sm_window_wall_01.tscn" id="5_3ntxh"]
 [ext_resource type="PackedScene" uid="uid://xmqt0vwhs8g3" path="res://Scenes/buildings/sm_roof.tscn" id="6_680v8"]
 [ext_resource type="PackedScene" uid="uid://dp7uehr0563lr" path="res://Scenes/characters/world_entity_player.tscn" id="6_iwcwj"]
+[ext_resource type="Script" path="res://Logic/scripts/trigger_scene_change.gd" id="6_ojk1i"]
 [ext_resource type="PackedScene" uid="uid://dsktoqsu0l8w5" path="res://Scenes/buildings/sm_wall_doorway.tscn" id="7_kooln"]
 [ext_resource type="PackedScene" uid="uid://3n6dlkrf1mxh" path="res://Scenes/buildings/sm_fireplace.tscn" id="8_brr5p"]
-[ext_resource type="PackedScene" uid="uid://b4yanlt001cgx" path="res://Scenes/buildings/sm_door_scene.tscn" id="8_lnun3"]
 [ext_resource type="Script" path="res://Logic/scripts/trigger_box_camera_rotate.gd" id="8_v4dj6"]
 [ext_resource type="PackedScene" uid="uid://diwrmwfsed0tj" path="res://Scenes/buildings/sm_door_locked.tscn" id="9_vx2r1"]
 [ext_resource type="PackedScene" uid="uid://dob6e00rfmew2" path="res://Scenes/camera_interior.tscn" id="10_ayakt"]
@@ -34,9 +34,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_0ujo8"]
 size = Vector3(1.25, 4, 1.5)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_qqbdf"]
+size = Vector3(3, 2, 2.5)
+
 [sub_resource type="Curve3D" id="Curve3D_t8b4y"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 5.75, 0, 0, 0, 0, 0, 0, 0, 0, -0.625, 0, 0),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 6.125, 0, 0, 0, 0, 0, 0, 0, 0, -0.625, 0, 0),
 "tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
@@ -168,7 +171,7 @@ environment = ExtResource("1_dvys4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="Camera" parent="." node_paths=PackedStringArray("follow_target", "follow_path") instance=ExtResource("10_ayakt")]
-transform = Transform3D(1.19156e-07, -0.0665181, 0.997788, 3.72363e-09, 0.997772, 0.0665192, -0.999555, -3.72524e-09, 1.1921e-07, 7.125, 1.75, -0.25)
+transform = Transform3D(1.19156e-07, -0.0665181, 0.997788, 3.72363e-09, 0.997772, 0.0665192, -0.999555, -3.72524e-09, 1.1921e-07, 7.5, 1.625, -0.125)
 priority = 1
 follow_mode = 4
 follow_target = NodePath("../Player")
@@ -176,7 +179,7 @@ follow_path = NodePath("../Camera Bounding Box/FB Arm/FB Follow/LR Arm")
 look_at_mode = 0
 
 [node name="Player" parent="." instance=ExtResource("6_iwcwj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 0.5, -0.25)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.125, 0.5, -0.125)
 
 [node name="Triggers" type="Node3D" parent="."]
 
@@ -189,6 +192,15 @@ camera_rotation = "left"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -1)
 shape = SubResource("BoxShape3D_0ujo8")
 
+[node name="trigger_scene_change" type="Area3D" parent="Triggers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.625, 0.875, -1.5)
+script = ExtResource("6_ojk1i")
+scene = "res://Levels/dream_garden.tscn"
+entry_point = Vector3(30.7028, 2.75, -31.4378)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Triggers/trigger_scene_change"]
+shape = SubResource("BoxShape3D_qqbdf")
+
 [node name="Camera Bounding Box" type="Node3D" parent="."]
 
 [node name="FB Arm" type="Path3D" parent="Camera Bounding Box"]
@@ -196,11 +208,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.125, 1.75, 4.5)
 curve = SubResource("Curve3D_t8b4y")
 
 [node name="FB Follow" type="PathFollow3D" parent="Camera Bounding Box/FB Arm"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.75, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.125, 0, 0)
 script = ExtResource("21_kmopj")
 
 [node name="LR Arm" type="Path3D" parent="Camera Bounding Box/FB Arm/FB Follow"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.76837e-07, 0, 2.5)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.76837e-07, -0.125, 2.5)
 curve = SubResource("Curve3D_bje7k")
 
 [node name="Building" type="Node3D" parent="."]
@@ -216,6 +228,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
 
 [node name="wall_default15" parent="Building" instance=ExtResource("2_uqtjb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -4)
+
+[node name="wall_default60" parent="Building" instance=ExtResource("2_uqtjb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -4)
 
 [node name="wall_default5" parent="Building" instance=ExtResource("2_uqtjb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -8.25)
@@ -446,9 +461,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -4)
 [node name="sm_wall_doorway3" parent="Building" instance=ExtResource("7_kooln")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4, 0, -4.25)
 
-[node name="sm_door_scene" parent="Building" instance=ExtResource("8_lnun3")]
-transform = Transform3D(-4.37114e-08, 0, 1.5, 0, 0.95, 0, -1, 0, -6.55671e-08, 8, 0, -2)
-
 [node name="sm_door_scene2" parent="Building" instance=ExtResource("9_vx2r1")]
 transform = Transform3D(1, 0, 0, 0, 0.95, 0, 0, 0, 2, 2, 0, -4.25)
 
@@ -486,10 +498,16 @@ transform = Transform3D(-1.33333, 0, -1.16564e-07, 0, 1.33333, 0, 1.16564e-07, 0
 transform = Transform3D(-1.33333, 0, 1.16564e-07, 0, 1.33333, 0, -1.16564e-07, 0, -1.33333, -4, 0, -4)
 
 [node name="sm_verticalcolumn_04" parent="Building" instance=ExtResource("17_yitnr")]
-transform = Transform3D(1.33333, 0, 0, 0, 1.33333, 0, 0, 0, 1.33333, 8, 0, -4)
+transform = Transform3D(2, 0, 0, 0, 1.333, 0, 0, 0, 1.333, 8.5, 0, -4)
 
 [node name="sm_verticalcolumn_05" parent="Building" instance=ExtResource("17_yitnr")]
-transform = Transform3D(1.33333, 0, 0, 0, 1.33333, 0, 0, 0, 1.33333, 8, 0, 8)
+transform = Transform3D(2, 0, 0, 0, 1.333, 0, 0, 0, 1.333, 8.5, 0, 8)
+
+[node name="sm_verticalcolumn_18" parent="Building" instance=ExtResource("17_yitnr")]
+transform = Transform3D(-5.82673e-08, 1.09278e-07, 1.333, 1.333, -1.09278e-07, 5.82673e-08, 5.82673e-08, 2.5, -5.82673e-08, 8.33325, 0.33325, -0.887488)
+
+[node name="sm_verticalcolumn_19" parent="Building" instance=ExtResource("17_yitnr")]
+transform = Transform3D(-5.82673e-08, 1.31134e-07, 1.333, 1.333, -1.31134e-07, 5.82673e-08, 5.82673e-08, 3, -5.82673e-08, 8.33325, 0.333292, -15.0833)
 
 [node name="sm_verticalcolumn_08" parent="Building" instance=ExtResource("17_yitnr")]
 transform = Transform3D(1.33333, 0, 0, 0, -5.82819e-08, -1.33333, 0, 1.33333, -5.82819e-08, -3.33333, 6, 2)
