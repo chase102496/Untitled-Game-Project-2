@@ -31,6 +31,12 @@ func get_items_from_category(category_title : String):
 			result.append(item)
 	return result
 
+### Returns all items that can be used in battle
+#func get_items_for_battle():
+	#var result : Array = []
+	#for item in my_inventory:
+		#pass
+
 func add_item(inst : Object):
 	
 	## See if matching item exists and both are stackable
@@ -50,6 +56,7 @@ func remove_item(inst : Object):
 
 class item:
 	var id : String
+	var classification : String = Battle.classification.ITEM
 	var host : Node
 	var category : Dictionary # This is here to sort items by page in our inventory. Gear, Dreamkin, Items, or Keys e.g. Glossary.item_category.GEAR
 	var title : String
@@ -70,16 +77,22 @@ class item:
 		self.host = host
 	
 	##Return the string names of whatever selections we want, in an array
-	func get_choices_display(type : target_type):
+	func get_choices_display(type : target_type) -> Array:
 		match type:
 			target_type.ALL:
 				return [Global.player.name] + host.my_component_party.get_hybrid_name_all()
+			_:
+				push_error("Unknown type for get_choices - ",type)
+				return []
 	
 	##Return the actual objects of whatever selections we want, in an array
-	func get_choices(type : target_type):
+	func get_choices(type : target_type) -> Array:
 		match type:
 			target_type.ALL:
 				return [Global.player] + host.my_component_party.get_hybrid_data_all()
+			_:
+				push_error("Unknown type for get_choices - ",type)
+				return []
 		
 	
 	func set_data(new_metadata : Dictionary):
@@ -132,12 +145,24 @@ class item_consumable:
 	
 	## List of functions that pop up in world when we select this item in our inventory. References existing scripts, and their params to grab
 	## Legend
-	# "choices" is mandatory for each level with a dictionary, and is just a string that leads us in a direction
 	# "next" indicates we don't care what we choose, this is the next path forward
 	# "branch" will take us on whatever selection we chose, it must match verbatim the choice
+	# "choices" is mandatory for each level with a dictionary, and is just a string that leads us in a direction
 	# "choices_params" is an optional parameter that will pass all of its selections to the final script. This must be the same length as "choices" in the same level
+	# "choices_info" is optional info passed to the button display to display additional info like health, item descriptions, etc.
 	func inherit():
-		options_world["Use"] = Callable(self,"on_consume")
+		options_world["Use"] = {
+			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
+			"choices_info" : Callable(self,"get_choices").bind(target_type.ALL),
+			"choices_params" : Callable(self,"get_choices").bind(target_type.ALL),
+			"next" : Callable(self,"on_option_use_world")
+		}
+		options_battle["Use"] = {
+			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
+			"choices_info" : Callable(self,"get_choices").bind(target_type.ALL),
+			"choices_params" : Callable(self,"get_choices").bind(target_type.ALL),
+			"next" : Callable(self,"on_option_use_battle")
+		}
 		options_world["Delete"] = {
 				"choices" : ["Confirm","Cancel"],
 				"branch": {
@@ -176,20 +201,20 @@ class item_nectar:
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
 		sprite = Glossary.sprite.placeholder
-		
-		options_world["Use"] = {
-			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
-			"choices_params" : Callable(self,"get_choices").bind(target_type.ALL),
-			"next" : Callable(self,"on_option_use_world")
-		}
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
-	func on_option_use_world(target : Node = host):
+	func on_option_use_world(target = host):
 		Interface.change_health(target,recovery_amount)
 		#FX GO HERE
 		on_consume()
-		host.my_inventory_gui.refresh()
+	
+	func on_option_use_battle(target = host):
+		Interface.change_health(target,recovery_amount)
+		#FX GO HERE
+		on_consume()
+		await host.get_tree().create_timer(0.5).timeout
+		Battle.active_character.state_chart.send_event("on_end")
 
 class item_dewdrop:
 	extends item_consumable
@@ -212,11 +237,8 @@ class item_dewdrop:
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
 		sprite = Glossary.sprite.placeholder
-		options_world["Use"] = {
-			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
-			"choices_params" : Callable(self,"get_choices").bind(target_type.ALL),
-			"next" : Callable(self,"on_option_use_world")
-		}
+		
+		
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
@@ -224,4 +246,10 @@ class item_dewdrop:
 		Interface.change_vis(target,recovery_amount)
 		#FX GO HERE
 		on_consume()
-		host.my_inventory_gui.refresh()
+	
+	func on_option_use_battle(target : Node = host):
+		Interface.change_vis(target,recovery_amount)
+		#FX GO HERE
+		on_consume()
+		await host.get_tree().create_timer(0.5).timeout
+		Battle.active_character.state_chart.send_event("on_end")

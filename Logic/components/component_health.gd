@@ -42,7 +42,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 		if death_protection_result.size() == 0:
 			owner.animations.tree.get("parameters/playback").travel("Death") #queue us for death
 		
-	else:
+	elif amt < 0:
 		owner.state_chart.send_event("on_hurt")
 	
 	

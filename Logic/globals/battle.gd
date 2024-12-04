@@ -68,7 +68,8 @@ const status_category : Dictionary = {
 const classification : Dictionary = {
 	"PLAYER" : "PLAYER",
 	"DREAMKIN" : "DREAMKIN",
-	"ENEMY" : "ENEMY"
+	"ENEMY" : "ENEMY",
+	"ITEM" : "ITEM"
 }
 
 const alignment : Dictionary = {

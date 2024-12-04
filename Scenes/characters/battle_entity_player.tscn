@@ -1,6 +1,7 @@
-[gd_scene load_steps=114 format=3 uid="uid://djdg8wet86nat"]
+[gd_scene load_steps=115 format=3 uid="uid://djdg8wet86nat"]
 
 [ext_resource type="Script" path="res://Logic/classes/battle_entity_player.gd" id="1_vkci8"]
+[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_55h7t"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_ldwgg"]
 [ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="3_p4wfg"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_cg7qa"]
@@ -1285,6 +1286,10 @@ my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 alignment = "FRIENDS"
 classification = "PLAYER"
+
+[node name="Inventory_GUI" parent="." node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("2_55h7t")]
+my_component_party = NodePath("../Components/component_party")
+my_component_inventory = NodePath("../Components/component_inventory")
 
 [node name="Battle_GUI" parent="." instance=ExtResource("2_ldwgg")]
 unique_name_in_owner = true

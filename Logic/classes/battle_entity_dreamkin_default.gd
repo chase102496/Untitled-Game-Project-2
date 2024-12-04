@@ -24,6 +24,7 @@ func party_summon(data : Object):
 	
 	set_deferred("unique_id",data.unique_id)
 	set_deferred("name",data.name)
+	set_deferred("classification",data.classification)
 	set_deferred("global_position",Global.player.global_position)
 	set_deferred("glossary",data.glossary)
 	set_deferred("type",data.type)
@@ -42,6 +43,7 @@ func get_dreamkin_data_dictionary():
 	
 	data.unique_id = unique_id
 	data.name = name
+	data.classification = classification
 	data.glossary = glossary
 	data.type = type
 	data.health = my_component_health.health

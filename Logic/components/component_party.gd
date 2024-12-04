@@ -13,6 +13,7 @@ class party_dreamkin:
 	
 	#Some typing to make sure data isn't wonky
 	var name : String
+	var classification : String
 	var unique_id : int
 	var global_position : Vector3
 	var glossary : String
@@ -175,7 +176,7 @@ func recall(index : int):
 		##Convert data to object to put into party
 		var party_inst = party_dreamkin.new(party_data)
 		##Add to party, remove from summons
-		my_party.append(party_inst)
+		my_party.push_front(party_inst)
 		##Pop old summon out of my_summons and delete instance
 		var summon_inst = my_summons.pop_at(index)
 		summon_inst.queue_free()

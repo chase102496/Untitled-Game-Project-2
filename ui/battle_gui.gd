@@ -11,7 +11,7 @@ extends Control
 @onready var ui_grid_main : Node = %Menu/Main #The screen that shows battle, items, switch, escape
 @onready var ui_grid_battle : Node = %Menu/Battle #The screen that shows abilities
 @onready var ui_grid_switch : Node = %Menu/Switch #The screen that shows dreamkin
-#@onready var ui_grid_item : Node = %Menu/Main/Item #The screen that shows items
+@onready var ui_grid_items : Node = %Menu/Items #The screen that shows items
 
 @onready var ui_skillcheck : Node = %Skillcheck
 @onready var ui_skillcheck_cursor : Node = %Skillcheck/Cursor/RayCast2D
@@ -20,7 +20,7 @@ extends Control
 
 @onready var ui_button_battle : Node = %Menu/Main/Battle
 @onready var ui_button_switch : Node = %Menu/Main/Switch
-@onready var ui_button_item : Node = %Menu/Main/Item
+@onready var ui_button_items : Node = %Menu/Main/Items
 @onready var ui_button_escape : Node = %Menu/Main/Escape
 
 @onready var ui_description_box : PanelContainer = %Description
@@ -37,11 +37,12 @@ func _ready() -> void:
 	ui_grid_main.hide()
 	ui_grid_battle.hide()
 	ui_grid_switch.hide()
+	ui_grid_items.hide()
 	## Buttons
 	ui_button_battle.pressed.connect(_on_button_pressed_battle)
 	ui_button_escape.pressed.connect(_on_button_pressed_escape)
 	ui_button_switch.pressed.connect(_on_button_pressed_switch)
-	ui_button_item.pressed.connect(_on_button_pressed_item)
+	ui_button_items.pressed.connect(_on_button_pressed_items)
 	## Events
 	Events.skillcheck_hit.connect(_on_skillcheck_hit)
 	Events.button_pressed_battle_ability.connect(_on_button_pressed_battle_ability)
@@ -64,6 +65,17 @@ func _ready() -> void:
 	%StateChart/Battle_GUI/Switch.state_entered.connect(_on_state_entered_battle_gui_switch)
 	%StateChart/Battle_GUI/Switch.state_physics_processing.connect(_on_state_physics_processing_battle_gui_switch)
 	%StateChart/Battle_GUI/Switch.state_exited.connect(_on_state_exited_battle_gui_switch)
+	## Item
+	%StateChart/Battle_GUI/Items.state_entered.connect(_on_state_entered_battle_gui_items)
+	%StateChart/Battle_GUI/Items.state_physics_processing.connect(_on_state_physics_processing_battle_gui_items)
+	%StateChart/Battle_GUI/Items.state_exited.connect(_on_state_exited_battle_gui_items)
+
+## --- Utility Functions ---
+
+func update_selector_position() -> void:
+	selector_sprite.global_position.x = selected_target.animations.selector_anchor.global_position.x
+	selector_sprite.global_position.y = selected_target.animations.selector_anchor.global_position.y
+	selector_sprite.global_position.z = selected_target.animations.selector_anchor.global_position.z
 
 ## --- States ----
 
@@ -126,10 +138,6 @@ func _on_state_entered_battle_gui_select():
 	update_selector_position()
 	selector_sprite.show()
 
-func update_selector_position() -> void:
-	selector_sprite.global_position.x = selected_target.animations.selector_anchor.global_position.x
-	selector_sprite.global_position.y = selected_target.animations.selector_anchor.global_position.y
-	selector_sprite.global_position.z = selected_target.animations.selector_anchor.global_position.z
 
 func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 
@@ -230,11 +238,41 @@ func _on_state_entered_battle_gui_switch():
 
 func _on_state_physics_processing_battle_gui_switch(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
-		state_chart.send_event("on_gui_battle")
+		state_chart.send_event("on_gui_main")
 
 func _on_state_exited_battle_gui_switch():
 	ui_panel_menu.hide()
 	ui_grid_switch.hide()
+
+## Item
+
+func _on_state_entered_battle_gui_items():
+	ui_panel_menu.show()
+	ui_grid_items.show()
+	
+	Glossary.free_children(ui_grid_items)
+	
+	var dict = Global.player.my_component_inventory.get_items_from_category(Glossary.item_category.ITEMS.TITLE)
+	dict.sort()
+	
+	var button_list = Glossary.create_button_list(dict,ui_grid_items,self,
+	"_on_button_pressed_items_item",
+	"_on_button_enter_hover_items_item",
+	"_on_button_exit_hover_items_item")
+	
+	for button in button_list:
+		## Display
+		if button.properties.item.quantity > 1:
+			button.text = str(button.properties.item.title,"  x",button.properties.item.quantity)
+		else:
+			button.text = button.properties.item.title
+	
+func _on_state_physics_processing_battle_gui_items(delta: float) -> void:
+	pass
+
+func _on_state_exited_battle_gui_items():
+	ui_panel_menu.hide()
+	ui_grid_items.hide()
 
 ## --- Buttons ---
 
@@ -344,8 +382,51 @@ func _on_button_exit_hover_switch_dreamkin(properties : Dictionary):
 
 ## Item
 
-func _on_button_pressed_item():
-	pass
+func _on_button_pressed_items():
+	var item_list = Global.player.my_component_inventory.get_items_from_category(Glossary.item_category.ITEMS.TITLE)
+	if item_list.size() > 0:
+		state_chart.send_event("on_gui_items")
+	else:
+		print_debug("No items available to use!")
+
+func _on_button_pressed_items_item(properties : Dictionary):
+	Glossary.create_options_list(properties,ui_grid_items,self,"_on_button_pressed_items_option","battle")
+
+func _on_button_enter_hover_items_item(properties : Dictionary):
+	
+	var item = properties.item
+	
+	ui_description_label.text = str(
+		Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color]",
+		"\n",
+		"\n",
+		item.description
+		)
+		
+	ui_description_box.show()
+
+func _on_button_exit_hover_items_item(properties : Dictionary):
+	ui_description_box.hide()
+
+func _on_button_pressed_items_option(properties : Dictionary):
+	
+	var result = Glossary.evaluate_option_properties(properties,ui_grid_items,self,
+	"_on_button_pressed_items_option",
+	"battle",
+	"_on_button_enter_hover_items_option",
+	"_on_button_exit_hover_items_option")
+	
+	if result == Glossary.options_result.FINISHED:
+		state_chart.send_event("on_gui_disabled")
+
+func _on_button_enter_hover_items_option(properties : Dictionary):
+	if "info" in properties:
+		var dict = Glossary.convert_info_universal_gui(properties.info)
+		ui_description_label.text = dict.description
+		ui_description_box.show()
+
+func _on_button_exit_hover_items_option(properties : Dictionary):
+	ui_description_box.hide()
 
 ## Escape
 

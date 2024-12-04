@@ -9,6 +9,81 @@ func get_unique_id():
 	unique_id += 1
 	return unique_id
 
+func get_nested_value(dict: Dictionary, path: Array) -> Variant:
+	var current = dict
+	for key in path:
+		if current.has(key):
+			current = current[key]
+		else:
+			return null  # Path is invalid
+	return current
+
+func free_children(parent : Node):
+	for child in parent.get_children():
+			child.queue_free()
+
+## Grabs relevant info for displaying in a gui, and formats it into a Dictionary
+## Can be a player, Dreamkin, Item, anything. It will tell us the type and forward a dict
+func convert_info_universal_gui(entity):
+	var result = Interface.evaluate_entity_type(entity)
+	match result:
+		Interface.entity_type.PLAYER, Interface.entity_type.SUMMONED_DREAMKIN, Interface.entity_type.PARTY_DREAMKIN:
+			return convert_info_character_gui(entity)
+		Interface.entity_type.PARTY_DREAMKIN:
+			return convert_info_character_gui(entity)
+		Interface.entity_type.INVENTORY_ITEM:
+			return convert_info_item_gui(entity)
+		Interface.entity_type.NOT_FOUND:
+			pass
+
+func convert_info_character_gui(character) -> Dictionary:
+	
+	var dict : Dictionary = {}
+	
+	var hp = Interface.get_root_health(character)
+	var vs = Interface.get_root_vis(character)
+	var abil = Interface.get_root_abilities(character)
+	
+	var abil_list = ""
+	
+	for a in abil:
+		abil_list += str(Battle.type_color_dict(a.type),a.type.ICON,"[/color] ",a.title,
+		"\n")
+	
+	match Interface.evaluate_entity_type(character):
+		Interface.entity_type.PLAYER:
+			dict.header = character.name
+		Interface.entity_type.SUMMONED_DREAMKIN, Interface.entity_type.PARTY_DREAMKIN:
+			dict.header = character.type.ICON + " " + character.name
+		_:
+			dict.header = character.name
+	
+	dict.sprite = null #TODO
+	
+	dict.description = str(
+		Battle.type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",hp.health,"/",hp.max_health,"  ",
+		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",vs.vis,"/",vs.max_vis,"\n",
+		abil_list
+	)
+
+	return dict
+##
+func convert_info_item_gui(item : Object) -> Dictionary:
+	
+	var dict : Dictionary = {}
+	
+	dict.header = item.title
+	
+	dict.sprite = null #TODO
+	
+	dict.description = str(
+		Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color] \n",
+		"\n",
+		item.description
+	)
+	
+	return dict
+
 var text_style : Dictionary = {
 	"FLAVOR" :{
 		"COLOR" : Color("5c5c5c")
@@ -81,6 +156,181 @@ var item_category : Dictionary = {
 		"TAB" : 3
 	}
 }
+
+func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
+	
+	var result : Array = []
+
+	for item in item_list:
+		var new_button = ui.empty_properties_button.instantiate()
+		
+		## Assign
+		new_button.properties.item = item
+		
+		## Signal
+		var packaged_callable = Callable(callable_source,pressed_signal)
+		new_button.button_pressed_properties.connect(packaged_callable)
+		
+		if enter_hover_signal != "":
+			var packed_callable_enter_hover = Callable(callable_source,enter_hover_signal)
+			new_button.button_enter_hover_properties.connect(packed_callable_enter_hover)
+		if exit_hover_signal != "":
+			var packed_callable_exit_hover = Callable(callable_source,exit_hover_signal)
+			new_button.button_exit_hover_properties.connect(packed_callable_exit_hover)
+		
+		## Finalize
+		parent.add_child(new_button)
+		result.append(new_button)
+	
+	return result
+
+func create_options_list(properties : Dictionary, parent : Node, callable_source : Node, pressed_signal : String, battle_or_world : String):
+	
+	Glossary.free_children(parent)
+	
+	var item = properties.item
+	var packed_callable = Callable(callable_source,pressed_signal)
+	var new_button
+	
+	## Evaluate if pulling options or world
+	var battle_or_world_options
+	if battle_or_world == "battle":
+		battle_or_world_options = item.options_battle
+	elif battle_or_world == "world":
+		battle_or_world_options = item.options_world
+	else:
+		push_error("Could not identify battle_or_world - ",battle_or_world)
+	
+	## Make button for each option
+	for option in battle_or_world_options: #How do we handle modifying this?
+		new_button = Glossary.ui.empty_properties_button.instantiate()
+		
+		## Assign
+		new_button.properties.option_path = [option]
+		new_button.properties.choices_path = []
+		new_button.properties.item = item
+		
+		## Display
+		new_button.text = option
+		
+		## Signal
+
+		new_button.button_pressed_properties.connect(packed_callable)
+		
+		## Finalize
+		parent.add_child(new_button)
+	
+	## Auto-calls if there's only one option
+	if battle_or_world_options.size() == 1:
+		packed_callable.call(new_button.properties)
+	elif battle_or_world_options.size() == 0:
+		push_error("Options Empty - ",properties)
+
+enum options_result {
+	FINISHED,
+	NEXT,
+	ERROR
+}
+
+func evaluate_option_properties(properties : Dictionary, parent : Node, callable_source : Node, pressed_signal : String, battle_or_world : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
+	var item = properties.item
+	var option_path = properties.option_path
+	var choices_path = properties.choices_path
+	
+	## Evaluate if pulling options or world
+	var battle_or_world_options
+	if battle_or_world == "battle":
+		battle_or_world_options = item.options_battle
+	elif battle_or_world == "world":
+		battle_or_world_options = item.options_world
+	else:
+		push_error("Could not identify battle_or_world - ",battle_or_world)
+	
+	var current = get_nested_value(battle_or_world_options,option_path) #Grabs the contents of our current path the button is in
+	
+	##If we find nothing, just close the menu, we probably hit cancel
+	if !current:
+		return options_result.FINISHED
+	
+	##If we find that it's only a callable, call it
+	elif current is Callable:
+		current.callv(choices_path) #Call the end's script and insert our args we selected along the way
+		return options_result.FINISHED
+		
+	
+	##If we find choices within this selection
+	elif "choices" in current:
+		
+		free_children(parent) #FREE THE CHILDREN, JIMMY!
+		
+		var returned_choices
+		## Check if we need to pull live data, if so, call it
+		# Pulls an string array of our choices
+		if current["choices"] is Callable:
+			returned_choices = current["choices"].call()
+		else:
+			returned_choices = current["choices"]
+		
+		var returned_choices_params
+		if "choices_params" in current:
+			## Checking if we need to pull live data, if so, call it
+			# Pulls an array to eventually insert into the final callable
+			if current["choices_params"] is Callable:
+				returned_choices_params = current["choices_params"].call()
+			## Else, it's an array. Just assign it
+			else:
+				returned_choices_params = current["choices_params"]
+		
+		var returned_choices_info
+		if "choices_info" in current:
+			## Checking if we need to pull live data, if so, call it
+			# Pulls an array to eventually insert into the final callable
+			if current["choices_info"] is Callable:
+				returned_choices_info = current["choices_info"].call()
+			## Else, it's an array. Just assign it
+			else:
+				returned_choices_info = current["choices_info"]
+		
+		## Run through all choices displayed, which is an array
+		for i in returned_choices.size(): 
+			var new_button = Glossary.ui.empty_properties_button.instantiate() #Create new button
+			new_button.text = returned_choices[i]
+			
+			if returned_choices_info:
+				new_button.properties.info = returned_choices_info[i] # Pass through the choice and its object for pulling info to display alongside the button on hover
+			
+			## Look ahead and assign that next step in our menu
+			if "branch" in current:
+				new_button.properties.option_path = option_path + ["branch",new_button.text] #Assign us to the branch that we specify from "choices"
+			elif "next" in current:
+				new_button.properties.option_path = option_path + ["next"] #Assign us to the next path, instead of a specific branch since there isn't one
+			
+			## Adds a parameter based on this button to our final script's arguments
+			if returned_choices_params: #If we found a param list
+				new_button.properties.choices_path = choices_path + [returned_choices_params[i]] #Add our specific choice
+			else:
+				new_button.properties.choices_path = choices_path #Keeps our existing choices from prev button
+			
+			new_button.properties.item = item #Make sure it still has the item as a reference
+			
+			## Add signal
+			var packed_callable_pressed = Callable(callable_source,pressed_signal)
+			new_button.button_pressed_properties.connect(packed_callable_pressed)
+			if enter_hover_signal != "":
+				var packed_callable_enter_hover = Callable(callable_source,enter_hover_signal)
+				new_button.button_enter_hover_properties.connect(packed_callable_enter_hover)
+			if exit_hover_signal != "":
+				var packed_callable_exit_hover = Callable(callable_source,exit_hover_signal)
+				new_button.button_exit_hover_properties.connect(packed_callable_exit_hover)
+		
+			## Finalize
+			parent.add_child(new_button) #Add it as a child so it can be displayed properly
+		
+		return options_result.NEXT
+			
+	else:
+		push_error("Invalid path for ", item, " - ", option_path, " - ",choices_path)
+		return options_result.ERROR
 
 const sprite : Dictionary = {
 	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")

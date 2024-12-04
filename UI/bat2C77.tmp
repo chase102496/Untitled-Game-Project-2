@@ -181,14 +181,14 @@ text = "❖ Dreamkin"
 
 [node name="AnimationComponent" parent="HBoxContainer/Menu/Main/Switch" instance=ExtResource("3_75k8e")]
 
-[node name="Items" type="Button" parent="HBoxContainer/Menu/Main"]
+[node name="Item" type="Button" parent="HBoxContainer/Menu/Main"]
 texture_filter = 2
 layout_mode = 2
 theme = ExtResource("1_al4xi")
 action_mode = 0
-text = "⍟ Items"
+text = "⍟ Item"
 
-[node name="AnimationComponent" parent="HBoxContainer/Menu/Main/Items" instance=ExtResource("3_75k8e")]
+[node name="AnimationComponent" parent="HBoxContainer/Menu/Main/Item" instance=ExtResource("3_75k8e")]
 
 [node name="Escape" type="Button" parent="HBoxContainer/Menu/Main"]
 texture_filter = 2
@@ -207,7 +207,7 @@ columns = 2
 layout_mode = 2
 columns = 2
 
-[node name="Items" type="GridContainer" parent="HBoxContainer/Menu"]
+[node name="Item" type="GridContainer" parent="HBoxContainer/Menu"]
 layout_mode = 2
 columns = 2
 
@@ -344,10 +344,10 @@ to = NodePath("../Disabled")
 event = &"on_gui_disabled"
 delay_in_seconds = "0.0"
 
-[node name="on_gui_items" type="Node" parent="StateChart/Battle_GUI"]
+[node name="on_gui_item" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("8_rxcdg")
-to = NodePath("../Items")
-event = &"on_gui_items"
+to = NodePath("../Item")
+event = &"on_gui_item"
 delay_in_seconds = "0.0"
 
 [node name="on_gui_skillcheck" type="Node" parent="StateChart/Battle_GUI"]
@@ -416,11 +416,5 @@ to = NodePath("../../Main")
 event = &"on_gui_main"
 delay_in_seconds = "0.0"
 
-[node name="Items" type="Node" parent="StateChart/Battle_GUI"]
+[node name="Item" type="Node" parent="StateChart/Battle_GUI"]
 script = ExtResource("7_t4p3g")
-
-[node name="on_gui_main" type="Node" parent="StateChart/Battle_GUI/Items"]
-script = ExtResource("8_rxcdg")
-to = NodePath("../../Main")
-event = &"on_gui_main"
-delay_in_seconds = "0.0"

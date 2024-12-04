@@ -218,6 +218,12 @@ delay_in_seconds = "0.0"
 [node name="Gear" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
 script = ExtResource("7_dkhww")
 
+[node name="on_gui_back" type="Node" parent="StateChart/Inventory_GUI/Enabled/Gear"]
+script = ExtResource("8_nxsqo")
+to = NodePath("../../Select")
+event = &"on_gui_select"
+delay_in_seconds = "0.0"
+
 [node name="Dreamkin" type="Node" parent="StateChart/Inventory_GUI/Enabled"]
 script = ExtResource("7_dkhww")
 
