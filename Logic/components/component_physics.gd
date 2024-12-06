@@ -5,12 +5,16 @@ extends Node
 
 #Use "owner" to call our owner
 
-var grav : float = 40
-var max_grav : float = -70
+var grav : float # Realtime gravity adding
+@export var base_grav : float = 35 # To revert to our default
+@export var max_grav : float = -70 # Our max downward velocity
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	grav_reset()
+
+func grav_reset() -> void:
+	grav = base_grav
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:

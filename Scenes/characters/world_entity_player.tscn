@@ -1,10 +1,11 @@
-[gd_scene load_steps=160 format=3 uid="uid://dp7uehr0563lr"]
+[gd_scene load_steps=161 format=3 uid="uid://dp7uehr0563lr"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_1m0ao"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_de5hk"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_g8wgm"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="4_jugmf"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_5vvqu"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="5_jbfav"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="6_acssy"]
 [ext_resource type="Texture2D" uid="uid://dmdw1m4techw0" path="res://Art/sprites/The Adventurer - Free/Idle/idle_up.png" id="8_vepnh"]
@@ -1377,6 +1378,11 @@ my_component_inventory = NodePath("../Components/component_inventory")
 [node name="DEBUG_3D_TEXT_WORLD" parent="." instance=ExtResource("2_1m0ao")]
 script = ExtResource("3_g8wgm")
 
+[node name="StateChartDebugger" parent="." instance=ExtResource("5_5vvqu")]
+offset_right = -1543.0
+offset_bottom = -689.0
+initial_node_to_watch = NodePath("../StateChart")
+
 [node name="StateChart" parent="." instance=ExtResource("4_jugmf")]
 unique_name_in_owner = true
 
@@ -1453,9 +1459,10 @@ max_health = 20
 script = ExtResource("30_vt064")
 max_vis = 12
 
-[node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
+[node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller", "my_component_physics")]
 script = ExtResource("31_fpw8q")
 my_component_input_controller = NodePath("../component_input_controller_manual")
+my_component_physics = NodePath("../component_physics")
 
 [node name="component_input_controller_manual" type="Node" parent="Components"]
 script = ExtResource("32_uhbt8")

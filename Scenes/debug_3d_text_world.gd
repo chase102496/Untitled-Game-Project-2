@@ -7,10 +7,16 @@ extends Label3D
 
 @onready var prev = "init"
 @onready var history = "history"
-@onready var state_subchart_battle
+@onready var state_subchart
+
+
+@onready var new_state_history
 
 func _ready() -> void:
-	state_subchart_battle = owner.get_node("StateChart/Main/Explore")
+	state_subchart = str(owner.get_node("StateChart/Main/World")._active_state)
+	
+	new_state_history = str(owner.get_node("StateChart/Main/World/History").history)
+	
 	#position.y += randf_range(0,0.6)
 	modulate = Color(randf_range(0.5,1),randf_range(0.5,1),randf_range(0.5,1))
 
@@ -23,8 +29,6 @@ func _physics_process(delta: float) -> void:
 		else:
 			show()
 			owner.animations.status_hud.show()
-	
-	var state = str(state_subchart_battle._active_state)
 	
 	var abil = owner.my_component_ability.get_data_ability_all()
 	var abil_names : Array = []
@@ -50,12 +54,14 @@ func _physics_process(delta: float) -> void:
 	for i in owner.my_component_ability.current_status_effects.PASSIVE.size():
 		status_list.append(owner.my_component_ability.current_status_effects.PASSIVE[i].title)
 	
-	if prev != state:
+	if prev != state_subchart:
 		history = prev
-		prev = state
+		prev = state_subchart
 	
 	text = str(
 	owner.name,
+	"\n",
+	new_state_history,
 	"\n",
 	dreamkin_list,
 	"\n",
@@ -63,6 +69,6 @@ func _physics_process(delta: float) -> void:
 	"\n",
 	status_list,
 	"\n",
-	"Now: ", state.rsplit(":")[0],
+	"Now: ", state_subchart.rsplit(":")[0],
 	"\n",
 	"Prev: ", history.rsplit(":")[0])

@@ -1,4 +1,4 @@
-[signal arg="on_pause_input"]
+[signal arg="on_disabled"]
 Hiya. Welcome to the demo for Stories of Somnia\: The Prism of Reawakening
 So far,[pause=0.3] we have the game mechanics about 50% done.
 label Question
@@ -15,7 +15,7 @@ Wanna see some combat puzzles?
 		do Battle.battle_initialize("")
 - Not really.
 	Oh, okay.[pause=0.3]  Feel free to explore what's here,[pause=0.3] then
-	[signal arg="on_idle"]
+	[signal arg="on_enabled"]
 - What's a combat puzzle?
 	A combat puzzle is the core of Somnia's gameplay. You will have a limited set of abilities that serve as "tools" to solve a combat encounter.
 	... And what I mean by tools is fighting the enemy. There is always an optimal way to deal with enemies, and brute forcing through damage may work sometimes, but you'll enjoy the game more if you want to solve them.

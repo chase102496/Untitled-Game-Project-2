@@ -702,9 +702,10 @@ max_health = 16
 script = ExtResource("12_pwqcs")
 max_vis = 12
 
-[node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller")]
+[node name="component_movement_controller" type="Node" parent="Components" node_paths=PackedStringArray("my_component_input_controller", "my_component_physics")]
 script = ExtResource("13_bhr2c")
 my_component_input_controller = NodePath("../component_input_controller_follow")
+my_component_physics = NodePath("../component_physics")
 movespeed = 10
 
 [node name="component_input_controller_follow" type="Node" parent="Components" node_paths=PackedStringArray("my_component_movement_controller")]

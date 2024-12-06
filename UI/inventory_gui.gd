@@ -62,8 +62,8 @@ func create_button_category_list(category_title : String):
 
 func refresh():
 	var prev = inventory_gui_tabs.current_tab
-	state_chart.send_event("on_gui_toggle")
-	state_chart.send_event("on_gui_toggle")
+	state_chart.send_event("on_gui_disabled")
+	state_chart.send_event("on_gui_enabled")
 	inventory_gui_tabs.current_tab = prev
 
 func options_close():
@@ -179,8 +179,8 @@ func _on_state_physics_processing_inventory_gui_enabled(delta: float) -> void:
 		if inventory_gui_options_barrier.visible:
 			options_close()
 		else:
-			state_chart.send_event("on_gui_toggle") #Disable the inventory
-			owner.state_chart.send_event("on_disabled_toggle") #Enable the player
+			state_chart.send_event("on_gui_disabled") #Disable the inventory
+			owner.state_chart.send_event("on_enabled") #Enable the player
 
 ## Disabled
 

@@ -13,57 +13,96 @@ script = ExtResource("1_b4dtx")
 [node name="Main" type="Node" parent="."]
 process_priority = -1
 script = ExtResource("2_sifvc")
-initial_state = NodePath("Explore")
-
-[node name="Disabled" type="Node" parent="Main"]
-script = ExtResource("3_l3k1k")
-
-[node name="on_disabled_toggle" type="Node" parent="Main/Disabled"]
-script = ExtResource("5_2iali")
-to = NodePath("../../Explore")
-event = &"on_disabled_toggle"
-delay_in_seconds = "0.0"
-
-[node name="Previous" type="Node" parent="Main"]
-script = ExtResource("4_q0rjb")
-default_state = NodePath("../Explore/Idle")
-
-[node name="on_disabled" type="Node" parent="Main"]
-script = ExtResource("5_2iali")
-to = NodePath("../Disabled")
-event = &"on_disabled"
-delay_in_seconds = "0.0"
+initial_state = NodePath("World")
 
 [node name="on_idle" type="Node" parent="Main"]
 script = ExtResource("5_2iali")
-to = NodePath("../Explore/Idle")
+to = NodePath("../World/Grounded/Idle")
 event = &"on_idle"
 delay_in_seconds = "0.0"
 
-[node name="Explore" type="Node" parent="Main"]
+[node name="Disabled" type="Node" parent="Main"]
+unique_name_in_owner = true
+script = ExtResource("3_l3k1k")
+
+[node name="on_enabled" type="Node" parent="Main/Disabled"]
+script = ExtResource("5_2iali")
+to = NodePath("../../World")
+event = &"on_enabled"
+delay_in_seconds = "0.0"
+
+[node name="World" type="Node" parent="Main"]
+unique_name_in_owner = true
+script = ExtResource("2_sifvc")
+initial_state = NodePath("Airborne")
+
+[node name="History" type="Node" parent="Main/World"]
+script = ExtResource("4_q0rjb")
+default_state = NodePath("../Grounded")
+
+[node name="on_disabled" type="Node" parent="Main/World"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Disabled")
+event = &"on_disabled"
+delay_in_seconds = "0.0"
+
+[node name="Grounded" type="Node" parent="Main/World"]
+unique_name_in_owner = true
 script = ExtResource("2_sifvc")
 initial_state = NodePath("Idle")
 
-[node name="on_disabled_toggle" type="Node" parent="Main/Explore"]
+[node name="on_airborne" type="Node" parent="Main/World/Grounded"]
 script = ExtResource("5_2iali")
-to = NodePath("../../Disabled")
-event = &"on_disabled_toggle"
+to = NodePath("../../Airborne")
+event = &"on_airborne"
 delay_in_seconds = "0.0"
 
-[node name="on_default" type="Node" parent="Main/Explore"]
-script = ExtResource("5_2iali")
-to = NodePath("../Idle")
-event = &"on_default"
-delay_in_seconds = "0.0"
+[node name="Idle" type="Node" parent="Main/World/Grounded"]
+script = ExtResource("3_l3k1k")
 
-[node name="on_walking" type="Node" parent="Main/Explore"]
+[node name="on_walking" type="Node" parent="Main/World/Grounded/Idle"]
 script = ExtResource("5_2iali")
-to = NodePath("../Walking")
+to = NodePath("../../Walking")
 event = &"on_walking"
 delay_in_seconds = "0.0"
 
-[node name="Idle" type="Node" parent="Main/Explore"]
+[node name="Walking" type="Node" parent="Main/World/Grounded"]
 script = ExtResource("3_l3k1k")
 
-[node name="Walking" type="Node" parent="Main/Explore"]
+[node name="on_idle" type="Node" parent="Main/World/Grounded/Walking"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Idle")
+event = &"on_idle"
+delay_in_seconds = "0.0"
+
+[node name="Airborne" type="Node" parent="Main/World"]
+unique_name_in_owner = true
+script = ExtResource("2_sifvc")
+initial_state = NodePath("Rising")
+
+[node name="on_grounded" type="Node" parent="Main/World/Airborne"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Grounded")
+event = &"on_grounded"
+delay_in_seconds = "0.0"
+
+[node name="Rising" type="Node" parent="Main/World/Airborne"]
+script = ExtResource("3_l3k1k")
+
+[node name="on_falling" type="Node" parent="Main/World/Airborne/Rising"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Falling")
+event = &"on_falling"
+delay_in_seconds = "0.0"
+
+[node name="Falling" type="Node" parent="Main/World/Airborne"]
+script = ExtResource("3_l3k1k")
+
+[node name="on_rising" type="Node" parent="Main/World/Airborne/Falling"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Rising")
+event = &"on_rising"
+delay_in_seconds = "0.0"
+
+[node name="AtomicState" type="Node" parent="Main/World/Airborne"]
 script = ExtResource("3_l3k1k")

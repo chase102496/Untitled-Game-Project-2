@@ -1,7 +1,7 @@
 [gd_scene load_steps=115 format=3 uid="uid://dgd4uawticqrg"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_npc_default.gd" id="1_prpni"]
-[ext_resource type="PackedScene" uid="uid://dtwvcihds5bb3" path="res://Scenes/state_chart.tscn" id="2_6od8c"]
+[ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="2_ipegg"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_0vcg8"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="4_3yh7p"]
 [ext_resource type="Texture2D" uid="uid://dgvkniyh48b7f" path="res://Art/sprites/hand_thin_small_point.svg" id="4_lbf8m"]
@@ -1297,7 +1297,7 @@ _data = {
 [node name="NPC" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world")]
 script = ExtResource("1_prpni")
 my_component_movement_controller = NodePath("Components/component_movement_controller")
-state_chart = NodePath("StateChart")
+state_chart = NodePath("")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
 my_component_health = NodePath("Components/component_health")
@@ -1306,7 +1306,7 @@ my_component_state_controller_world = NodePath("Components/component_state_contr
 alignment = "FRIENDS"
 classification = "NPC"
 
-[node name="StateChart" parent="." instance=ExtResource("2_6od8c")]
+[node name="StateChart" parent="." instance=ExtResource("2_ipegg")]
 unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
