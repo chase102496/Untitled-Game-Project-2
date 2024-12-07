@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2bxcmgeqh800"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckae8"]
+transparency = 1
+depth_draw_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_07sgu"]
+material = SubResource("StandardMaterial3D_ckae8")
+size = Vector2(10, 10)
+orientation = 1
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Water" type="MeshInstance3D" parent="."]
+sorting_use_aabb_center = false
+cast_shadow = 0
+mesh = SubResource("QuadMesh_07sgu")

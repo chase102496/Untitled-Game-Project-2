@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode shadows_disabled;
+render_mode depth_draw_always;
 
 #define CAUSTICS
 #define FRESNEL
@@ -176,13 +176,13 @@ void vertex() {
 
 
 void fragment() {
+	
 	vec3 opposing_color = vec3(1.0) - absorption_color.rgb;
 	vec3 normalized_wind_direction = normalize(wind_direction);
 	float wind_intens_factor = fma(wind_intensity, 0.7, 0.3);
 	#ifdef FRESNEL
 	float fresnel_value = fresnel(NORMAL, VIEW);
 	#endif
-
 	float time_factor = TIME * scroll_speed * wind_intens_factor;
 	vec3 n1 = texture(normal_map, fma(global_position.xz, normal_map_scale, time_factor * -normalized_wind_direction.xz)).xyz;
 	vec3 n2 = texture(normal_map, fma(global_position.xz, normal_map_scale * scale_offset, time_factor * 0.8 * (-normalized_wind_direction.xz + scroll_offset))).xyz;

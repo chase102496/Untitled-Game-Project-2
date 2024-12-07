@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://xcjvwqjeafqs"]
+[gd_scene load_steps=7 format=3 uid="uid://cvx2bal1fa078"]
 
-[ext_resource type="Texture2D" uid="uid://bdyhnv3bpjqmj" path="res://Art/particles/smoke_06.png" id="1_g3jjc"]
+[ext_resource type="Texture2D" uid="uid://bdyhnv3bpjqmj" path="res://Art/particles/smoke_06.png" id="1_5ea2d"]
 
 [sub_resource type="Gradient" id="Gradient_ptgl8"]
 offsets = PackedFloat32Array(0, 0.496479, 1)
@@ -14,9 +14,7 @@ lifetime_randomness = 1.0
 emission_shape_scale = Vector3(0.5, 0.5, 0.5)
 emission_shape = 2
 emission_sphere_radius = 1.0
-angle_min = 1.07288e-05
-angle_max = 1.07288e-05
-direction = Vector3(0, 1, 1)
+direction = Vector3(0, 1, 0)
 initial_velocity_min = 5.0
 initial_velocity_max = 5.0
 gravity = Vector3(0, -10, 0)
@@ -35,7 +33,7 @@ blend_mode = 1
 depth_draw_mode = 1
 shading_mode = 0
 diffuse_mode = 3
-albedo_texture = ExtResource("1_g3jjc")
+albedo_texture = ExtResource("1_5ea2d")
 billboard_mode = 3
 billboard_keep_scale = true
 particles_anim_h_frames = 1
@@ -46,7 +44,7 @@ particles_anim_loop = false
 lightmap_size_hint = Vector2i(7, 7)
 material = SubResource("StandardMaterial3D_auuhw")
 
-[node name="particle_waterfall" type="GPUParticles3D"]
+[node name="particle_waterfall_landing" type="GPUParticles3D"]
 sorting_use_aabb_center = false
 cast_shadow = 0
 amount = 50

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bmmvgvbtdalfx" path="res://Scenes/environment/templates/water.tscn" id="1_0tlw1"]
 [ext_resource type="Shader" path="res://Art/shaders/water/water.gdshader" id="2_ws1sl"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_qbhwi"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1kx03"]
 noise_type = 0
 frequency = 0.011
 fractal_octaves = 2
@@ -11,9 +11,9 @@ fractal_octaves = 2
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cvvw2"]
 seamless = true
 seamless_blend_skirt = 0.2
-noise = SubResource("FastNoiseLite_qbhwi")
+noise = SubResource("FastNoiseLite_1kx03")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_pd3o3"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iswus"]
 noise_type = 2
 seed = 29
 frequency = 0.0173
@@ -22,16 +22,16 @@ fractal_octaves = 1
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_p6hx7"]
 seamless = true
 seamless_blend_skirt = 0.325
-noise = SubResource("FastNoiseLite_pd3o3")
+noise = SubResource("FastNoiseLite_iswus")
 
-[sub_resource type="Gradient" id="Gradient_qaate"]
+[sub_resource type="Gradient" id="Gradient_lmnlh"]
 offsets = PackedFloat32Array(0, 0.0836013)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_cv0sp"]
-gradient = SubResource("Gradient_qaate")
+gradient = SubResource("Gradient_lmnlh")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_1bnkp"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_60bae"]
 noise_type = 2
 fractal_octaves = 3
 fractal_lacunarity = 1.74
@@ -42,33 +42,33 @@ seamless = true
 seamless_blend_skirt = 0.12
 as_normal_map = true
 bump_strength = 9.0
-noise = SubResource("FastNoiseLite_1bnkp")
+noise = SubResource("FastNoiseLite_60bae")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_exl3d"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v1oyo"]
 render_priority = 0
 shader = ExtResource("2_ws1sl")
-shader_parameter/absorption_color = Color(1, 1, 1, 1)
+shader_parameter/absorption_color = Color(0.193466, 0.139164, 0.0764538, 1)
 shader_parameter/fresnel_radius = 0.0
 shader_parameter/fresnel_color = Color(0, 0, 0, 1)
 shader_parameter/roughness = 1.0
 shader_parameter/specular = 0.0
-shader_parameter/depth_distance = 25.0
-shader_parameter/beers_law = 20.0
+shader_parameter/depth_distance = 0.0
+shader_parameter/beers_law = 4.5
 shader_parameter/displacement_strength = 0.1
-shader_parameter/displacement_scroll_speed = 0.1
+shader_parameter/displacement_scroll_speed = 0.8
 shader_parameter/displacement_scroll_offset = Vector2(-0.2, 0.3)
-shader_parameter/displacement_scale_offset = 0.5
+shader_parameter/displacement_scale_offset = 5.195
 shader_parameter/displacement_scale = Vector2(0.04, 0.04)
 shader_parameter/displacement_texture = SubResource("NoiseTexture2D_cvvw2")
-shader_parameter/edge_thickness = 0.165
-shader_parameter/edge_speed = 0.23
-shader_parameter/edge_noise_scale = Vector2(0.36, 0.42)
+shader_parameter/edge_thickness = 0.3
+shader_parameter/edge_speed = 0.35
+shader_parameter/edge_noise_scale = Vector2(0.4, 0.4)
 shader_parameter/edge_noise = SubResource("NoiseTexture2D_p6hx7")
 shader_parameter/edge_ramp = SubResource("GradientTexture1D_cv0sp")
-shader_parameter/influence_size = 1.0
+shader_parameter/influence_size = 0.0
 shader_parameter/player_wave_frequenzy = 10.0
 shader_parameter/player_wave_speed = 5.0
-shader_parameter/caustic_size = 2.0
+shader_parameter/caustic_size = 1.5
 shader_parameter/caustic_range = 20.0
 shader_parameter/caustic_strength = 0.08
 shader_parameter/refraction_strength = 1.25
@@ -80,7 +80,7 @@ shader_parameter/normal_map_scale = Vector2(0.2, 0.2)
 shader_parameter/normal_map = SubResource("NoiseTexture2D_41smi")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y1pmy"]
-material = SubResource("ShaderMaterial_exl3d")
+material = SubResource("ShaderMaterial_v1oyo")
 
 [node name="water_chroma" type="Node3D"]
 

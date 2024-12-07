@@ -19,13 +19,16 @@ func _ready() -> void:
 
 ## Utility Functions
 
-func reset_direction():
+func reset_direction() -> void:
 	raw_direction = Vector2.ZERO
 	direction = Vector2.ZERO
 
-func update_direction():
+func update_direction() -> void:
 	raw_direction = Input.get_vector("move_left","move_right","move_forward","move_backward")
 	direction = raw_direction.rotated(-Global.camera.global_rotation.y) #Move relative to camera
+
+func reset_jump_states() -> void:
+	pass
 
 ## Disabled
 
