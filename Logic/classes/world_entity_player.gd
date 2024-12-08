@@ -111,9 +111,6 @@ func _physics_process(delta: float) -> void:
 		#my_component_party.summon(0,"world")
 		PlayerData.load_data_all()
 	
-	if Input.is_action_just_pressed("num0"):
-		state_chart.send_event("on_history")
-	
 	#if Input.is_action_just_pressed("move_forward"):
 		##if my_component_party.get_party():
 			##for i in my_component_party.get_party().size():
@@ -128,8 +125,8 @@ func _physics_process(delta: float) -> void:
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	#
-	#if Input.is_action_just_pressed("num0"):
-		#Battle.battle_initialize("enemy_gloam enemy_gloam")
+	if Input.is_action_just_pressed("num0"):
+		Battle.battle_initialize("enemy_gloam enemy_gloam")
 	if Input.is_action_just_pressed("num1"):
 		SceneManager.transition_to("res://Levels/hotus_house.tscn")
 	if Input.is_action_just_pressed("num2"):

@@ -280,6 +280,11 @@ func check_ready():
 			result = false
 	return result
 
+func camera_update():
+	#if active_character.alignment == Battle.alignment.FRIENDS:
+	var nudge : float = 0.1
+	Global.camera.follow_target = active_character
+
 #Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
 #and the old and new scenes they will be transitioning from and to.
 func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):

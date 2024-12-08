@@ -37,6 +37,8 @@ func _ready() -> void:
 			Battle.active_character_index = 0
 	
 	Battle.update_positions.call_deferred()
+	
+	Battle.camera_update()
 
 func _on_battle_entity_death(entity : Node) -> void:
 	
@@ -85,6 +87,8 @@ func _on_turn_end() -> void:
 	print_debug("@@@ Starting turn for ",Battle.active_character.name," @@@")
 	
 	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
+	
+	Battle.camera_update()
 
 func _on_battle_finished(result) -> void:
 	if result == "Win":
