@@ -6,12 +6,10 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_st8ya"]
 resource_name = "SM_Table_01_MI_TableStool_0"
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_c0kwj")
 metallic = 1.0
 metallic_texture = ExtResource("2_rycas")
 metallic_texture_channel = 2
-roughness = 0.5
 roughness_texture = ExtResource("2_rycas")
 roughness_texture_channel = 1
 normal_enabled = true

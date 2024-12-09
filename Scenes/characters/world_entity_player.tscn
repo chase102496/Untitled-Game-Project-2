@@ -1477,5 +1477,14 @@ script = ExtResource("34_x4c2m")
 [node name="component_ability" type="Node" parent="Components"]
 script = ExtResource("26_3hd4n")
 
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
+light_energy = 0.3
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+omni_range = 0.513
+omni_attenuation = 0.2
+
 [connection signal="animation_finished" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_finished"]
 [connection signal="animation_started" from="Animations/character_animation_tree" to="Animations/character_animation_tree" method="_on_animation_started"]

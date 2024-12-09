@@ -79,7 +79,7 @@ source = 5
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, ensure_correct_normals;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, shadows_disabled;
 
 uniform sampler2D WindNoise;
 uniform vec4 Foliage_Color1 : source_color;
@@ -185,7 +185,7 @@ void fragment() {
 
 }
 "
-flags/ensure_correct_normals = true
+flags/shadows_disabled = true
 nodes/vertex/0/position = Vector2(660, 140)
 nodes/vertex/5/node = SubResource("VisualShaderNodeInput_k6sdc")
 nodes/vertex/5/position = Vector2(-680, 20)

@@ -567,16 +567,16 @@ transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -3.5, 0, 0.75)
 
 [node name="sm_birdcage" parent="Building" instance=ExtResource("26_0c4nd")]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -2.72819, 0, 3.6834)
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -2.72819, -0.616808, 3.6834)
 
 [node name="sm_painting_01" parent="Building" instance=ExtResource("27_0w45h")]
 transform = Transform3D(1.33333, 0, 0, 0, 1.33333, 0, 0, 0, 1.33333, 6, 3, -4)
 
 [node name="sm_birdcage2" parent="Building" instance=ExtResource("26_0c4nd")]
-transform = Transform3D(1.2879, 0, -0.345092, 0, 1.33333, 0, 0.345092, 0, 1.2879, -3.51987, 0, 3.86881)
+transform = Transform3D(1.2879, 0, -0.345092, 0, 1.33333, 0, 0.345092, 0, 1.2879, -3.51987, -0.258153, 3.86881)
 
 [node name="sm_birdcage3" parent="Building" instance=ExtResource("26_0c4nd")]
-transform = Transform3D(1.1547, 0, 0.666667, 0, 1.33333, 0, -0.666667, 0, 1.1547, -3.35536, 0, 2.87761)
+transform = Transform3D(1.1547, 0, 0.666667, 0, 1.33333, 0, -0.666667, 0, 1.1547, -3.35536, -0.73793, 2.87761)
 
 [node name="sm_candle_04" parent="Building" instance=ExtResource("28_t0y3x")]
 transform = Transform3D(2.66667, 0, 0, 0, 2.66667, 0, 0, 0, 2.66667, -3.77588, 2.11964, -0.206125)
@@ -601,3 +601,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.625, -2.125, 2.625)
 
 [node name="tree_chroma_2_3" parent="Environment" instance=ExtResource("29_j7m2b")]
 transform = Transform3D(-0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, -0.258819, -25.375, -2.125, -3.375)
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1.375)

@@ -6,9 +6,8 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sfkbj"]
 resource_name = "SM_VerticalColumn_01_MI_TrimSheet_Wood_01_Dark_0"
 cull_mode = 2
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_4aqut")
-roughness = 0.5
+roughness = 0.75
 normal_enabled = true
 normal_texture = ExtResource("2_m0sp7")
 

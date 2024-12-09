@@ -12,7 +12,8 @@ var skillcheck_difficulty : float = 1.0
 
 #Stats for use in abilities
 @export var stats : Dictionary = {
-	"damage_multiplier" : 1.0
+	"damage_multiplier" : 1.0,
+	"damage_multiplier_base" : 1.0
 	}
 
 #------------------------------------------------------------------------------
@@ -125,7 +126,6 @@ class status_manager:
 					result_total.append(result)
 		
 		return result_total #return any results
-		
 
 #need to make a tether class and then subclasses based on what to do with the tether
 #one called tether_heart which shares damage between the two
