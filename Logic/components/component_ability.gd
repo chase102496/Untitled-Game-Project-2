@@ -3,24 +3,30 @@ extends Node
 
 @onready var cast_queue : Object = null
 
-@onready var current_status_effects : Object = status_manager.new()
+@onready var my_status : Object = status_manager.new()
+
+@onready var my_stats : Object = stats_manager.new()
 
 #We will not assign spells this way, might need to fix tho, hard to set em up without all the vars right in front of you 
 @onready var my_abilities : Array = []
 @onready var max_ability_count : int = 4
 var skillcheck_difficulty : float = 1.0
 
-#Stats for use in abilities
-@export var stats : Dictionary = {
-	"damage_multiplier" : 1.0,
-	"damage_multiplier_base" : 1.0
-	}
-
 #------------------------------------------------------------------------------
 #DONT use name or owner, already taken
 #HACK _init is where you store stuff you'd only need way before battle, like damage, vis cost, etc
 
-# - Functions - #
+# - Classes - #
+
+class stats_manager:
+	var damage_multiplier : float = 1.0
+	var damage_multiplier_base : float = 1.0
+	
+	func set_damage_multiplier_temp(ratio : float):
+		damage_multiplier = ratio
+	
+	func reset_damage_multiplier_temp():
+		damage_multiplier = damage_multiplier_base
 
 class status_manager:
 
@@ -127,12 +133,6 @@ class status_manager:
 		
 		return result_total #return any results
 
-#need to make a tether class and then subclasses based on what to do with the tether
-#one called tether_heart which shares damage between the two
-#one called tether_undying which makes the target check if its partner is dead before truly dying, and if not, "revive" to full health
-#	should play death animation and stay in it until the next start() and then revive and reset to full
-#
-
 # - Status Effects - #
 class status:
 	var id : String
@@ -210,7 +210,7 @@ class status_template_default:
 
 	func on_expire():
 		print_debug(title," wore off for ",host.name,"!")
-		host.my_component_ability.current_status_effects.remove(self)
+		host.my_component_ability.my_status.remove(self)
 	
 	func fx_add():
 		host.animations.sprite.add_child(fx)
@@ -315,7 +315,7 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 	
 	func on_expire():
 		print_debug(host.name," is no longer disabled!")
-		host.my_component_ability.current_status_effects.remove(self)
+		host.my_component_ability.my_status.remove(self)
 		Events.battle_entity_disabled_expire.emit(host) #Tell everyone our disable expired
 
 # TETHER
@@ -436,7 +436,7 @@ class status_regrowth:
 	func on_dying(): #We started the dying animation
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
 		for i in len(paired_teammates):
-			paired_teammates[i].my_component_ability.current_status_effects.clear() #Clear status fx
+			paired_teammates[i].my_component_ability.my_status.clear() #Clear status fx
 			paired_teammates[i].animations.tree.get("parameters/playback").travel("Death") #Begin their death anim
 	
 	func on_death_protection(amt : int, mirror_damage : bool = false, type : Dictionary = Battle.type.BALANCE):
@@ -449,12 +449,12 @@ class status_regrowth:
 		
 		if living_teammates: #If we find ANY other matching teammate glossaries of us that are alive and not in disabled mode
 			
-			#if status_disabled not in host.my_component_ability.current_status_effects.PASSIVE:
+			#if status_disabled not in host.my_component_ability.my_status.PASSIVE:
 				#print("EEE") TODO
 			
 			if !death_protection_enabled: #If it hasn't already been triggered this death
-				host.my_component_ability.current_status_effects.clear() #Clear status fx first
-				host.my_component_ability.current_status_effects.add(status_disabled.new(host,2),true) #Then disable us
+				host.my_component_ability.my_status.clear() #Clear status fx first
+				host.my_component_ability.my_status.add(status_disabled.new(host,2),true) #Then disable us
 				death_protection_enabled = true #We are now in "incapacitated" mode
 			return true #Always return true for letting health know we aren't dead yet
 
@@ -522,7 +522,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	var mult_total : float
 	var mult_percent : float #This adds to host's damage multiplier so 0.1 would be 10% increased for every one of them on the field
 	
-	func _init(host : Node, mult_percent : float = 1.0) -> void:
+	func _init(host : Node, mult_percent : int = 1) -> void:
 		id = "status_swarm"
 		title = "Swarm"
 		description = "This target is doing damage based on how many of it are on the field"
@@ -534,11 +534,11 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
 		mult_total = (len(paired_teammates) - 1)*mult_percent #teammates + mult percent for one teammate
 		print_debug("MULT: ",mult_total)
-		host.my_component_ability.stats.damage_multiplier += mult_total
-		print_debug("DAMAGE TOTAL MULT: ",host.my_component_ability.stats.damage_multiplier)
+		host.my_component_ability.my_stats.set_damage_multiplier_temp(mult_total)
+		print_debug("DAMAGE TOTAL MULT: ",host.my_component_ability.my_stats.damage_multiplier)
 	
 	func on_end():
-		host.my_component_ability.stats.damage_multiplier -= mult_total
+		host.my_component_ability.my_stats.reset_damage_multiplier_temp()
 	
 # - Abilities - #
 class ability:
@@ -637,16 +637,16 @@ func get_data_status_all() -> Dictionary:
 	
 	##NORMAL
 	var normal_status_unit : Dictionary = {} #Reset it
-	if current_status_effects.NORMAL: #Check if we have effects to add
-		normal_status_unit = current_status_effects.NORMAL.get_data_default()
-		normal_status_unit.merge(current_status_effects.NORMAL.get_data(),true)
+	if my_status.NORMAL: #Check if we have effects to add
+		normal_status_unit = my_status.NORMAL.get_data_default()
+		normal_status_unit.merge(my_status.NORMAL.get_data(),true)
 	result["NORMAL"] = normal_status_unit
 	##PASSIVES
 	var passive_status_list : Array = [] #Reset it
-	for i in current_status_effects.PASSIVE.size(): #Check if we have effects and iterate thru it
+	for i in my_status.PASSIVE.size(): #Check if we have effects and iterate thru it
 		var passive_unit : Dictionary = {}
-		passive_unit = current_status_effects.PASSIVE[i].get_data_default() #Set default vars
-		passive_unit.merge(current_status_effects.PASSIVE[i].get_data(),true) #Include and overwrite any defaults like id, etc
+		passive_unit = my_status.PASSIVE[i].get_data_default() #Set default vars
+		passive_unit.merge(my_status.PASSIVE[i].get_data(),true) #Include and overwrite any defaults like id, etc
 		passive_status_list.append(passive_unit) #Append this merged data to our entry in the array
 	result["PASSIVE"] = passive_status_list
 	
@@ -656,18 +656,18 @@ func get_data_status_all() -> Dictionary:
 #Creates new statuses and sets their params based on data file
 func set_data_status_all(host : Node, status_data : Dictionary):
 	##NORMAL
-	if current_status_effects.NORMAL: #Remove any current NORMAL status
-		current_status_effects.remove(current_status_effects.NORMAL)
+	if my_status.NORMAL: #Remove any current NORMAL status
+		my_status.remove(my_status.NORMAL)
 	if !status_data["NORMAL"].is_empty(): #Check if NORMAL data is empty
-		var normal_eff = current_status_effects.add(Glossary.status_class[status_data["NORMAL"]["id"]].new(host),true) #Create the normal status and overwrite old status
+		var normal_eff = my_status.add(Glossary.status_class[status_data["NORMAL"]["id"]].new(host),true) #Create the normal status and overwrite old status
 		normal_eff.set_data(status_data["NORMAL"]) #Send the status our data for all its variables to change to
 		
 		#print_debug("set data for ",status_data["NORMAL"]["id"])
 	##PASSIVE
-	for i in current_status_effects.PASSIVE.size(): #Remove any previous passives first
-		current_status_effects.remove_passive(current_status_effects.PASSIVE[i])
+	for i in my_status.PASSIVE.size(): #Remove any previous passives first
+		my_status.remove_passive(my_status.PASSIVE[i])
 	for i in status_data["PASSIVE"].size(): #Check if PASSIVE data is empty and also iterate thru array of dictionaries in PASSIVE
-		var passive_eff = current_status_effects.add_passive(Glossary.status_class[status_data["PASSIVE"][i]["id"]].new(host)) #Create the passive
+		var passive_eff = my_status.add_passive(Glossary.status_class[status_data["PASSIVE"][i]["id"]].new(host)) #Create the passive
 		passive_eff.set_data(status_data["PASSIVE"][i]) #Send the indexed status our data for all its variables to change to
 		
 		#print_debug("set data for ",owner," ",status_data["PASSIVE"])
@@ -757,7 +757,7 @@ class ability_spook:
 		print_debug(caster.name, " tried to spook ", target.name,"!")
 		target.my_component_health.change(-skillcheck_modifier*damage)
 		if apply_status_success():
-			target.my_component_ability.current_status_effects.add(status_fear.new(target,skillcheck_modifier*2))
+			target.my_component_ability.my_status.add(status_fear.new(target,skillcheck_modifier*2))
 	
 	func animation():
 		caster.animations.tree.get("parameters/playback").travel("default_attack_spook")
@@ -787,7 +787,7 @@ class ability_solar_flare:
 		
 	func cast_pre_mitigation_bonus(caster : Node, target : Node): #Does bonus damage, bonus burn damage, and 100% chance to proc burn
 		print_debug(caster.name, " scorched ", target.name," for double damage!")
-		target.my_component_ability.current_status_effects.add(status_burn.new(target,skillcheck_modifier*2,damage*2))
+		target.my_component_ability.my_status.add(status_burn.new(target,skillcheck_modifier*2,damage*2))
 		target.my_component_health.change(-damage*2)
 		
 	
@@ -797,7 +797,7 @@ class ability_solar_flare:
 	func cast_pre_mitigation(caster : Node, target : Node): #this it the spell run from the target's POV. It is run from the hit signal
 		print_debug(caster.name, " ignited ", target.name,"!")
 		if apply_status_success():
-			target.my_component_ability.current_status_effects.add(status_burn.new(target,skillcheck_modifier*2,damage))
+			target.my_component_ability.my_status.add(status_burn.new(target,skillcheck_modifier*2,damage))
 		target.my_component_health.change(-damage)
 		
 	func animation():
@@ -834,7 +834,7 @@ class ability_frigid_core:
 		print_debug(caster.name, " froze ", target.name,"!")
 		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
 		target.my_component_health.change(-damage)
-		target.my_component_ability.current_status_effects.add(status_freeze.new(target,skillcheck_modifier*1,1))
+		target.my_component_ability.my_status.add(status_freeze.new(target,skillcheck_modifier*1,1))
 
 class ability_tackle: #Scales with skillcheck
 	extends ability_template_default
@@ -881,10 +881,11 @@ class ability_headbutt: #Scales with damage multiplier
 		target_type = Battle.target_type.OPPONENTS
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
-		var mult = caster.my_component_ability.stats.damage_multiplier
+		var mult = caster.my_component_ability.my_stats.damage_multiplier
+		var calc_damage = damage+(damage*mult)
 		print_debug(caster.name, " Charged ", target.name,"!")
-		print_debug("It did ", round(damage*mult), " damage!")
-		target.my_component_health.change(-damage*mult)
+		print_debug("It did ", calc_damage, " damage!")
+		target.my_component_health.change(-calc_damage)
 
 class ability_heartstitch:
 	extends ability_template_default
@@ -911,9 +912,9 @@ class ability_heartstitch:
 		
 		for i in len(old_targets): #remove instances from old targets
 			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
-				var teth = old_targets[i].my_component_ability.current_status_effects.TETHER
+				var teth = old_targets[i].my_component_ability.my_status.TETHER
 				if teth and teth is status_heartstitch: #If we find they still have our old buff
-					old_targets[i].my_component_ability.current_status_effects.remove(old_targets[i].my_component_ability.current_status_effects.TETHER)
+					old_targets[i].my_component_ability.my_status.remove(old_targets[i].my_component_ability.my_status.TETHER)
 		old_targets = targets
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
@@ -924,7 +925,7 @@ class ability_heartstitch:
 			
 			##Verification for needing actual stitch
 			if targets.size() >= 2:
-				target.my_component_ability.current_status_effects.add(status_heartstitch.new(target,targets,skillcheck_modifier*2))
+				target.my_component_ability.my_status.add(status_heartstitch.new(target,targets,skillcheck_modifier*2))
 			else:
 				print_debug("No valid target to stitch to - ",targets)
 	

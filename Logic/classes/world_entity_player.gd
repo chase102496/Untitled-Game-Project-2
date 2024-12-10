@@ -7,14 +7,16 @@ extends world_entity_default
 @export var my_component_party : component_party
 @export var my_component_ability : component_ability
 @export var my_component_inventory : component_inventory
+@export var my_component_respawn_handler : component_respawn_handler
 @export var my_inventory_gui : Control
+@export var loomlight : Node3D
 
 func _ready():
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
-	#my_component_ability.current_status_effects.add(my_component_ability.status_fear.new(self))
+	#my_component_ability.my_status.add(my_component_ability.status_fear.new(self))
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
@@ -64,7 +66,7 @@ func on_save(data):
 	##Abilities
 	data.my_abilities = my_component_ability.get_data_ability_all()
 	##Status fx
-	data.current_status_effects = my_component_ability.get_data_status_all()
+	data.my_status = my_component_ability.get_data_status_all()
 	##Dreamkin
 	data.my_party = my_component_party.export_party()
 	##Inventory
@@ -85,7 +87,7 @@ func on_load(data):
 	##Abilities
 	my_component_ability.set_data_ability_all(self,data.my_abilities)
 	##Status fx
-	my_component_ability.set_data_status_all(self,data.current_status_effects)
+	my_component_ability.set_data_status_all(self,data.my_status)
 	##Dreamkin
 	my_component_party.import_party(data.my_party)
 	##Inventory

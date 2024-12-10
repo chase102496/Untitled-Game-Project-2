@@ -56,10 +56,10 @@ func _on_battle_entity_death(entity : Node) -> void:
 		Battle.battle_list.pop_at(Battle.battle_list.find(entity,0)) #remove us from queue
 	else:
 		Battle.battle_list.pop_at(Battle.battle_list.find(entity,0)) #remove us from queue
-		entity.my_component_ability.current_status_effects.status_event("on_death") #trigger on death for all status stuff
+		entity.my_component_ability.my_status.status_event("on_death") #trigger on death for all status stuff
 	
-	Battle.update_positions() #fix positions since we outta queue
 	entity.queue_free() #deletus da fetus
+	Battle.update_positions() #fix positions since we outta queue
 
 func _on_turn_end() -> void:
 	#Set new character as next in queue, and incrementing the index

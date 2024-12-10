@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=3 uid="uid://cjip6juyime05"]
+
+[ext_resource type="Script" path="res://Logic/scripts/loomlight.gd" id="1_e8g5b"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_hamjf"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_kfuhk"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_piwww"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_gqbqw"]
+
+[sub_resource type="FogMaterial" id="FogMaterial_vi120"]
+density = -1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_h1yy2"]
+height = 1.5
+radius = 1.0
+
+[node name="Loomlight" type="Node3D"]
+script = ExtResource("1_e8g5b")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.920667, 0.86, 1)
+light_energy = 0.0
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 16.0
+shadow_enabled = true
+omni_range = 4.0
+
+[node name="FogVolume" type="FogVolume" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+shape = 0
+material = SubResource("FogMaterial_vi120")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1.00004, 0, 0, 0, 1.00004, 0, 0, 0, 1.00004, 0, 0, 0)
+shape = SubResource("CylinderShape3D_h1yy2")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_hamjf")
+
+[node name="Main" type="Node" parent="StateChart"]
+script = ExtResource("3_kfuhk")
+initial_state = NodePath("Disabled")
+
+[node name="on_enabled" type="Node" parent="StateChart/Main"]
+script = ExtResource("5_gqbqw")
+to = NodePath("../Enabled")
+event = &"on_enabled"
+delay_in_seconds = "0.0"
+
+[node name="on_disabled" type="Node" parent="StateChart/Main"]
+script = ExtResource("5_gqbqw")
+to = NodePath("../Disabled")
+event = &"on_disabled"
+delay_in_seconds = "0.0"
+
+[node name="Disabled" type="Node" parent="StateChart/Main"]
+script = ExtResource("4_piwww")
+
+[node name="on_toggle" type="Node" parent="StateChart/Main/Disabled"]
+script = ExtResource("5_gqbqw")
+to = NodePath("../../Enabled")
+event = &"on_toggle"
+delay_in_seconds = "0.0"
+
+[node name="Enabled" type="Node" parent="StateChart/Main"]
+script = ExtResource("4_piwww")
+
+[node name="on_toggle" type="Node" parent="StateChart/Main/Enabled"]
+script = ExtResource("5_gqbqw")
+to = NodePath("../../Disabled")
+event = &"on_toggle"
+delay_in_seconds = "0.0"

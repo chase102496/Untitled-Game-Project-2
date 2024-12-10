@@ -1,8 +1,9 @@
-[gd_scene load_steps=161 format=3 uid="uid://dp7uehr0563lr"]
+[gd_scene load_steps=164 format=3 uid="uid://dp7uehr0563lr"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_1m0ao"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_de5hk"]
+[ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Scenes/gleamlight.tscn" id="2_oqe5a"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_g8wgm"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="4_jugmf"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_5vvqu"]
@@ -16,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_down.png" id="19_r50o1"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="20_17msm"]
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="20_kntyd"]
+[ext_resource type="Script" path="res://Logic/components/component_equipment.gd" id="21_j6726"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="21_x148x"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="23_4eguq"]
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="24_hpm81"]
@@ -25,6 +27,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_world.gd" id="27_jhpoi"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="29_yxegy"]
 [ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="30_vt064"]
+[ext_resource type="Script" path="res://Logic/components/component_respawn_handler.gd" id="31_2u6hj"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="31_fpw8q"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="32_uhbt8"]
 [ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="33_7rgvm"]
@@ -1353,15 +1356,18 @@ states/default_attack_spook/position = Vector2(666, 252)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walk", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Death", "End", SubResource("AnimationNodeStateMachineTransition_baf28"), "default_attack", "Idle", SubResource("AnimationNodeStateMachineTransition_jtg3s"), "Idle", "default_attack", SubResource("AnimationNodeStateMachineTransition_68erw"), "Idle", "default_attack_spook", SubResource("AnimationNodeStateMachineTransition_m06vk"), "default_attack_spook", "Idle", SubResource("AnimationNodeStateMachineTransition_k3bkr"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_fpk0u"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_8rfkj"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_08k8w"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_pw7l4"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_o6fwj"), "Hurt", "Death", SubResource("AnimationNodeStateMachineTransition_ouf3n")]
 graph_offset = Vector2(-328.389, -155)
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_inventory_gui", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_component_respawn_handler", "my_inventory_gui", "loomlight", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"]]
 physics_interpolation_mode = 1
+collision_mask = 5
 script = ExtResource("1_xxqv0")
 my_component_movement_controller = NodePath("Components/component_movement_controller")
 my_component_input_controller = NodePath("Components/component_input_controller_manual")
 my_component_party = NodePath("Components/component_party")
 my_component_ability = NodePath("Components/component_ability")
 my_component_inventory = NodePath("Components/component_inventory")
+my_component_respawn_handler = NodePath("Components/component_respawn_handler")
 my_inventory_gui = NodePath("Inventory_GUI")
+loomlight = NodePath("Loomlight")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
@@ -1370,6 +1376,8 @@ my_component_vis = NodePath("Components/component_vis")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
 alignment = "FRIENDS"
 classification = "PLAYER"
+
+[node name="Loomlight" parent="." instance=ExtResource("2_oqe5a")]
 
 [node name="Inventory_GUI" parent="." node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("2_de5hk")]
 my_component_party = NodePath("../Components/component_party")
@@ -1440,6 +1448,12 @@ script = ExtResource("24_hpm81")
 [node name="Components" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("25_amus6")
+
+[node name="component_equipment" type="Node" parent="Components"]
+script = ExtResource("21_j6726")
+
+[node name="component_respawn_handler" type="Node" parent="Components"]
+script = ExtResource("31_2u6hj")
 
 [node name="component_inventory" type="Node" parent="Components"]
 script = ExtResource("27_2slhk")

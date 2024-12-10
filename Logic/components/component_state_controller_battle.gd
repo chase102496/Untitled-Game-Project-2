@@ -51,7 +51,7 @@ func _on_animation_started(anim_name,character) -> void:
 					pass
 				"death":
 					owner.state_chart.send_event("on_dying")
-					my_component_ability.current_status_effects.status_event("on_dying")
+					my_component_ability.my_status.status_event("on_dying")
 func _on_animation_finished(anim_name,character) -> void:
 	if character == owner:
 		var regex = RegEx.new()
@@ -69,9 +69,9 @@ func _on_animation_finished(anim_name,character) -> void:
 # GLOBAL EVENTS
 
 func _on_battle_team_start(team : String):
-	my_component_ability.current_status_effects.status_event("on_battle_team_start",[team])
+	my_component_ability.my_status.status_event("on_battle_team_start",[team])
 	if team != owner.alignment:
-		my_component_ability.current_status_effects.status_event("on_duration")
+		my_component_ability.my_status.status_event("on_duration")
 
 func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TURN
 	if Battle.active_character == owner:
@@ -80,19 +80,19 @@ func _on_turn_start() -> void: #NOT A STATE CHART, JUST FOR VERY BEGINNING OF TU
 		owner.state_chart.send_event("on_waiting")
 
 func _on_battle_entity_disabled_expire(entity : Node) -> void:
-	my_component_ability.current_status_effects.status_event("on_battle_entity_disabled_expire",[entity])
+	my_component_ability.my_status.status_event("on_battle_entity_disabled_expire",[entity])
 
 func _on_battle_entity_damaged(entity : Node, amount : int) -> void:
-	my_component_ability.current_status_effects.status_event("on_battle_entity_damaged",[entity,amount])
+	my_component_ability.my_status.status_event("on_battle_entity_damaged",[entity,amount])
 
 func _on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object) -> void:
-	my_component_ability.current_status_effects.status_event("on_battle_entity_hit",[entity_caster,entity_targets,ability])
+	my_component_ability.my_status.status_event("on_battle_entity_hit",[entity_caster,entity_targets,ability])
 	
 	if owner == entity_caster: #if we are casting
 		entity_caster.my_component_ability.cast_queue.cast_main()
 	elif owner in entity_targets: #if we're being hit with something
 		#run our mitigation, and the 'true' is to return a result so we can tell if anything cares about mitigation in our status
-		var query_results = my_component_ability.current_status_effects.status_event("on_ability_mitigation",[entity_caster,owner,ability],true)
+		var query_results = my_component_ability.my_status.status_event("on_ability_mitigation",[entity_caster,owner,ability],true)
 		
 		if len(query_results) > 0: #If any status effects care about mitigation in general
 			
@@ -105,12 +105,12 @@ func _on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability
 			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation(entity_caster,owner)
 
 func _on_battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object):
-	my_component_ability.current_status_effects.status_event("on_battle_entity_missed",[entity_caster,entity_targets,ability])
+	my_component_ability.my_status.status_event("on_battle_entity_missed",[entity_caster,entity_targets,ability])
 	if entity_caster == owner:
 		owner.my_component_ability.cast_queue.cast_validate_failed()
 
 func _on_battle_entity_turn_end(entity : Node):
-	my_component_ability.current_status_effects.status_event("on_battle_entity_turn_end",[entity])
+	my_component_ability.my_status.status_event("on_battle_entity_turn_end",[entity])
 
 func _on_battle_entity_death(entity : Node):
 	pass
@@ -126,11 +126,11 @@ func _on_state_entered_battle_start() -> void:
 	print_debug("Turn Start: ",owner.name)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
-	my_component_ability.current_status_effects.status_event("on_start")
+	my_component_ability.my_status.status_event("on_start")
 	owner.state_chart.send_event("on_choose") 
 
 func _on_state_entered_battle_choose() -> void:
-	my_component_ability.current_status_effects.status_event("on_skillcheck")
+	my_component_ability.my_status.status_event("on_skillcheck")
 	match owner.classification:
 		Battle.classification.PLAYER:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
@@ -186,7 +186,7 @@ func _on_state_entered_battle_execution() -> void:
 func _on_state_entered_battle_end() -> void:
 	state_chart_memory = "on_end" #For after applying shit we remember where we were
 	Events.battle_entity_turn_end.emit(owner) #Let everyone know we're about to end our turn
-	my_component_ability.current_status_effects.status_event("on_end") #Including status effects
+	my_component_ability.my_status.status_event("on_end") #Including status effects
 
 func _on_state_physics_processing_battle_end(_delta: float) -> void:
 	

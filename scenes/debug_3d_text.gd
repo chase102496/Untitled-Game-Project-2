@@ -30,7 +30,7 @@ func _physics_process(delta: float) -> void:
 	
 	var passive_effects_display : Array = []
 	var status_effects_display : Array = ["","",""]
-	var status_manager = my_component_ability.current_status_effects
+	var status_manager = my_component_ability.my_status
 	
 	if status_manager.NORMAL:
 		status_effects_display[0] = status_manager.NORMAL.title

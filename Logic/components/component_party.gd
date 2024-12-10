@@ -23,7 +23,7 @@ class party_dreamkin:
 	var vis : int
 	var max_vis : int
 	var my_abilities : Array
-	var current_status_effects : Dictionary
+	var my_status : Dictionary
 	var options_world : Dictionary = {}
 	var options_battle : Dictionary = {}
 	

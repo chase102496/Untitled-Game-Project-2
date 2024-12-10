@@ -48,11 +48,11 @@ func _physics_process(delta: float) -> void:
 		dreamkin_list.append(dreamkin_party[i].name)
 	
 	var status_list = []
-	if owner.my_component_ability.current_status_effects.NORMAL:
-		status_list.append(owner.my_component_ability.current_status_effects.NORMAL.title)
+	if owner.my_component_ability.my_status.NORMAL:
+		status_list.append(owner.my_component_ability.my_status.NORMAL.title)
 	status_list.append(" / ")
-	for i in owner.my_component_ability.current_status_effects.PASSIVE.size():
-		status_list.append(owner.my_component_ability.current_status_effects.PASSIVE[i].title)
+	for i in owner.my_component_ability.my_status.PASSIVE.size():
+		status_list.append(owner.my_component_ability.my_status.PASSIVE[i].title)
 	
 	if prev != state_subchart:
 		history = prev

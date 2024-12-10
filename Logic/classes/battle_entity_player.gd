@@ -21,7 +21,7 @@ func on_save(data):
 	##Abilities
 	data.my_abilities = my_component_ability.get_data_ability_all()
 	##Status fx
-	data.current_status_effects = my_component_ability.get_data_status_all()
+	data.my_status = my_component_ability.get_data_status_all()
 	##Dreamkin
 	data.my_party = my_component_party.export_party()
 	##Inventory
@@ -36,7 +36,7 @@ func on_load(data):
 	##Abilities
 	my_component_ability.set_data_ability_all(self,data.my_abilities)
 	##Status fx
-	my_component_ability.set_data_status_all(self,data.current_status_effects)
+	my_component_ability.set_data_status_all(self,data.my_status)
 	##Dreamkin
 	my_component_party.import_party(data.my_party)
 	var inst = my_component_party.summon(0,"battle") #Summon top of the list

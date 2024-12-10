@@ -24,7 +24,7 @@ func _ready():
 	var abil = my_component_ability
 	abil.my_abilities.append(abil.ability_tackle.new(self))
 	abil.my_abilities.append(abil.ability_solar_flare.new(self,1,1.0))
-	my_component_ability.current_status_effects.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
+	my_component_ability.my_status.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 
 ##If we are being summoned from a party object, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):
@@ -41,7 +41,7 @@ func party_summon(data : Object):
 	my_component_vis.set_deferred("vis",data.vis)
 	my_component_vis.set_deferred("max_vis",data.max_vis)
 	my_component_ability.set_data_ability_all.call_deferred(self,data.my_abilities)
-	my_component_ability.set_data_status_all.call_deferred(self,data.current_status_effects)
+	my_component_ability.set_data_status_all.call_deferred(self,data.my_status)
 	
 	return self
 
@@ -60,6 +60,6 @@ func get_dreamkin_data_dictionary():
 	data.vis = my_component_vis.vis
 	data.max_vis = my_component_vis.max_vis
 	data.my_abilities = my_component_ability.get_data_ability_all()
-	data.current_status_effects = my_component_ability.get_data_status_all()
+	data.my_status = my_component_ability.get_data_status_all()
 	
 	return data

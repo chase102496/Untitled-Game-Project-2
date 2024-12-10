@@ -15,12 +15,6 @@ process_priority = -1
 script = ExtResource("2_rtnfg")
 initial_state = NodePath("Battle")
 
-[node name="on_start" type="Node" parent="Main"]
-script = ExtResource("5_inpcx")
-to = NodePath("../Battle/Start")
-event = &"on_start"
-delay_in_seconds = "0.0"
-
 [node name="on_waiting" type="Node" parent="Main"]
 script = ExtResource("5_inpcx")
 to = NodePath("../Battle/Waiting")

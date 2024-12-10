@@ -36,7 +36,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	##Death handling
 	if health == 0: #If we're dying
 		##Query our death protection statuses to see if any want to intervene with a message before we die
-		var death_protection_result = owner.my_component_ability.current_status_effects.status_event("on_death_protection",[amt,from_tether,type],true)
+		var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection",[amt,from_tether,type],true)
 		
 		##If they do, ignore our normal death process and have the status fx handle it
 		if death_protection_result.size() == 0:
