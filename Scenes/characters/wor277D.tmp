@@ -1,9 +1,9 @@
-[gd_scene load_steps=163 format=3 uid="uid://dp7uehr0563lr"]
+[gd_scene load_steps=165 format=3 uid="uid://dp7uehr0563lr"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_1m0ao"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_de5hk"]
-[ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="2_oqe5a"]
+[ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Scenes/gloam_manager.tscn" id="2_oqe5a"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_g8wgm"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="4_jugmf"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_5vvqu"]
@@ -17,7 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_down.png" id="19_r50o1"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="20_17msm"]
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="20_kntyd"]
-[ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="20_m8bss"]
+[ext_resource type="Script" path="res://Logic/components/component_equipment.gd" id="21_j6726"]
+[ext_resource type="Script" path="res://Logic/scripts/active_ability_area.gd" id="21_k4dg6"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="21_x148x"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="23_4eguq"]
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="24_hpm81"]
@@ -1355,6 +1356,9 @@ states/default_attack_spook/position = Vector2(666, 252)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walk", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Death", "End", SubResource("AnimationNodeStateMachineTransition_baf28"), "default_attack", "Idle", SubResource("AnimationNodeStateMachineTransition_jtg3s"), "Idle", "default_attack", SubResource("AnimationNodeStateMachineTransition_68erw"), "Idle", "default_attack_spook", SubResource("AnimationNodeStateMachineTransition_m06vk"), "default_attack_spook", "Idle", SubResource("AnimationNodeStateMachineTransition_k3bkr"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_fpk0u"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_8rfkj"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_08k8w"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_pw7l4"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_o6fwj"), "Hurt", "Death", SubResource("AnimationNodeStateMachineTransition_ouf3n")]
 graph_offset = Vector2(-328.389, -155)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_od2n4"]
+radius = 1.0
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_component_respawn_handler", "my_component_equipment", "my_inventory_gui", "gloam_manager", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"]]
 physics_interpolation_mode = 1
 collision_layer = 5
@@ -1448,8 +1452,17 @@ script = ExtResource("24_hpm81")
 [node name="component_gloam_manager" parent="Components_3D" node_paths=PackedStringArray("equipment") instance=ExtResource("2_oqe5a")]
 equipment = NodePath("../component_equipment")
 
-[node name="component_equipment" parent="Components_3D" node_paths=PackedStringArray("gloam_manager") instance=ExtResource("20_m8bss")]
+[node name="component_equipment" type="Node3D" parent="Components_3D" node_paths=PackedStringArray("gloam_manager")]
+script = ExtResource("21_j6726")
 gloam_manager = NodePath("../component_gloam_manager")
+
+[node name="active_ability_area" type="Area3D" parent="Components_3D/component_equipment"]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("21_k4dg6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components_3D/component_equipment/active_ability_area"]
+shape = SubResource("SphereShape3D_od2n4")
 
 [node name="Components" type="Node" parent="."]
 

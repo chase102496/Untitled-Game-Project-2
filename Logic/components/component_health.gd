@@ -2,13 +2,22 @@ class_name component_health
 extends Node
 
 @export var max_health : int = 6
+
+@export var status_hud : Node3D
+
 var health : int
 var previous_particle : Node
 
 func _ready() -> void:
 	health = max_health
 
+func update_status_hud() -> void:
+	if status_hud and SceneManager.current_scene.scene_type == "world":
+		status_hud.reset_hud_timer()
+
 func revive():
+	
+	update_status_hud()
 	
 	Glossary.create_text_particle(owner.animations.selector_anchor,str("Revived!"),"float_away",Color.GREEN_YELLOW)
 	
@@ -16,6 +25,8 @@ func revive():
 	health = max_health
 
 func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
+	
+	update_status_hud()
 	
 	var old_health = health
 	

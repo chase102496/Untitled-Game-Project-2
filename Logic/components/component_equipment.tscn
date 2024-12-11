@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://c20wjgqsafufi"]
+
+[ext_resource type="Script" path="res://Logic/components/component_equipment.gd" id="1_rohcw"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_od2n4"]
+radius = 1.0
+
+[node name="component_equipment" type="Node3D" node_paths=PackedStringArray("gloam_manager")]
+script = ExtResource("1_rohcw")
+gloam_manager = NodePath("")
+
+[node name="active_ability_area" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="active_ability_area"]
+shape = SubResource("SphereShape3D_od2n4")

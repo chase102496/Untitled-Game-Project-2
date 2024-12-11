@@ -94,6 +94,7 @@ save_data_all="Allows grouping of any objects that need to be saved across scene
 save_data_scene=""
 load_data_all=""
 load_data_scene=""
+equipment_interact_purge=""
 
 [input]
 
@@ -239,8 +240,9 @@ loomlight={
 
 3d_physics/layer_1="PLAYER"
 3d_physics/layer_2="DREAMKIN"
-3d_physics/layer_3="FOG"
+3d_physics/layer_3="GLOAM"
 3d_physics/layer_4="CAMERA_GHOSTING"
+3d_physics/layer_5="INTERACTABLE"
 
 [phantom_camera]
 

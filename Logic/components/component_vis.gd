@@ -4,10 +4,19 @@ extends Node
 @export var max_vis : int = 6
 var vis : int
 
+@export var status_hud : Node3D
+
 func _ready() -> void:
 	vis = max_vis
 
+func update_status_hud() -> void:
+	if status_hud and SceneManager.current_scene.scene_type == "world":
+		status_hud.reset_hud_timer()
+
 func change(amt : int):
+	
+	update_status_hud()
+	
 	var old_vis = vis
 	
 	## Adding to Vis

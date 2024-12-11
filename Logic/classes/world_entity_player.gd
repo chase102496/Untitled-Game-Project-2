@@ -8,38 +8,20 @@ extends world_entity_default
 @export var my_component_ability : component_ability
 @export var my_component_inventory : component_inventory
 @export var my_component_respawn_handler : component_respawn_handler
+@export var my_component_equipment : component_equipment
 @export var my_inventory_gui : Control
-@export var loomlight : Node3D
+@export var gloam_manager : Node3D
 
 func _ready():
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
 	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
-	#my_component_ability.my_status.add(my_component_ability.status_fear.new(self))
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
 	
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
-	
-	#TODO FIX THIS TO RUN POSITION ON A PER-TRANSFER BASIS WHERE THE OLD WORLD -> NEW WORLD, the OLD WORLD tells us where we're spawning in the new one.
-	
-	#PlayerData.load_data_scene(position of player new spawn)
-	#OR, we edit the actual data package on pre-scene transition, in the scenetransition Singleton
-	
-	#Position should be a scene-based save
-	#When we go through a pathway leading from one scene to another, the previous scene dictates where we will spawn in the new scene
-		#Can be stored as data.global_position just like we would right before a battle. Then, the other world can handle that data.
-		#We can save each entry point in a world as a Vector3 in a Glossary of all world locations
-	#When we go from a battle scene to a world scene, the world's position save dictates where we will spawn
-		#Can be stored as data.gloval_position right before we enter battle, and is loaded on battle end
-		
-	#When we leave a scene for whatever reason, the only time we ever need to save our position is if we're entering battle or a cutscene or something, otherwise ignore global pos save
-	
-	#When we enter a scene for whatever reason, we always need a data point for where to put the player.
-	
-	#Each scene will have a default global position to load the player. This will be a Vector3 export variable
 
 	PlayerData.load_data_scene()
 	
@@ -127,10 +109,10 @@ func _physics_process(delta: float) -> void:
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	#
-	if Input.is_action_just_pressed("num0"):
-		Battle.battle_initialize("enemy_gloam enemy_gloam")
+	#if Input.is_action_just_pressed("num0"):
+		#Battle.battle_initialize("enemy_gloam enemy_gloam")
 	if Input.is_action_just_pressed("num1"):
-		SceneManager.transition_to("res://Levels/hotus_house.tscn")
-	if Input.is_action_just_pressed("num2"):
-		SceneManager.transition_to("res://Levels/dream_garden.tscn")
+		my_component_equipment.ability_switch_active_toggle()
+	#if Input.is_action_just_pressed("num2"):
+		#SceneManager.transition_to("res://Levels/dream_garden.tscn")
 		#TODO make instance version of initialize similar to ability and status where we determine all the junk at creation not just a name

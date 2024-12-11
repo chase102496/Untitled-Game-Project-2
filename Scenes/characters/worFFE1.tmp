@@ -1,9 +1,9 @@
-[gd_scene load_steps=163 format=3 uid="uid://dp7uehr0563lr"]
+[gd_scene load_steps=164 format=3 uid="uid://dp7uehr0563lr"]
 
 [ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_1m0ao"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_de5hk"]
-[ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="2_oqe5a"]
+[ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Scenes/gleamlight.tscn" id="2_oqe5a"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_g8wgm"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="4_jugmf"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_5vvqu"]
@@ -17,10 +17,11 @@
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_down.png" id="19_r50o1"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="20_17msm"]
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="20_kntyd"]
-[ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="20_m8bss"]
+[ext_resource type="Script" path="res://Logic/components/component_equipment.gd" id="21_j6726"]
 [ext_resource type="Texture2D" uid="uid://cruw4qvy5sd6u" path="res://Art/sprites/The Adventurer - Free/Walk/walk_up.png" id="21_x148x"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="23_4eguq"]
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="24_hpm81"]
+[ext_resource type="Script" path="res://Logic/components/components.gd" id="25_amus6"]
 [ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="26_3hd4n"]
 [ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="27_2slhk"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_world.gd" id="27_jhpoi"]
@@ -1366,9 +1367,9 @@ my_component_party = NodePath("Components/component_party")
 my_component_ability = NodePath("Components/component_ability")
 my_component_inventory = NodePath("Components/component_inventory")
 my_component_respawn_handler = NodePath("Components/component_respawn_handler")
-my_component_equipment = NodePath("Components_3D/component_equipment")
+my_component_equipment = NodePath("Components/component_equipment")
 my_inventory_gui = NodePath("Inventory_GUI")
-gloam_manager = NodePath("Components_3D/component_gloam_manager")
+gloam_manager = NodePath("gloam_manager")
 state_chart = NodePath("StateChart")
 animations = NodePath("Animations")
 collider = NodePath("CollisionShape3D")
@@ -1377,6 +1378,9 @@ my_component_vis = NodePath("Components/component_vis")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
 alignment = "FRIENDS"
 classification = "PLAYER"
+
+[node name="gloam_manager" parent="." node_paths=PackedStringArray("equipment") instance=ExtResource("2_oqe5a")]
+equipment = NodePath("../Components/component_equipment")
 
 [node name="Inventory_GUI" parent="." node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("2_de5hk")]
 my_component_party = NodePath("../Components/component_party")
@@ -1398,6 +1402,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028, 0.06, 0.008)
 shape = SubResource("CapsuleShape3D_h7j1u")
 
 [node name="Animations" type="Node3D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_jbfav")
 
 [node name="character_sprite_position" type="Node3D" parent="Animations"]
@@ -1443,15 +1448,12 @@ parameters/Walk/BlendSpace2D/blend_position = Vector2(-0.0011825, 0.00709224)
 parameters/Walk/TimeScale/scale = 0.5
 script = ExtResource("24_hpm81")
 
-[node name="Components_3D" type="Node3D" parent="."]
-
-[node name="component_gloam_manager" parent="Components_3D" node_paths=PackedStringArray("equipment") instance=ExtResource("2_oqe5a")]
-equipment = NodePath("../component_equipment")
-
-[node name="component_equipment" parent="Components_3D" node_paths=PackedStringArray("gloam_manager") instance=ExtResource("20_m8bss")]
-gloam_manager = NodePath("../component_gloam_manager")
-
 [node name="Components" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("25_amus6")
+
+[node name="component_equipment" type="Node" parent="Components"]
+script = ExtResource("21_j6726")
 
 [node name="component_respawn_handler" type="Node" parent="Components"]
 script = ExtResource("31_2u6hj")
