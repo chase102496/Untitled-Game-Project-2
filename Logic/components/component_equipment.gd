@@ -26,11 +26,10 @@ func _on_active_interact_area_exited(area : Area3D) -> void:
 	ability_event(active,"on_area_exited",[area])
 
 func refresh_equipment_interact_areas(old_ability : ability, new_ability : ability) -> void:
-	if active_interact_area.overlaps_area(active_interact_area_memory): #if we overlap our most recent area still
+	#if we have memory of a collision and if we overlap our most recent area still
+	if active_interact_area_memory and active_interact_area.overlaps_area(active_interact_area_memory):
 		ability_event(old_ability,"on_area_exited",[active_interact_area_memory])
 		ability_event(new_ability,"on_area_entered",[active_interact_area_memory])
-	else:
-		pass
 
 func ability_use() -> void:
 	ability_event(active,"on_use")
@@ -108,14 +107,37 @@ class ability:
 	
 	var caster : Node
 	var interact_group : String
-	var interact_area : Area3D
-	var interact_area_shape : CollisionShape3D
+	var my_interact_area : Area3D
+	var my_interact_area_shape : CollisionShape3D
+	
+	var fx_instance : GPUParticles3D
+	
+	var their_interact_area : Area3D
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		interact_area = caster.my_component_equipment.active_interact_area
-		interact_area_shape = caster.my_component_equipment.active_interact_area_shape
-
+		my_interact_area = caster.my_component_equipment.active_interact_area
+		my_interact_area_shape = caster.my_component_equipment.active_interact_area_shape
+	
+	## --- FX --- ##
+	
+	func fx_interactable() -> void:
+		fx_clear()
+		#fx_instance = instantiate()
+		pass
+	
+	func fx_use() -> void:
+		fx_clear()
+		#fx_instance = instantiate()
+		pass
+	
+	func fx_clear() -> void:
+		if fx_instance:
+			fx_instance.queue_free()
+	
+	## --- Interaction --- ##
+	
+	# Checks if it should be interactable with our current ability
 	func verify_area(area : Area3D) -> bool:
 		if area.is_in_group(interact_group):
 			return true
@@ -123,11 +145,41 @@ class ability:
 	
 	func on_area_entered(area : Area3D) -> void:
 		if verify_area(area):
-			print(self," entered ",area)
+			their_interact_area = area #The owner object of the area we collided with
+			if their_interact_area.has_signal("enter"):
+				their_interact_area.enter.emit(caster) #Let it know we entered
+				#fx
+				print("EQUIPMENT EVENT: ",self," entered ",area)
 	
 	func on_area_exited(area : Area3D) -> void:
 		if verify_area(area):
-			print(self," exited ",area)
+			if their_interact_area.has_signal("exit"):
+				their_interact_area.exit.emit(caster) #Let it know we exited
+				their_interact_area = null #Remove reference to its owner
+				print("EQUIPMENT EVENT: ",self," exited ",area)
+	
+	func on_their_interact_area_state_entered():
+		on_area_entered(their_interact_area)
+	
+	func on_their_interact_area_state_exited():
+		on_area_exited(their_interact_area)
+	
+	## --- Use --- ##
+	
+	# Checks if we can actually use our ability, now that there is a matching area to use it on
+	# Can check internal conditionals like vis, etc
+	func verify_use() -> bool:
+		return true
+	
+	func on_use() -> void:
+		if verify_use():
+			if their_interact_area and their_interact_area.has_signal("interact"):
+					their_interact_area.interact.emit(caster)
+					print("EQUIPMENT EVENT: ",self," interacted with ",their_interact_area)
+		else:
+			print_debug("Use verification failed for ",self)
+	
+	## --- Equip --- ##
 	
 	func verify_equip() -> bool:
 		#conditions when checking if we can equip this (as in swapped to being in our hand)
@@ -149,7 +201,6 @@ class ability_dreamstitch:
 	
 	func _init(caster : Node) -> void:
 		super._init(caster)
-		interact_group = "equipment_interact_purge"
 
 class ability_heartlink:
 	extends ability_dreamstitch
@@ -159,8 +210,8 @@ class ability_loomlight:
 	extends ability
 	
 	var color : Color = Color("ffebdb") #Determines color of lantern
-	var size : float = 2 #Determines size of gloam cleared with lantern and also range of light in lantern
-	var light_strength : float = 2 #Determines brightness of lantern
+	var size : float = 2.5 #Determines size of gloam cleared with lantern and also range of light in lantern
+	var light_strength : float = 2.5 #Determines brightness of lantern
 	
 	var tween_light_strength : Tween
 	var tween_size : Tween
@@ -184,7 +235,6 @@ class ability_loomlight:
 	
 	func verify_unequip() -> bool:
 		if caster.gloam_manager.is_inside_gloam:
-			print_debug("Can't unequip when inside gloam!")
 			return false
 		else:
 			return true
@@ -220,16 +270,6 @@ class ability_purge:
 	#Used for abilities that require a specific condition
 	#Check here to see if we're in range to affect something with purge, if we are, return true
 	#We can also show an effect or prompt here to indicate you can use this ability
-	func verify_use() -> bool:
-		print_debug("LOOMLIGHT USABLE!")
-		on_usable_fx()
-		return true
-		
-	#Put our actual ability here, and modify what we're affecting
-	func on_use(target : Node) -> void:
-		if verify_use():
-			on_use_fx(target)
-			print_debug("verify_use")
 	
 	func on_usable_fx(target : Node = null) -> void:
 		pass
