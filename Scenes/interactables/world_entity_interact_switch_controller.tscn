@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bltyq4wqoagse"]
 
 [ext_resource type="PackedScene" uid="uid://qw7lqdc5swse" path="res://Scenes/interactables/world_entity_interact.tscn" id="1_854y3"]
-[ext_resource type="Script" path="res://Logic/classes/interactables/world_entity_interact_switch.gd" id="2_p0xor"]
+[ext_resource type="Script" path="res://Logic/classes/interactables/world_entity_interact_switch_controller.gd" id="2_p0xor"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="3_mu63i"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="4_5pn0t"]
 
