@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://8vtdjxbayla7"]
 
 [ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://Scenes/characters/battle_entity_enemy_default.tscn" id="1_jo5jv"]
-[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_shadebloom.gd" id="2_mdekj"]
+[ext_resource type="Script" path="res://Logic/classes/characters/battle_entity_enemy_shadebloom.gd" id="2_mdekj"]
 [ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="3_6w2g1"]
 [ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="4_uwgcq"]
 [ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="5_11m21"]

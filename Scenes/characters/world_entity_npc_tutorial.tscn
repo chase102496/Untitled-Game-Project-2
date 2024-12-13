@@ -1,7 +1,7 @@
 [gd_scene load_steps=87 format=3 uid="uid://d4f5i42fama8y"]
 
 [ext_resource type="PackedScene" uid="uid://dgd4uawticqrg" path="res://Scenes/characters/world_entity_npc_default.tscn" id="1_mgljr"]
-[ext_resource type="Script" path="res://Logic/classes/world_entity_npc_tutorial.gd" id="2_6ylbx"]
+[ext_resource type="Script" path="res://Logic/classes/characters/world_entity_npc_tutorial.gd" id="2_6ylbx"]
 [ext_resource type="Texture2D" uid="uid://b4y2n7w11dkwo" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Center.png" id="5_1tu8t"]
 [ext_resource type="Texture2D" uid="uid://dkr02cfap046a" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Left_1.png" id="6_dkaq6"]
 [ext_resource type="Texture2D" uid="uid://hgcl7lamr4sm" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Left_2.png" id="7_ojx3w"]

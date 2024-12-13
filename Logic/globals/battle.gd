@@ -292,10 +292,10 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 	
 	var final_entity_list : Array = []
 	
-	final_entity_list.append(Glossary.entity_transform(Global.player.glossary,"battle"))
+	final_entity_list.append(Glossary.convert_entity_glossary(Global.player.glossary,"battle"))
 	
 	#if Global.player.my_component_party.get_party(): #If we have some party members
-	#	final_entity_list.append(Glossary.entity_transform(Global.player.my_component_party.my_party[0].glossary,"battle")) #Add our primary dreamkin's id
+	#	final_entity_list.append(Glossary.convert_entity_glossary(Global.player.my_component_party.my_party[0].glossary,"battle")) #Add our primary dreamkin's id
 	
 	if entity_list is String: #For conversion from dialogic method
 		var split_list = entity_list.split(" ")

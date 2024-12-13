@@ -1,6 +1,6 @@
 [gd_scene load_steps=115 format=3 uid="uid://dgd4uawticqrg"]
 
-[ext_resource type="Script" path="res://Logic/classes/world_entity_npc_default.gd" id="1_prpni"]
+[ext_resource type="Script" path="res://Logic/classes/characters/world_entity_npc_default.gd" id="1_prpni"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="2_ipegg"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_0vcg8"]
 [ext_resource type="Texture2D" uid="uid://bcoer1ykcsog8" path="res://Art/sprites/The Adventurer - Free/Death/death_normal_right_down.png" id="4_3yh7p"]
@@ -30,7 +30,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="26_5xld1"]
 [ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="28_q0ero"]
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="29_qpnwp"]
-[ext_resource type="Script" path="res://Logic/components/component_interact_controller.gd" id="30_81u32"]
+[ext_resource type="Script" path="res://Logic/components/component_interact_controller(deprecated).gd" id="30_81u32"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h7j1u"]
 radius = 0.258558

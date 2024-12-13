@@ -1,6 +1,6 @@
 [gd_scene load_steps=140 format=3 uid="uid://bxq5n6t50slq7"]
 
-[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_default.gd" id="1_4ui3r"]
+[ext_resource type="Script" path="res://Logic/classes/characters/battle_entity_enemy_default.gd" id="1_4ui3r"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="2_j8bdf"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_1v0tl"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="4_7fq4l"]

@@ -2,8 +2,8 @@ class_name component_equipment
 extends Node3D
 
 @export var gloam_manager : Node3D
-@onready var active_interact_area : Area3D  = $active_ability_area
-@onready var active_interact_area_shape : CollisionShape3D  = $active_ability_area/CollisionShape3D
+@onready var active_interact_area : Area3D  = $active_interact_area
+@onready var active_interact_area_shape : CollisionShape3D  = $active_interact_area/active_interact_area_shape
 
 @onready var dreamstitch : ability_dreamstitch# = ability_dreamstitch.new(owner)
 @onready var loomlight : ability_loomlight = ability_loomlight.new(owner)

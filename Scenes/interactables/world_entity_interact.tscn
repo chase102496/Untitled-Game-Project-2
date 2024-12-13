@@ -1,14 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bic8dmfc0eqgb"]
+[gd_scene load_steps=5 format=3 uid="uid://qw7lqdc5swse"]
 
-[ext_resource type="Script" path="res://Logic/classes/world_entity_interact.gd" id="1_rncgn"]
+[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact.tscn" id="1_bl4ju"]
+[ext_resource type="Script" path="res://Logic/classes/interactables/world_entity_interact.gd" id="1_rtk1e"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_qoyj8"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_4bjl4"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_0ov1o"]
-radius = 2.5
+[node name="world_entity_interact" type="Node3D" node_paths=PackedStringArray("my_interact_component")]
+script = ExtResource("1_rtk1e")
+my_interact_component = NodePath("Components_3D/component_interact")
 
-[node name="world_entity_interact" type="Area3D" groups=["equipment_interact_purge"]]
-collision_layer = 16
-collision_mask = 16
-script = ExtResource("1_rncgn")
+[node name="Components_3D" type="Node3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_0ov1o")
+[node name="component_interact" parent="Components_3D" node_paths=PackedStringArray("my_owner") groups=["equipment_interact_purge"] instance=ExtResource("1_bl4ju")]
+my_owner = NodePath("../..")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_qoyj8")
+
+[node name="Main" type="Node" parent="StateChart"]
+script = ExtResource("3_4bjl4")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=63 format=3 uid="uid://ct0v1pb5ehqc6"]
 
-[ext_resource type="Script" path="res://Logic/classes/battle_entity_dreamkin_default.gd" id="1_ol02j"]
+[ext_resource type="Script" path="res://Logic/classes/characters/battle_entity_dreamkin_default.gd" id="1_ol02j"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_oay8k"]
 [ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="3_v5qov"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_j3sum"]

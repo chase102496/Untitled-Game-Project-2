@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://beh2s8f6wnn6n"]
 
 [ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://Scenes/characters/battle_entity_enemy_default.tscn" id="1_gmhfa"]
-[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_gloam.gd" id="2_nrtc7"]
+[ext_resource type="Script" path="res://Logic/classes/characters/battle_entity_enemy_gloam.gd" id="2_nrtc7"]
 [ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="3_4h52v"]
 [ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="4_cto36"]
 [ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Art/animations/Individual Animations/default_hurt.res" id="5_dm43g"]

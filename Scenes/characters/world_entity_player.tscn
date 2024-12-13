@@ -1,6 +1,6 @@
-[gd_scene load_steps=163 format=3 uid="uid://dp7uehr0563lr"]
+[gd_scene load_steps=165 format=3 uid="uid://dp7uehr0563lr"]
 
-[ext_resource type="Script" path="res://Logic/classes/world_entity_player.gd" id="1_xxqv0"]
+[ext_resource type="Script" path="res://Logic/classes/characters/world_entity_player.gd" id="1_xxqv0"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_1m0ao"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_de5hk"]
 [ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="2_oqe5a"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_up.png" id="13_sxrw3"]
 [ext_resource type="Texture2D" uid="uid://f5iev0g4h14w" path="res://Art/sprites/The Adventurer - Free/Walk/walk_down.png" id="18_fp0ck"]
 [ext_resource type="Texture2D" uid="uid://yck7ccli71p6" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_down.png" id="19_r50o1"]
+[ext_resource type="Script" path="res://Logic/components/component_interact_controller.gd" id="19_yxm6k"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="20_17msm"]
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="20_kntyd"]
 [ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="20_m8bss"]
@@ -1355,6 +1356,9 @@ states/default_attack_spook/position = Vector2(666, 252)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_jp1mo"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_l2cto"), "Walk", "Death", SubResource("AnimationNodeStateMachineTransition_vhr1l"), "Idle", "Death", SubResource("AnimationNodeStateMachineTransition_dbu3l"), "Death", "End", SubResource("AnimationNodeStateMachineTransition_baf28"), "default_attack", "Idle", SubResource("AnimationNodeStateMachineTransition_jtg3s"), "Idle", "default_attack", SubResource("AnimationNodeStateMachineTransition_68erw"), "Idle", "default_attack_spook", SubResource("AnimationNodeStateMachineTransition_m06vk"), "default_attack_spook", "Idle", SubResource("AnimationNodeStateMachineTransition_k3bkr"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_fpk0u"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_8rfkj"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_08k8w"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_pw7l4"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_o6fwj"), "Hurt", "Death", SubResource("AnimationNodeStateMachineTransition_ouf3n")]
 graph_offset = Vector2(-328.389, -155)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_al4cq"]
+radius = 1.0
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_component_respawn_handler", "my_component_equipment", "my_inventory_gui", "gloam_manager", "state_chart", "animations", "collider", "my_component_health", "my_component_vis", "my_component_state_controller_world") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"]]
 physics_interpolation_mode = 1
 collision_layer = 5
@@ -1444,6 +1448,16 @@ parameters/Walk/TimeScale/scale = 0.5
 script = ExtResource("24_hpm81")
 
 [node name="Components_3D" type="Node3D" parent="."]
+
+[node name="component_interact_controller" type="Node3D" parent="Components_3D"]
+script = ExtResource("19_yxm6k")
+
+[node name="active_interact_area" type="Area3D" parent="Components_3D/component_interact_controller"]
+collision_layer = 16
+collision_mask = 16
+
+[node name="active_interact_area_shape" type="CollisionShape3D" parent="Components_3D/component_interact_controller/active_interact_area"]
+shape = SubResource("SphereShape3D_al4cq")
 
 [node name="component_gloam_manager" parent="Components_3D" node_paths=PackedStringArray("equipment") instance=ExtResource("2_oqe5a")]
 equipment = NodePath("../component_equipment")

@@ -1,29 +1,11 @@
 extends Node
 
-var unique_id : int = randi_range(0,50)
+## --- Functions --- ##
 
-func text_style_color_html(type_dict : Dictionary):
-	return str("[color=",type_dict.COLOR.to_html(),"]")
-
-func get_unique_id():
-	unique_id += 1
-	return unique_id
-
-func get_nested_value(dict: Dictionary, path: Array) -> Variant:
-	var current = dict
-	for key in path:
-		if current.has(key):
-			current = current[key]
-		else:
-			return null  # Path is invalid
-	return current
-
-func free_children(parent : Node):
-	for child in parent.get_children():
-			child.queue_free()
-
+# Convert
 ## Grabs relevant info for displaying in a gui, and formats it into a Dictionary
 ## Can be a player, Dreamkin, Item, anything. It will tell us the type and forward a dict
+
 func convert_info_universal_gui(entity):
 	var result = Interface.evaluate_entity_type(entity)
 	match result:
@@ -67,7 +49,7 @@ func convert_info_character_gui(character) -> Dictionary:
 	)
 
 	return dict
-##
+
 func convert_info_item_gui(item : Object) -> Dictionary:
 	
 	var dict : Dictionary = {}
@@ -84,78 +66,38 @@ func convert_info_item_gui(item : Object) -> Dictionary:
 	
 	return dict
 
-var text_style : Dictionary = {
-	"FLAVOR" :{
-		"COLOR" : Color("5c5c5c")
-	},
-	"HEALTH" :{
-		"ICON" : "♥",
-		"COLOR" : Color("f4085b")
-	},
-	"VIS" :{
-		"ICON" : "◆",
-		"COLOR" : Color("078ef5")
-	},
-}
+## Used to transform from battle to entity or vice versa
+func convert_entity_glossary(glossary_name : String, set_prefix : String):
+	var result = ""
+	if "world" in glossary_name:
+		result = glossary_name.replace("world",set_prefix)
+	elif "battle" in glossary_name:
+		result = glossary_name.replace("battle",set_prefix)
+	else:
+		push_error("Unable to find transformation for ",glossary_name)
+		
+	return result
 
-var ability_class : Dictionary = {
-	"ability_tackle" : component_ability.ability_tackle,
-	"ability_headbutt" : component_ability.ability_headbutt,
-	"ability_solar_flare" : component_ability.ability_solar_flare,
-	"ability_heartstitch" : component_ability.ability_heartstitch,
-	"ability_switchstitch" : component_ability.ability_switchstitch,
-	"ability_spook" : component_ability.ability_spook,
-	"ability_frigid_core" : component_ability.ability_frigid_core,
-}
+# Create
 
-var status_class : Dictionary = {
-	##Normal
-	"status_fear" : component_ability.status_fear,
-	"status_burn" : component_ability.status_burn,
-	"status_freeze" : component_ability.status_freeze,
-	##Tethers
-	"status_heartstitch" : component_ability.status_heartstitch,
-	##Passives
-	"status_immunity" : component_ability.status_immunity, #Immune to specific aspect
-	"status_weakness" : component_ability.status_weakness, #Weak to specific aspect
-	"status_ethereal" : component_ability.status_ethereal, #Immune to all but one aspect
-	"status_disabled" : component_ability.status_disabled, #Immune to everything and disabled
-	"status_swarm" : component_ability.status_swarm, #Damage based on how many of it are on field
-	"status_regrowth" : component_ability.status_regrowth, #Doesn't die unless its kind are all dead aswell
-	"status_thorns" : component_ability.status_thorns, #Reflects damage on direct hit
-}
-
-var item_class : Dictionary = {
-	"item_nectar" : component_inventory.item_nectar,
-	"item_dewdrop" : component_inventory.item_dewdrop
-}
-
-var item_category : Dictionary = {
-	"GEAR" : {
-		"TITLE" : "Gear",
-		"ICON" : "⌘",
-		"COLOR" : Color("4acacf"),
-		"TAB" : 0
-	},
-	"DREAMKIN" : {
-		"TITLE" : "Dreamkin",
-		"ICON" : "❖",
-		"COLOR" : Color("4acacf"),
-		"TAB" : 1
-	},
-	"ITEMS" : {
-		"TITLE" : "Items",
-		"ICON" : "⍟",
-		"COLOR" : Color("4acacf"),
-		"TAB" : 2
-	},
-	"KEYS" : {
-		"TITLE" : "Keys",
-		"ICON" : "🝰",
-		"COLOR" : Color("4acacf"),
-		"TAB" : 3
-	}
-}
+func create_text_particle(anchor : Node, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, delay : float = 0.0, size : int = 60):
+	if delay > 0:
+		await get_tree().create_timer(delay).timeout
+	
+	##Creation stuff
+	var inst = Glossary.text.get(type).instantiate()
+	var particle_label = inst.get_node("%particle_label")
+	particle_label.text = text
+	particle_label.label_settings.font_color = color
+	particle_label.label_settings.font_size = size
+	
+	##Anchor stuff
+	anchor.add_child(inst)
+	#inst.global_position = anchor.global_position
+	##Adjustments
+	#inst.global_position.z += sign(Global.camera.global_position.z - inst.global_position.z) #Nudges us a bit toward the camera so we won't be behind the object
+	
+	return particle_label
 
 func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
 	
@@ -226,11 +168,27 @@ func create_options_list(properties : Dictionary, parent : Node, callable_source
 	elif battle_or_world_options.size() == 0:
 		push_error("Options Empty - ",properties)
 
-enum options_result {
-	FINISHED,
-	NEXT,
-	ERROR
-}
+# Misc
+
+func text_style_color_html(type_dict : Dictionary):
+	return str("[color=",type_dict.COLOR.to_html(),"]")
+
+func get_unique_id():
+	unique_id += 1
+	return unique_id
+
+func get_nested_value(dict: Dictionary, path: Array) -> Variant:
+	var current = dict
+	for key in path:
+		if current.has(key):
+			current = current[key]
+		else:
+			return null  # Path is invalid
+	return current
+
+func free_children(parent : Node):
+	for child in parent.get_children():
+			child.queue_free()
 
 func evaluate_option_properties(properties : Dictionary, parent : Node, callable_source : Node, pressed_signal : String, battle_or_world : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
 	var item = properties.item
@@ -332,9 +290,28 @@ func evaluate_option_properties(properties : Dictionary, parent : Node, callable
 		push_error("Invalid path for ", item, " - ", option_path, " - ",choices_path)
 		return options_result.ERROR
 
-const sprite : Dictionary = {
-	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
-}
+## Used to find an entity in our glossary, with optional transform
+func find_entity(glossary : String, set_prefix = null):
+	var index = glossary
+	if set_prefix:
+		index = convert_entity_glossary(glossary,set_prefix)
+	return entity[index]
+
+
+## --- Dictionaries --- ##
+
+# Scenes
+
+const particle : Dictionary = {
+	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
+	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn"),
+	"freeze" : preload("res://Art/particles/scenes/particle_freeze.tscn"),
+	"disabled" : preload("res://Art/particles/scenes/particle_disabled.tscn")
+	}
+
+const text : Dictionary = {
+	"float_away" : preload("res://Art/particles/scenes/particle_text_damage.tscn")
+	}
 
 const entity : Dictionary = {
 	
@@ -357,56 +334,98 @@ const entity : Dictionary = {
 	"battle_entity_enemy_gloam" : preload("res://Scenes/characters/battle_entity_enemy_gloam.tscn"),
 	}
 
-## Used to find an entity in our glossary, with optional transform
-func find_entity(glossary : String, set_prefix = null):
-	var index = glossary
-	if set_prefix:
-		index = entity_transform(glossary,set_prefix)
-	return entity[index]
-
-## Used to transform from battle to entity or vice versa
-func entity_transform(glossary_name : String, set_prefix : String):
-	var result = ""
-	if "world" in glossary_name:
-		result = glossary_name.replace("world",set_prefix)
-	elif "battle" in glossary_name:
-		result = glossary_name.replace("battle",set_prefix)
-	else:
-		push_error("Unable to find transformation for ",glossary_name)
-		
-	return result
-	
-const particle : Dictionary = {
-	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
-	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn"),
-	"freeze" : preload("res://Art/particles/scenes/particle_freeze.tscn"),
-	"disabled" : preload("res://Art/particles/scenes/particle_disabled.tscn")
+const sprite : Dictionary = {
+	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
 	}
-
-const text : Dictionary = {
-	"float_away" : preload("res://Art/particles/scenes/particle_text_damage.tscn")
-	}
-
-func create_text_particle(anchor : Node, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, delay : float = 0.0, size : int = 60):
-	if delay > 0:
-		await get_tree().create_timer(delay).timeout
-	
-	##Creation stuff
-	var inst = Glossary.text.get(type).instantiate()
-	var particle_label = inst.get_node("%particle_label")
-	particle_label.text = text
-	particle_label.label_settings.font_color = color
-	particle_label.label_settings.font_size = size
-	
-	##Anchor stuff
-	anchor.add_child(inst)
-	#inst.global_position = anchor.global_position
-	##Adjustments
-	#inst.global_position.z += sign(Global.camera.global_position.z - inst.global_position.z) #Nudges us a bit toward the camera so we won't be behind the object
-	
-	return particle_label
 
 const ui : Dictionary = {
 	"heartstitch" : preload("res://UI/status_effect_heartstitch.tscn"),
 	"empty_properties_button" : preload("res://UI/empty_properties_button.tscn")
+	}
+
+# Classes
+
+var ability_class : Dictionary = {
+	"ability_tackle" : component_ability.ability_tackle,
+	"ability_headbutt" : component_ability.ability_headbutt,
+	"ability_solar_flare" : component_ability.ability_solar_flare,
+	"ability_heartstitch" : component_ability.ability_heartstitch,
+	"ability_switchstitch" : component_ability.ability_switchstitch,
+	"ability_spook" : component_ability.ability_spook,
+	"ability_frigid_core" : component_ability.ability_frigid_core,
+	}
+
+var status_class : Dictionary = {
+	##Normal
+	"status_fear" : component_ability.status_fear,
+	"status_burn" : component_ability.status_burn,
+	"status_freeze" : component_ability.status_freeze,
+	##Tethers
+	"status_heartstitch" : component_ability.status_heartstitch,
+	##Passives
+	"status_immunity" : component_ability.status_immunity, #Immune to specific aspect
+	"status_weakness" : component_ability.status_weakness, #Weak to specific aspect
+	"status_ethereal" : component_ability.status_ethereal, #Immune to all but one aspect
+	"status_disabled" : component_ability.status_disabled, #Immune to everything and disabled
+	"status_swarm" : component_ability.status_swarm, #Damage based on how many of it are on field
+	"status_regrowth" : component_ability.status_regrowth, #Doesn't die unless its kind are all dead aswell
+	"status_thorns" : component_ability.status_thorns, #Reflects damage on direct hit
+	}
+
+var item_class : Dictionary = {
+	"item_nectar" : component_inventory.item_nectar,
+	"item_dewdrop" : component_inventory.item_dewdrop
+	}
+
+# Misc
+
+## Used for unique IDs for each entity we spawn
+# Unique to each playthrough and ascends to inf
+var unique_id : int = randi_range(0,50)
+
+var text_style : Dictionary = {
+	"FLAVOR" :{
+		"COLOR" : Color("5c5c5c")
+	},
+	"HEALTH" :{
+		"ICON" : "♥",
+		"COLOR" : Color("f4085b")
+	},
+	"VIS" :{
+		"ICON" : "◆",
+		"COLOR" : Color("078ef5")
+	},
+	}
+
+var item_category : Dictionary = {
+	"GEAR" : {
+		"TITLE" : "Gear",
+		"ICON" : "⌘",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 0
+	},
+	"DREAMKIN" : {
+		"TITLE" : "Dreamkin",
+		"ICON" : "❖",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 1
+	},
+	"ITEMS" : {
+		"TITLE" : "Items",
+		"ICON" : "⍟",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 2
+	},
+	"KEYS" : {
+		"TITLE" : "Keys",
+		"ICON" : "🝰",
+		"COLOR" : Color("4acacf"),
+		"TAB" : 3
+	}
+	}
+
+enum options_result {
+	FINISHED,
+	NEXT,
+	ERROR
 }

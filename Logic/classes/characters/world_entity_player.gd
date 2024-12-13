@@ -115,8 +115,8 @@ func _physics_process(delta: float) -> void:
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	#
-	#if Input.is_action_just_pressed("num0"):
-		#Battle.battle_initialize("enemy_gloam enemy_gloam")
+	if Input.is_action_just_pressed("num0"):
+		Battle.battle_initialize("enemy_gloam enemy_gloam enemy_gloam")
 	
 	#if Input.is_action_just_pressed("num2"):
 		#SceneManager.transition_to("res://Levels/dream_garden.tscn")

@@ -50,7 +50,6 @@ void fog() {
 
 }
 "
-graph_offset = Vector2(-1276.85, -187.313)
 mode = 4
 nodes/fog/2/node = SubResource("VisualShaderNodeTexture3D_p6r6s")
 nodes/fog/2/position = Vector2(40, 60)

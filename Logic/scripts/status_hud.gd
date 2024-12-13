@@ -21,12 +21,13 @@ func reset_hud_timer():
 
 func _physics_process(delta: float) -> void:
 	
-	if hud_timer > 0:
-		hud_timer = clamp(hud_timer - 1 * delta,0,max_hud_timer)
-		if !visible:
-			show()
-	elif visible:
-		hide()
+	#if !visible:
+		#if hud_timer > 0:
+			#hud_timer = clamp(hud_timer - 1 * delta,0,max_hud_timer)
+			#if !visible:
+				#show()
+		#elif visible:
+			#hide()
 	
 	if my_component_health:
 		health.text = str("♥ ",my_component_health.health,"/",my_component_health.max_health)

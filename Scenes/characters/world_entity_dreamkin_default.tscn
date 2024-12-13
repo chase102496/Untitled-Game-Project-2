@@ -1,6 +1,6 @@
 [gd_scene load_steps=65 format=3 uid="uid://dqy8clwwlvjcb"]
 
-[ext_resource type="Script" path="res://Logic/classes/world_entity_dreamkin_default.gd" id="1_5mjex"]
+[ext_resource type="Script" path="res://Logic/classes/characters/world_entity_dreamkin_default.gd" id="1_5mjex"]
 [ext_resource type="PackedScene" uid="uid://0lvjbqc8s78" path="res://test_junk/debug_3d_text_world.tscn" id="2_yk86w"]
 [ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="3_l8ns7"]
 [ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="3_o5u3o"]

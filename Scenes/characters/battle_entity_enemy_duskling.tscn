@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://cj2ogbore3rtv"]
 
 [ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://Scenes/characters/battle_entity_enemy_default.tscn" id="1_0nelj"]
-[ext_resource type="Script" path="res://Logic/classes/battle_entity_enemy_duskling.gd" id="2_rrxm4"]
+[ext_resource type="Script" path="res://Logic/classes/characters/battle_entity_enemy_duskling.gd" id="2_rrxm4"]
 [ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="3_o7us8"]
 [ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="4_n4k8a"]
 [ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="5_bhwht"]
