@@ -1,9 +1,11 @@
 ## Drag this onto a single node and then specify which values you want to toggle for activated and deactived in export
 class_name component_interact_switch_reciever
-extends FogVolume
+extends Node3D
 
 @export var my_component_interact_switch_controller : Node3D
+@export var my_owner : Node = self
 
+@export_range(0.0,10.0,0.5) var tween_duration : float = 1.0
 @export var dict_activated : Dictionary
 @export var dict_deactivated : Dictionary
 
@@ -51,11 +53,9 @@ func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duratio
 			print("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
 
 func _on_activated() -> void: #TODO tweening val
-	apply_changes_with_tween(self,dict_activated,10)
-
+	if !dict_activated.is_empty():
+		apply_changes_with_tween(my_owner,dict_activated,tween_duration)
 
 func _on_deactivated() -> void:
-	pass
-	#for key in dict_deactivated:
-		#var value = dict_deactivated[key]
-		#set(key,value)
+	if !dict_deactivated.is_empty():
+		apply_changes_with_tween(my_owner,dict_deactivated,tween_duration)
