@@ -1,17 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://qw7lqdc5swse"]
 
-[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact.tscn" id="1_bl4ju"]
+[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="1_bl4ju"]
 [ext_resource type="Script" path="res://Logic/classes/interactables/world_entity_interact.gd" id="1_rtk1e"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_qoyj8"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_4bjl4"]
 
-[node name="world_entity_interact" type="Node3D" node_paths=PackedStringArray("my_interact_component")]
+[node name="world_entity_interact" type="Node3D" node_paths=PackedStringArray("my_component_interact_reciever")]
 script = ExtResource("1_rtk1e")
-my_interact_component = NodePath("Components_3D/component_interact")
+my_component_interact_reciever = NodePath("Components_3D/component_interact_reciever")
 
 [node name="Components_3D" type="Node3D" parent="."]
 
-[node name="component_interact" parent="Components_3D" node_paths=PackedStringArray("my_owner") groups=["equipment_interact_purge"] instance=ExtResource("1_bl4ju")]
+[node name="component_interact_reciever" parent="Components_3D" node_paths=PackedStringArray("my_owner") instance=ExtResource("1_bl4ju")]
 my_owner = NodePath("../..")
 
 [node name="StateChart" type="Node" parent="."]

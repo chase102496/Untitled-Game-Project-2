@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://r6lxipom563d"]
+
+[ext_resource type="Script" path="res://Logic/components/component_interaction.gd" id="1_fuuk2"]
+[ext_resource type="PackedScene" uid="uid://djmsn78o142su" path="res://Logic/components/component_interact_controller.tscn" id="2_4bnyf"]
+
+[node name="component_interaction" type="Node3D" node_paths=PackedStringArray("active_interact_area")]
+script = ExtResource("1_fuuk2")
+active_interact_area = NodePath("component_interact_controller")
+
+[node name="component_interact_controller" parent="." instance=ExtResource("2_4bnyf")]

@@ -1,7 +1,7 @@
 class_name world_entity_interact
 extends Node3D
 
-@export var my_interact_component : Area3D
+@export var my_component_interact_reciever : component_interact_reciever
 @onready var state_chart : StateChart = $StateChart
 
 var is_transitioning : bool = false
@@ -36,7 +36,7 @@ func my_state_transition(old_state_name : String, new_state_name : String, ignor
 			update_collision(false)
 			
 			#Wait for exit signal from player to transfer to us
-			await my_interact_component.exit
+			await my_component_interact_reciever.exit
 			
 			#Disconnect
 			update_signals(old_state_name, false)
@@ -48,7 +48,7 @@ func my_state_transition(old_state_name : String, new_state_name : String, ignor
 			update_collision(true)
 			
 			#Wait for signal from player
-			await my_interact_component.enter
+			await my_component_interact_reciever.enter
 			
 			#Transfer to new state
 			state_chart.send_event(str("on_",new_state_name))
@@ -61,15 +61,15 @@ func my_state_transition(old_state_name : String, new_state_name : String, ignor
 ## Wrapper for updating all signals
 func update_signals(state_name : String, toggle : bool):
 	if toggle:
-		my_interact_component.enter.connect(Callable(self,str("_on_target_entered_",state_name)))
-		my_interact_component.exit.connect(Callable(self,str("_on_target_exited_",state_name)))
-		my_interact_component.interact.connect(Callable(self,str("_on_target_interact_",state_name)))
+		my_component_interact_reciever.enter.connect(Callable(self,str("_on_target_entered_",state_name)))
+		my_component_interact_reciever.exit.connect(Callable(self,str("_on_target_exited_",state_name)))
+		my_component_interact_reciever.interact.connect(Callable(self,str("_on_target_interact_",state_name)))
 	else:
-		my_interact_component.enter.disconnect(Callable(self,str("_on_target_entered_",state_name)))
-		my_interact_component.exit.disconnect(Callable(self,str("_on_target_exited_",state_name)))
-		my_interact_component.interact.disconnect(Callable(self,str("_on_target_interact_",state_name)))
+		my_component_interact_reciever.enter.disconnect(Callable(self,str("_on_target_entered_",state_name)))
+		my_component_interact_reciever.exit.disconnect(Callable(self,str("_on_target_exited_",state_name)))
+		my_component_interact_reciever.interact.disconnect(Callable(self,str("_on_target_interact_",state_name)))
 
 ## Wrapper for updating area collision
 func update_collision(toggle : bool):
-	my_interact_component.set_collision_mask_value(5,toggle)
-	my_interact_component.set_collision_layer_value(5,toggle)
+	my_component_interact_reciever.set_collision_mask_value(5,toggle)
+	my_component_interact_reciever.set_collision_layer_value(5,toggle)

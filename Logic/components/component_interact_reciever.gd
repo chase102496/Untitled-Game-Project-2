@@ -7,7 +7,7 @@
 # Set export val to owner and point to this in host to connect to signals
 # Enable global GROUPS so it is detectable by other relevant objects
 # Set actions for doing stuff in callables
-# DRAG > EXPORT VALS > GROUPS > LOGIC
+# ATTACH > EXPORT VAL POINTERS > GROUPS > LOGIC
 
 ## Examples
 # Attach this to a chest that is openable when the player has a key in their inventory.
@@ -21,7 +21,7 @@
 
 # Attach this to an NPC to trigger their talk dialogue by connecting the NPC to the interact signal
 
-class_name component_interact
+class_name component_interact_reciever
 extends Area3D
 
 signal enter(source : Node)

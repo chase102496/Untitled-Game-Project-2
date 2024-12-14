@@ -1,6 +1,9 @@
 class_name component_input_controller_manual
 extends component_input_controller_default
 
+@export var my_component_interaction : component_interaction
+@export var my_component_equipment : component_equipment
+
 var jump_damper_cooldown : bool = false
 var jump_queued : bool = false
 var coyote_time_queued : bool
@@ -38,7 +41,16 @@ func _on_state_entered_disabled() -> void:
 ## World
 
 func _on_state_physics_processing_world(_delta: float) -> void:
-	pass
+	if Input.is_action_just_pressed("interact"):
+		my_component_interaction.interact()
+
+	if Input.is_action_just_pressed("equipment_use"):
+		my_component_equipment.ability_use()
+		
+	if Input.is_action_just_pressed("equipment_switch"):
+		my_component_equipment.ability_switch_active_toggle()
+
+## TODO ADD EQUIPMENT INTERACTION AND STUFF HERE
 
 # Grounded
 

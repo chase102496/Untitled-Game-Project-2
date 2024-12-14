@@ -7,6 +7,7 @@
 
 [node name="world_entity_interact_switch_controller" instance=ExtResource("1_854y3")]
 script = ExtResource("2_p0xor")
+one_way = false
 
 [node name="Main" parent="StateChart" index="0"]
 initial_state = NodePath("Deactivated")

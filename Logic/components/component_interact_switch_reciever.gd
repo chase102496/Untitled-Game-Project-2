@@ -1,8 +1,8 @@
-## Drag this onto a single node and then specify which values you want to toggle for activated and deactived in export
+## Attach this component and then specify which values you want to toggle for activated and deactivated in export
 class_name component_interact_switch_reciever
 extends Node3D
 
-@export var my_component_interact_switch_controller : Node3D
+@export var my_world_entity_interact_switch_controller : world_entity_interact_switch_controller
 @export var my_owner : Node = self
 
 @export_range(0.0,10.0,0.5) var tween_duration : float = 1.0
@@ -10,11 +10,10 @@ extends Node3D
 @export var dict_deactivated : Dictionary
 
 func _ready() -> void:
-	my_component_interact_switch_controller.activated.connect(_on_activated)
-	my_component_interact_switch_controller.deactivated.connect(_on_deactivated)
+	my_world_entity_interact_switch_controller.activated.connect(_on_activated)
+	my_world_entity_interact_switch_controller.deactivated.connect(_on_deactivated)
 
 func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duration : float = 1.0) -> void:
-	var tween = create_tween()  # Create a new tween for this operation
 	for key in changes:
 		var value = changes[key]
 		
@@ -22,18 +21,20 @@ func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duratio
 		var path = key.split(".")
 		var current = target
 		for i in range(path.size() - 1):
-			if not current.get(path[i]):
+			if path[i] not in current:
 				print("Error: '%s' does not exist on '%s'" % [path[i], current.name])
 				return
 			current = current.get(path[i])
 		
 		# Set the final property or tween it
 		var final_key = path[-1]
-		if current.get(final_key):
+		
+		if final_key in current:
 			var current_value = current.get(final_key)
 			
 			# Tween if the value is tweenable
 			if typeof(current_value) in [TYPE_FLOAT, TYPE_VECTOR2, TYPE_VECTOR3, TYPE_COLOR]:
+				var tween = create_tween()
 				tween.tween_property(current, final_key, value, tween_duration)
 			else:
 				current.set(final_key, value)  # Direct set for non-tweenable values
@@ -44,6 +45,7 @@ func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duratio
 				
 				# Tween shader parameters if applicable
 				if typeof(current_value) in [TYPE_FLOAT, TYPE_VECTOR2, TYPE_VECTOR3, TYPE_COLOR]:
+					var tween = create_tween()
 					tween.tween_method(current.set_shader_parameter, [param_name, current_value], [param_name, value], tween_duration)
 				else:
 					current.set_shader_parameter(param_name, value)  # Direct set for non-tweenable
@@ -52,7 +54,7 @@ func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duratio
 		else:
 			print("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
 
-func _on_activated() -> void: #TODO tweening val
+func _on_activated() -> void:
 	if !dict_activated.is_empty():
 		apply_changes_with_tween(my_owner,dict_activated,tween_duration)
 

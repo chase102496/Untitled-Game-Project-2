@@ -2,11 +2,11 @@ class_name component_equipment
 extends Node3D
 
 @export var gloam_manager : Node3D
-@onready var active_interact_area : Area3D  = $active_interact_area
-@onready var active_interact_area_shape : CollisionShape3D  = $active_interact_area/active_interact_area_shape
+
+@export var active_interact_area : component_interact_controller
 
 @onready var dreamstitch : ability_dreamstitch# = ability_dreamstitch.new(owner)
-@onready var loomlight : ability_loomlight = ability_loomlight.new(owner)
+@onready var loomlight : ability_loomlight = ability_purge.new(owner)
 @onready var active : ability = dreamstitch
 
 var active_interact_area_memory : Area3D
@@ -105,19 +105,20 @@ func ability_switch_active(new_ability : ability) -> void:
 ## What we form the basis of all of our world abilities off of.
 class ability:
 	
+	var title : String = "Empty Ability"
 	var caster : Node
-	var interact_group : String
+	var interact_groups : Array
 	var my_interact_area : Area3D
 	var my_interact_area_shape : CollisionShape3D
 	
 	var fx_instance : GPUParticles3D
 	
-	var their_interact_area : Area3D
+	var current_interaction_areas : Array = []
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
 		my_interact_area = caster.my_component_equipment.active_interact_area
-		my_interact_area_shape = caster.my_component_equipment.active_interact_area_shape
+		my_interact_area_shape = caster.my_component_equipment.active_interact_area.shape
 	
 	## --- FX --- ##
 	
@@ -139,30 +140,24 @@ class ability:
 	
 	# Checks if it should be interactable with our current ability
 	func verify_area(area : Area3D) -> bool:
-		if area.is_in_group(interact_group):
-			return true
+		if area.get("my_owner"):
+			if Global.inner_join(area.my_owner.get_groups(),interact_groups).size() > 0:
+				return true
 		return false
 	
 	func on_area_entered(area : Area3D) -> void:
 		if verify_area(area):
-			their_interact_area = area #The owner object of the area we collided with
-			if their_interact_area.has_signal("enter"):
-				their_interact_area.enter.emit(caster) #Let it know we entered
-				#fx
-				print("EQUIPMENT EVENT: ",self," entered ",area)
+			if area.has_signal("enter"):
+				area.enter.emit(caster) #Let it know we entered
+				current_interaction_areas.append(area) #Add it to our collider list
+				#print_debug("EQUIPMENT EVENT: ",title," entered ",area.name)
 	
 	func on_area_exited(area : Area3D) -> void:
 		if verify_area(area):
-			if their_interact_area.has_signal("exit"):
-				their_interact_area.exit.emit(caster) #Let it know we exited
-				their_interact_area = null #Remove reference to its owner
-				print("EQUIPMENT EVENT: ",self," exited ",area)
-	
-	func on_their_interact_area_state_entered():
-		on_area_entered(their_interact_area)
-	
-	func on_their_interact_area_state_exited():
-		on_area_exited(their_interact_area)
+			if area.has_signal("exit"):
+				area.exit.emit(caster) #Let it know we exited
+				current_interaction_areas.pop_at(current_interaction_areas.find(area))
+				#print_debug("EQUIPMENT EVENT: ",title," exited ",area.name)
 	
 	## --- Use --- ##
 	
@@ -173,11 +168,12 @@ class ability:
 	
 	func on_use() -> void:
 		if verify_use():
-			if their_interact_area and their_interact_area.has_signal("interact"):
-					their_interact_area.interact.emit(caster)
-					print("EQUIPMENT EVENT: ",self," interacted with ",their_interact_area)
+			for area in current_interaction_areas:
+				if area.has_signal("interact"):
+					area.interact.emit(caster)
+					#print_debug("EQUIPMENT EVENT: ",title," interacted with ",area.name)
 		else:
-			print_debug("Use verification failed for ",self)
+			print_debug("Use verification failed for ",title)
 	
 	## --- Equip --- ##
 	
@@ -201,6 +197,7 @@ class ability_dreamstitch:
 	
 	func _init(caster : Node) -> void:
 		super._init(caster)
+		title = "Empty Dreamstitch Ability"
 
 class ability_heartlink:
 	extends ability_dreamstitch
@@ -221,7 +218,8 @@ class ability_loomlight:
 	
 	func _init(caster : Node) -> void:
 		super._init(caster)
-		interact_group = "equipment_interact_purge"
+		title = "Empty Loomlight Ability"
+		interact_groups.append("interact_ability_loomlight")
 	
 	func tween_init() -> void:
 		if tween_light_strength:
@@ -263,6 +261,12 @@ class ability_loomlight:
 class ability_purge:
 	extends ability_loomlight
 	
+	func _init(caster : Node) -> void:
+		super._init(caster)
+		interact_groups.append("interact_ability_purge")
+		color = Color("ff0004")
+		title = "Purge"
+		
 	## - Equip events - ##
 	
 	## - Active events - ##

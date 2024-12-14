@@ -9,6 +9,7 @@ extends world_entity_default
 @export var my_component_inventory : component_inventory
 @export var my_component_respawn_handler : component_respawn_handler
 @export var my_component_equipment : component_equipment
+@export var my_component_interaction : component_interaction
 @export var my_inventory_gui : Control
 @export var gloam_manager : Node3D
 
@@ -94,11 +95,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("load"):
 		#my_component_party.summon(0,"world")
 		PlayerData.load_data_all()
-	
-	if Input.is_action_just_pressed("interact"):
-		my_component_equipment.ability_use()
-	if Input.is_action_just_pressed("interact_secondary"):
-		my_component_equipment.ability_switch_active_toggle()
 	
 	
 	#if Input.is_action_just_pressed("move_forward"):

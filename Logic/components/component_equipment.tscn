@@ -1,16 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://c20wjgqsafufi"]
 
 [ext_resource type="Script" path="res://Logic/components/component_equipment.gd" id="1_rohcw"]
+[ext_resource type="PackedScene" uid="uid://djmsn78o142su" path="res://Logic/components/component_interact_controller.tscn" id="2_b33l1"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_od2n4"]
-radius = 1.0
-
-[node name="component_equipment" type="Node3D"]
+[node name="component_equipment" type="Node3D" node_paths=PackedStringArray("active_interact_area")]
 script = ExtResource("1_rohcw")
+active_interact_area = NodePath("component_interact_controller")
 
-[node name="active_interact_area" type="Area3D" parent="."]
-collision_layer = 16
-collision_mask = 16
-
-[node name="active_interact_area_shape" type="CollisionShape3D" parent="active_interact_area"]
-shape = SubResource("SphereShape3D_od2n4")
+[node name="component_interact_controller" parent="." instance=ExtResource("2_b33l1")]

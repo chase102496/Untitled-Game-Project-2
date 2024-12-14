@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://djmsn78o142su"]
+
+[ext_resource type="Script" path="res://Logic/components/component_interact_controller.gd" id="1_ypa7y"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_al4cq"]
+radius = 1.0
+
+[node name="component_interact_controller" type="Area3D"]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("1_ypa7y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_al4cq")
