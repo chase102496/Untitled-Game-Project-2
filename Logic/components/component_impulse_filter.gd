@@ -1,0 +1,5 @@
+class_name component_impulse_filter
+extends component_impulse
+
+signal activated
+signal deactivated

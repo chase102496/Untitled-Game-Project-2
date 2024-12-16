@@ -5,4 +5,4 @@ extends Node3D
 func _ready() -> void:
 	body.set_collision_layer_value(1,true) #Player
 	body.set_collision_layer_value(2,true)	#Dreamkin
-	body.set_collision_layer_value(4,true) #Ghosting
+	body.set_collision_layer_value(9,true) #Ghosting

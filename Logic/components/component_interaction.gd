@@ -12,7 +12,7 @@ func _ready() -> void:
 	active_interact_area.area_exited.connect(_on_active_interact_area_exited)
 
 func verify(source : Node) -> bool:
-	if source.get("my_owner") and source.my_owner.is_in_group("interact_general"):
+	if source.is_in_group("interact_general"):
 		return true
 	else:
 		return false

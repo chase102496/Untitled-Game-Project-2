@@ -140,9 +140,8 @@ class ability:
 	
 	# Checks if it should be interactable with our current ability
 	func verify_area(area : Area3D) -> bool:
-		if area.get("my_owner"):
-			if Global.inner_join(area.my_owner.get_groups(),interact_groups).size() > 0:
-				return true
+		if Global.inner_join(area.get_groups(),interact_groups).size() > 0:
+			return true
 		return false
 	
 	func on_area_entered(area : Area3D) -> void:
@@ -207,8 +206,8 @@ class ability_loomlight:
 	extends ability
 	
 	var color : Color = Color("ffebdb") #Determines color of lantern
-	var size : float = 2.5 #Determines size of gloam cleared with lantern and also range of light in lantern
-	var light_strength : float = 2.5 #Determines brightness of lantern
+	var size : float = 2.2 #Determines size of gloam cleared with lantern and also range of light in lantern
+	var light_strength : float = 1 #Determines brightness of lantern
 	
 	var tween_light_strength : Tween
 	var tween_size : Tween
@@ -233,6 +232,7 @@ class ability_loomlight:
 	
 	func verify_unequip() -> bool:
 		if caster.gloam_manager.is_inside_gloam:
+			
 			return false
 		else:
 			return true
@@ -244,7 +244,7 @@ class ability_loomlight:
 		
 		tween_init()
 		tween_light_strength.tween_property(caster.gloam_manager.light,"light_energy",light_strength,1) #Visual light tween
-		tween_size.tween_property(caster.gloam_manager.gleam,"size",Vector3(size,size,size),1) #Visual gleam tween
+		tween_size.tween_property(caster.gloam_manager.my_fog,"size",Vector3(size,size,size),1) #Visual gleam tween
 		
 		caster.set_collision_layer_value(3,false) #Allows traversal through gloam
 		caster.set_collision_mask_value(3,false) #Allows traversal through gloam
@@ -252,8 +252,8 @@ class ability_loomlight:
 	## When we request to unequip
 	func on_unequip():
 		tween_init()
-		tween_light_strength.tween_property(caster.gloam_manager.light,"light_energy",0,1) #Visual light tween
-		tween_size.tween_property(caster.gloam_manager.gleam,"size",Vector3.ZERO,1) #Visual gleam tween
+		tween_light_strength.tween_property(caster.gloam_manager.light,"light_energy",0,0.5) #Visual light tween
+		tween_size.tween_property(caster.gloam_manager.my_fog,"size",Vector3.ZERO,1) #Visual gleam tween
 		
 		caster.set_collision_layer_value(3,true) #Disallows traversal through gloam
 		caster.set_collision_mask_value(3,true) #Disallows traversal through gloam
@@ -264,7 +264,7 @@ class ability_purge:
 	func _init(caster : Node) -> void:
 		super._init(caster)
 		interact_groups.append("interact_ability_purge")
-		color = Color("ff0004")
+		#color = Color("ff0004")
 		title = "Purge"
 		
 	## - Equip events - ##

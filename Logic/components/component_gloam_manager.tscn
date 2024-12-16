@@ -4,11 +4,13 @@
 
 [sub_resource type="FogMaterial" id="FogMaterial_vi120"]
 density = -1.0
+height_falloff = 0.2
+edge_fade = 0.2
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_h1yy2"]
 radius = 1.0
 
-[node name="gloam_manager" type="Node3D"]
+[node name="component_gloam_manager" type="Node3D"]
 script = ExtResource("1_x2mmc")
 
 [node name="FogVolume" type="FogVolume" parent="."]

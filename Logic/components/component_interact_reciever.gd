@@ -27,5 +27,3 @@ extends Area3D
 signal enter(source : Node)
 signal exit(source : Node)
 signal interact(source : Node)
-
-@export var my_owner : Node3D

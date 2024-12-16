@@ -1,0 +1,48 @@
+[gd_scene load_steps=11 format=3 uid="uid://bxdqarudkqkta"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_reciever_animation.gd" id="1_simjl"]
+[ext_resource type="Script" path="res://Logic/scripts/stupid_animation_tree.gd" id="2_5quka"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_txa6t"]
+animation = &"activated"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qbww3"]
+graph_offset = Vector2(-695.157, -42.709)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_txa6t")
+nodes/Animation/position = Vector2(-80, 120)
+node_connections = [&"output", 0, &"Animation"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xsfyo"]
+animation = &"deactivated"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_waugq"]
+graph_offset = Vector2(-498, 19)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_xsfyo")
+nodes/Animation/position = Vector2(-20, 140)
+node_connections = [&"output", 0, &"Animation"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wje08"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wcm37"]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3h46t"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5n3wr"]
+states/activated/node = SubResource("AnimationNodeBlendTree_qbww3")
+states/activated/position = Vector2(639, 100)
+states/deactivated/node = SubResource("AnimationNodeBlendTree_waugq")
+states/deactivated/position = Vector2(442, 100)
+transitions = ["activated", "deactivated", SubResource("AnimationNodeStateMachineTransition_wje08"), "deactivated", "activated", SubResource("AnimationNodeStateMachineTransition_wcm37"), "Start", "deactivated", SubResource("AnimationNodeStateMachineTransition_3h46t")]
+graph_offset = Vector2(-396, -65)
+
+[node name="component_impulse_reciever_animation" type="Node" node_paths=PackedStringArray("animation_tree")]
+script = ExtResource("1_simjl")
+animation_tree = NodePath("AnimationTree")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+active = false
+tree_root = SubResource("AnimationNodeStateMachine_5n3wr")
+script = ExtResource("2_5quka")

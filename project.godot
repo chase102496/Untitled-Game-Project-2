@@ -254,9 +254,10 @@ equipment_switch={
 
 3d_physics/layer_1="PLAYER"
 3d_physics/layer_2="DREAMKIN"
-3d_physics/layer_3="GLOAM"
-3d_physics/layer_4="CAMERA_GHOSTING"
+3d_physics/layer_3="GLOAM_SOFT"
+3d_physics/layer_4="GLOAM_HARD"
 3d_physics/layer_5="INTERACTABLE"
+3d_physics/layer_9="CAMERA_GHOSTING"
 
 [phantom_camera]
 

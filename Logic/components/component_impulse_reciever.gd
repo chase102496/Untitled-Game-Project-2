@@ -1,0 +1,2 @@
+class_name component_impulse_reciever
+extends Node

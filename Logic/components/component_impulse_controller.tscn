@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://qw7lqdc5swse"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_controller.gd" id="1_rtk1e"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_qoyj8"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_4bjl4"]
+
+[node name="component_impulse_controller" type="Node3D" node_paths=PackedStringArray("my_component_interact_reciever")]
+script = ExtResource("1_rtk1e")
+my_component_interact_reciever = NodePath("")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_qoyj8")
+
+[node name="Main" type="Node" parent="StateChart"]
+script = ExtResource("3_4bjl4")

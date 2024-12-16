@@ -1,5 +1,5 @@
-class_name world_entity_interact_switch_controller
-extends world_entity_interact
+class_name component_impulse_controller_switch
+extends component_impulse_controller
 
 signal activated
 signal deactivated
@@ -7,7 +7,19 @@ signal deactivated
 ## Once activated, it stays in the activated state and ignores all further signals
 @export var one_way : bool = false
 
+enum type {
+	SWITCH,
+	PROXIMITY
+}
+
+@export var type_selection : type = type.SWITCH
+
+@onready var debug_name : String = get_parent().get_parent().name
+
 func _ready() -> void:
+	
+	#Import our parent ready func
+	super._ready()
 	
 	#Initial state
 	update_signals("deactivated", true)
@@ -26,16 +38,20 @@ func on_state_entered_deactivated() -> void:
 #
 
 func _on_target_entered_deactivated(source : Node) -> void:
-	#print_debug("_on_target_entered_deactivated")
-	pass
+	print_debug("_on_target_entered_deactivated ",debug_name)
+	
+	if type_selection == type.PROXIMITY:
+		my_state_transition("deactivated","activated",true)
 
 func _on_target_exited_deactivated(source : Node) -> void:
-	#print_debug("_on_target_exited_deactivated")
+	print_debug("_on_target_exited_deactivated ",debug_name)
 	pass
 
 func _on_target_interact_deactivated(source : Node) -> void:
-	#print_debug("_on_target_interact_deactivated")
-	my_state_transition("deactivated","activated")
+	print_debug("_on_target_interact_deactivated ",debug_name)
+	
+	if type_selection == type.SWITCH:
+		my_state_transition("deactivated","activated")
 
 #
 
@@ -53,16 +69,20 @@ func on_state_entered_activated() -> void:
 #
 
 func _on_target_entered_activated(source : Node) -> void:
-	#print_debug("_on_target_entered_activated")
+	print_debug("_on_target_entered_activated ",debug_name)
 	pass
 
 func _on_target_exited_activated(source : Node) -> void:
-	#print_debug("_on_target_exited_activated")
-	pass
+	print_debug("_on_target_exited_activated ",debug_name)
+	
+	if type_selection == type.PROXIMITY:
+		my_state_transition("activated","deactivated",true)
 
 func _on_target_interact_activated(source : Node) -> void:
-	#print_debug("_on_target_interact_activated")
-	my_state_transition("activated","deactivated")
+	print_debug("_on_target_interact_activated ",debug_name)
+	
+	if type_selection == type.SWITCH:
+		my_state_transition("activated","deactivated")
 
 #
 

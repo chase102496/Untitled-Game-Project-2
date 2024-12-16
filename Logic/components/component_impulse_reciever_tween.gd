@@ -1,17 +1,21 @@
 ## Attach this component and then specify which values you want to toggle for activated and deactivated in export
-class_name component_interact_switch_reciever
-extends Node3D
+class_name component_impulse_reciever_tween
+extends component_impulse_reciever
 
-@export var my_world_entity_interact_switch_controller : world_entity_interact_switch_controller
-@export var my_owner : Node = self
+## This is where we recieve our activated and deactivated signals
+@export var my_impulse : component_impulse
+
+## This is what we change the variables of when a signal is recieved
+@export var my_target : Node = self
 
 @export_range(0.0,10.0,0.5) var tween_duration : float = 1.0
 @export var dict_activated : Dictionary
 @export var dict_deactivated : Dictionary
 
 func _ready() -> void:
-	my_world_entity_interact_switch_controller.activated.connect(_on_activated)
-	my_world_entity_interact_switch_controller.deactivated.connect(_on_deactivated)
+	if my_impulse:
+		my_impulse.activated.connect(_on_activated)
+		my_impulse.deactivated.connect(_on_deactivated)
 
 func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duration : float = 1.0) -> void:
 	for key in changes:
@@ -56,8 +60,8 @@ func apply_changes_with_tween(target: Object, changes: Dictionary, tween_duratio
 
 func _on_activated() -> void:
 	if !dict_activated.is_empty():
-		apply_changes_with_tween(my_owner,dict_activated,tween_duration)
+		apply_changes_with_tween(my_target,dict_activated,tween_duration)
 
 func _on_deactivated() -> void:
 	if !dict_deactivated.is_empty():
-		apply_changes_with_tween(my_owner,dict_deactivated,tween_duration)
+		apply_changes_with_tween(my_target,dict_deactivated,tween_duration)
