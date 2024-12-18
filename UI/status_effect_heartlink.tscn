@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://byr7flhl4my0u"]
 
-[ext_resource type="Texture2D" uid="uid://bmfa0717lsdh4" path="res://Art/sprites/Hearts/Heartstitch.PNG" id="1_3368s"]
+[ext_resource type="Texture2D" uid="uid://bmfa0717lsdh4" path="res://Art/sprites/Hearts/Heartlink.PNG" id="1_3368s"]
 [ext_resource type="Texture2D" uid="uid://bebepy1pcroi6" path="res://Art/sprites/Hearts/Heartstitch_Inverted.PNG" id="2_06qqj"]
 
 [node name="TextureButton" type="TextureButton"]

@@ -1361,6 +1361,9 @@ physics_interpolation_mode = 1
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_xxqv0")
+alignment = "FRIENDS"
+classification = "PLAYER"
+spacing = null
 my_component_movement_controller = NodePath("Components/component_movement_controller")
 my_component_input_controller = NodePath("Components/component_input_controller_manual")
 my_component_party = NodePath("Components/component_party")
@@ -1377,8 +1380,6 @@ collider = NodePath("CollisionShape3D")
 my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
-alignment = "FRIENDS"
-classification = "PLAYER"
 
 [node name="Inventory_GUI" parent="." node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("2_de5hk")]
 my_component_party = NodePath("../Components/component_party")

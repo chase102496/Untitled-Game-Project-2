@@ -5,6 +5,27 @@
 class_name StateChart 
 extends Node
 
+
+## HACK THIS IS MY HACK CODE NOT THE PLUGIN
+func get_current_state(full_path : bool = false, full_path_result : String = "", root : Node = self):
+	if root.get_child_count() > 0:
+		for i in root.get_child_count():
+			var child = root.get_child(i)
+			if child.get("active") and child.active: #If it's an active State Chart node
+				#We get midway through the loop and find a child to pass to
+				return get_current_state(full_path, full_path_result + "/" + child.name, child)
+		
+		#We get through the loop and have no children to pass to
+		if full_path:
+			return full_path_result #Full path keeps capitalization
+		else:
+			return root.name.to_lower()
+	else: # If we have no children, we're the innermost active state
+		if full_path:
+			return full_path_result #Full path keeps capitalization
+		else:
+			return root.name.to_lower()
+
 ## The the remote debugger
 const DebuggerRemote = preload("utilities/editor_debugger/editor_debugger_remote.gd")
 

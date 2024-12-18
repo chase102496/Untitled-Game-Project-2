@@ -320,22 +320,22 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 
 # TETHER
 
-class status_heartstitch:
+class status_heartlink:
 	extends status_template_default
 	
 	var partners : Array
 	
 	func _init(host : Node,partners : Array,duration : int) -> void:
-		id = "status_heartstitch"
-		title = "Heartstitch"
+		id = "status_heartlink"
+		title = "Heartlink"
 		description = "This target is sharing damage with another"
-		self.host = host #who is the initial target of the stitch
+		self.host = host #who is the initial target of the link
 		self.partners = partners #who is paired to the host
 		self.duration = duration
 		behavior = Battle.status_behavior.RESET
 		category = Battle.status_category.TETHER
 	
-	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartstitch
+	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartlink
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
 			for i in len(partners):
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
@@ -343,7 +343,7 @@ class status_heartstitch:
 					print_debug(partners[i].name," took ",amount," points of mirror damage!")
 	
 	func fx_add():
-		fx = Glossary.ui.heartstitch.instantiate()
+		fx = Glossary.ui.heartlink.instantiate()
 		host.animations.status_hud.grid.add_child(fx)
 	
 	func fx_remove():
@@ -887,7 +887,7 @@ class ability_headbutt: #Scales with damage multiplier
 		print_debug("It did ", calc_damage, " damage!")
 		target.my_component_health.change(-calc_damage)
 
-class ability_heartstitch:
+class ability_heartlink:
 	extends ability_template_default
 	
 	func get_data():
@@ -897,8 +897,8 @@ class ability_heartstitch:
 
 	func _init(caster : Node) -> void:
 		#Default changes
-		id = "ability_heartstitch"
-		title = "Heart-stitch"
+		id = "ability_heartlink"
+		title = "Heartlink"
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		self.caster = caster
 		target_selector = Battle.target_selector.SINGLE_RIGHT
@@ -913,7 +913,7 @@ class ability_heartstitch:
 		for i in len(old_targets): #remove instances from old targets
 			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
 				var teth = old_targets[i].my_component_ability.my_status.TETHER
-				if teth and teth is status_heartstitch: #If we find they still have our old buff
+				if teth and teth is status_heartlink: #If we find they still have our old buff
 					old_targets[i].my_component_ability.my_status.remove(old_targets[i].my_component_ability.my_status.TETHER)
 		old_targets = targets
 	
@@ -925,7 +925,7 @@ class ability_heartstitch:
 			
 			##Verification for needing actual stitch
 			if targets.size() >= 2:
-				target.my_component_ability.my_status.add(status_heartstitch.new(target,targets,skillcheck_modifier*2))
+				target.my_component_ability.my_status.add(status_heartlink.new(target,targets,skillcheck_modifier*2))
 			else:
 				print_debug("No valid target to stitch to - ",targets)
 	

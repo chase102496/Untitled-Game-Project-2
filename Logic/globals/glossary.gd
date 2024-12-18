@@ -339,7 +339,7 @@ const sprite : Dictionary = {
 	}
 
 const ui : Dictionary = {
-	"heartstitch" : preload("res://UI/status_effect_heartstitch.tscn"),
+	"heartlink" : preload("res://UI/status_effect_heartlink.tscn"),
 	"empty_properties_button" : preload("res://UI/empty_properties_button.tscn")
 	}
 
@@ -349,7 +349,7 @@ var ability_class : Dictionary = {
 	"ability_tackle" : component_ability.ability_tackle,
 	"ability_headbutt" : component_ability.ability_headbutt,
 	"ability_solar_flare" : component_ability.ability_solar_flare,
-	"ability_heartstitch" : component_ability.ability_heartstitch,
+	"ability_heartlink" : component_ability.ability_heartlink,
 	"ability_switchstitch" : component_ability.ability_switchstitch,
 	"ability_spook" : component_ability.ability_spook,
 	"ability_frigid_core" : component_ability.ability_frigid_core,
@@ -361,7 +361,7 @@ var status_class : Dictionary = {
 	"status_burn" : component_ability.status_burn,
 	"status_freeze" : component_ability.status_freeze,
 	##Tethers
-	"status_heartstitch" : component_ability.status_heartstitch,
+	"status_heartlink" : component_ability.status_heartlink,
 	##Passives
 	"status_immunity" : component_ability.status_immunity, #Immune to specific aspect
 	"status_weakness" : component_ability.status_weakness, #Weak to specific aspect

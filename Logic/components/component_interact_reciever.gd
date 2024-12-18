@@ -27,3 +27,8 @@ extends Area3D
 signal enter(source : Node)
 signal exit(source : Node)
 signal interact(source : Node)
+signal heartlink_add(source : Node)
+signal heartlink_remove(source : Node)
+#
+### Used sparingly, but necessary for things like heartlink interaction
+#@export var my_owner : Node3D

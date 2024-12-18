@@ -5,8 +5,8 @@ extends Node3D
 
 @export var active_interact_area : component_interact_controller
 
-@onready var dreamstitch : ability_dreamstitch# = ability_dreamstitch.new(owner)
-@onready var loomlight : ability_loomlight = ability_purge.new(owner)
+@onready var dreamstitch : ability_dreamstitch = ability_heartlink.new(owner)
+@onready var loomlight : ability_loomlight = ability_loomlight.new(owner)
 @onready var active : ability = dreamstitch
 
 var active_interact_area_memory : Area3D
@@ -100,7 +100,7 @@ func ability_switch_active(new_ability : ability) -> void:
 	else:
 		ability_unequip_active() #We are swapping to an empty slot, so just unequip active
 
-## --- Abilities --- ##
+## --- Ability Classes --- ##
 
 ## What we form the basis of all of our world abilities off of.
 class ability:
@@ -197,9 +197,7 @@ class ability_dreamstitch:
 	func _init(caster : Node) -> void:
 		super._init(caster)
 		title = "Empty Dreamstitch Ability"
-
-class ability_heartlink:
-	extends ability_dreamstitch
+		interact_groups.append("interact_ability_dreamstitch")
 
 ## Template super for all loomlight abilities
 class ability_loomlight:
@@ -232,7 +230,6 @@ class ability_loomlight:
 	
 	func verify_unequip() -> bool:
 		if caster.gloam_manager.is_inside_gloam:
-			
 			return false
 		else:
 			return true
@@ -258,7 +255,11 @@ class ability_loomlight:
 		caster.set_collision_layer_value(3,true) #Disallows traversal through gloam
 		caster.set_collision_mask_value(3,true) #Disallows traversal through gloam
 
-class ability_purge:
+## --- Equipment Abilties --- ##
+
+# Loomlight
+
+class ability_purge: # TBD
 	extends ability_loomlight
 	
 	func _init(caster : Node) -> void:
@@ -281,3 +282,53 @@ class ability_purge:
 	#Just fx for when we use the ability
 	func on_use_fx(target : Node) -> void:
 		pass
+
+# Dreamstitch
+
+class ability_heartlink:
+	extends ability_dreamstitch
+	
+	func _init(caster : Node) -> void:
+		super._init(caster)
+		title = "Dreamstitch"
+		interact_groups.append("interact_ability_heartlink")
+	
+	func verify_use() -> bool:
+		## If we can still add heartlinks
+		if caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active").size() < 2 and current_interaction_areas.size() > 0: #TODO Maybe make this larger later?
+			return true
+		else:
+			return false
+		
+	func on_use() -> void:
+		## If we're trying to link a controller
+		if verify_use():
+			for area in current_interaction_areas: #Runs through all verified areas in "interact_ability_heartlink"
+				## Add first one we find to our heartlink active group
+				if !area.is_in_group("interact_ability_heartlink_active"):
+					#emit heartlink signal to add it
+					area.heartlink_add.emit(caster)
+					return
+		## If we are trying to clear our heartlink actives
+		else:
+			for controller in caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active"):
+				controller.my_component_interact_reciever.heartlink_remove.emit(caster)
+	
+	#on an interaction with a compatible interactable, you can "mark" it
+	#Once you mark an interactable, the next VALID one you mark will be linked to it
+	#Once two interactables are linked with heartlink, they share changes to their state
+	
+	#If two interactables are linked, pressing the ability button disconnects them and the link
+	
+	#So if you slap on lever, it slaps the other
+	#Opening one door opens another
+	#Linking two platforms makes them both move
+	#For the player to see if something is "Heartlinkable" it will have a heart inscribed on it (signposting)
+
+class ability_gustbloom: #TBD
+	extends ability_dreamstitch
+	
+	func _init(caster : Node) -> void:
+		super._init(caster)
+		title = "Gustbloom"
+		interact_groups.append("interact_ability_gustbloom")

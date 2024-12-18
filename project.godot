@@ -97,6 +97,8 @@ load_data_scene=""
 interact_general=""
 interact_ability_purge=""
 interact_ability_loomlight=""
+interact_ability_heartlink=""
+interact_ability_heartlink_active=""
 
 [input]
 

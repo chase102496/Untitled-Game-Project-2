@@ -36,7 +36,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	## Damage
 	elif amt < 0:
 		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.RED)
-		#To protect recursive when using heartstitch
+		#To protect recursive when using heartlink
 		if !from_tether:
 			Events.battle_entity_damaged.emit(owner,amt)
 	

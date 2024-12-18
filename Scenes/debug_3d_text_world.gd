@@ -13,9 +13,7 @@ extends Label3D
 @onready var new_state_history
 
 func _ready() -> void:
-	state_subchart = str(owner.get_node("StateChart/Main/World")._active_state)
-	
-	new_state_history = str(owner.get_node("StateChart/Main/World/History").history)
+	state_subchart = str(%StateChart/Main/World._active_state)
 	
 	#position.y += randf_range(0,0.6)
 	modulate = Color(randf_range(0.5,1),randf_range(0.5,1),randf_range(0.5,1))
@@ -61,7 +59,7 @@ func _physics_process(delta: float) -> void:
 	text = str(
 	owner.name,
 	"\n",
-	new_state_history,
+	#new_state_history,
 	"\n",
 	dreamkin_list,
 	"\n",
@@ -69,6 +67,7 @@ func _physics_process(delta: float) -> void:
 	"\n",
 	status_list,
 	"\n",
-	"Now: ", state_subchart.rsplit(":")[0],
-	"\n",
-	"Prev: ", history.rsplit(":")[0])
+	str(owner.state_chart.get_current_state(true)),
+	#"Now: ", state_subchart.rsplit(":")[0],
+	"\n")
+	#"Prev: ", history.rsplit(":")[0])

@@ -17,7 +17,7 @@ func _ready():
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
-	my_component_ability.my_abilities.append(component_ability.ability_heartstitch.new(self))
+	my_component_ability.my_abilities.append(component_ability.ability_heartlink.new(self))
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))

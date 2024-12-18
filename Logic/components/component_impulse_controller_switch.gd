@@ -1,20 +1,17 @@
 class_name component_impulse_controller_switch
 extends component_impulse_controller
 
-signal activated
-signal deactivated
-
 ## Once activated, it stays in the activated state and ignores all further signals
 @export var one_way : bool = false
 
 enum type {
+	## Like a lever. Toggles between activated and deactivated on interaction
 	SWITCH,
+	## Like a pressure plate. Activates when in its Area3D, and deactivates upon exiting.
 	PROXIMITY
 }
-
+##Determines how this switch operates
 @export var type_selection : type = type.SWITCH
-
-@onready var debug_name : String = get_parent().get_parent().name
 
 func _ready() -> void:
 	

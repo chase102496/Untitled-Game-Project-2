@@ -149,7 +149,6 @@ func _disconnect_all_signals():
 			transition.taken.disconnect(_connected_transitions.get(transition))
 
 
-
 ## Connects all signals from the currently processing state chart
 func _connect_all_signals():
 	_connected_states.clear()

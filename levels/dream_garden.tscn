@@ -41,7 +41,7 @@ mesh = ExtResource("7_lycqf")
 cast_shadow = 1
 metadata/class = "Greenhouse_LODVariant"
 
-[sub_resource type="Resource" id="Resource_xqxrv"]
+[sub_resource type="Resource" id="Resource_bwayi"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -62,7 +62,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_tgo23"]
+[sub_resource type="Resource" id="Resource_wy4rc"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -83,7 +83,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D3"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_b1boq"]
+[sub_resource type="Resource" id="Resource_0e70k"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -104,7 +104,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D10"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_g6sde"]
+[sub_resource type="Resource" id="Resource_38u2x"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -125,7 +125,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D11"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_g8hoc"]
+[sub_resource type="Resource" id="Resource_j66nx"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -146,7 +146,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D12"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_cq68o"]
+[sub_resource type="Resource" id="Resource_f3a8r"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -167,7 +167,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D13"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_qduf2"]
+[sub_resource type="Resource" id="Resource_nq5yj"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -188,7 +188,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D14"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_bcbtk"]
+[sub_resource type="Resource" id="Resource_pptr4"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -209,7 +209,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D15"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_jplml"]
+[sub_resource type="Resource" id="Resource_fk7sa"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -230,14 +230,14 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D16"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_isd43"]
+[sub_resource type="Resource" id="Resource_47tf3"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
 member_origin_offsets = PackedFloat32Array()
 member_surface_normals = PackedVector3Array()
 member_octants = PackedByteArray()
-child_nodes = [SubResource("Resource_tgo23"), SubResource("Resource_b1boq"), SubResource("Resource_g6sde"), SubResource("Resource_g8hoc"), SubResource("Resource_cq68o"), SubResource("Resource_qduf2"), SubResource("Resource_bcbtk"), SubResource("Resource_jplml")]
+child_nodes = [SubResource("Resource_wy4rc"), SubResource("Resource_0e70k"), SubResource("Resource_38u2x"), SubResource("Resource_j66nx"), SubResource("Resource_f3a8r"), SubResource("Resource_nq5yj"), SubResource("Resource_pptr4"), SubResource("Resource_fk7sa")]
 max_members = 75
 min_leaf_extent = 1.0
 octant = 1
@@ -251,7 +251,7 @@ active_LOD_index = 0
 MMI_name = ""
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_gpwav"]
+[sub_resource type="Resource" id="Resource_saahk"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -272,7 +272,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D4"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_a1tm8"]
+[sub_resource type="Resource" id="Resource_yhtn7"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -293,7 +293,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D5"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_dsieh"]
+[sub_resource type="Resource" id="Resource_at2x0"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -314,7 +314,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D6"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_a1i2h"]
+[sub_resource type="Resource" id="Resource_2arw4"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -335,7 +335,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D2"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_otjc4"]
+[sub_resource type="Resource" id="Resource_y6abb"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -356,7 +356,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D17"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_1n6cf"]
+[sub_resource type="Resource" id="Resource_t8p16"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -377,7 +377,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D18"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_uh5h5"]
+[sub_resource type="Resource" id="Resource_2texi"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -398,7 +398,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D19"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_0tvey"]
+[sub_resource type="Resource" id="Resource_ujmmg"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -419,7 +419,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D20"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_nkqrg"]
+[sub_resource type="Resource" id="Resource_rsg2f"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -440,7 +440,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D21"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_rura8"]
+[sub_resource type="Resource" id="Resource_ll0se"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -461,7 +461,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D22"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_uhmd1"]
+[sub_resource type="Resource" id="Resource_e1c7l"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -482,14 +482,14 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D23"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_arbsp"]
+[sub_resource type="Resource" id="Resource_jd1gm"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
 member_origin_offsets = PackedFloat32Array()
 member_surface_normals = PackedVector3Array()
 member_octants = PackedByteArray()
-child_nodes = [SubResource("Resource_a1i2h"), SubResource("Resource_otjc4"), SubResource("Resource_1n6cf"), SubResource("Resource_uh5h5"), SubResource("Resource_0tvey"), SubResource("Resource_nkqrg"), SubResource("Resource_rura8"), SubResource("Resource_uhmd1")]
+child_nodes = [SubResource("Resource_2arw4"), SubResource("Resource_y6abb"), SubResource("Resource_t8p16"), SubResource("Resource_2texi"), SubResource("Resource_ujmmg"), SubResource("Resource_rsg2f"), SubResource("Resource_ll0se"), SubResource("Resource_e1c7l")]
 max_members = 75
 min_leaf_extent = 1.0
 octant = 5
@@ -503,7 +503,7 @@ active_LOD_index = 0
 MMI_name = ""
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_wskbm"]
+[sub_resource type="Resource" id="Resource_bf2ni"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -524,7 +524,7 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D8"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_qkbq4"]
+[sub_resource type="Resource" id="Resource_e6fd2"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
@@ -545,14 +545,14 @@ active_LOD_index = 0
 MMI_name = "MultiMeshInstance3D9"
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_hhbou"]
+[sub_resource type="Resource" id="Resource_42l2u"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeNode"
 script = ExtResource("8_4eba1")
 member_origin_offsets = PackedFloat32Array()
 member_surface_normals = PackedVector3Array()
 member_octants = PackedByteArray()
-child_nodes = [SubResource("Resource_xqxrv"), SubResource("Resource_isd43"), SubResource("Resource_gpwav"), SubResource("Resource_a1tm8"), SubResource("Resource_dsieh"), SubResource("Resource_arbsp"), SubResource("Resource_wskbm"), SubResource("Resource_qkbq4")]
+child_nodes = [SubResource("Resource_bwayi"), SubResource("Resource_47tf3"), SubResource("Resource_saahk"), SubResource("Resource_yhtn7"), SubResource("Resource_at2x0"), SubResource("Resource_jd1gm"), SubResource("Resource_bf2ni"), SubResource("Resource_e6fd2")]
 max_members = 75
 min_leaf_extent = 1.0
 octant = -1
@@ -566,11 +566,11 @@ active_LOD_index = 0
 MMI_name = ""
 metadata/class = "MMIOctreeNode"
 
-[sub_resource type="Resource" id="Resource_cg74s"]
+[sub_resource type="Resource" id="Resource_y03bw"]
 resource_local_to_scene = true
 resource_name = "MMIOctreeManager"
 script = ExtResource("9_tb7od")
-root_octree_node = SubResource("Resource_hhbou")
+root_octree_node = SubResource("Resource_42l2u")
 LOD_variants = Array[ExtResource("6_3a3v0")]([SubResource("Resource_4f4wq")])
 LOD_max_distance = 9.98
 LOD_kill_distance = -1.0
@@ -631,7 +631,7 @@ panorama = ExtResource("12_mhv2h")
 [sub_resource type="Sky" id="Sky_ncf8r"]
 sky_material = SubResource("PanoramaSkyMaterial_oa1ei")
 
-[sub_resource type="Environment" id="Environment_jiary"]
+[sub_resource type="Environment" id="Environment_keilw"]
 background_mode = 2
 background_color = Color(0.108, 0.2214, 0.27, 1)
 sky = SubResource("Sky_ncf8r")
@@ -652,7 +652,7 @@ adjustment_brightness = 1.03
 adjustment_contrast = 1.2
 adjustment_saturation = 1.12
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_6kdoh"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_gq0lu"]
 dof_blur_far_enabled = true
 dof_blur_near_enabled = true
 dof_blur_near_distance = 4.0
@@ -1243,6 +1243,45 @@ material = SubResource("StandardMaterial3D_a0ofp")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_w0ti2"]
 
+[sub_resource type="Animation" id="Animation_o2fvp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../MeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../MeshInstance3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_wc7cf"]
 resource_name = "activated"
 tracks/0/type = "value"
@@ -1321,45 +1360,6 @@ tracks/2/keys = {
 "values": [Vector3(0.275, 0.275, 0.275), Vector3(1, 1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_o2fvp"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../../MeshInstance3D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../../MeshInstance3D:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../../MeshInstance3D:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 1)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cjujw"]
 _data = {
 "RESET": SubResource("Animation_o2fvp"),
@@ -1383,7 +1383,7 @@ metadata/class = "Gardener"
 
 [node name="Arborist" type="Node3D" parent="Gardener"]
 script = ExtResource("5_oji2y")
-octree_managers = [SubResource("Resource_cg74s")]
+octree_managers = [SubResource("Resource_y03bw")]
 metadata/class = "Arborist"
 
 [node name="MMI_container" type="Node3D" parent="Gardener/Arborist"]
@@ -1458,8 +1458,8 @@ look_at_damping_value = 0.1
 
 [node name="Camera3D" parent="Camera" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-environment = SubResource("Environment_jiary")
-attributes = SubResource("CameraAttributesPractical_6kdoh")
+environment = SubResource("Environment_keilw")
+attributes = SubResource("CameraAttributesPractical_gq0lu")
 
 [node name="RayCast3D" parent="Camera" index="2"]
 target_position = Vector3(0, -1, -3.5)
@@ -1698,6 +1698,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.375, 8, 30)
 
 [node name="Components" type="Node3D" parent="Interactables/equip test 1"]
 
+[node name="component_interact_reciever" parent="Interactables/equip test 1/Components" groups=["interact_general"] instance=ExtResource("30_qvk1r")]
+
 [node name="component_impulse_filter_gate" type="Node" parent="Interactables/equip test 1/Components" node_paths=PackedStringArray("my_impulse_0", "my_impulse_1", "my_impulse_2")]
 script = ExtResource("32_8ktl1")
 gate = "AND"
@@ -1705,12 +1707,10 @@ my_impulse_0 = NodePath("../../../interact test 1/Components/component_impulse_c
 my_impulse_1 = NodePath("../../../interact test 2/Components/component_impulse_controller_switch")
 my_impulse_2 = NodePath("../../../interact test 3/Components/component_impulse_controller_switch")
 
-[node name="component_impulse_controller_switch" parent="Interactables/equip test 1/Components" node_paths=PackedStringArray("my_component_interact_reciever", "impulse_parent") groups=["interact_ability_loomlight"] instance=ExtResource("35_7mnik")]
+[node name="component_impulse_controller_switch" parent="Interactables/equip test 1/Components" node_paths=PackedStringArray("my_component_interact_reciever", "impulse_parent") instance=ExtResource("35_7mnik")]
 one_way = true
 my_component_interact_reciever = NodePath("../component_interact_reciever")
 impulse_parent = NodePath("../component_impulse_filter_gate")
-
-[node name="component_interact_reciever" parent="Interactables/equip test 1/Components" groups=["interact_general"] instance=ExtResource("30_qvk1r")]
 
 [node name="component_impulse_reciever_tween" type="Node" parent="Interactables/equip test 1/Components" node_paths=PackedStringArray("my_impulse", "my_target")]
 script = ExtResource("29_i2y82")
@@ -1758,7 +1758,7 @@ skeleton = NodePath("")
 
 [node name="component_interact_reciever" parent="Interactables/interact test 1/Components" groups=["interact_general"] instance=ExtResource("30_qvk1r")]
 
-[node name="component_impulse_controller_switch" parent="Interactables/interact test 1/Components" node_paths=PackedStringArray("my_component_interact_reciever") groups=["interact_ability_loomlight"] instance=ExtResource("35_7mnik")]
+[node name="component_impulse_controller_switch" parent="Interactables/interact test 1/Components" node_paths=PackedStringArray("my_component_interact_reciever") instance=ExtResource("35_7mnik")]
 my_component_interact_reciever = NodePath("../component_interact_reciever")
 
 [node name="component_impulse_reciever_tween" type="Node" parent="Interactables/interact test 1/Components" node_paths=PackedStringArray("my_target")]
@@ -1780,6 +1780,33 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Interactables/interact test 1/Components/component_impulse_reciever_animation"]
 libraries = {
 "": SubResource("AnimationLibrary_cjujw")
+}
+
+[node name="interact test 2" type="Node3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.75, 7.125, 21.125)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/interact test 2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, -4.76837e-07, -2.38419e-07)
+mesh = SubResource("CylinderMesh_w0ti2")
+skeleton = NodePath("")
+
+[node name="Components" type="Node3D" parent="Interactables/interact test 2"]
+
+[node name="component_interact_reciever" parent="Interactables/interact test 2/Components" groups=["interact_general"] instance=ExtResource("30_qvk1r")]
+transform = Transform3D(1.00084, 0, 0, 0, 1.00084, 0, 0, 0, 1.00084, 0, 0, 0)
+
+[node name="component_impulse_controller_switch" parent="Interactables/interact test 2/Components" node_paths=PackedStringArray("my_component_interact_reciever") instance=ExtResource("35_7mnik")]
+my_component_interact_reciever = NodePath("../component_interact_reciever")
+
+[node name="component_impulse_reciever_tween" type="Node" parent="Interactables/interact test 2/Components" node_paths=PackedStringArray("my_impulse", "my_target")]
+script = ExtResource("29_i2y82")
+my_impulse = NodePath("../component_impulse_controller_switch")
+my_target = NodePath("../../MeshInstance3D")
+dict_activated = {
+"visible": false
+}
+dict_deactivated = {
+"visible": true
 }
 
 [node name="interact test 3" type="Node3D" parent="Interactables"]
@@ -1817,33 +1844,84 @@ libraries = {
 "": SubResource("AnimationLibrary_cjujw")
 }
 
-[node name="interact test 2" type="Node3D" parent="Interactables"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.75, 7.125, 21.125)
+[node name="heartlink test prox 1" type="Node3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.375, 6.875, 5.25)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/interact test 2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, -4.76837e-07, -2.38419e-07)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/heartlink test prox 1"]
 mesh = SubResource("CylinderMesh_w0ti2")
 skeleton = NodePath("")
 
-[node name="Components" type="Node3D" parent="Interactables/interact test 2"]
+[node name="Components" type="Node3D" parent="Interactables/heartlink test prox 1"]
 
-[node name="component_interact_reciever" parent="Interactables/interact test 2/Components" groups=["interact_general"] instance=ExtResource("30_qvk1r")]
-transform = Transform3D(1.00084, 0, 0, 0, 1.00084, 0, 0, 0, 1.00084, 0, 0, 0)
+[node name="component_interact_reciever" parent="Interactables/heartlink test prox 1/Components" groups=["interact_ability_heartlink", "interact_general"] instance=ExtResource("30_qvk1r")]
 
-[node name="component_impulse_controller_switch" parent="Interactables/interact test 2/Components" node_paths=PackedStringArray("my_component_interact_reciever") instance=ExtResource("35_7mnik")]
+[node name="component_impulse_controller_switch" parent="Interactables/heartlink test prox 1/Components" node_paths=PackedStringArray("my_component_interact_reciever") instance=ExtResource("35_7mnik")]
 my_component_interact_reciever = NodePath("../component_interact_reciever")
 
-[node name="component_impulse_reciever_tween" type="Node" parent="Interactables/interact test 2/Components" node_paths=PackedStringArray("my_impulse", "my_target")]
-script = ExtResource("29_i2y82")
+[node name="component_impulse_reciever_animation" parent="Interactables/heartlink test prox 1/Components" node_paths=PackedStringArray("my_impulse") instance=ExtResource("33_fvdrw")]
 my_impulse = NodePath("../component_impulse_controller_switch")
-my_target = NodePath("../../MeshInstance3D")
-dict_activated = {
-"visible": false
+
+[node name="AnimationTree" parent="Interactables/heartlink test prox 1/Components/component_impulse_reciever_animation" index="0"]
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Interactables/heartlink test prox 1/Components/component_impulse_reciever_animation"]
+libraries = {
+"": SubResource("AnimationLibrary_cjujw")
 }
-dict_deactivated = {
-"visible": true
+
+[node name="heartlink test switch 2" type="Node3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 6.875, 4.875)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/heartlink test switch 2"]
+mesh = SubResource("CylinderMesh_w0ti2")
+skeleton = NodePath("")
+
+[node name="Components" type="Node3D" parent="Interactables/heartlink test switch 2"]
+
+[node name="component_interact_reciever" parent="Interactables/heartlink test switch 2/Components" groups=["interact_ability_heartlink", "interact_general"] instance=ExtResource("30_qvk1r")]
+
+[node name="component_impulse_controller_switch" parent="Interactables/heartlink test switch 2/Components" node_paths=PackedStringArray("my_component_interact_reciever") instance=ExtResource("35_7mnik")]
+my_component_interact_reciever = NodePath("../component_interact_reciever")
+
+[node name="component_impulse_reciever_animation" parent="Interactables/heartlink test switch 2/Components" node_paths=PackedStringArray("my_impulse") instance=ExtResource("33_fvdrw")]
+my_impulse = NodePath("../component_impulse_controller_switch")
+
+[node name="AnimationTree" parent="Interactables/heartlink test switch 2/Components/component_impulse_reciever_animation" index="0"]
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Interactables/heartlink test switch 2/Components/component_impulse_reciever_animation"]
+libraries = {
+"": SubResource("AnimationLibrary_cjujw")
+}
+
+[node name="heartlink test switch 3" type="Node3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.25, 6.875, 1.125)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/heartlink test switch 3"]
+mesh = SubResource("CylinderMesh_w0ti2")
+skeleton = NodePath("")
+
+[node name="Components" type="Node3D" parent="Interactables/heartlink test switch 3"]
+
+[node name="component_interact_reciever" parent="Interactables/heartlink test switch 3/Components" groups=["interact_ability_heartlink", "interact_general"] instance=ExtResource("30_qvk1r")]
+
+[node name="component_impulse_controller_switch" parent="Interactables/heartlink test switch 3/Components" node_paths=PackedStringArray("my_component_interact_reciever") instance=ExtResource("35_7mnik")]
+my_component_interact_reciever = NodePath("../component_interact_reciever")
+
+[node name="component_impulse_reciever_animation" parent="Interactables/heartlink test switch 3/Components" node_paths=PackedStringArray("my_impulse") instance=ExtResource("33_fvdrw")]
+my_impulse = NodePath("../component_impulse_controller_switch")
+
+[node name="AnimationTree" parent="Interactables/heartlink test switch 3/Components/component_impulse_reciever_animation" index="0"]
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Interactables/heartlink test switch 3/Components/component_impulse_reciever_animation"]
+libraries = {
+"": SubResource("AnimationLibrary_cjujw")
 }
 
 [editable path="Camera"]
 [editable path="Interactables/interact test 1/Components/component_impulse_reciever_animation"]
 [editable path="Interactables/interact test 3/Components/component_impulse_reciever_animation"]
+[editable path="Interactables/heartlink test prox 1/Components/component_impulse_reciever_animation"]
+[editable path="Interactables/heartlink test switch 2/Components/component_impulse_reciever_animation"]
+[editable path="Interactables/heartlink test switch 3/Components/component_impulse_reciever_animation"]
