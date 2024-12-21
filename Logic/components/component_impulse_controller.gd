@@ -5,10 +5,12 @@ signal activated
 signal deactivated
 
 ## This will allow us to listen for an area to allow the interaction to be sent in
-@export var my_component_interact_reciever : component_interact_reciever
+
 
 ## If plugged in, the impulse controller will only work when this is active, acting as an internal AND gate
 @export var impulse_parent : component_impulse
+## This is what we get our signals from, usually an Area3D
+@onready var my_component_interact_reciever : component_interact_reciever = get_my_component_interact_reciever()
 @onready var state_chart : StateChart = $StateChart
 @onready var debug_name : String = get_parent().get_parent().name
 
@@ -24,18 +26,16 @@ func _ready() -> void:
 	# If you ARE currently COLLIDING areas with the player when changing states, use ignore_collision = false.
 	# Otherwise, true
 	
-	my_component_interact_reciever.heartlink_add.connect(_on_heartlink_add)
-	my_component_interact_reciever.heartlink_remove.connect(_on_heartlink_remove)
-	
 	if impulse_parent:
 		impulse_parent.activated.connect(_on_impulse_parent_activated)
 		impulse_parent.deactivated.connect(_on_impulse_parent_deactivated)
 
-func _on_heartlink_add(source : Node) -> void:
-	add_to_group("interact_ability_heartlink_active")
-
-func _on_heartlink_remove(source : Node) -> void:
-	remove_from_group("interact_ability_heartlink_active")
+func get_my_component_interact_reciever():
+	for child in get_children():
+		if child is component_interact_reciever:
+			return child
+	
+	push_error("Could not find component_interact_reciever for ",name," in ",get_parent())
 
 func _on_impulse_parent_activated() -> void:
 	impulse_parent_signal = true

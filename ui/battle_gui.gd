@@ -1,3 +1,4 @@
+class_name battle_gui
 extends Control
 
 @onready var selector_list : Array

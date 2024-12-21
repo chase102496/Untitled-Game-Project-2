@@ -1,7 +1,13 @@
 extends AnimationTree
 
+@export var my_owner : Node
+
 func _ready() -> void:
 	active = true
+	
+	##Override for owner
+	if my_owner:
+		owner = my_owner
 
 func _on_animation_finished(anim_name: StringName) -> void:
 	Events.animation_finished.emit(anim_name,owner)

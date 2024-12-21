@@ -1,0 +1,2 @@
+class_name battle_entity_enemy_default
+extends battle_entity_default

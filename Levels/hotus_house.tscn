@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d074vp4rn0mgm" path="res://Scenes/buildings/sm_table_01.tscn" id="5_1gal3"]
 [ext_resource type="PackedScene" uid="uid://dkivrd8hff1xh" path="res://Scenes/buildings/sm_window_wall_01.tscn" id="5_3ntxh"]
 [ext_resource type="PackedScene" uid="uid://xmqt0vwhs8g3" path="res://Scenes/buildings/sm_roof.tscn" id="6_680v8"]
-[ext_resource type="PackedScene" uid="uid://dp7uehr0563lr" path="res://Scenes/characters/world_entity_player.tscn" id="6_iwcwj"]
+[ext_resource type="PackedScene" uid="uid://dp7uehr0563lr" path="res://test_junk/archived for now/world_entity_player.tscn" id="6_iwcwj"]
 [ext_resource type="Script" path="res://Logic/scripts/trigger_scene_change.gd" id="6_ojk1i"]
 [ext_resource type="PackedScene" uid="uid://dsktoqsu0l8w5" path="res://Scenes/buildings/sm_wall_doorway.tscn" id="7_kooln"]
 [ext_resource type="PackedScene" uid="uid://3n6dlkrf1mxh" path="res://Scenes/buildings/sm_fireplace.tscn" id="8_brr5p"]

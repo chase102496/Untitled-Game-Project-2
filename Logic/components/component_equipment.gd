@@ -288,6 +288,8 @@ class ability_purge: # TBD
 class ability_heartlink:
 	extends ability_dreamstitch
 	
+	var heartlink_max : int = 2
+	
 	func _init(caster : Node) -> void:
 		super._init(caster)
 		title = "Dreamstitch"
@@ -295,7 +297,7 @@ class ability_heartlink:
 	
 	func verify_use() -> bool:
 		## If we can still add heartlinks
-		if caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active").size() < 2 and current_interaction_areas.size() > 0: #TODO Maybe make this larger later?
+		if caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active").size() < heartlink_max and current_interaction_areas.size() > 0:
 			return true
 		else:
 			return false
@@ -305,25 +307,14 @@ class ability_heartlink:
 		if verify_use():
 			for area in current_interaction_areas: #Runs through all verified areas in "interact_ability_heartlink"
 				## Add first one we find to our heartlink active group
-				if !area.is_in_group("interact_ability_heartlink_active"):
+				if !area.my_component_impulse_controller.is_in_group("interact_ability_heartlink_active"):
 					#emit heartlink signal to add it
-					area.heartlink_add.emit(caster)
+					area.my_component_impulse_controller.add_to_group("interact_ability_heartlink_active")
 					return
 		## If we are trying to clear our heartlink actives
 		else:
 			for controller in caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active"):
-				controller.my_component_interact_reciever.heartlink_remove.emit(caster)
-	
-	#on an interaction with a compatible interactable, you can "mark" it
-	#Once you mark an interactable, the next VALID one you mark will be linked to it
-	#Once two interactables are linked with heartlink, they share changes to their state
-	
-	#If two interactables are linked, pressing the ability button disconnects them and the link
-	
-	#So if you slap on lever, it slaps the other
-	#Opening one door opens another
-	#Linking two platforms makes them both move
-	#For the player to see if something is "Heartlinkable" it will have a heart inscribed on it (signposting)
+				controller.remove_from_group("interact_ability_heartlink_active")
 
 class ability_gustbloom: #TBD
 	extends ability_dreamstitch

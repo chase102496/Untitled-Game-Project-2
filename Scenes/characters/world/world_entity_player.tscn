@@ -1,0 +1,104 @@
+[gd_scene load_steps=15 format=3 uid="uid://bdyo4iaddo5x8"]
+
+[ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_w8yip"]
+[ext_resource type="Script" path="res://Scenes/characters/world/world_entity_player.gd" id="2_q04t1"]
+[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="3_sq4rn"]
+[ext_resource type="SpriteFrames" uid="uid://djkna70chus8q" path="res://Resources/SpriteFrames/player.tres" id="3_xu7fn"]
+[ext_resource type="AnimationLibrary" uid="uid://bia4tx8dc3gjm" path="res://Resources/AnimationLibrary/default_player.tres" id="4_4yea3"]
+[ext_resource type="PackedScene" uid="uid://r6lxipom563d" path="res://Logic/components/component_interaction.tscn" id="4_l3hcv"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://q575ewtqb03g" path="res://Resources/AnimationNodeStateMachine/default.tres" id="5_do7lw"]
+[ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="5_ke17l"]
+[ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="6_smvuq"]
+[ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="10_qjgfm"]
+[ext_resource type="Script" path="res://Logic/components/component_respawn_handler.gd" id="11_uh1x7"]
+[ext_resource type="Script" path="res://Logic/components/component_party.gd" id="12_do3sr"]
+[ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_u5omi"]
+[ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="14_luuhe"]
+
+[node name="world_entity_player" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_component_respawn_handler", "my_component_equipment", "my_component_interaction", "my_inventory_gui", "gloam_manager") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"] instance=ExtResource("1_w8yip")]
+script = ExtResource("2_q04t1")
+my_component_movement_controller = NodePath("Components/component_movement_controller")
+my_component_input_controller = NodePath("Components/component_input_controller_manual")
+my_component_party = NodePath("Components/component_party")
+my_component_ability = NodePath("Components/component_ability")
+my_component_inventory = NodePath("Components/component_inventory")
+my_component_respawn_handler = NodePath("Components/component_respawn_handler")
+my_component_equipment = NodePath("Components/component_equipment")
+my_component_interaction = NodePath("Components/component_interaction")
+my_inventory_gui = NodePath("Inventory_GUI")
+gloam_manager = NodePath("Components/component_gloam_manager")
+alignment = "FRIENDS"
+classification = "PLAYER"
+
+[node name="FaceLight" type="OmniLight3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
+light_energy = 0.3
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+omni_range = 0.513
+omni_attenuation = 0.2
+
+[node name="Inventory_GUI" parent="." index="1" node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("3_sq4rn")]
+my_component_party = NodePath("../Components/component_party")
+my_component_inventory = NodePath("../Components/component_inventory")
+
+[node name="DEBUG_3D_TEXT" parent="." index="4" node_paths=PackedStringArray("my_component_party")]
+my_component_party = NodePath("../Components/component_party")
+
+[node name="component_interaction" parent="Components" index="0" instance=ExtResource("4_l3hcv")]
+
+[node name="component_equipment" parent="Components" index="1" node_paths=PackedStringArray("gloam_manager") instance=ExtResource("5_ke17l")]
+gloam_manager = NodePath("../component_gloam_manager")
+
+[node name="component_gloam_manager" parent="Components" index="2" node_paths=PackedStringArray("equipment") instance=ExtResource("6_smvuq")]
+equipment = NodePath("../component_equipment")
+
+[node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+sprite_frames = ExtResource("3_xu7fn")
+animation = &"default_idle_down"
+frame = 1
+
+[node name="character_animation_player" parent="Components/component_animation" index="2"]
+libraries = {
+"": ExtResource("4_4yea3")
+}
+
+[node name="character_animation_tree" parent="Components/component_animation" index="3"]
+tree_root = ExtResource("5_do7lw")
+parameters/Death/TimeScale/scale = 1.0
+parameters/Hurt/TimeScale/scale = 1.0
+parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.0011481, 0.0103626)
+parameters/Idle/TimeScale/scale = 1.0
+parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Walk/TimeScale/scale = 1.0
+
+[node name="component_inventory" type="Node" parent="Components" index="4"]
+script = ExtResource("10_qjgfm")
+
+[node name="component_respawn_handler" type="Node" parent="Components" index="6"]
+script = ExtResource("11_uh1x7")
+
+[node name="component_party" type="Node" parent="Components" index="7"]
+script = ExtResource("12_do3sr")
+
+[node name="component_state_controller_world" parent="Components" index="8" node_paths=PackedStringArray("my_component_input_controller")]
+my_component_input_controller = NodePath("../component_input_controller_manual")
+
+[node name="component_movement_controller" type="Node" parent="Components" index="11" node_paths=PackedStringArray("my_component_input_controller", "my_component_physics")]
+script = ExtResource("13_u5omi")
+my_component_input_controller = NodePath("../component_input_controller_manual")
+my_component_physics = NodePath("../component_physics")
+
+[node name="component_input_controller_manual" type="Node" parent="Components" index="12" node_paths=PackedStringArray("my_component_interaction", "my_component_equipment", "my_component_movement_controller")]
+script = ExtResource("14_luuhe")
+my_component_interaction = NodePath("../component_interaction")
+my_component_equipment = NodePath("../component_equipment")
+my_component_movement_controller = NodePath("../component_movement_controller")
+
+[node name="component_animation_controller_world" parent="Components" index="13" node_paths=PackedStringArray("my_component_input_controller")]
+my_component_input_controller = NodePath("../component_input_controller_manual")
+
+[editable path="Components/component_animation"]
+[editable path="Components/component_ability"]

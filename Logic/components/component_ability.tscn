@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci3yj38s28xgq"]
+
+[ext_resource type="Script" path="res://Logic/components/component_ability.gd" id="1_ff4i2"]
+
+[node name="component_ability" type="Node"]
+script = ExtResource("1_ff4i2")
+
+[node name="my_abilities" type="Node" parent="."]
+
+[node name="my_status" type="Node" parent="."]

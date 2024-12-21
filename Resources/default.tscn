@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://8gkrxqhe6wmo"]
-
-[ext_resource type="Script" path="res://Logic/scripts/scene_tree_script.gd" id="1_m3las"]
-
-[node name="Default" type="Node3D"]
-script = ExtResource("1_m3las")

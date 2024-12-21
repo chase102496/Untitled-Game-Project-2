@@ -24,11 +24,15 @@
 class_name component_interact_reciever
 extends Area3D
 
+@onready var my_component_impulse_controller : component_impulse_controller = get_my_component_impulse_controller()
+
 signal enter(source : Node)
 signal exit(source : Node)
 signal interact(source : Node)
-signal heartlink_add(source : Node)
-signal heartlink_remove(source : Node)
-#
-### Used sparingly, but necessary for things like heartlink interaction
-#@export var my_owner : Node3D
+
+func get_my_component_impulse_controller():
+	if get_parent() is component_impulse_controller:
+		return get_parent()
+	else:
+		push_error("component_interact_reciever must be a child of component_impulse_controller")
+		push_error("Could not find component_impulse_controller for ",name," in ",get_parent())

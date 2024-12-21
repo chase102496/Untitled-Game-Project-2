@@ -13,8 +13,6 @@ var hud_timer : float = 0
 
 func _ready() -> void:
 	hide()
-	owner.mouse_entered.connect(_on_mouse_entered)
-	owner.mouse_exited.connect(_on_mouse_exited)
 
 func reset_hud_timer():
 	hud_timer = max_hud_timer

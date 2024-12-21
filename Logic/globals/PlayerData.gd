@@ -1,6 +1,5 @@
 extends Node
 
-
 var filepath : String = "user://save/" #root filepath
 
 var data_all = resource_player_data.new()
@@ -37,9 +36,9 @@ func save_data_scene():
 	get_tree().call_group("save_data_scene","on_save_data_scene")
 
 func load_data_scene():
-	print_debug("+ Loaded scene data")
 	if !is_dictionary_completely_empty(data_scene):
 		get_tree().call_group("load_data_scene","on_load_data_scene")
+		print_debug("+ Loaded scene data")
 	else:
 		print_debug("+ No scene data found to load, initializing...")
 
@@ -51,9 +50,9 @@ func save_data_all():
 	ResourceSaver.save(data_all, filepath + filename_all)
 
 func load_data_all():
-	print_debug("+ Loaded all data")
 	if ResourceLoader.exists(filepath + filename_all):
 		data_all = ResourceLoader.load(filepath + filename_all).duplicate(true)
 		get_tree().call_group("load_data_all","on_load_data_all")
+		print_debug("+ Loaded all data")
 	else:
 		push_error("++ Making new save file")

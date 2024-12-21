@@ -23,6 +23,7 @@ func animations_reset(dir : Vector2 = Vector2(0,0)) -> void:
 		owner.animations.rotation.y = PI
 	else:
 		owner.animations.rotation.y = 0
+	
 	owner.animations.tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
 	owner.animations.tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
 

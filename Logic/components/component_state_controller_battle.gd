@@ -130,7 +130,12 @@ func _on_state_entered_battle_start() -> void:
 	owner.state_chart.send_event("on_choose") 
 
 func _on_state_entered_battle_choose() -> void:
+	
 	my_component_ability.my_status.status_event("on_skillcheck")
+	
+	if my_component_ability.my_abilities.size() == 0:
+		push_error("Abilities is empty for unit ", owner)
+		
 	match owner.classification:
 		Battle.classification.PLAYER:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")

@@ -1,0 +1,88 @@
+[gd_scene load_steps=15 format=3 uid="uid://cw282fyqe5rxb"]
+
+[ext_resource type="Script" path="res://Scenes/characters/world/world_entity.gd" id="1_8kcuo"]
+[ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="2_xjfrt"]
+[ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_quy8a"]
+[ext_resource type="PackedScene" uid="uid://b4jd53pda4276" path="res://Logic/components/component_animation.tscn" id="4_hsqo4"]
+[ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="4_ttisn"]
+[ext_resource type="PackedScene" uid="uid://ci3yj38s28xgq" path="res://Logic/components/component_ability.tscn" id="5_1ohn5"]
+[ext_resource type="Script" path="res://Logic/components/component_state_controller_world.gd" id="6_ordbn"]
+[ext_resource type="Script" path="res://Logic/components/component_health.gd" id="7_c4cgf"]
+[ext_resource type="Script" path="res://Logic/components/component_vis.gd" id="8_3swv8"]
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="9_l84gh"]
+[ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="10_jgp8j"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qdplk"]
+radius = 0.229798
+height = 1.02907
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6qpdd"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1l2l5"]
+
+[node name="world_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_state_controller_world")]
+script = ExtResource("1_8kcuo")
+state_chart = NodePath("StateChart")
+collider = NodePath("CollisionShape3D")
+animations = NodePath("Components/component_animation")
+my_component_health = NodePath("Components/component_health")
+my_component_vis = NodePath("Components/component_vis")
+my_component_state_controller_world = NodePath("Components/component_state_controller_world")
+
+[node name="StateChart" parent="." instance=ExtResource("2_xjfrt")]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_qdplk")
+
+[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_world", "my_component_health", "my_component_vis") instance=ExtResource("3_quy8a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
+script = ExtResource("4_ttisn")
+my_component_state_controller_world = NodePath("../Components/component_state_controller_world")
+my_component_health = NodePath("../Components/component_health")
+my_component_vis = NodePath("../Components/component_vis")
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="component_animation" parent="Components" instance=ExtResource("4_hsqo4")]
+
+[node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+sprite_frames = SubResource("SpriteFrames_6qpdd")
+animation = &"default"
+
+[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="1" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
+my_component_health = NodePath("../../../component_health")
+my_component_vis = NodePath("../../../component_vis")
+collider = NodePath("../../../../CollisionShape3D")
+
+[node name="character_animation_player" parent="Components/component_animation" index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_1l2l5")
+}
+
+[node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("my_owner")]
+my_owner = NodePath("../../..")
+
+[node name="component_ability" parent="Components" instance=ExtResource("5_1ohn5")]
+
+[node name="component_state_controller_world" type="Node" parent="Components"]
+script = ExtResource("6_ordbn")
+
+[node name="component_health" type="Node" parent="Components" node_paths=PackedStringArray("status_hud")]
+script = ExtResource("7_c4cgf")
+status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
+
+[node name="component_vis" type="Node" parent="Components" node_paths=PackedStringArray("status_hud")]
+script = ExtResource("8_3swv8")
+max_vis = 12
+status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
+
+[node name="component_animation_controller_world" type="Node" parent="Components"]
+script = ExtResource("9_l84gh")
+
+[node name="component_physics" type="Node" parent="Components"]
+script = ExtResource("10_jgp8j")
+
+[editable path="Components/component_animation"]
+[editable path="Components/component_ability"]

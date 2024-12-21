@@ -1,0 +1,32 @@
+[gd_resource type="AnimationLibrary" load_steps=14 format=3 uid="uid://bia4tx8dc3gjm"]
+
+[ext_resource type="Animation" uid="uid://du1bvrwog5esr" path="res://Art/animations/Individual Animations/RESET.res" id="1_8m6li"]
+[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="2_gs5fe"]
+[ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="3_33mt1"]
+[ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="4_fiobl"]
+[ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Art/animations/Individual Animations/default_hurt.res" id="5_kk0pa"]
+[ext_resource type="Animation" uid="uid://btl2alwbosyqx" path="res://Art/animations/Individual Animations/default_idle_down.res" id="6_lbga6"]
+[ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Art/animations/Individual Animations/default_idle_left_down.res" id="7_d7jk6"]
+[ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Art/animations/Individual Animations/default_idle_left_up.res" id="8_trb4o"]
+[ext_resource type="Animation" uid="uid://cu0rr2yby7j6s" path="res://Art/animations/Individual Animations/default_idle_up.res" id="9_5tyay"]
+[ext_resource type="Animation" uid="uid://c4ybdrmhirpf2" path="res://Art/animations/Individual Animations/default_walk_down.res" id="10_he01w"]
+[ext_resource type="Animation" uid="uid://dei742bvbnhbt" path="res://Art/animations/Individual Animations/default_walk_left_down.res" id="11_01kty"]
+[ext_resource type="Animation" uid="uid://ev0qrbsdak2y" path="res://Art/animations/Individual Animations/default_walk_left_up.res" id="12_te883"]
+[ext_resource type="Animation" uid="uid://duhpjnvlse8ne" path="res://Art/animations/Individual Animations/default_walk_up.res" id="13_mtsys"]
+
+[resource]
+_data = {
+"RESET": ExtResource("1_8m6li"),
+"default_attack": ExtResource("2_gs5fe"),
+"default_attack_spook": ExtResource("3_33mt1"),
+"default_death": ExtResource("4_fiobl"),
+"default_hurt": ExtResource("5_kk0pa"),
+"default_idle_down": ExtResource("6_lbga6"),
+"default_idle_left_down": ExtResource("7_d7jk6"),
+"default_idle_left_up": ExtResource("8_trb4o"),
+"default_idle_up": ExtResource("9_5tyay"),
+"default_walk_down": ExtResource("10_he01w"),
+"default_walk_left_down": ExtResource("11_01kty"),
+"default_walk_left_up": ExtResource("12_te883"),
+"default_walk_up": ExtResource("13_mtsys")
+}

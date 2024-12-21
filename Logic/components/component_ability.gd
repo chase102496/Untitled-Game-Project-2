@@ -3,14 +3,19 @@ extends Node
 
 @onready var cast_queue : Object = null
 
-@onready var my_status : Object = status_manager.new()
-
-@onready var my_stats : Object = stats_manager.new()
-
-#We will not assign spells this way, might need to fix tho, hard to set em up without all the vars right in front of you 
+## Abilities
 @onready var my_abilities : Array = []
 @onready var max_ability_count : int = 4
-var skillcheck_difficulty : float = 1.0
+@onready var my_abilities_node : Node = $my_abilities
+
+## Status Effects
+@onready var my_status : Object = status_manager.new()
+@onready var my_status_node : Node = $my_status
+
+## Stats
+@onready var my_stats : Object = stats_manager.new()
+
+var skillcheck_difficulty : float = 1.0 #DEPRECATED SOON
 
 #------------------------------------------------------------------------------
 #DONT use name or owner, already taken
@@ -21,6 +26,7 @@ var skillcheck_difficulty : float = 1.0
 class stats_manager:
 	var damage_multiplier : float = 1.0
 	var damage_multiplier_base : float = 1.0
+	var skillcheck_difficulty : float = 1.0
 	
 	func set_damage_multiplier_temp(ratio : float):
 		damage_multiplier = ratio
@@ -542,6 +548,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	
 # - Abilities - #
 class ability:
+	extends Node
 	
 	var id : String ##ID should match the class name
 	var skillcheck_modifier : int = 1
@@ -631,6 +638,12 @@ class ability:
 	#Has function status_effect_on_start
 # ---
 
+func add_ability(ability : component_ability.ability):
+	pass
+
+func remove_ability(ability : component_ability.ability):
+	pass
+
 ##Returns all get_data() functions on status effects to store in a data list for a save file
 func get_data_status_all() -> Dictionary:
 	var result : Dictionary = {}
@@ -671,7 +684,6 @@ func set_data_status_all(host : Node, status_data : Dictionary):
 		passive_eff.set_data(status_data["PASSIVE"][i]) #Send the indexed status our data for all its variables to change to
 		
 		#print_debug("set data for ",owner," ",status_data["PASSIVE"])
-	
 
 ##Returns all get_data() functions on abilities to store in a data list for a save file
 func get_data_ability_all():

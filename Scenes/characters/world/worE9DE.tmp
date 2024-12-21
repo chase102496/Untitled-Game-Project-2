@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://rojlf86btf4n"]
+
+[ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_3q56m"]
+[ext_resource type="Script" path="res://Scenes/characters/world/world_entity_dreamkin.gd" id="2_xrtc0"]
+[ext_resource type="SpriteFrames" uid="uid://bv4dtn3fpm17y" path="res://Resources/SpriteFrames/dreamkin_placeholder_2.tres" id="3_305wd"]
+[ext_resource type="AnimationLibrary" uid="uid://fmaut2uju8nw" path="res://Resources/AnimationLibrary/default_basic.tres" id="4_uhfjp"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cb2bhc37utoc8" path="res://Resources/AnimationNodeStateMachine/default_basic.tres" id="5_1q0j6"]
+[ext_resource type="Script" path="res://Logic/components/component_input_controller_follow.gd" id="7_b8adj"]
+[ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_ftktx"]
+
+[node name="world_entity_dreamkin" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_ability") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"] instance=ExtResource("1_3q56m")]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("2_xrtc0")
+my_component_movement_controller = NodePath("Components/component_movement_controller")
+my_component_input_controller = NodePath("Components/component_input_controller_follow")
+my_component_ability = NodePath("Components/component_ability")
+alignment = "FRIENDS"
+classification = "DREAMKIN"
+
+[node name="FaceLight" type="OmniLight3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
+light_energy = 0.3
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+omni_range = 0.513
+omni_attenuation = 0.2
+
+[node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+flip_h = true
+sprite_frames = ExtResource("3_305wd")
+animation = &"default_idle"
+frame = 1
+
+[node name="character_animation_player" parent="Components/component_animation" index="2"]
+libraries = {
+"": ExtResource("4_uhfjp")
+}
+
+[node name="character_animation_tree" parent="Components/component_animation" index="3"]
+tree_root = ExtResource("5_1q0j6")
+parameters/Death/TimeScale/scale = 1.0
+parameters/Hurt/TimeScale/scale = 1.0
+parameters/Idle/TimeScale/scale = 1.0
+parameters/Walk/TimeScale/scale = 1.0
+
+[node name="component_state_controller_world" parent="Components" index="2" node_paths=PackedStringArray("my_component_input_controller")]
+my_component_input_controller = NodePath("../component_input_controller_follow")
+
+[node name="component_movement_controller" type="Node" parent="Components" index="5" node_paths=PackedStringArray("my_component_input_controller", "my_component_physics")]
+script = ExtResource("13_ftktx")
+my_component_input_controller = NodePath("../component_input_controller_follow")
+my_component_physics = NodePath("../component_physics")
+
+[node name="component_input_controller_follow" type="Node" parent="Components" index="6" node_paths=PackedStringArray("my_component_movement_controller")]
+script = ExtResource("7_b8adj")
+my_component_movement_controller = NodePath("../component_movement_controller")
+
+[node name="component_animation_controller_world" parent="Components" index="7" node_paths=PackedStringArray("my_component_input_controller")]
+my_component_input_controller = NodePath("../component_input_controller_follow")
+
+[editable path="Components/component_animation"]
+[editable path="Components/component_ability"]

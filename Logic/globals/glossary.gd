@@ -170,6 +170,80 @@ func create_options_list(properties : Dictionary, parent : Node, callable_source
 
 # Misc
 
+##SUPER USEFUL
+##Tween any value based on importing it from a dictionary and tweening the current object's value to the one specificed in the dict
+#For example dict : Dictionary = { "test.subvar" : 10 }
+# Object.test.subvar = 1
+# Tweens the Object.test.subvar from 1 to 10 in tween_duration seconds
+func apply_changes_with_tween(target : Object, changes : Dictionary, tween_duration : float = 1.0) -> void:
+	for key in changes:
+		var value = changes[key]
+		
+		# Handle nested paths (e.g., "transform.origin")
+		var path = key.split(".")
+		var current = target
+		for i in range(path.size() - 1):
+			if path[i] not in current:
+				print("Error: '%s' does not exist on '%s'" % [path[i], current.name])
+				return
+			current = current.get(path[i])
+		
+		# Set the final property or tween it
+		var final_key = path[-1]
+		
+		if final_key in current:
+			var current_value = current.get(final_key)
+			
+			# Tween if the value is tweenable
+			if typeof(current_value) in [TYPE_FLOAT, TYPE_VECTOR2, TYPE_VECTOR3, TYPE_COLOR]:
+				var tween = create_tween()
+				tween.tween_property(current, final_key, value, tween_duration)
+			else:
+				current.set(final_key, value)  # Direct set for non-tweenable values
+		elif final_key.begins_with("shader_param:"):  # Handle shader parameters
+			var param_name = final_key.replace("shader_param:", "")
+			if current is Material:
+				var current_value = current.get_shader_parameter(param_name)
+				
+				# Tween shader parameters if applicable
+				if typeof(current_value) in [TYPE_FLOAT, TYPE_VECTOR2, TYPE_VECTOR3, TYPE_COLOR]:
+					var tween = create_tween()
+					tween.tween_method(current.set_shader_parameter, [param_name, current_value], [param_name, value], tween_duration)
+				else:
+					current.set_shader_parameter(param_name, value)  # Direct set for non-tweenable
+			else:
+				print("Error: '%s' is not a material, cannot set shader parameter '%s'" % [current.name, param_name])
+		else:
+			print("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
+
+##WIP but working so far. Sets vars found on imported_data dict onto the target
+func deserialize_data(target : Object, imported_data : Dictionary) -> void:
+	for key in imported_data:
+		var value = imported_data[key]
+		
+		# Handle nested paths (e.g., "transform.origin")
+		var path = key.split(".")
+		var current = target
+		for i in range(path.size() - 1):
+			if path[i] not in current:
+				print("Error: '%s' does not exist on '%s'" % [path[i], current.name])
+				return
+			current = current.get(path[i])
+		
+		# Get the final property
+		var final_key = path[-1]
+		
+		if final_key in current:
+			current.set(final_key, value)
+		elif final_key.begins_with("shader_param:"):
+			var param_name = final_key.replace("shader_param:", "")
+			if current is Material:
+				current.set_shader_parameter(param_name, value)
+			else:
+				print("Error: '%s' is not a material, cannot set shader parameter '%s'" % [current.name, param_name])
+		else:
+			print("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
+
 func text_style_color_html(type_dict : Dictionary):
 	return str("[color=",type_dict.COLOR.to_html(),"]")
 
@@ -293,7 +367,10 @@ func evaluate_option_properties(properties : Dictionary, parent : Node, callable
 ## Used to find an entity in our glossary, with optional transform
 func find_entity(glossary : String, set_prefix = null):
 	var index = glossary
-	if set_prefix:
+	if !entity[index]:
+		push_error("No entity found for query ",glossary)
+		return
+	elif set_prefix:
 		index = convert_entity_glossary(glossary,set_prefix)
 	return entity[index]
 
@@ -313,25 +390,13 @@ const text : Dictionary = {
 	"float_away" : preload("res://Art/particles/scenes/particle_text_damage.tscn")
 	}
 
-const entity : Dictionary = {
-	
-	# Players
-	"battle_entity_player" : preload("res://Scenes/characters/battle_entity_player.tscn"),
-	"world_entity_player" : preload("res://Scenes/characters/world_entity_player.tscn"),
-	
-	# Dreamkin
-	"battle_entity_dreamkin_default" : preload("res://Scenes/characters/battle_entity_dreamkin_default.tscn"),
-	"world_entity_dreamkin_default" : preload("res://Scenes/characters/world_entity_dreamkin_default.tscn"),
-	#
-	"battle_entity_dreamkin_sparx" : preload("res://Scenes/characters/battle_entity_dreamkin_sparx.tscn"),
-	# Enemies
-	"battle_entity_enemy_default" : preload("res://Scenes/characters/battle_entity_enemy_default.tscn"),
-	"battle_entity_enemy_elderoot" : preload("res://Scenes/characters/battle_entity_enemy_elderoot.tscn"),
-	"battle_entity_enemy_core_warden" : preload("res://Scenes/characters/battle_entity_enemy_duskling.tscn"),
-	"battle_entity_enemy_shadebloom" : preload("res://Scenes/characters/battle_entity_enemy_shadebloom.tscn"),
-	"battle_entity_enemy_shiverling" : preload("res://Scenes/characters/battle_entity_enemy_shiverling.tscn"),
-	"battle_entity_enemy_cinderling" : preload("res://Scenes/characters/battle_entity_enemy_cinderling.tscn"),
-	"battle_entity_enemy_gloam" : preload("res://Scenes/characters/battle_entity_enemy_gloam.tscn"),
+var entity : Dictionary = {
+	## DO NOT CHANGE TO PRELOAD
+	"world_entity_dreamkin" : load("res://Scenes/characters/world/world_entity_dreamkin.tscn"),
+	"battle_entity_dreamkin" : load("res://Scenes/characters/battle/battle_entity_dreamkin.tscn"), #TODO
+	"battle_entity_enemy" : load("res://Scenes/characters/battle/battle_entity_enemy.tscn"),
+	"battle_entity_player" : load("res://Scenes/characters/battle/battle_entity_player.tscn"),
+	"world_entity_player" : load("res://Scenes/characters/world/world_entity_player.tscn"),
 	}
 
 const sprite : Dictionary = {
@@ -342,6 +407,10 @@ const ui : Dictionary = {
 	"heartlink" : preload("res://UI/status_effect_heartlink.tscn"),
 	"empty_properties_button" : preload("res://UI/empty_properties_button.tscn")
 	}
+
+const animations : Dictionary = {
+	#"test" : preload("res://test_junk/animations_module_test.tscn")
+}
 
 # Classes
 
@@ -428,4 +497,4 @@ enum options_result {
 	FINISHED,
 	NEXT,
 	ERROR
-}
+	}

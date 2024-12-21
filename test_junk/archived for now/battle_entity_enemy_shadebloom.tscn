@@ -1,0 +1,135 @@
+[gd_scene load_steps=13 format=3 uid="uid://8vtdjxbayla7"]
+
+[ext_resource type="PackedScene" uid="uid://d0k7ifshme1kl" path="res://test_junk/archived for now/battle_entity_enemy_default.tscn" id="1_jo5jv"]
+[ext_resource type="Script" path="res://test_junk/archived for now/battle_entity_enemy_shadebloom.gd" id="2_mdekj"]
+[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="3_6w2g1"]
+[ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="4_uwgcq"]
+[ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="5_11m21"]
+[ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Art/animations/Individual Animations/default_hurt.res" id="6_fi3jx"]
+[ext_resource type="Animation" uid="uid://btl2alwbosyqx" path="res://Art/animations/Individual Animations/default_idle_down.res" id="7_wx4w3"]
+[ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Art/animations/Individual Animations/default_idle_left_down.res" id="8_yrpk3"]
+[ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Art/animations/Individual Animations/default_idle_left_up.res" id="9_3cx21"]
+[ext_resource type="Animation" uid="uid://cu0rr2yby7j6s" path="res://Art/animations/Individual Animations/default_idle_up.res" id="10_lye8a"]
+
+[sub_resource type="Animation" id="Animation_3h072"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_idle_down"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(4, 4, 4)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.7, 0, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:transparency")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:flip_h")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2pqoi"]
+_data = {
+"RESET": SubResource("Animation_3h072"),
+"default_attack": ExtResource("3_6w2g1"),
+"default_attack_spook": ExtResource("4_uwgcq"),
+"default_death": ExtResource("5_11m21"),
+"default_hurt": ExtResource("6_fi3jx"),
+"default_idle_down": ExtResource("7_wx4w3"),
+"default_idle_left_down": ExtResource("8_yrpk3"),
+"default_idle_left_up": ExtResource("9_3cx21"),
+"default_idle_up": ExtResource("10_lye8a")
+}
+
+[node name="Shadebloom" instance=ExtResource("1_jo5jv")]
+script = ExtResource("2_mdekj")
+
+[node name="character_animation_sprite" parent="Animations" index="1"]
+modulate = Color(0.7, 0, 1, 1)
+
+[node name="character_animation_player" parent="Animations" index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_2pqoi")
+}

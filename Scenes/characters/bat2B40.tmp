@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://cojcuir5gagwy"]
+
+[ext_resource type="PackedScene" uid="uid://b5f4cvf272kh2" path="res://Scenes/characters/battle_entity.tscn" id="1_3covc"]
+[ext_resource type="SpriteFrames" uid="uid://djkna70chus8q" path="res://Resources/SpriteFrames/player.tres" id="2_wn437"]
+[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="3_r5mx1"]
+[ext_resource type="AnimationLibrary" uid="uid://bia4tx8dc3gjm" path="res://Resources/AnimationLibrary/default_player.tres" id="3_xkkkc"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://q575ewtqb03g" path="res://Resources/AnimationNodeStateMachine/default.tres" id="4_e5vsf"]
+[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="4_jh2g0"]
+[ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="8_3akp2"]
+[ext_resource type="Script" path="res://Logic/components/component_party.gd" id="9_j1psb"]
+
+[node name="battle_entity_player" instance=ExtResource("1_3covc")]
+script = null
+
+[node name="Inventory_GUI" parent="." index="0" node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("3_r5mx1")]
+my_component_party = NodePath("../Components/component_party")
+my_component_inventory = NodePath("../Components/component_inventory")
+
+[node name="Battle_GUI" parent="." index="1" instance=ExtResource("4_jh2g0")]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+sprite_frames = ExtResource("2_wn437")
+animation = &"default_idle_down"
+frame = 1
+
+[node name="character_animation_player" parent="Components/component_animation" index="2"]
+libraries = {
+"": ExtResource("3_xkkkc")
+}
+
+[node name="character_animation_tree" parent="Components/component_animation" index="3"]
+tree_root = ExtResource("4_e5vsf")
+parameters/Death/TimeScale/scale = 1.0
+parameters/Hurt/TimeScale/scale = 1.0
+parameters/Idle/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Idle/TimeScale/scale = 1.0
+parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Walk/TimeScale/scale = 1.0
+
+[node name="component_inventory" type="Node" parent="Components" index="7"]
+script = ExtResource("8_3akp2")
+
+[node name="component_party" type="Node" parent="Components" index="8"]
+script = ExtResource("9_j1psb")
+
+[editable path="Components/component_animation"]
+[editable path="Components/component_ability"]

@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4jd53pda4276"]
+
+[ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="1_t62b6"]
+[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="11_s71nu"]
+[ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="13_arqnv"]
+
+[node name="component_animation" type="Node3D"]
+script = ExtResource("1_t62b6")
+
+[node name="character_animation_sprite" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+gi_mode = 2
+shaded = true
+texture_filter = 0
+animation = &""
+
+[node name="RemoteTransform3DPosition" type="RemoteTransform3D" parent="character_animation_sprite"]
+remote_path = NodePath("../../character_sprite_position")
+update_rotation = false
+update_scale = false
+
+[node name="character_sprite_position" type="Node3D" parent="."]
+
+[node name="selector_anchor" type="Marker3D" parent="character_sprite_position"]
+
+[node name="status_hud" parent="character_sprite_position" instance=ExtResource("11_s71nu")]
+visible = false
+
+[node name="character_animation_player" type="AnimationPlayer" parent="."]
+root_node = NodePath("../character_animation_sprite")
+
+[node name="character_animation_tree" type="AnimationTree" parent="."]
+active = false
+root_node = NodePath("../character_animation_sprite")
+anim_player = NodePath("../character_animation_player")
+script = ExtResource("13_arqnv")
+
+[connection signal="animation_finished" from="character_animation_tree" to="character_animation_tree" method="_on_animation_finished"]
+[connection signal="animation_started" from="character_animation_tree" to="character_animation_tree" method="_on_animation_started"]

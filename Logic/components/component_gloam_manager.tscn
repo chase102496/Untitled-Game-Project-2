@@ -1,6 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjip6juyime05"]
+[gd_scene load_steps=8 format=3 uid="uid://cjip6juyime05"]
 
 [ext_resource type="Script" path="res://Logic/components/component_gloam_manager.gd" id="1_x2mmc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_ono5k"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_jqk21"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_cyu3m"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_ry88a"]
 
 [sub_resource type="FogMaterial" id="FogMaterial_vi120"]
 density = -1.0
@@ -34,3 +38,28 @@ collision_mask = 4
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1.00004, 0, 0, 0, 1.00004, 0, 0, 0, 1.00004, 0, 0, 0)
 shape = SubResource("CylinderShape3D_h1yy2")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_ono5k")
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("3_jqk21")
+initial_state = NodePath("Outside")
+
+[node name="Outside" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("4_cyu3m")
+
+[node name="on_inside" type="Node" parent="StateChart/CompoundState/Outside"]
+script = ExtResource("5_ry88a")
+to = NodePath("../../Inside")
+event = &"on_inside"
+delay_in_seconds = "0.0"
+
+[node name="Inside" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("4_cyu3m")
+
+[node name="on_outside" type="Node" parent="StateChart/CompoundState/Inside"]
+script = ExtResource("5_ry88a")
+to = NodePath("../../Outside")
+event = &"on_outside"
+delay_in_seconds = "0.0"
