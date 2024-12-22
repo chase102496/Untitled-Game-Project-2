@@ -35,12 +35,9 @@ unique_name_in_owner = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_qdplk")
 
-[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_world", "my_component_health", "my_component_vis") instance=ExtResource("3_quy8a")]
+[node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("3_quy8a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
 script = ExtResource("4_ttisn")
-my_component_state_controller_world = NodePath("../Components/component_state_controller_world")
-my_component_health = NodePath("../Components/component_health")
-my_component_vis = NodePath("../Components/component_vis")
 
 [node name="Components" type="Node3D" parent="."]
 
@@ -49,7 +46,6 @@ my_component_vis = NodePath("../Components/component_vis")
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 sprite_frames = SubResource("SpriteFrames_6qpdd")
-animation = &"default"
 
 [node name="status_hud" parent="Components/component_animation/character_sprite_position" index="1" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
 my_component_health = NodePath("../../../component_health")

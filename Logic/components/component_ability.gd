@@ -6,11 +6,9 @@ extends Node
 ## Abilities
 @onready var my_abilities : Array = []
 @onready var max_ability_count : int = 4
-@onready var my_abilities_node : Node = $my_abilities
 
 ## Status Effects
 @onready var my_status : Object = status_manager.new()
-@onready var my_status_node : Node = $my_status
 
 ## Stats
 @onready var my_stats : Object = stats_manager.new()
@@ -545,8 +543,9 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	
 	func on_end():
 		host.my_component_ability.my_stats.reset_damage_multiplier_temp()
-	
-# - Abilities - #
+
+### --- Abilities --- ###
+
 class ability:
 	extends Node
 	
@@ -591,9 +590,6 @@ class ability:
 	func get_data():
 		return {}
 	
-	func _init(caster : Node) -> void:
-		self.caster = caster
-	
 	func select_validate(): #run validations, check vis, health, etc
 		var result = false #default so we cannot use this move
 		return result
@@ -636,13 +632,45 @@ class ability:
 	#when they were healthy will reference any calls in our spell's vocab and we don't have to do anything on character-side
 	#E.g. Poison spell
 	#Has function status_effect_on_start
-# ---
 
-func add_ability(ability : component_ability.ability):
-	pass
+### --- Interfaces --- ###
 
-func remove_ability(ability : component_ability.ability):
-	pass
+# Abilities
+
+func find_ability(ability : component_ability.ability) -> component_ability.ability:
+	var index = get_abilities().find(ability)
+	return get_abilities()[index]
+
+func clear_abilities() -> void:
+	my_abilities.clear()
+
+func is_room_for_abilities() -> bool:
+	if get_abilities().size() < max_ability_count:
+		return true
+	else:
+		return false
+
+func get_abilities() -> Array:
+	return my_abilities
+
+func set_abilities(ability_array : Array) -> void:
+	clear_abilities()
+	for abil in ability_array:
+		add_ability(abil)
+
+func add_ability(ability : component_ability.ability) -> void:
+	if is_room_for_abilities():
+		ability.caster = owner
+		my_abilities.append(ability)
+	else:
+		print_debug("Cannot add ability, max count reached!")
+
+func remove_ability(ability : component_ability.ability) -> void:
+	my_abilities.erase(ability)
+
+### --- Serialization --- ###
+
+# Abilities
 
 ##Returns all get_data() functions on status effects to store in a data list for a save file
 func get_data_status_all() -> Dictionary:
@@ -688,24 +716,20 @@ func set_data_status_all(host : Node, status_data : Dictionary):
 ##Returns all get_data() functions on abilities to store in a data list for a save file
 func get_data_ability_all():
 	var result : Array = []
-	for i in my_abilities.size():
+	for ability in get_abilities():
 		var sub_result : Dictionary = {}
-		sub_result = my_abilities[i].get_data_default() #Set default vars
-		sub_result.merge(my_abilities[i].get_data(),true) #Include and overwrite any defaults like id, etc
+		sub_result = ability.get_data_default() #Set default vars
+		sub_result.merge(ability.get_data(),true) #Include and overwrite any defaults like id, etc
 		result.append(sub_result) #Append this merged data to our entry in the array
 	return result
 
 ##Creates new abilties and sets their params based on data file
 func set_data_ability_all(caster : Node, ability_data_list : Array):
-	my_abilities = [] #Reset our abilities
+	clear_abilities()
 	for i in ability_data_list.size(): #iterate thru list
-		var inst = Glossary.ability_class[ability_data_list[i]["id"]].new(caster) #search glossary for the name we found in metadata
+		var inst = Glossary.ability_class[ability_data_list[i]["id"]].new() #search glossary for the name we found in metadata
 		inst.set_data(ability_data_list[i])
-		my_abilities.append(inst)
-
-##Creates a new ability and places it in my_abilities TODO
-func create(name : String,args : Array):
-	pass
+		add_ability(inst)
 
 #
 class ability_template_default: #Standard ability with vis cost and skillcheck
@@ -713,7 +737,6 @@ class ability_template_default: #Standard ability with vis cost and skillcheck
 	
 	func _init() -> void:
 		target_type = Battle.target_type.OPPONENTS
-		description = "Default ability description"
 	
 	func select_validate():
 		return true #HACK now vis does damage to us if it's at 0 instead of removing this stat
@@ -747,20 +770,18 @@ class ability_spook:
 		"vis_cost" : vis_cost
 		}
 	
-	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		#Default changes
+		
 		id = "ability_spook"
 		title = "Spook"
 		description = "Unleashes an unsettling aura that disrupts the target's focus.\nHas a chance to fear target."
-		self.caster = caster
 		self.damage = damage
 		self.chance = chance
 		self.vis_cost = vis_cost
 		type = Battle.type.VOID
 		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
-		
-		
 
 	func cast_main():
 		caster.my_component_vis.change(-vis_cost)
@@ -784,12 +805,11 @@ class ability_solar_flare:
 		"vis_cost" : vis_cost
 		}
 	
-	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		#Default changes
 		id = "ability_solar_flare"
 		title = "Solar Flare"
 		description = "Summons a dazzling burst of radiant energy that coats the target in molten flame.\nHas a chance to burn target."
-		self.caster = caster
 		self.damage = damage
 		self.chance = chance
 		self.vis_cost = vis_cost
@@ -825,12 +845,11 @@ class ability_frigid_core:
 		"vis_cost" : vis_cost
 		}
 	
-	func _init(caster : Node, damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		#Default changes
 		id = "ability_solar_flare"
 		title = "Frigid Core"
 		description = "Summons a chilling pulse of frozen energy inside the target.\nHas a chance to freeze."
-		self.caster = caster
 		self.damage = damage
 		self.chance = chance
 		self.vis_cost = vis_cost
@@ -857,12 +876,11 @@ class ability_tackle: #Scales with skillcheck
 		"damage" : damage
 		}
 	
-	func _init(caster : Node, damage : int = 1) -> void:
+	func _init(damage : int = 1) -> void:
 		#Default changes
 		id = "ability_tackle"
 		title = "Tackle"
 		description = "A forceful rush at the target, dealing damage"
-		self.caster = caster
 		self.damage = damage
 		type = Battle.type.BALANCE
 		target_selector = Battle.target_selector.SINGLE
@@ -881,12 +899,11 @@ class ability_headbutt: #Scales with damage multiplier
 		"damage" : damage
 		}
 	
-	func _init(caster : Node, damage : int = 1) -> void:
+	func _init(damage : int = 1) -> void:
 		#Default changes
 		id = "ability_headbutt"
 		title = "Headbutt"
 		description = "Charges the target, dealing damage"
-		self.caster = caster
 		self.damage = damage
 		type = Battle.type.BALANCE
 		target_selector = Battle.target_selector.SINGLE
@@ -907,12 +924,11 @@ class ability_heartlink:
 	
 	var old_targets : Array = []
 
-	func _init(caster : Node) -> void:
+	func _init() -> void:
 		#Default changes
 		id = "ability_heartlink"
 		title = "Heartlink"
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
-		self.caster = caster
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.TETHER
@@ -950,12 +966,11 @@ class ability_switchstitch:
 	func get_data():
 		return {}
 	
-	func _init(caster : Node) -> void:
+	func _init() -> void:
 		#Default changes
 		id = "ability_switchstitch"
 		title = "Switch-stitch"
 		description = "Forces two targeted enemies to swap positions"
-		self.caster = caster
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.FLOW

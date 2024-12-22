@@ -27,12 +27,15 @@ font_color = Color(0.0288, 0.55648, 0.96, 1)
 outline_size = 75
 outline_color = Color(0.0235294, 0, 0.329412, 1)
 
-[node name="Status_HUD" type="Node3D"]
+[node name="Status_HUD" type="Node3D" node_paths=PackedStringArray("grid", "health", "vis")]
 script = ExtResource("1_ked1w")
+grid = NodePath("SubViewport/PanelContainer/VBoxContainer/status_grid")
+health = NodePath("SubViewport/PanelContainer/VBoxContainer/Health")
+vis = NodePath("SubViewport/PanelContainer/VBoxContainer/Vis")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.2, 0)
-billboard = 2
+billboard = 1
 double_sided = false
 texture = SubResource("ViewportTexture_bqosp")
 

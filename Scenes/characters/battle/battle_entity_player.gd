@@ -28,7 +28,6 @@ func on_save(data):
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
 
 func on_load(data):
-	print("test3")
 	##Player
 	my_component_health.health = data.health
 	my_component_health.max_health = data.max_health
@@ -50,5 +49,4 @@ func on_save_data_scene():
 	on_save(PlayerData.data_scene.player)
 
 func on_load_data_scene():
-	print("test2")
 	on_load(PlayerData.data_scene.player)

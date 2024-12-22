@@ -43,9 +43,6 @@ omni_attenuation = 0.2
 my_component_party = NodePath("../Components/component_party")
 my_component_inventory = NodePath("../Components/component_inventory")
 
-[node name="DEBUG_3D_TEXT" parent="." index="4" node_paths=PackedStringArray("my_component_party")]
-my_component_party = NodePath("../Components/component_party")
-
 [node name="component_interaction" parent="Components" index="0" instance=ExtResource("4_l3hcv")]
 
 [node name="component_equipment" parent="Components" index="1" node_paths=PackedStringArray("gloam_manager") instance=ExtResource("5_ke17l")]

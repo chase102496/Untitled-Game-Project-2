@@ -67,7 +67,7 @@ func get_root_vis(target):
 func get_root_abilities(target):
 	match evaluate_entity_type(target):
 		entity_type.PLAYER, entity_type.SUMMONED_DREAMKIN:
-			return target.my_component_ability.my_abilities
+			return target.my_component_ability.get_abilities()
 		entity_type.PARTY_DREAMKIN:
 			return target.my_abilities
 		entity_type.NOT_FOUND:

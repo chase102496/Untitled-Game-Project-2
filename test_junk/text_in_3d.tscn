@@ -1,10 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0xhx3uxvewnh"]
-
-[ext_resource type="Script" path="res://test_junk/text_in_3d.gd" id="1_tp3n2"]
+[gd_scene load_steps=3 format=3 uid="uid://b338347py4pvp"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_hahmc"]
 resource_local_to_scene = false
 viewport_path = NodePath("Port")
+
+[sub_resource type="GDScript" id="GDScript_70np1"]
+script/source = "@tool
+extends SubViewport
+
+func _process(delta: float) -> void:
+	#size = get_child(0).size
+	pass
+"
 
 [node name="DEBUG_3D_TEXT" type="Sprite3D"]
 billboard = 1
@@ -14,7 +21,7 @@ texture = SubResource("ViewportTexture_hahmc")
 [node name="Port" type="SubViewport" parent="."]
 transparent_bg = true
 size = Vector2i(153, 23)
-script = ExtResource("1_tp3n2")
+script = SubResource("GDScript_70np1")
 
 [node name="Label" type="Label" parent="Port"]
 anchors_preset = 8

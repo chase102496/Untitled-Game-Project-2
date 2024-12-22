@@ -4,9 +4,9 @@ extends Node3D
 @export var my_component_vis : component_vis
 @export var collider : CollisionShape3D
 
-@onready var grid : GridContainer = $SubViewport/PanelContainer/VBoxContainer/status_grid
-@onready var health : Label = $SubViewport/PanelContainer/VBoxContainer/Health
-@onready var vis : Label = $SubViewport/PanelContainer/VBoxContainer/Vis
+@export var grid : GridContainer
+@export var health : Label
+@export var vis : Label
 
 var max_hud_timer : float = 5
 var hud_timer : float = 0

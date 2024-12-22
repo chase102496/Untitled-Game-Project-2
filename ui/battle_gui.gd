@@ -104,13 +104,12 @@ func _on_state_entered_battle_gui_battle():
 	for child in ui_grid_battle.get_children():
 			child.queue_free()
 	#adding new ones
-	for i in len(owner.my_component_ability.my_abilities):
+	for ability in owner.my_component_ability.get_abilities():
 		
 		var new_button = Glossary.ui.empty_properties_button.instantiate()
-		var new_ability = owner.my_component_ability.my_abilities[i]
 		
-		new_button.text = str(new_ability.type.ICON," ",new_ability.title)
-		new_button.properties.ability = owner.my_component_ability.my_abilities[i]
+		new_button.text = str(ability.type.ICON," ",ability.title)
+		new_button.properties.ability = ability
 		
 		##REMOVE
 		new_button.properties.description_box = ui_description_box
@@ -364,8 +363,8 @@ func _on_button_enter_hover_switch_dreamkin(properties : Dictionary):
 	var dreamkin = properties.dreamkin
 	var abil_list = ""
 	
-	for i in dreamkin.my_abilities.size():
-		abil_list += str(Battle.type_color_dict(dreamkin.my_abilities[i].type),dreamkin.my_abilities[i].type.ICON,"[/color] ",dreamkin.my_abilities[i].title,
+	for ability in dreamkin.my_abilities:
+		abil_list += str(Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.title,
 		"\n")
 	
 	ui_description_label.text = str(

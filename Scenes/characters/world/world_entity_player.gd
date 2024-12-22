@@ -1,4 +1,4 @@
-class_name world_entity_player_new
+class_name world_entity_player
 extends world_entity
 
 @export_group("Components")
@@ -16,8 +16,8 @@ extends world_entity
 func _ready():
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
-	my_component_ability.my_abilities.append(component_ability.ability_tackle.new(self))
-	my_component_ability.my_abilities.append(component_ability.ability_heartlink.new(self))
+	my_component_ability.add_ability(component_ability.ability_tackle.new())
+	my_component_ability.add_ability(component_ability.ability_heartlink.new())
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
@@ -113,13 +113,8 @@ func _physics_process(delta: float) -> void:
 	#
 	if Input.is_action_just_pressed("num0"):
 		#Battle.encounter["gloam_trio"].call()
-		Glossary.deserialize_data(self,{
-			"my_component_ability.my_abilities" : [
-				component_ability.ability_solar_flare.new(self)
-			]
-		})
 		Battle.battle_initialize("enemy enemy")
-		#var test = my_component_ability.add_ability(component_ability.ability_spook.new(self))
+		#var test = my_component_ability.add_ability(component_ability.ability_spook.new())
 		
 		pass
 	

@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c20h0dmi4yjag"]
-
-[ext_resource type="PackedScene" uid="uid://ct0v1pb5ehqc6" path="res://test_junk/archived for now/battle_entity_dreamkin_default.tscn" id="1_bd5y7"]
-
-[node name="Sparx" instance=ExtResource("1_bd5y7")]
-glossary = "entity_dreamkin_sparx"

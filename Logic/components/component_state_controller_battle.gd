@@ -133,7 +133,7 @@ func _on_state_entered_battle_choose() -> void:
 	
 	my_component_ability.my_status.status_event("on_skillcheck")
 	
-	if my_component_ability.my_abilities.size() == 0:
+	if my_component_ability.get_abilities().size() == 0:
 		push_error("Abilities is empty for unit ", owner)
 		
 	match owner.classification:
@@ -144,7 +144,7 @@ func _on_state_entered_battle_choose() -> void:
 		Battle.classification.ENEMY:
 			await get_tree().create_timer(0.2).timeout
 			
-			var ability = my_component_ability.my_abilities.pick_random()
+			var ability = my_component_ability.get_abilities().pick_random()
 			my_component_ability.cast_queue = ability #Pick random move and assign
 			
 			var targets = Battle.get_target_type_list(owner,ability.target_type)

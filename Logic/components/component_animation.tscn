@@ -4,15 +4,18 @@
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="11_s71nu"]
 [ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="13_arqnv"]
 
-[node name="component_animation" type="Node3D"]
+[node name="component_animation" type="Node3D" node_paths=PackedStringArray("tree", "player", "sprite", "selector_anchor", "status_hud")]
 script = ExtResource("1_t62b6")
+tree = NodePath("character_animation_tree")
+player = NodePath("character_animation_player")
+sprite = NodePath("character_animation_sprite")
+selector_anchor = NodePath("character_sprite_position/selector_anchor")
+status_hud = NodePath("character_sprite_position/status_hud")
 
 [node name="character_animation_sprite" type="AnimatedSprite3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 gi_mode = 2
 shaded = true
 texture_filter = 0
-animation = &""
 
 [node name="RemoteTransform3DPosition" type="RemoteTransform3D" parent="character_animation_sprite"]
 remote_path = NodePath("../../character_sprite_position")
