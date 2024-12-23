@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=4 uid="uid://ok13o4xq8wrw"]
 
-[ext_resource type="PackedScene" uid="uid://dfjjgamqpekao" path="res://Art/particles/scenes/particle_burn_candle.tscn" id="1_sc3c0"]
+[ext_resource type="PackedScene" uid="uid://dfjjgamqpekao" path="res://Scenes/particles/particle_burn_candle.tscn" id="1_sc3c0"]
 [ext_resource type="Texture2D" uid="uid://cjdmhp7tfryd6" path="res://Imports/textures/SM_Candle_01_MI_Candle_0_albedo.png" id="1_v28dm"]
 [ext_resource type="Texture2D" uid="uid://bxir3abklljo6" path="res://Imports/textures/SM_Candle_01_MI_Candle_0_normal.png" id="2_g4d6o"]
 

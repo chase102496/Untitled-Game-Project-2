@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=4 uid="uid://cpw4pdc4080qo"]
 
-[ext_resource type="Script" path="res://Logic/scripts/tree.gd" id="1_12vpe"]
-[ext_resource type="Material" uid="uid://c67631iuvadgg" path="res://Art/materials/tree_bark_darkgrey.tres" id="1_e024p"]
-[ext_resource type="Material" uid="uid://dvca5qxnb2753" path="res://Art/materials/tree_leaves_white.tres" id="2_10q4m"]
+[ext_resource type="Script" path="res://Logic/misc/tree.gd" id="1_12vpe"]
+[ext_resource type="Material" uid="uid://c67631iuvadgg" path="res://Resources/ShaderMaterial/tree_bark_darkgrey.tres" id="1_e024p"]
+[ext_resource type="Material" uid="uid://dvca5qxnb2753" path="res://Resources/ShaderMaterial/tree_leaves_white.tres" id="2_10q4m"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vp8ou"]
 _surfaces = [{

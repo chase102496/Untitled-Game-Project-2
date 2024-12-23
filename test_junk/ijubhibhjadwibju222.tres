@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://dg5etkt41rcpb"]
 
-[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_Color.png" id="1_ohjlc"]
+[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/oleekconder/T_Ground9_Color.png" id="1_ohjlc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7aob5"]
 resource_name = "stone(Clone)"

@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://skx6u15sdxh"]
 
 [ext_resource type="PackedScene" uid="uid://b5f4cvf272kh2" path="res://Scenes/characters/battle/battle_entity.tscn" id="1_d0qin"]
-[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://UI/inventory_gui.tscn" id="2_55h7t"]
-[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_ldwgg"]
+[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://Scenes/ui/inventory_gui.tscn" id="2_55h7t"]
+[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://Scenes/ui/battle_gui.tscn" id="2_ldwgg"]
 [ext_resource type="Script" path="res://Scenes/characters/battle/battle_entity_player.gd" id="2_umwwl"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://q575ewtqb03g" path="res://Resources/AnimationNodeStateMachine/default.tres" id="7_kbtx7"]
 [ext_resource type="SpriteFrames" uid="uid://djkna70chus8q" path="res://Resources/SpriteFrames/player.tres" id="8_0sqpw"]

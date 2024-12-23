@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://qmfpa1elel5g"]
 
 [ext_resource type="AnimationNodeStateMachine" uid="uid://cj5thivh7di1u" path="res://Scenes/character_animation_tree.tres" id="1_g7wna"]
-[ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="2_mdyie"]
+[ext_resource type="Script" path="res://Logic/misc/character_animation_tree.gd" id="2_mdyie"]
 
 [node name="character_animation_tree" type="AnimationTree"]
 active = false

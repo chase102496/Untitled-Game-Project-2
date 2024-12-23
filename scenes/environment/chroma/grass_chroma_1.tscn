@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=4 uid="uid://ckd5iqcrqs0py"]
 
 [ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://Scenes/environment/templates/grass.tscn" id="1_d352l"]
-[ext_resource type="Material" uid="uid://b2lvrdogn25mg" path="res://Art/materials/grass_plains.tres" id="2_8iftw"]
+[ext_resource type="Material" uid="uid://b2lvrdogn25mg" path="res://Resources/ShaderMaterial/grass_plains.tres" id="2_8iftw"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_yod04"]
 _surfaces = [{

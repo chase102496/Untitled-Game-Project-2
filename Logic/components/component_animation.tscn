@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://b4jd53pda4276"]
 
-[ext_resource type="Script" path="res://Logic/scripts/animations.gd" id="1_t62b6"]
-[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://UI/status_hud.tscn" id="11_s71nu"]
-[ext_resource type="Script" path="res://Logic/scripts/character_animation_tree.gd" id="13_arqnv"]
+[ext_resource type="Script" path="res://Logic/misc/animations.gd" id="1_t62b6"]
+[ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://Scenes/ui/status_hud.tscn" id="11_s71nu"]
+[ext_resource type="Script" path="res://Logic/misc/character_animation_tree.gd" id="13_arqnv"]
 
 [node name="component_animation" type="Node3D" node_paths=PackedStringArray("tree", "player", "sprite", "selector_anchor", "status_hud")]
 script = ExtResource("1_t62b6")

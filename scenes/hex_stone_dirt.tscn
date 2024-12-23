@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=4 uid="uid://cftytyn7twl8j"]
 
-[ext_resource type="Texture2D" uid="uid://t1glbh1h8klx" path="res://Art/textures/stylized/Dirt/Dirt1Textures/Dirt1_Color.png" id="1_7cd4f"]
-[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_Color.png" id="2_ayqee"]
+[ext_resource type="Texture2D" uid="uid://t1glbh1h8klx" path="res://Art/textures/oleekconder/Dirt1_Color.png" id="1_7cd4f"]
+[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/oleekconder/T_Ground9_Color.png" id="2_ayqee"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dxbyd"]
 resource_name = "stone(Clone)"

@@ -1,12 +1,12 @@
 [gd_resource type="AnimationLibrary" load_steps=9 format=3 uid="uid://c0ygqqdr6cp8y"]
 
-[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Art/animations/Individual Animations/default_attack.res" id="1_dx3m5"]
-[ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Art/animations/Individual Animations/default_death.res" id="2_yituf"]
-[ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Art/animations/Individual Animations/default_hurt.res" id="3_n3wjo"]
-[ext_resource type="Animation" uid="uid://btl2alwbosyqx" path="res://Art/animations/Individual Animations/default_idle_down.res" id="4_r7yif"]
-[ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Art/animations/Individual Animations/default_idle_left_down.res" id="5_l8euc"]
-[ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Art/animations/Individual Animations/default_idle_left_up.res" id="6_uywwr"]
-[ext_resource type="Animation" uid="uid://cu0rr2yby7j6s" path="res://Art/animations/Individual Animations/default_idle_up.res" id="7_jq22y"]
+[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Resources/Animation/default_attack.res" id="1_dx3m5"]
+[ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Resources/Animation/default_death.res" id="2_yituf"]
+[ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Resources/Animation/default_hurt.res" id="3_n3wjo"]
+[ext_resource type="Animation" uid="uid://btl2alwbosyqx" path="res://Resources/Animation/default_idle_down.res" id="4_r7yif"]
+[ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Resources/Animation/default_idle_left_down.res" id="5_l8euc"]
+[ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Resources/Animation/default_idle_left_up.res" id="6_uywwr"]
+[ext_resource type="Animation" uid="uid://cu0rr2yby7j6s" path="res://Resources/Animation/default_idle_up.res" id="7_jq22y"]
 
 [sub_resource type="Animation" id="Animation_phly2"]
 length = 0.001

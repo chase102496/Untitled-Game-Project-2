@@ -1,6 +1,6 @@
 [gd_resource type="MeshLibrary" load_steps=8 format=4 uid="uid://dg2j0w5dkmuwc"]
 
-[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/stylized/Ground/Ground9Textures/T_Ground9_Color.png" id="1_ax876"]
+[ext_resource type="Texture2D" uid="uid://dpel3e3ki6al3" path="res://Art/textures/oleekconder/T_Ground9_Color.png" id="1_ax876"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e1fsx"]
 albedo_texture = ExtResource("1_ax876")

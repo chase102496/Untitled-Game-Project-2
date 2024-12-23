@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://bxdqarudkqkta"]
 
 [ext_resource type="Script" path="res://Logic/components/component_impulse_reciever_animation.gd" id="1_simjl"]
-[ext_resource type="Script" path="res://Logic/scripts/stupid_animation_tree.gd" id="2_5quka"]
+[ext_resource type="Script" path="res://Logic/misc/stupid_animation_tree.gd" id="2_5quka"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_txa6t"]
 animation = &"activated"

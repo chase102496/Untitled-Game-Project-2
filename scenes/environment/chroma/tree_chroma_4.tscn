@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=4 uid="uid://br1wpajrhue3x"]
 
-[ext_resource type="Script" path="res://Logic/scripts/tree.gd" id="1_axehg"]
-[ext_resource type="Material" uid="uid://c67631iuvadgg" path="res://Art/materials/tree_bark_darkgrey.tres" id="1_m8dlt"]
-[ext_resource type="Material" uid="uid://dvca5qxnb2753" path="res://Art/materials/tree_leaves_white.tres" id="2_ekjtc"]
+[ext_resource type="Script" path="res://Logic/misc/tree.gd" id="1_axehg"]
+[ext_resource type="Material" uid="uid://c67631iuvadgg" path="res://Resources/ShaderMaterial/tree_bark_darkgrey.tres" id="1_m8dlt"]
+[ext_resource type="Material" uid="uid://dvca5qxnb2753" path="res://Resources/ShaderMaterial/tree_leaves_white.tres" id="2_ekjtc"]
 [ext_resource type="Script" path="res://Logic/components/component_ghosting.gd" id="4_264c4"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_1lloa"]

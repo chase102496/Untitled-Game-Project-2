@@ -417,14 +417,14 @@ func pick_weighted(dict_list: Array):
 # Scenes
 
 const particle : Dictionary = {
-	"fear" : preload("res://Art/particles/scenes/particle_fear.tscn"),
-	"burn" : preload("res://Art/particles/scenes/particle_burn.tscn"),
-	"freeze" : preload("res://Art/particles/scenes/particle_freeze.tscn"),
-	"disabled" : preload("res://Art/particles/scenes/particle_disabled.tscn")
+	"fear" : preload("res://Scenes/particles/particle_fear.tscn"),
+	"burn" : preload("res://Scenes/particles/particle_burn.tscn"),
+	"freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
+	"disabled" : preload("res://Scenes/particles/particle_disabled.tscn")
 	}
 
 const text : Dictionary = {
-	"float_away" : preload("res://Art/particles/scenes/particle_text_damage.tscn")
+	"float_away" : preload("res://Scenes/particles/particle_text_damage.tscn")
 	}
 
 var entity_scene : Dictionary = {
@@ -436,13 +436,14 @@ var entity_scene : Dictionary = {
 	"world_entity_player" : load("res://Scenes/characters/world/world_entity_player.tscn"),
 	}
 
+## DEPRECATED DON'T USE THIS, USE SPRITEFRAMES, ANIMATIONLIBRARY, AND NODESTATEANIMATIONTREE
 const sprite : Dictionary = {
 	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
 	}
 
 const ui : Dictionary = {
-	"heartlink" : preload("res://UI/status_effect_heartlink.tscn"),
-	"empty_properties_button" : preload("res://UI/empty_properties_button.tscn")
+	"heartlink" : preload("res://Scenes/ui/status_effect_heartlink.tscn"),
+	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn")
 	}
 
 # Classes

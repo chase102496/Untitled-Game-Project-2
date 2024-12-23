@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" load_steps=3 format=4 uid="uid://c8xbl5n7fdeoh"]
 
-[ext_resource type="Material" uid="uid://b2lvrdogn25mg" path="res://Art/materials/grass_plains.tres" id="1_ikj5g"]
+[ext_resource type="Material" uid="uid://b2lvrdogn25mg" path="res://Resources/ShaderMaterial/grass_plains.tres" id="1_ikj5g"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_n7gkb"]
 _surfaces = [{

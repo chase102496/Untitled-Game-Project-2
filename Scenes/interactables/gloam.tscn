@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://clrl5yxrkq5qs"]
 
-[ext_resource type="Script" path="res://Logic/scripts/gloam.gd" id="1_vug2x"]
+[ext_resource type="Script" path="res://Logic/misc/gloam.gd" id="1_vug2x"]
 [ext_resource type="Texture2D" uid="uid://bp7f1e0kqmn4x" path="res://Art/particles/star_01.png" id="2_23ab2"]
 [ext_resource type="Shader" path="res://test_junk/fog_thingy.gdshader" id="2_pqm72"]
 

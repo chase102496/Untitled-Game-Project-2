@@ -13,7 +13,6 @@ spacing = null
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
 flip_h = true
 sprite_frames = ExtResource("3_kf3m6")
-frame = 0
 
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]

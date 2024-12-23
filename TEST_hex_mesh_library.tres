@@ -1,7 +1,7 @@
 [gd_resource type="MeshLibrary" load_steps=40 format=4 uid="uid://b0n34oaf86pc7"]
 
-[ext_resource type="Texture2D" uid="uid://dho1gytkyrxeq" path="res://Art/textures/stylized/Grass/Grass5Textures/T_Grass5_Color.png" id="1_lwlmt"]
-[ext_resource type="Texture2D" uid="uid://t1glbh1h8klx" path="res://Art/textures/stylized/Dirt/Dirt1Textures/Dirt1_Color.png" id="2_pwscx"]
+[ext_resource type="Texture2D" uid="uid://dho1gytkyrxeq" path="res://Art/textures/oleekconder/T_Grass5_Color.png" id="1_lwlmt"]
+[ext_resource type="Texture2D" uid="uid://t1glbh1h8klx" path="res://Art/textures/oleekconder/Dirt1_Color.png" id="2_pwscx"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_17tcn"]
 load_path = "res://.godot/imported/T_Ground9_Color.png-f7551993295f944dbd964557592a9cc0.bptc.ctex"

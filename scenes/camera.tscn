@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://qklm0d27lwlg"]
 
-[ext_resource type="Script" path="res://Logic/scripts/camera.gd" id="1_l2ekv"]
+[ext_resource type="Script" path="res://Logic/misc/camera.gd" id="1_l2ekv"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="1_n5ryg"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_vjpsh"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/camera_3d_resource.gd" id="3_x1rkd"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_42dvy"]
 [ext_resource type="CameraAttributesPractical" uid="uid://c45u5oad2yy8i" path="res://camera_attributes_explore.tres" id="5_khipv"]
 [ext_resource type="Texture2D" uid="uid://bqtf1oaofrx2r" path="res://Art/panorama/panorama_image (2).png" id="7_knix3"]
-[ext_resource type="Script" path="res://Logic/scripts/camera_ray_cast.gd" id="9_hk5qm"]
+[ext_resource type="Script" path="res://Logic/misc/camera_ray_cast.gd" id="9_hk5qm"]
 
 [sub_resource type="Resource" id="Resource_hm6fi"]
 script = ExtResource("2_vjpsh")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=26 format=4 uid="uid://c5dful68oe7vj"]
 
 [ext_resource type="ArrayMesh" uid="uid://b1e1p1a603yqq" path="res://Art/models/Asset Forge/template_hex_platform.tres" id="1_4ngr3"]
-[ext_resource type="Texture2D" uid="uid://by5v53vsnh8wg" path="res://Art/textures/chroma/T_Ground9_Color.png" id="1_7vfct"]
+[ext_resource type="Texture2D" uid="uid://by5v53vsnh8wg" path="res://Art/textures/oleekconder/T_Ground9_Color (2).png" id="1_7vfct"]
 [ext_resource type="Texture2D" uid="uid://cbg0psg3r1jk2" path="res://Art/textures/chroma/T_Grass5_Color.png" id="2_5b3bx"]
 [ext_resource type="Texture2D" uid="uid://cp16p18v8vki4" path="res://Art/textures/chroma/Dirt1_Color.png" id="4_6esia"]
 

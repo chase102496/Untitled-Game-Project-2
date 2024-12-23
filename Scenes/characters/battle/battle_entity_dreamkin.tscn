@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b5f4cvf272kh2" path="res://Scenes/characters/battle/battle_entity.tscn" id="1_jan3h"]
 [ext_resource type="Script" path="res://Scenes/characters/battle/battle_entity_dreamkin.gd" id="2_76bv3"]
-[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://UI/battle_gui.tscn" id="2_j6lbs"]
+[ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://Scenes/ui/battle_gui.tscn" id="2_j6lbs"]
 [ext_resource type="AnimationLibrary" uid="uid://fmaut2uju8nw" path="res://Resources/AnimationLibrary/default_basic.tres" id="2_wxp2v"]
 [ext_resource type="Texture2D" uid="uid://cui7icj43e4ex" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Blue_Death.png" id="4_inqnw"]
 [ext_resource type="Texture2D" uid="uid://c6vyve2d1ob3n" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Blue_Floating_Idle.png" id="5_cm5wc"]
