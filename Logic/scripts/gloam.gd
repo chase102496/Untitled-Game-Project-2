@@ -1,5 +1,18 @@
 extends Node3D
 
+@export var encounter_rate : float = 10.0
+
+@export var encounter_pool : Array = [
+	{
+		"weight" : 0.5,
+		"result" : Glossary.encounter["gloamling_trio"]
+	},
+	{
+		"weight" : 0.5,
+		"result" : Glossary.encounter["gloamling_duo"]
+	},
+]
+
 @onready var my_area : Area3D = $Area3D
 @onready var my_body : StaticBody3D = $StaticBody3D
 @onready var my_fog : FogVolume = $FogVolume

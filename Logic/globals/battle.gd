@@ -73,11 +73,13 @@ func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://
 	##Save our current world info to load up later
 	PlayerData.save_data_scene()
 	
-	battle_list.append(Glossary.entity["battle_entity_player"].instantiate())
+	battle_list.append(Entity.new().create("battle_entity_player"))
 	
 	## Iterate through the list and instantiate them to ready for battle
-	for entity in entity_list:
-		battle_list.append(entity)
+	for unit in entity_list:
+		## Key = name of entity we spawn
+		## Val = dictionary to merge with theirs (health, run functions, etc)
+		battle_list.append(Entity.new().create(unit["glossary"],unit["overrides"]))
 	
 	SceneManager.transition_to(scene_new)
 
@@ -210,13 +212,14 @@ func sort_screen(a,b): #Sorts based on screen X position (so left to right on sc
 		return false
 
 func mirror_section(start: int, end: int):
-	# Validate input
-	if start < 0 or end >= battle_list.size() or start >= end:
-		push_error("Invalid input range")
+	
+	## Fix out of bounds inputs
+	var result_start : int = clamp(start,0,battle_list.size() - 1)
+	var result_end : int = clamp(start,0,battle_list.size() - 1)
 	
 	# Initialize pointers
-	var left = start
-	var right = end
+	var left = result_start
+	var right = result_end
 
 	# Swap elements until pointers meet
 	while left < right:

@@ -73,9 +73,13 @@ class party_dreamkin:
 
 ##Get obj data from active summon list
 func get_summon_data(index : int):
-	var summon_inst = my_summons[index] #Grab the summon member
-	var dreamkin_summon_data = summon_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
-	return dreamkin_summon_data #Return the Dictionary
+	if my_summons.is_empty() or !is_instance_valid(my_summons[index]):
+		push_warning("No dreamkin found to import")
+		return {}
+	else:
+		var summon_inst = my_summons[index] #Grab the summon member
+		var dreamkin_summon_data = summon_inst.get_dreamkin_data_dictionary() #Ask for Dictionary
+		return dreamkin_summon_data #Return the Dictionary
 
 ##Get obj data from party member list
 func get_party_data(index : int):

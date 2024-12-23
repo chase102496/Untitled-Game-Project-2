@@ -28,15 +28,9 @@ func _ready():
 	
 	##Debug
 	if my_component_party.my_party.size() == 0:
-		my_component_party.add_summon_dreamkin(Glossary.entity["world_entity_dreamkin"].instantiate().init(
-				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-				,false)
-		my_component_party.add_summon_dreamkin(Glossary.entity["world_entity_dreamkin"].instantiate().init(
-				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-				,false)
-		my_component_party.add_summon_dreamkin(Glossary.entity["world_entity_dreamkin"].instantiate().init(
-				owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
-				,false)
+		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 100},get_parent()),false)
+		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 99},get_parent()),false)
+		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 98},get_parent()),false)
 
 func on_save(data):
 	##Player
@@ -113,9 +107,21 @@ func _physics_process(delta: float) -> void:
 	#
 	if Input.is_action_just_pressed("num0"):
 		#Battle.encounter["gloam_trio"].call()
-		Battle.battle_initialize("enemy enemy")
-		#var test = my_component_ability.add_ability(component_ability.ability_spook.new())
+		#Battle.battle_initialize("enemy enemy")
 		
+		var encounter_pool : Array = [
+		{
+			"weight" : 0.5,
+			"result" : Glossary.encounter["gloamling_trio"]
+		},
+		{
+			"weight" : 0.5,
+			"result" : Glossary.encounter["gloamling_duo"]
+		},
+		]
+		
+		Battle.battle_initialize_verbose(Glossary.pick_weighted(encounter_pool))
+		#var test = my_component_ability.add_ability(component_ability.ability_spook.new())
 		pass
 	
 	#if Input.is_action_just_pressed("num2"):

@@ -229,7 +229,7 @@ class ability_loomlight:
 	## - Equip events - ##
 	
 	func verify_unequip() -> bool:
-		if caster.gloam_manager.is_inside_gloam:
+		if caster.gloam_manager.is_inside_gloam():
 			return false
 		else:
 			return true

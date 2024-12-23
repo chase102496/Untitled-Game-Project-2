@@ -1,4 +1,6 @@
-[gd_resource type="AnimationLibrary" load_steps=7 format=3 uid="uid://fmaut2uju8nw"]
+[gd_resource type="AnimationLibrary" load_steps=8 format=3 uid="uid://fmaut2uju8nw"]
+
+[ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Art/animations/Individual Animations/default_attack_spook.res" id="1_5ct6s"]
 
 [sub_resource type="Animation" id="Animation_deov8"]
 length = 0.001
@@ -323,6 +325,7 @@ tracks/1/keys = {
 _data = {
 "RESET": SubResource("Animation_deov8"),
 "default_attack": SubResource("Animation_jvi1r"),
+"default_attack_spook": ExtResource("1_5ct6s"),
 "default_death": SubResource("Animation_l8wqm"),
 "default_hurt": SubResource("Animation_0joem"),
 "default_idle": SubResource("Animation_1fj2r"),

@@ -1,18 +1,20 @@
 class_name component_ability
 extends Node
 
-@onready var cast_queue : Object = null
+## For picking abilities and holding onto them for a bit
+var cast_queue : ability = null
 
 ## Abilities
-@onready var my_abilities : Array = []
-@onready var max_ability_count : int = 4
+var my_abilities : Array = []
+var max_ability_count : int = 4
 
 ## Status Effects
-@onready var my_status : Object = status_manager.new()
+var my_status : status_manager = status_manager.new()
 
 ## Stats
-@onready var my_stats : Object = stats_manager.new()
+var my_stats : stats_manager = stats_manager.new()
 
+## Misc
 var skillcheck_difficulty : float = 1.0 #DEPRECATED SOON
 
 #------------------------------------------------------------------------------

@@ -21,7 +21,7 @@ func world_initialize(scene_new : String = "res://Levels/dream_garden.tscn"): #T
 	
 	for i in final_entity_list.size():
 		var unit_name : String = final_entity_list[i]
-		var unit_scene : Object = Glossary.entity.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
+		var unit_scene : Object = Glossary.entity_scene.get(unit_name) #plugging the VALUE of the glossary code into our global glossary to get a packed scene
 		var final_instance = unit_scene.instantiate()
 		get_tree().get_root().add_child(final_instance)
 		final_instance.global_position = last_player_position

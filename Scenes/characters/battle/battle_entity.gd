@@ -1,5 +1,5 @@
 class_name battle_entity
-extends CharacterBody3D
+extends Entity
 
 @export_group("Modules")
 @export var state_chart : StateChart

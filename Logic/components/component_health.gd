@@ -9,7 +9,8 @@ var health : int
 var previous_particle : Node
 
 func _ready() -> void:
-	health = max_health
+	if !health: #If we didn't set health manually
+		health = max_health
 
 func update_status_hud() -> void:
 	if status_hud and SceneManager.current_scene.scene_type == "world":

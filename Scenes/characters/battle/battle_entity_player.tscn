@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="26_jxo4h"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="33_s503q"]
 
-[node name="battle_entity_player_new" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "my_component_inventory") groups=["load_data_scene", "save_data_scene"] instance=ExtResource("1_d0qin")]
+[node name="battle_entity_player" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "my_component_inventory") groups=["load_data_scene", "save_data_scene"] instance=ExtResource("1_d0qin")]
 script = ExtResource("2_umwwl")
 my_battle_gui = NodePath("Battle_GUI")
 my_component_party = NodePath("Components/component_party")
@@ -30,7 +30,6 @@ size_flags_vertical = 4
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 sprite_frames = ExtResource("8_0sqpw")
 animation = &"default_idle_down"
-frame = 1
 
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {
@@ -39,12 +38,8 @@ libraries = {
 
 [node name="character_animation_tree" parent="Components/component_animation" index="3"]
 tree_root = ExtResource("7_kbtx7")
-parameters/Death/TimeScale/scale = 1.0
-parameters/Hurt/TimeScale/scale = 1.0
 parameters/Idle/BlendSpace2D/blend_position = Vector2(0, 0)
-parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
-parameters/Walk/TimeScale/scale = 1.0
 
 [node name="component_inventory" type="Node" parent="Components" index="7"]
 script = ExtResource("26_jxo4h")

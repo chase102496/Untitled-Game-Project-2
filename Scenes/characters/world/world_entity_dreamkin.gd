@@ -20,7 +20,7 @@ func init(my_parent : Node, my_position : Vector3) -> world_entity_dreamkin:
 	return self
 
 func _ready():
-	name = str(name," ",randi_range(0,99))
+	##TODO remove
 	var abil = my_component_ability
 	abil.add_ability(abil.ability_tackle.new())
 	abil.add_ability(abil.ability_solar_flare.new(1,1.0))
