@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bqtckj2f57bis"
-path.s3tc="res://.godot/imported/idle.png-e41042cdba69b471669c29b4ba6983c8.s3tc.ctex"
+path="res://.godot/imported/idle.png-e41042cdba69b471669c29b4ba6983c8.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Art/sprites/The Adventurer - Free/Idle/idle.png"
-dest_files=["res://.godot/imported/idle.png-e41042cdba69b471669c29b4ba6983c8.s3tc.ctex"]
+dest_files=["res://.godot/imported/idle.png-e41042cdba69b471669c29b4ba6983c8.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

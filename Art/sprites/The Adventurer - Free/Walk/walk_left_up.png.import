@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7m6io2ghr4m7"
-path.s3tc="res://.godot/imported/walk_left_up.png-2d16bcf97dfc30c90f0314d43a048d5b.s3tc.ctex"
+path="res://.godot/imported/walk_left_up.png-2d16bcf97dfc30c90f0314d43a048d5b.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Art/sprites/The Adventurer - Free/Walk/walk_left_up.png"
-dest_files=["res://.godot/imported/walk_left_up.png-2d16bcf97dfc30c90f0314d43a048d5b.s3tc.ctex"]
+dest_files=["res://.godot/imported/walk_left_up.png-2d16bcf97dfc30c90f0314d43a048d5b.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

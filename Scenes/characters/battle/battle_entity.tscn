@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/characters/battle/battle_entity.gd" id="1_xrh1h"]
 [ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="3_n46cr"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_0krx5"]
-[ext_resource type="SpriteFrames" uid="uid://xbnydnlduvvj" path="res://Resources/SpriteFrames/dreamkin_placeholder.tres" id="5_c5nv1"]
+[ext_resource type="SpriteFrames" uid="uid://xbnydnlduvvj" path="res://Resources/SpriteFrames/dreamkin_red.tres" id="5_c5nv1"]
 [ext_resource type="PackedScene" uid="uid://b4jd53pda4276" path="res://Logic/components/component_animation.tscn" id="5_mdf11"]
 [ext_resource type="AnimationLibrary" uid="uid://fmaut2uju8nw" path="res://Resources/AnimationLibrary/default_basic.tres" id="5_ogc4t"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://cb2bhc37utoc8" path="res://Resources/AnimationNodeStateMachine/default_basic.tres" id="6_ettuc"]

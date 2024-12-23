@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dn1eg02dryyqx"
-path.s3tc="res://.godot/imported/Axolotl_Purple_Floating_Idle.png-058aa3edbc1e3b9968b7d5a18c32593e.s3tc.ctex"
+path="res://.godot/imported/Axolotl_Purple_Floating_Idle.png-058aa3edbc1e3b9968b7d5a18c32593e.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Purple_Floating_Idle.png"
-dest_files=["res://.godot/imported/Axolotl_Purple_Floating_Idle.png-058aa3edbc1e3b9968b7d5a18c32593e.s3tc.ctex"]
+dest_files=["res://.godot/imported/Axolotl_Purple_Floating_Idle.png-058aa3edbc1e3b9968b7d5a18c32593e.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
