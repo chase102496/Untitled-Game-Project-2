@@ -9,3 +9,6 @@ func create(glossary : String, overrides : Dictionary = {}, parent : Node = null
 	if !overrides.is_empty():
 		Glossary.deserialize_data.call_deferred(inst,overrides)
 	return inst
+
+func _enter_tree() -> void:
+	name = str(name," ",randi_range(0,99))

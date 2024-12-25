@@ -20,6 +20,3 @@ extends Entity
 
 @onready var glossary : String = Global.get_glossary_nickname(self)
 @onready var unique_id : int = Glossary.get_unique_id()
-
-func _enter_tree() -> void:
-	name = str(name," ",randi_range(0,99))

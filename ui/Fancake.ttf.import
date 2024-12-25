@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bjegw1gxg0mmf"
-path="res://.godot/imported/Fancake.ttf-fa645bf534bbf8cd69ea6b35e70563ae.fontdata"
+path="res://.godot/imported/Fancake.ttf-b6fbbbac720a111a337ec1759e48a62e.fontdata"
 
 [deps]
 
-source_file="res://UI/Fancake.ttf"
-dest_files=["res://.godot/imported/Fancake.ttf-fa645bf534bbf8cd69ea6b35e70563ae.fontdata"]
+source_file="res://ui/Fancake.ttf"
+dest_files=["res://.godot/imported/Fancake.ttf-b6fbbbac720a111a337ec1759e48a62e.fontdata"]
 
 [params]
 

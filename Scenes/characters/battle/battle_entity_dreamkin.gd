@@ -40,7 +40,6 @@ func party_summon(data : Object):
 #If someone is requesting data to save about us, give it all stats to use for party_summon()
 func get_dreamkin_data_dictionary():
 	var data : Dictionary = {}
-	
 	data.unique_id = unique_id
 	data.name = name
 	data.classification = classification
@@ -54,6 +53,3 @@ func get_dreamkin_data_dictionary():
 	data.my_status = my_component_ability.get_data_status_all()
 	
 	return data
-
-func _ready() -> void:
-	name = str(name," ",randi_range(0,99))

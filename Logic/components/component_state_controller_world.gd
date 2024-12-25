@@ -58,6 +58,7 @@ func _on_state_physics_processing_world_grounded_walking(_delta: float) -> void:
 		direction = -my_component_input_controller.raw_direction
 	
 	if direction == Vector2.ZERO:
+
 		owner.state_chart.send_event("on_idle")
 
 ## Dialogic signals

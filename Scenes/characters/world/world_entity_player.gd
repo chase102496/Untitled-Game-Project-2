@@ -105,6 +105,7 @@ func _physics_process(delta: float) -> void:
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	#
+	
 	if Input.is_action_just_pressed("num0"):
 		#Battle.encounter["gloam_trio"].call()
 		#Battle.battle_initialize("enemy enemy")

@@ -1,8 +1,8 @@
 [gd_scene load_steps=30 format=3 uid="uid://bp8wcwqpkswl"]
 
 [ext_resource type="PackedScene" path="res://test_junk/archived for now/battle_entity_dreamkin_default.tscn" id="1_teo6x"]
-[ext_resource type="Resource" path="res://scenes/camera_resource.tres" id="3_qstb7"]
-[ext_resource type="CameraAttributesPractical" path="res://scenes/camera_attributes.tres" id="4_mcguf"]
+[ext_resource type="Resource" uid="uid://bfbonvck7kuh1" path="res://Scenes/camera_resource_default.tres" id="3_qstb7"]
+[ext_resource type="CameraAttributesPractical" uid="uid://b78dt8pyd4sss" path="res://Scenes/camera_attributes_explore.tres" id="4_mcguf"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="5_mna3a"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_qmx3w"]
 [ext_resource type="PackedScene" path="res://test_junk/archived for now/battle_entity_player.tscn" id="7_5xn44"]

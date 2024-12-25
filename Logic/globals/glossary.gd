@@ -441,6 +441,15 @@ const sprite : Dictionary = {
 	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
 	}
 
+## Contains
+const visual_set : Dictionary = {
+	"axolotl_red" : {
+		"SpriteFrames" : preload("res://Resources/SpriteFrames/dreamkin_red.tres"),
+		"AnimationLibrary" : preload("res://Resources/AnimationLibrary/default_basic.tres"),
+		"AnimationNodeStateMachine" : preload("res://Resources/AnimationNodeStateMachine/default_basic.tres"),
+	}
+}
+
 const ui : Dictionary = {
 	"heartlink" : preload("res://Scenes/ui/status_effect_heartlink.tscn"),
 	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn")

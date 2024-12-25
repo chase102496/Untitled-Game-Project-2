@@ -19,6 +19,7 @@ func _on_state_physics_processing_world(_delta: float) -> void:
 			direction = Vector2(snapped(result_dir.x,0.25),snapped(result_dir.y,0.25)) #less jitter
 			raw_direction = direction.rotated(Global.camera.global_rotation.y)
 		else:
+			raw_direction = Vector2.ZERO
 			direction = Vector2.ZERO
 
 func _on_state_exited_world():
