@@ -5,88 +5,7 @@ var active_character_index : int = 0
 var battle_list : Array = []
 var battle_list_ready : bool = true
 
-## Name of encounter -> Callable
-var battle_encounter : Dictionary = {
-	"gloam_trio" : "enemy_gloam enemy_gloam enemy_gloam"
-}
-
-# Input
-# Enemy class
-# Health component : health, max_health
-# Vis component : vis, max_vis
-# Ability component : 
-#	my_abilities : [ ability_1.new(damage,etc), ability_2.new(damage,etc) ]
-#	my_status : [ status_1.new(damage,etc), status_2.new(damage,etc) ]
-#	my_model : (Glossary reference to visual model that will contain sprites, animations, selector anchor, etc.)
-
-## Name of location -> Encounter : Dict, Weight
-var encounter_pool : Dictionary = {
-	"veiled_forest" : {
-		
-	}
-}
-
-## Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
-#and the old and new scenes they will be transitioning from and to.
-func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):
-	
-	##Save our current world info to load up
-	PlayerData.save_data_scene()
-	
-	var final_entity_list : Array = []
-	
-	final_entity_list.append("battle_entity_player")
-	
-	#if Global.player.my_component_party.get_party(): #If we have some party members
-	#	final_entity_list.append(Glossary.convert_entity_glossary(Global.player.my_component_party.my_party[0].glossary,"battle")) #Add our primary dreamkin's id
-	
-	if entity_list is String: #For conversion from dialogic method
-		var split_list = entity_list.split(" ")
-		for i in split_list.size():
-			var fixed_str = str("battle_entity_",split_list[i])
-			final_entity_list.append(fixed_str)
-	elif entity_list is Array: #If it's a list
-		if entity_list[0] is String:
-			for i in entity_list.size():
-				if entity_list[i] is String:
-					final_entity_list.append(entity_list[i])
-				else:
-					push_error("ERROR: Entity was not string when subdivided: ",entity_list[i])
-		## If we're using a verbose list of nodes with specific parameters
-		elif entity_list[0] is Node:
-			pass
-
-	battle_list = []
-	#Instantiating all the battle characters
-	for i in len(final_entity_list):
-		var unit_name : String = final_entity_list[i]
-		var unit_scene : PackedScene  = Glossary.find_entity(unit_name)
-		var unit_instance = unit_scene.instantiate()
-		
-		#signal emit
-		battle_list.append(unit_instance)
-		
-	SceneManager.transition_to(scene_new)
-
-func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://Levels/turn_arena.tscn"):
-	
-	##Save our current world info to load up later
-	PlayerData.save_data_scene()
-	
-	battle_list.append(Entity.new().create("battle_entity_player"))
-	
-	## Iterate through the list and instantiate them to ready for battle
-	for unit in entity_list:
-		## Key = name of entity we spawn
-		## Val = dictionary to merge with theirs (health, run functions, etc)
-		battle_list.append(Entity.new().create(unit["glossary"],unit["overrides"]))
-	
-	SceneManager.transition_to(scene_new)
-
-func battle_finalize():
-	PlayerData.save_data_scene()
-	SceneManager.transition_to_prev()
-
+## --- Dictionaries --- ##
 
 const type : Dictionary = {
 	"DESCRIPTION" :{
@@ -135,12 +54,6 @@ const type : Dictionary = {
 		"COLOR" : Color("4f1e6bfd")
 	},
 }
-
-func type_color(type_string : String):
-	return str("[color=",Battle.type.get(type_string).COLOR.to_html(),"]")
-
-func type_color_dict(type_dict : Dictionary):
-	return str("[color=",type_dict.COLOR.to_html(),"]")
 
 const status_category : Dictionary = {
 	"NORMAL" : "NORMAL",
@@ -204,6 +117,80 @@ const mitigation_type : Dictionary = { #Informs our system if something mitigate
 	"IMMUNE" : "IMMUNE",
 	"WEAK" : "WEAK"
 }
+
+## --- Functions --- ##
+
+# Battle
+
+## Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
+#and the old and new scenes they will be transitioning from and to.
+func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):
+	
+	##Save our current world info to load up
+	PlayerData.save_data_scene()
+	
+	var final_entity_list : Array = []
+	
+	final_entity_list.append("battle_entity_player")
+	
+	#if Global.player.my_component_party.get_party(): #If we have some party members
+	#	final_entity_list.append(Glossary.convert_entity_glossary(Global.player.my_component_party.my_party[0].glossary,"battle")) #Add our primary dreamkin's id
+	
+	if entity_list is String: #For conversion from dialogic method
+		var split_list = entity_list.split(" ")
+		for i in split_list.size():
+			var fixed_str = str("battle_entity_",split_list[i])
+			final_entity_list.append(fixed_str)
+	elif entity_list is Array: #If it's a list
+		if entity_list[0] is String:
+			for i in entity_list.size():
+				if entity_list[i] is String:
+					final_entity_list.append(entity_list[i])
+				else:
+					push_error("ERROR: Entity was not string when subdivided: ",entity_list[i])
+		## If we're using a verbose list of nodes with specific parameters
+		elif entity_list[0] is Node:
+			pass
+
+	battle_list = []
+	#Instantiating all the battle characters
+	for i in len(final_entity_list):
+		var unit_name : String = final_entity_list[i]
+		var unit_scene : PackedScene  = Glossary.find_entity(unit_name)
+		var unit_instance = unit_scene.instantiate()
+		
+		#signal emit
+		battle_list.append(unit_instance)
+		
+	SceneManager.transition_to(scene_new)
+
+func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://Levels/turn_arena.tscn"):
+	
+	##Save our current world info to load up later
+	PlayerData.save_data_scene()
+	
+	battle_list.append(Entity.new().create("battle_entity_player"))
+	
+	## Iterate through the list and instantiate them to ready for battle
+	for unit in entity_list:
+		## Key = name of entity we spawn
+		## Val = dictionary to merge with theirs (health, run functions, etc)
+		battle_list.append(Entity.new().create(unit["glossary"],unit["overrides"]))
+	
+	SceneManager.transition_to(scene_new)
+
+func battle_finalize():
+	Battle.battle_list.clear.call_deferred()
+	PlayerData.save_data_scene()
+	SceneManager.transition_to_prev()
+
+# Misc
+
+func type_color(type_string : String):
+	return str("[color=",Battle.type.get(type_string).COLOR.to_html(),"]")
+
+func type_color_dict(type_dict : Dictionary):
+	return str("[color=",type_dict.COLOR.to_html(),"]")
 
 func sort_screen(a,b): #Sorts based on screen X position (so left to right on screen)
 	if Global.camera_object.unproject_position(a.global_position).x < Global.camera_object.unproject_position(b.global_position).x:
