@@ -2,10 +2,12 @@ extends Node
 
 var filepath : String = "user://save/" #root filepath
 
-var data_all = resource_player_data.new()
-var filename_all : String = "resource_player_data_all.tres"
+## For persistent data, like in a save file
+var data_persistent = resource_player_data.new()
+var filename_persistent : String = "resource_player_data_persistent.tres"
 
-var data_scene : Dictionary = {
+## For single-session use
+var data_session : Dictionary = {
 	"player" : {
 	}
 }
@@ -23,36 +25,36 @@ func is_dictionary_completely_empty(dict: Dictionary) -> bool:
 	# If we get here, everything was empty
 	return true
 
-##For cross-scene use
+##For single session use
 
-func save_template_scene(data):
+func save_template_session(data):
 	pass #TODO
 
-func load_template_scene(data):
+func load_template_session(data):
 	pass #TODO
 
-func save_data_scene():
-	print_debug("+ Saved scene data")
-	get_tree().call_group("save_data_scene","on_save_data_scene")
+func save_data_session():
+	print_debug("+ Saved session data")
+	get_tree().call_group("save_data_session","on_save_data_session")
 
-func load_data_scene():
-	if !is_dictionary_completely_empty(data_scene):
-		get_tree().call_group("load_data_scene","on_load_data_scene")
-		print_debug("+ Loaded scene data")
+func load_data_session():
+	if !is_dictionary_completely_empty(data_session):
+		get_tree().call_group("load_data_session","on_load_data_session")
+		print_debug("+ Loaded session data")
 	else:
-		print_debug("+ No scene data found to load, initializing...")
+		print_debug("+ No session data found to load, initializing...")
 
 ##The actual save file
 
-func save_data_all():
-	print_debug("+ Saved all data")
-	get_tree().call_group("save_data_all","on_save_data_all")
-	ResourceSaver.save(data_all, filepath + filename_all)
+func save_data_persistent():
+	print_debug("+ Saved persistent data")
+	get_tree().call_group("save_data_persistent","on_save_data_persistent")
+	ResourceSaver.save(data_persistent, filepath + filename_persistent)
 
-func load_data_all():
-	if ResourceLoader.exists(filepath + filename_all):
-		data_all = ResourceLoader.load(filepath + filename_all).duplicate(true)
-		get_tree().call_group("load_data_all","on_load_data_all")
-		print_debug("+ Loaded all data")
+func load_data_persistent():
+	if ResourceLoader.exists(filepath + filename_persistent):
+		data_persistent = ResourceLoader.load(filepath + filename_persistent).duplicate(true)
+		get_tree().call_group("load_data_persistent","on_load_data_persistent")
+		print_debug("+ Loaded persistent data")
 	else:
-		push_error("++ Making new save file")
+		push_error("++ Making new persistent save file")

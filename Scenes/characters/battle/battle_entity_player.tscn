@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="26_jxo4h"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="33_s503q"]
 
-[node name="battle_entity_player" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "my_component_inventory") groups=["load_data_scene", "save_data_scene"] instance=ExtResource("1_d0qin")]
+[node name="battle_entity_player" node_paths=PackedStringArray("my_battle_gui", "my_component_party", "my_component_inventory") groups=["load_data_session", "save_data_session"] instance=ExtResource("1_d0qin")]
 script = ExtResource("2_umwwl")
 my_battle_gui = NodePath("Battle_GUI")
 my_component_party = NodePath("Components/component_party")

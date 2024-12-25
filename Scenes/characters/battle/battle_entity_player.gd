@@ -10,7 +10,7 @@ extends battle_entity
 
 func _ready():
 	Global.player = self
-	PlayerData.load_data_scene()
+	PlayerData.load_data_session()
 
 func on_save(data):
 	##Player
@@ -45,8 +45,8 @@ func on_load(data):
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
-func on_save_data_scene():
-	on_save(PlayerData.data_scene.player)
+func on_save_data_session():
+	on_save(PlayerData.data_session.player)
 
-func on_load_data_scene():
-	on_load(PlayerData.data_scene.player)
+func on_load_data_session():
+	on_load(PlayerData.data_session.player)

@@ -19,10 +19,6 @@ func init(my_parent : Node, my_position : Vector3) -> world_entity_dreamkin:
 	global_translate.call_deferred(my_position)
 	return self
 
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("move_jump"):
-		animations.import_visual_set(Glossary.visual_set["axolotl_red"])
-
 func _ready():
 	##TODO remove
 	var abil = my_component_ability

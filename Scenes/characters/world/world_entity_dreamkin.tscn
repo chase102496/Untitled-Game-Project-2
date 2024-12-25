@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_follow.gd" id="7_b8adj"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_ftktx"]
 
-[node name="world_entity_dreamkin" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_ability") groups=["load_data_all", "load_data_scene", "save_data_all", "save_data_scene"] instance=ExtResource("1_3q56m")]
+[node name="world_entity_dreamkin" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_ability") groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("1_3q56m")]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("2_xrtc0")

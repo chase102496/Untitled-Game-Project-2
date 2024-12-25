@@ -127,7 +127,7 @@ const mitigation_type : Dictionary = { #Informs our system if something mitigate
 func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):
 	
 	##Save our current world info to load up
-	PlayerData.save_data_scene()
+	PlayerData.save_data_session()
 	
 	var final_entity_list : Array = []
 	
@@ -167,7 +167,7 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://Levels/turn_arena.tscn"):
 	
 	##Save our current world info to load up later
-	PlayerData.save_data_scene()
+	PlayerData.save_data_session()
 	
 	battle_list.append(Entity.new().create("battle_entity_player"))
 	
@@ -181,7 +181,7 @@ func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://
 
 func battle_finalize():
 	Battle.battle_list.clear.call_deferred()
-	PlayerData.save_data_scene()
+	PlayerData.save_data_session()
 	SceneManager.transition_to_prev()
 
 # Misc

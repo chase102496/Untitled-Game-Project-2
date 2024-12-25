@@ -24,7 +24,7 @@ func _ready():
 	
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 
-	PlayerData.load_data_scene()
+	PlayerData.load_data_session()
 	
 	##Debug
 	if my_component_party.my_party.size() == 0:
@@ -70,25 +70,25 @@ func on_load(data):
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
-func on_save_data_scene():
-	on_save(PlayerData.data_scene.player)
+func on_save_data_session():
+	on_save(PlayerData.data_session.player)
 
-func on_load_data_scene():
-	on_load(PlayerData.data_scene.player)
+func on_load_data_session():
+	on_load(PlayerData.data_session.player)
 
-func on_save_data_all():
-	on_save(PlayerData.data_all.player)
+func save_data_persistent():
+	on_save(PlayerData.data_persistent.player)
 
-func on_load_data_all():
-	on_load(PlayerData.data_all.player)
+func on_load_data_persistent():
+	on_load(PlayerData.data_persistent.player)
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("save"):
 		#my_component_party.recall(0)
-		PlayerData.save_data_all()
+		PlayerData.save_data_global()
 	if Input.is_action_just_pressed("load"):
 		#my_component_party.summon(0,"world")
-		PlayerData.load_data_all()
+		PlayerData.load_data_persistent()
 	
 	
 	#if Input.is_action_just_pressed("move_forward"):
@@ -105,6 +105,10 @@ func _physics_process(delta: float) -> void:
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	#
+	
+	if Input.is_action_just_pressed("num1"):
+		if my_component_party.my_summons.size() > 0:
+			my_component_party.my_summons[0].animations.import_visual_set(Glossary.visual_set["axolotl_red"])
 	
 	if Input.is_action_just_pressed("num0"):
 		#Battle.encounter["gloam_trio"].call()
