@@ -17,6 +17,7 @@ func _ready() -> void:
 
 ## --- Events --- ##
 
+## When entering a interaction reciever with our interaction controller
 func _on_active_interact_area_entered(area : Area3D) -> void:
 	active_interact_area_memory = area
 	ability_event(active,"on_area_entered",[area])
@@ -36,10 +37,15 @@ func ability_use() -> void:
 
 ## --- Utility Functions --- ###
 
-## Let our current ability know this event is being called.
+## Lets our current ability know this event is being called.
+
+## The reason we don't just use signals is because this can be used 
+## contextually and return a value directly after it is ran
+
 ## It doesn't have to do something, but we check just in case it exists
 ## For example, running code when walking, near a certain object, press a certain button, etc.
-## Can use "my_component_equipment.active" or dreamstitch or loomlight for new_ability
+## Can use "my_component_equipment.active", "my_component_equipment.dreamstitch", or "my_component_equipment.loomlight" for new_ability
+
 func ability_event(new_ability : ability, method : String, args : Array = []) -> Variant:
 	if new_ability:
 		if new_ability.has_method(method):

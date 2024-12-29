@@ -436,7 +436,7 @@ var entity_scene : Dictionary = {
 	"world_entity_player" : load("res://Scenes/characters/world/world_entity_player.tscn"),
 	}
 
-## DEPRECATED DON'T USE THIS, USE SPRITEFRAMES, ANIMATIONLIBRARY, AND NODESTATEANIMATIONTREE
+## DEPRECATED DON'T USE THIS, USE visual_set or SPRITEFRAMES, ANIMATIONLIBRARY, AND NODESTATEANIMATIONTREE
 const sprite : Dictionary = {
 	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
 	}

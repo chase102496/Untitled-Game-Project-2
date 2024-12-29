@@ -58,19 +58,28 @@ func on_state_entered_inside() -> void:
 		equipment.ability_switch_active(equipment.loomlight)
 
 
+@export var encounter_rate : float = 1.0 #Fixed rate at which we accumulate encounter progress
+@export var max_encounter_rate : float = 100.0 #Point at which encounter is triggered
+var encounter_rate_randomness : float #Runtime-decided percentage that makes progress semi-random (0.0 to 1.0)
+@export var encounter_pool : Array = [ #Pool of possible encounters and their weights
+		{
+			"weight" : 0.5,
+			"result" : Glossary.encounter["gloamling_trio"]
+		},
+		{
+			"weight" : 0.5,
+			"result" : Glossary.encounter["gloamling_duo"]
+		},
+]
+
 ## Runs when inside the fog
 func on_state_physics_processing_inside(delta : float) -> void:
+	
+	
 	
 	#delta * x is x per second
 	#so if we add 1 resource to encounter meter * delta
 	#after 1 second, we will have 1 resource
-	
-	# encounter_rate : float = 1.0 this is the base encounter buildup, defined by the gloam cloud
-	# max_encounter_rate : float = 100 this is the value when we trigger an encounter
-	# encounter_rate_randomness : float 
-	# encounter_pool : Dictionary {
-	# 0.5 : Glossary.encounter["gloamling_trio"]
-	#} This is a list of things that happen, with weights for each, when encounter is full
 	
 	# encounter_rate_randomness = randf_range(0,1)
 	# encounter_rate * encounter_rate_randomness * delta
