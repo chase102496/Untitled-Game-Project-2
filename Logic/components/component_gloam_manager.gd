@@ -45,22 +45,31 @@ func _on_area_exited(area : Area3D):
 
 ## --- State Charts --- ##
 
+func set_vignette_opacity(val : float) -> void:
+	owner.my_vignette.get_child(0).material.set_shader_parameter("MainAlpha",val)
+
 func on_state_entered_outside() -> void:
-	#is_inside_gloam = false
-	pass
+	var tween = create_tween()
+	tween.tween_method(set_vignette_opacity, 0.1, 0.0, 1.0)
+	print("out")
 	
 func on_state_entered_inside() -> void:
-	#is_inside_gloam = true
-	pass
+	var tween = create_tween()
+	tween.tween_method(set_vignette_opacity, 0.0, 0.1, 1.0)
+	print("in")
 	
 	# Verify we have a loomlight and it can be equipped
 	if equipment.ability_event(equipment.loomlight,"verify_equip"):
 		equipment.ability_switch_active(equipment.loomlight)
 
-
-@export var encounter_rate : float = 1.0 #Fixed rate at which we accumulate encounter progress
-@export var max_encounter_rate : float = 100.0 #Point at which encounter is triggered
+var encounter_rate : float = 0.0
+var max_encounter_rate : float = 100.0 #Point at which encounter is triggered
 var encounter_rate_randomness : float #Runtime-decided percentage that makes progress semi-random (0.0 to 1.0)
+
+var vignette_rate_start : float = 1.0
+var vignette_rate_end : float = 0.5
+
+@export var encounter_rate_base : float = 20.5 #Max rate at which we accumulate encounter progress per second
 @export var encounter_pool : Array = [ #Pool of possible encounters and their weights
 		{
 			"weight" : 0.5,
@@ -75,14 +84,31 @@ var encounter_rate_randomness : float #Runtime-decided percentage that makes pro
 ## Runs when inside the fog
 func on_state_physics_processing_inside(delta : float) -> void:
 	
+	##Edit encounter progress
+	#If moving or at 90% of encounter, keep going
+	if owner.velocity.x > 0 or owner.velocity.z > 0 or encounter_rate/max_encounter_rate > 0.9:
+		encounter_rate_randomness = randf_range(0,1)
+		var result = encounter_rate_randomness * encounter_rate_base
+		encounter_rate = clamp(encounter_rate + (result * delta), 0, max_encounter_rate)
+		print(encounter_rate)
+	else:
+		pass
 	
+	##Check new encounter progress
+	#Flickering? Maybe for certain milestones like 50% or 90%? Or for special encounters?
+	#Fog thickens?
+	#Vignette?
+	owner.my_vignette.get_child(0).material.set_shader_parameter("outerRadius",vignette_rate_start - (encounter_rate/max_encounter_rate))
 	
-	#delta * x is x per second
-	#so if we add 1 resource to encounter meter * delta
-	#after 1 second, we will have 1 resource
+	if encounter_rate == max_encounter_rate:
+		Battle.battle_initialize_verbose(Glossary.pick_weighted(encounter_pool))
+		state_chart.send_event("on_outside")
+	else:
+		pass
 	
-	# encounter_rate_randomness = randf_range(0,1)
-	# encounter_rate * encounter_rate_randomness * delta
+	#Only should accumulate if moving
+	#We also need to keep progress of impulse controllers on battle scene change
+	#collision for gloam not happening when no lantern
 	
 	## Negates the current gloam cloud by its exact amount. Negative clearing strength makes the clearing weaker, and vice versa
 	fog_strength = -(current_gloam_cloud.my_fog.material.get_shader_parameter("density") + clearing_strength)

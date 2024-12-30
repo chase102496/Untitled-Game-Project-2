@@ -5,7 +5,7 @@ extends Node3D
 
 @export var active_interact_area : component_interact_controller
 
-@onready var dreamstitch : ability_dreamstitch = ability_heartlink.new(owner)
+@onready var dreamstitch : ability_dreamstitch# = ability_heartlink.new(owner)
 @onready var loomlight : ability_loomlight = ability_loomlight.new(owner)
 @onready var active : ability = dreamstitch
 

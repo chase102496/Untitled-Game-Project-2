@@ -12,6 +12,7 @@ extends world_entity
 @export var my_component_interaction : component_interaction
 @export var my_inventory_gui : Control
 @export var gloam_manager : component_gloam_manager
+@export var my_vignette : Control
 
 func _ready():
 	Global.player = self
@@ -34,7 +35,15 @@ func _ready():
 
 func on_save(data):
 	##Player
+	
+	if !data.get("collision_mask"):
+		data.collision_mask = {}
+	if !data.get("collision_layer"):
+		data.collision_layer = {}
+	
 	data.scene_name = SceneManager.current_scene.name
+	data.collision_mask[4] = get_collision_mask_value(4)
+	data.collision_layer[4] = get_collision_layer_value(4)
 	data.global_position = global_position
 	data.health = my_component_health.health
 	data.max_health = my_component_health.max_health
@@ -57,6 +66,14 @@ func on_load(data):
 		global_position = data.global_position
 	else:
 		pass #This is where we recieve global pos info from old world saved in a global var
+	
+	if data.collision_layer:
+		if data.collision_layer[4]:
+			set_collision_layer_value(4,data.collision_layer[4])
+	if data.collision_mask:
+		if data.collision_mask[4]:
+			set_collision_mask_value(4,data.collision_mask[4])
+	
 	my_component_health.health = data.health
 	my_component_health.max_health = data.max_health
 	my_component_vis.vis = data.vis
@@ -85,7 +102,7 @@ func on_load_data_persistent():
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("save"):
 		#my_component_party.recall(0)
-		PlayerData.save_data_global()
+		PlayerData.save_data_persistent()
 	if Input.is_action_just_pressed("load"):
 		#my_component_party.summon(0,"world")
 		PlayerData.load_data_persistent()
