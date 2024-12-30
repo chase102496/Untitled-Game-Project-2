@@ -23,6 +23,14 @@ func _ready() -> void:
 	$StateChart/CompoundState/Inside.state_entered.connect(on_state_entered_inside)
 	$StateChart/CompoundState/Inside.state_physics_processing.connect(on_state_physics_processing_inside)
 
+## Abstractions
+
+func reset_encounter_progress(val : float = 0.0) -> void:
+	encounter_rate = val
+
+func set_vignette_opacity(val : float) -> void:
+	owner.my_vignette.get_child(0).material.set_shader_parameter("MainAlpha",val)
+
 func is_inside_gloam() -> bool:
 	if state_chart.get_current_state() == "outside":
 		return false
@@ -38,6 +46,7 @@ func is_inside_gloam() -> bool:
 func _on_area_entered(area : Area3D):
 	current_gloam_cloud = area.owner
 	state_chart.send_event("on_inside")
+
 ## What happens when we exit fog
 func _on_area_exited(area : Area3D):
 	current_gloam_cloud = null
@@ -45,18 +54,14 @@ func _on_area_exited(area : Area3D):
 
 ## --- State Charts --- ##
 
-func set_vignette_opacity(val : float) -> void:
-	owner.my_vignette.get_child(0).material.set_shader_parameter("MainAlpha",val)
-
 func on_state_entered_outside() -> void:
 	var tween = create_tween()
 	tween.tween_method(set_vignette_opacity, 0.1, 0.0, 1.0)
-	print("out")
+	reset_encounter_progress()
 	
 func on_state_entered_inside() -> void:
 	var tween = create_tween()
 	tween.tween_method(set_vignette_opacity, 0.0, 0.1, 1.0)
-	print("in")
 	
 	# Verify we have a loomlight and it can be equipped
 	if equipment.ability_event(equipment.loomlight,"verify_equip"):
