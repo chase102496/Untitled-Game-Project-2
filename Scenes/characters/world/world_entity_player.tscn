@@ -34,7 +34,16 @@ my_vignette = NodePath("Vignette")
 alignment = "FRIENDS"
 classification = "PLAYER"
 
-[node name="FaceLight" type="OmniLight3D" parent="." index="0"]
+[node name="Vignette" parent="." index="0" instance=ExtResource("3_6833w")]
+offset_bottom = 438.0
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+
+[node name="Inventory_GUI" parent="." index="1" node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("3_sq4rn")]
+my_component_party = NodePath("../Components/component_party")
+my_component_inventory = NodePath("../Components/component_inventory")
+
+[node name="FaceLight" type="OmniLight3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
 light_energy = 0.3
 light_indirect_energy = 0.0
@@ -42,13 +51,6 @@ light_volumetric_fog_energy = 0.0
 light_specular = 0.0
 omni_range = 0.513
 omni_attenuation = 0.2
-
-[node name="Inventory_GUI" parent="." index="1" node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("3_sq4rn")]
-my_component_party = NodePath("../Components/component_party")
-my_component_inventory = NodePath("../Components/component_inventory")
-
-[node name="Vignette" parent="." index="2" instance=ExtResource("3_6833w")]
-offset_bottom = 438.0
 
 [node name="component_interaction" parent="Components" index="0" instance=ExtResource("4_l3hcv")]
 

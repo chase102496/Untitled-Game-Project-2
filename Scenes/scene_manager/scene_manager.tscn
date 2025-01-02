@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://c044kghj0y7u0"]
 
 [ext_resource type="Shader" path="res://Scenes/scene_manager/shaders/diamond_sweep.gdshader" id="1_a6aj7"]
-[ext_resource type="Script" path="res://Scenes/scene_manager/scripts/scene_manager.gd" id="1_dnrid"]
+[ext_resource type="Script" path="res://Scenes/scene_manager/scripts/SceneManager.gd" id="1_dnrid"]
 [ext_resource type="FontFile" uid="uid://ptv37pyl8ph5" path="res://Scenes/scene_manager/fonts/LilitaOne-Regular.ttf" id="2_h426g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ugclb"]

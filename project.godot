@@ -26,7 +26,7 @@ Glossary="*res://Logic/globals/Glossary.gd"
 Global="*res://Logic/globals/Global.gd"
 Battle="*res://Logic/globals/Battle.gd"
 SceneManager="*res://Scenes/scene_manager/scene_manager.tscn"
-PlayerData="*res://Logic/globals/PlayerData.gd"
+SaveManager="*res://Logic/globals/SaveManager.gd"
 
 [debug]
 
@@ -98,6 +98,7 @@ load_data_persistent=""
 load_data_session=""
 save_data_persistent="Allows grouping of any objects that need to be saved across scenes and game states"
 save_data_session=""
+save_id_scene=""
 
 [importer_defaults]
 

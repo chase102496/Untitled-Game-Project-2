@@ -74,7 +74,7 @@ class party_dreamkin:
 ##Get obj data from active summon list
 func get_summon_data(index : int):
 	if my_summons.is_empty() or !is_instance_valid(my_summons[index]):
-		push_warning("No dreamkin found to import")
+		push_warning("No dreamkin found to import. Party is empty or bug")
 		return {}
 	else:
 		var summon_inst = my_summons[index] #Grab the summon member

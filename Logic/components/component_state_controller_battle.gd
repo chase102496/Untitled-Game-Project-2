@@ -127,14 +127,18 @@ func _on_state_entered_battle_start() -> void:
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
 	my_component_ability.my_status.status_event("on_start")
-	owner.state_chart.send_event("on_choose") 
+	owner.state_chart.send_event("on_choose")
 
 func _on_state_entered_battle_choose() -> void:
 	
 	my_component_ability.my_status.status_event("on_skillcheck")
 	
+	#Edge case for first battle entity up when loading scene. Needs to wait so abilities and whatnot can be loaded from SceneManager
+	if SceneManager.busy:
+		await SceneManager.scene_load_end
+	
 	if my_component_ability.get_abilities().size() == 0:
-		push_error("Abilities is empty for unit ", owner)
+		push_error("Abilities is empty for unit ", owner.name)
 		
 	match owner.classification:
 		Battle.classification.PLAYER:

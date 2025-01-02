@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://c5r06amfsateg"]
 
-[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://UI/menu_theme.tres" id="1_al4xi"]
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_al4xi"]
 [ext_resource type="Script" path="res://Scenes/ui/battle_gui.gd" id="1_jw2rn"]
 [ext_resource type="Texture2D" uid="uid://baulnrnwj0y00" path="res://Art/sprites/cursor_hand_new.png" id="2_up7di"]
 [ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://Scenes/ui/animation_component.tscn" id="3_75k8e"]

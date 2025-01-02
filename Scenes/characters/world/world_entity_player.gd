@@ -24,8 +24,6 @@ func _ready():
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
 	
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
-
-	PlayerData.load_data_session()
 	
 	##Debug
 	if my_component_party.my_party.size() == 0:
@@ -33,17 +31,13 @@ func _ready():
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 99},get_parent()),false)
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 98},get_parent()),false)
 
-func on_save(data):
-	##Player
+func on_save(raw_data):
 	
-	if !data.get("collision_mask"):
-		data.collision_mask = {}
-	if !data.get("collision_layer"):
-		data.collision_layer = {}
+	var data = SaveManager.get_save_location_global(self,raw_data,"player")
 	
 	data.scene_name = SceneManager.current_scene.name
-	data.collision_mask[4] = get_collision_mask_value(4)
-	data.collision_layer[4] = get_collision_layer_value(4)
+	data.collision_mask = collision_mask
+	data.collision_layer = collision_layer
 	data.global_position = global_position
 	data.health = my_component_health.health
 	data.max_health = my_component_health.max_health
@@ -58,21 +52,22 @@ func on_save(data):
 	##Inventory
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
 
-func on_load(data):
+func on_load(raw_data):
+	
+	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	
 	##Player
-	#If we're loading the same exact scene, then we want to also load our position.
+	#If we're loading the same exact scene as our save file, then we want to also load our position.
 	#It's either after exiting battle, or loading a save file from title screen
 	if SceneManager.current_scene.name == data.scene_name:
 		global_position = data.global_position
+	#If we're loading a scene that our save file was not in
+	#It's either after changing scenes, or some other edge case
 	else:
 		pass #This is where we recieve global pos info from old world saved in a global var
-	
-	if data.collision_layer:
-		if data.collision_layer[4]:
-			set_collision_layer_value(4,data.collision_layer[4])
-	if data.collision_mask:
-		if data.collision_mask[4]:
-			set_collision_mask_value(4,data.collision_mask[4])
+
+	collision_mask = data.collision_mask
+	collision_layer = data.collision_layer
 	
 	my_component_health.health = data.health
 	my_component_health.max_health = data.max_health
@@ -87,25 +82,13 @@ func on_load(data):
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
-func on_save_data_session():
-	on_save(PlayerData.data_session.player)
-
-func on_load_data_session():
-	on_load(PlayerData.data_session.player)
-
-func save_data_persistent():
-	on_save(PlayerData.data_persistent.player)
-
-func on_load_data_persistent():
-	on_load(PlayerData.data_persistent.player)
-
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("save"):
 		#my_component_party.recall(0)
-		PlayerData.save_data_persistent()
+		SaveManager.save_data_persistent() #HACK
 	if Input.is_action_just_pressed("load"):
 		#my_component_party.summon(0,"world")
-		PlayerData.load_data_persistent()
+		SaveManager.load_data_persistent() #HACK
 	
 	
 	#if Input.is_action_just_pressed("move_forward"):

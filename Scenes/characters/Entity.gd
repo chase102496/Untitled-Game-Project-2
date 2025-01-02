@@ -11,4 +11,6 @@ func create(glossary : String, overrides : Dictionary = {}, parent : Node = null
 	return inst
 
 func _enter_tree() -> void:
-	name = str(name," ",randi_range(0,99))
+	#name = str(name," ",randi_range(0,99))
+	#var name_debug = str(name," ",randi_range(0,99))
+	pass

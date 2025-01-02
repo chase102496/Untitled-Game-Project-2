@@ -1,7 +1,7 @@
 [gd_scene load_steps=75 format=3 uid="uid://3toebp44q7k4"]
 
 [ext_resource type="Script" path="res://Logic/misc/scene_tree_script.gd" id="1_0n5a0"]
-[ext_resource type="Script" path="res://Logic/misc/turn_manager3d.gd" id="1_k1dsd"]
+[ext_resource type="Script" path="res://Logic/misc/turn_manager.gd" id="1_k1dsd"]
 [ext_resource type="PackedScene" uid="uid://c1ria312wfebc" path="res://Scenes/environment/terrain/hex_grid_map.res" id="2_1hojb"]
 [ext_resource type="Texture2D" uid="uid://b4y2n7w11dkwo" path="res://Art/sprites/Lumia/idle_front/Lumia_Idle_Center.png" id="2_p5w1j"]
 [ext_resource type="PackedScene" uid="uid://qklm0d27lwlg" path="res://Scenes/camera.tscn" id="2_vx8wr"]

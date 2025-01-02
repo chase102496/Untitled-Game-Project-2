@@ -8,11 +8,16 @@ extends battle_entity
 @export var my_component_party : component_party
 @export var my_component_inventory : component_inventory
 
+#func _init() -> void:
+	#Global.player = self
+
 func _ready():
 	Global.player = self
-	PlayerData.load_data_session()
 
-func on_save(data):
+func on_save(raw_data):
+	
+	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	
 	##Player
 	data.health = my_component_health.health
 	data.max_health = my_component_health.max_health
@@ -27,7 +32,10 @@ func on_save(data):
 	##Inventory
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
 
-func on_load(data):
+func on_load(raw_data):
+	
+	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	
 	##Player
 	my_component_health.health = data.health
 	my_component_health.max_health = data.max_health
@@ -44,9 +52,3 @@ func on_load(data):
 		Battle.add_member.call_deferred(inst,1) #Add to battle list
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
-
-func on_save_data_session():
-	on_save(PlayerData.data_session.player)
-
-func on_load_data_session():
-	on_load(PlayerData.data_session.player)

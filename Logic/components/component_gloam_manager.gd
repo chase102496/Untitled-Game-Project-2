@@ -90,12 +90,12 @@ var vignette_rate_end : float = 0.5
 func on_state_physics_processing_inside(delta : float) -> void:
 	
 	##Edit encounter progress
-	#If moving or at 90% of encounter, keep going
-	if owner.velocity.x > 0 or owner.velocity.z > 0 or encounter_rate/max_encounter_rate > 0.9:
+	#If moving or at 90% of encounter, progress encounter rate
+	if owner.velocity.x != 0 or owner.velocity.z != 0 or encounter_rate/max_encounter_rate > 0.9:
 		encounter_rate_randomness = randf_range(0,1)
 		var result = encounter_rate_randomness * encounter_rate_base
 		encounter_rate = clamp(encounter_rate + (result * delta), 0, max_encounter_rate)
-		print(encounter_rate)
+		print(encounter_rate,"/",max_encounter_rate)
 	else:
 		pass
 	

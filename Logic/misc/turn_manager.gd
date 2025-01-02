@@ -8,6 +8,7 @@ func _exit_tree() -> void:
 
 #Init and set active character to the first in our child list and emit start of turn
 func _ready() -> void:
+	
 	#Init for event bus, so we can recieve char end turn
 	Events.battle_entity_death.connect(_on_battle_entity_death)
 	Events.turn_end.connect(_on_turn_end)
@@ -16,7 +17,8 @@ func _ready() -> void:
 	#Initialize characters and battle list
 	var friends_offset := Vector3.ZERO
 	var foes_offset := Vector3.ZERO
-	for i in len(Battle.battle_list):
+	
+	for i in Battle.battle_list.size():
 		
 		var instance = Battle.battle_list[i] #Our object to move into scene
 		var parent = get_node(instance.alignment) #Side of the battlefield to spawn on
@@ -32,7 +34,7 @@ func _ready() -> void:
 			instance.position.y = instance.collider.shape.height/2
 			tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
 			friends_offset += instance.spacing
-
+		
 		if i != 0:
 			instance.state_chart.send_event.call_deferred("on_waiting")
 		else:
@@ -96,11 +98,11 @@ func _on_turn_end() -> void:
 
 func _on_battle_finished(result) -> void:
 	if result == "Win":
-		PlayerData.save_data_session()
+		SaveManager.save_data_session()
 		print_debug("Yay!")
 		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 	elif result == "Lose":
-		PlayerData.save_data_session()
+		SaveManager.save_data_session()
 		print_debug("womp womp")
 		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 	else:
