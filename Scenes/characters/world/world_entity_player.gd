@@ -15,6 +15,7 @@ extends world_entity
 @export var my_vignette : Control
 
 func _ready():
+	
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.add_ability(component_ability.ability_tackle.new())
@@ -31,9 +32,9 @@ func _ready():
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 99},get_parent()),false)
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 98},get_parent()),false)
 
-func on_save(raw_data):
+func on_save(all_data):
 	
-	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	var data : Dictionary = SaveManager.get_save_location_global(self,all_data,"player")
 	
 	data.scene_name = SceneManager.current_scene.name
 	data.collision_mask = collision_mask
@@ -52,9 +53,9 @@ func on_save(raw_data):
 	##Inventory
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
 
-func on_load(raw_data):
+func on_load(all_data):
 	
-	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	var data : Dictionary = SaveManager.get_save_location_global(self,all_data,"player")
 	
 	##Player
 	#If we're loading the same exact scene as our save file, then we want to also load our position.
@@ -82,14 +83,8 @@ func on_load(raw_data):
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
+var test_dict : Dictionary
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("save"):
-		#my_component_party.recall(0)
-		SaveManager.save_data_persistent() #HACK
-	if Input.is_action_just_pressed("load"):
-		#my_component_party.summon(0,"world")
-		SaveManager.load_data_persistent() #HACK
-	
 	
 	#if Input.is_action_just_pressed("move_forward"):
 		##if my_component_party.get_party():
@@ -104,7 +99,24 @@ func _physics_process(delta: float) -> void:
 		#my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
-	#
+	
+	
+	
+	if Input.is_action_just_pressed("debug"):
+		
+		Global.toggle_debug()
+		
+		if Global.debug:
+			test_dict = Global.serialize_data(self,["my_component_health.max_health","global_position","my_component_inventory.my_inventory","my_component_vis.vis"])
+		else:
+			Global.deserialize_data(self,test_dict)
+	
+	if Input.is_action_just_pressed("save"):
+		SaveManager.save_data_persistent() #HACK
+	if Input.is_action_just_pressed("load"):
+		SaveManager.load_data_persistent() #HACK
+	if Input.is_action_just_pressed("clear_save"):
+		SaveManager.reset_data_persistent()
 	
 	if Input.is_action_just_pressed("num1"):
 		if my_component_party.my_summons.size() > 0:

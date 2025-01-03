@@ -28,4 +28,3 @@ func add_substate(state:StateChartState, saved_state:SavedState):
 ## Returns the saved state of the given substate, or null if it does not exist
 func get_substate_or_null(state:StateChartState) -> SavedState:
 	return child_states.get(state.name)
-

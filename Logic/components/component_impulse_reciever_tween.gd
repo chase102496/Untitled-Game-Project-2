@@ -19,8 +19,8 @@ func _ready() -> void:
 
 func _on_activated() -> void:
 	if !dict_activated.is_empty():
-		Glossary.apply_changes_with_tween(my_target,dict_activated,tween_duration)
+		Global.apply_changes_with_tween(my_target,dict_activated,tween_duration)
 
 func _on_deactivated() -> void:
 	if !dict_deactivated.is_empty():
-		Glossary.apply_changes_with_tween(my_target,dict_deactivated,tween_duration)
+		Global.apply_changes_with_tween(my_target,dict_deactivated,tween_duration)

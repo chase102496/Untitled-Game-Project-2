@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://dwjfdqfbttau0"]
+[gd_scene load_steps=17 format=4 uid="uid://dwjfdqfbttau0"]
 
 [ext_resource type="PackedScene" uid="uid://b1fspre3pncai" path="res://Scenes/defaults/wall_default.tscn" id="1_0lsd5"]
 [ext_resource type="Texture2D" uid="uid://npibbqw6fjx7" path="res://Imports/textures/SM_Window_Wall_02_MI_TrimSheet_Wood_02_1_albedo.png" id="1_y06pt"]
@@ -7,8 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://b7yp676xnr4x1" path="res://Imports/textures/SM_Window_Wall_02_MI_Tavern_TrimSheet_01_0_normal.png" id="4_jo70e"]
 [ext_resource type="Texture2D" uid="uid://ba76hsmv7cpct" path="res://Imports/textures/SM_Window_Wall_02_MI_TrimSheet_Wood_04_2_albedo.png" id="5_w6s0r"]
 [ext_resource type="Texture2D" uid="uid://jv7k8x67vkwn" path="res://Imports/textures/SM_Window_Wall_02_MI_TrimSheet_Wood_04_2_normal.png" id="6_scyn7"]
-[ext_resource type="Texture2D" uid="uid://d1q0naj7cduwl" path="res://Art/textures/stylized/Ground/Ground3Textures/T_Ground3_Height.png" id="7_muiiw"]
-[ext_resource type="Texture2D" uid="uid://dg81kbw7gu5j8" path="res://Art/textures/stylized/Ground/Ground3Textures/T_Ground3_Normal.png" id="8_fjbej"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bk4fa"]
 resource_name = "SM_Window_Wall_02_MI_TrimSheet_Wood_02_1"
@@ -143,12 +141,9 @@ shadow_mesh = SubResource("ArrayMesh_lcxsq")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6662v"]
 transparency = 1
 albedo_color = Color(0.73, 0.8335, 1, 0.945098)
-albedo_texture = ExtResource("7_muiiw")
 metallic = 1.0
-metallic_texture = ExtResource("8_fjbej")
 roughness = 0.0
 normal_enabled = true
-normal_texture = ExtResource("8_fjbej")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_q4slm"]
 material = SubResource("StandardMaterial3D_6662v")

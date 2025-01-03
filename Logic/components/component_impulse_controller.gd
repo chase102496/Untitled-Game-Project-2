@@ -9,9 +9,12 @@ signal deactivated
 
 ## If plugged in, the impulse controller will only work when this is active, acting as an internal AND gate
 @export var impulse_parent : component_impulse
+
 ## This is what we get our signals from, usually an Area3D
 @onready var my_component_interact_reciever : component_interact_reciever = get_my_component_interact_reciever()
+
 @onready var state_chart : StateChart = $StateChart
+@onready var state_chart_initial_state = $StateChart/Main.initial_state
 @onready var debug_name : String = get_parent().get_parent().name
 
 ## Just keeps track of our impulse parent, if we have one
@@ -47,7 +50,7 @@ func my_state_transition_toggle(ignore_collision : bool = false, mirror : bool =
 	
 	var state_dest : String
 	
-	if state_chart.get_current_state() == "activated":
+	if state_chart.get_current_state() == "Activated":
 		state_dest = "deactivated"
 	else:
 		state_dest = "activated"
@@ -114,15 +117,33 @@ func my_state_transition(
 		pass
 
 ## Wrapper for updating all signals
-func update_signals(state_name : String, is_connecting : bool):
-	if is_connecting:
-		my_component_interact_reciever.enter.connect(Callable(self,str("_on_target_entered_",state_name)))
-		my_component_interact_reciever.exit.connect(Callable(self,str("_on_target_exited_",state_name)))
-		my_component_interact_reciever.interact.connect(Callable(self,str("_on_target_interact_",state_name)))
+func update_signals(state_name : String, is_connecting : bool, is_failsafe : bool = false):
+	
+	var call_enter : Callable = Callable(self,str("_on_target_entered_",state_name))
+	var call_exit : Callable = Callable(self,str("_on_target_exited_",state_name))
+	var call_interact : Callable = Callable(self,str("_on_target_interact_",state_name))
+	
+	# Checking if we transition without player interaction
+	if is_failsafe:
+		if is_connecting:
+			if !my_component_interact_reciever.enter.is_connected(call_enter):
+				my_component_interact_reciever.enter.connect(call_enter)
+				my_component_interact_reciever.exit.connect(call_exit)
+				my_component_interact_reciever.interact.connect(call_interact)
+		else:
+			if my_component_interact_reciever.enter.is_connected(call_enter):
+				my_component_interact_reciever.enter.disconnect(call_enter)
+				my_component_interact_reciever.exit.disconnect(call_exit)
+				my_component_interact_reciever.interact.disconnect(call_interact)
 	else:
-		my_component_interact_reciever.enter.disconnect(Callable(self,str("_on_target_entered_",state_name)))
-		my_component_interact_reciever.exit.disconnect(Callable(self,str("_on_target_exited_",state_name)))
-		my_component_interact_reciever.interact.disconnect(Callable(self,str("_on_target_interact_",state_name)))
+		if is_connecting:
+			my_component_interact_reciever.enter.connect(call_enter)
+			my_component_interact_reciever.exit.connect(call_exit)
+			my_component_interact_reciever.interact.connect(call_interact)
+		else:
+			my_component_interact_reciever.enter.disconnect(call_enter)
+			my_component_interact_reciever.exit.disconnect(call_exit)
+			my_component_interact_reciever.interact.disconnect(call_interact)
 
 ## Wrapper for updating area collision
 func update_collision(toggle : bool):

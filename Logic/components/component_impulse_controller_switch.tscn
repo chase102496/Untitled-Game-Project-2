@@ -20,7 +20,6 @@ script = ExtResource("3_mu63i")
 script = ExtResource("4_5pn0t")
 to = NodePath("../../Activated")
 event = &"on_activated"
-delay_in_seconds = "0.0"
 
 [node name="Activated" type="Node" parent="StateChart/Main" index="1"]
 script = ExtResource("3_mu63i")
@@ -29,4 +28,3 @@ script = ExtResource("3_mu63i")
 script = ExtResource("4_5pn0t")
 to = NodePath("../../Deactivated")
 event = &"on_deactivated"
-delay_in_seconds = "0.0"

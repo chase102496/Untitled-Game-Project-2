@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://blve5xgsm70ww"]
+
+[ext_resource type="Script" path="res://Logic/components/component_save.gd" id="1_unp6r"]
+
+[node name="component_save" type="Node"]
+script = ExtResource("1_unp6r")

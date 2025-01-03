@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=4 uid="uid://3n6dlkrf1mxh"]
+[gd_scene load_steps=8 format=4 uid="uid://3n6dlkrf1mxh"]
 
 [ext_resource type="Texture2D" uid="uid://bac5tf65qh6h1" path="res://Art/textures/oleekconder/T_Ground7_Color.png" id="1_y6u25"]
 [ext_resource type="Texture2D" uid="uid://dksx071qyhrr8" path="res://Imports/textures/SM_FirePlace_MI_Fireplace_01_0_normal.png" id="2_khdj6"]
-[ext_resource type="Texture2D" path="res://Art/textures/stylized/Ground/Ground2Textures/T_Ground2_Normal.png" id="4_oqdgx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01c05"]
 resource_name = "SM_FirePlace_MI_Fireplace_01_0"
@@ -15,7 +14,6 @@ resource_name = "SM_FirePlace_MI_Tavern_Plaster_1"
 albedo_texture = ExtResource("1_y6u25")
 roughness = 0.5
 normal_enabled = true
-normal_texture = ExtResource("4_oqdgx")
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 

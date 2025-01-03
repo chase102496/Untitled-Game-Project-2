@@ -13,61 +13,66 @@ extends Label3D
 @onready var new_state_history
 
 func _ready() -> void:
+	
+	Events.debug_disabled.connect(_on_debug_disabled)
+	Events.debug_enabled.connect(_on_debug_enabled)
+	
 	state_subchart = str(%StateChart/Main/World._active_state)
 	
 	#position.y += randf_range(0,0.6)
 	modulate = Color(randf_range(0.5,1),randf_range(0.5,1),randf_range(0.5,1))
 
+func _on_debug_disabled() -> void:
+	hide()
+	owner.animations.status_hud.hide()
+	
+func _on_debug_enabled() -> void:
+	show()
+	owner.animations.status_hud.show()
+
 func _physics_process(delta: float) -> void:
 	
-	if Input.is_action_just_pressed("debug"):
-		if visible:
-			hide()
-			owner.animations.status_hud.hide()
-		else:
-			show()
-			owner.animations.status_hud.show()
-	
-	var abil = owner.my_component_ability.get_data_ability_all()
-	var abil_names : Array = []
-	
-	for i in abil.size():
-		abil_names.append(abil[i].title)
-	
-	var dreamkin_summons = Global.player.my_component_party.my_summons
-	var dreamkin_party = Global.player.my_component_party.my_party
-	
-	var dreamkin_list = []
-	
-	for i in dreamkin_summons.size():
-		dreamkin_list.append(dreamkin_summons[i].name)
-	dreamkin_list.append(" / ")
-	for i in dreamkin_party.size():
-		dreamkin_list.append(dreamkin_party[i].name)
-	
-	var status_list = []
-	if owner.my_component_ability.my_status.NORMAL:
-		status_list.append(owner.my_component_ability.my_status.NORMAL.title)
-	status_list.append(" / ")
-	for i in owner.my_component_ability.my_status.PASSIVE.size():
-		status_list.append(owner.my_component_ability.my_status.PASSIVE[i].title)
-	
-	if prev != state_subchart:
-		history = prev
-		prev = state_subchart
-	
-	text = str(
-	owner.name,
-	"\n",
-	#new_state_history,
-	"\n",
-	dreamkin_list,
-	"\n",
-	abil_names,
-	"\n",
-	status_list,
-	"\n",
-	str(owner.state_chart.get_current_state(true)),
-	#"Now: ", state_subchart.rsplit(":")[0],
-	"\n")
-	#"Prev: ", history.rsplit(":")[0])
+	if Global.debug:
+		var abil = owner.my_component_ability.get_data_ability_all()
+		var abil_names : Array = []
+		
+		for i in abil.size():
+			abil_names.append(abil[i].title)
+		
+		var dreamkin_summons = Global.player.my_component_party.my_summons
+		var dreamkin_party = Global.player.my_component_party.my_party
+		
+		var dreamkin_list = []
+		
+		for i in dreamkin_summons.size():
+			dreamkin_list.append(dreamkin_summons[i].name)
+		dreamkin_list.append(" / ")
+		for i in dreamkin_party.size():
+			dreamkin_list.append(dreamkin_party[i].name)
+		
+		var status_list = []
+		if owner.my_component_ability.my_status.NORMAL:
+			status_list.append(owner.my_component_ability.my_status.NORMAL.title)
+		status_list.append(" / ")
+		for i in owner.my_component_ability.my_status.PASSIVE.size():
+			status_list.append(owner.my_component_ability.my_status.PASSIVE[i].title)
+		
+		if prev != state_subchart:
+			history = prev
+			prev = state_subchart
+		
+		text = str(
+		owner.name,
+		"\n",
+		#new_state_history,
+		"\n",
+		dreamkin_list,
+		"\n",
+		abil_names,
+		"\n",
+		status_list,
+		"\n",
+		str(owner.state_chart.get_current_state(true)),
+		#"Now: ", state_subchart.rsplit(":")[0],
+		"\n")
+		#"Prev: ", history.rsplit(":")[0])

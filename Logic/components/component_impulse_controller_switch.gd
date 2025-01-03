@@ -1,3 +1,4 @@
+## A user-input switch that toggles from activated to deactivated
 class_name component_impulse_controller_switch
 extends component_impulse_controller
 
@@ -10,6 +11,7 @@ enum type {
 	## Like a pressure plate. Activates when in its Area3D, and deactivates upon exiting.
 	PROXIMITY
 }
+
 ##Determines how this switch operates
 @export var type_selection : type = type.SWITCH
 
@@ -31,7 +33,7 @@ func _ready() -> void:
 
 func on_state_entered_deactivated() -> void:
 	deactivated.emit()
-
+	update_signals.call_deferred("deactivated", true, true) #Failsafe
 #
 
 func _on_target_entered_deactivated(source : Node) -> void:
@@ -53,12 +55,14 @@ func _on_target_interact_deactivated(source : Node) -> void:
 #
 
 func on_state_exited_deactivated() -> void:
-	pass
+	update_signals.call_deferred("deactivated", false, true) #Failsafe
 
 ## --- Activated --- ##
 
 func on_state_entered_activated() -> void:
 	activated.emit()
+	update_signals.call_deferred("activated", true, true) #Failsafe
+	
 	if one_way:
 		update_signals("activated", false)
 		update_collision(false)
@@ -84,4 +88,4 @@ func _on_target_interact_activated(source : Node) -> void:
 #
 
 func on_state_exited_activated() -> void:
-	pass
+	update_signals.call_deferred("activated", false, true) #Failsafe

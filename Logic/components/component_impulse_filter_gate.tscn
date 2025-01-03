@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxnsmg4ufjehi"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_filter_gate.gd" id="1_jeu65"]
+
+[node name="component_impulse_filter_gate" type="Node" node_paths=PackedStringArray("my_impulse_0", "my_impulse_1", "my_impulse_2")]
+script = ExtResource("1_jeu65")
+gate = "AND"
+my_impulse_0 = NodePath("")
+my_impulse_1 = NodePath("")
+my_impulse_2 = NodePath("")

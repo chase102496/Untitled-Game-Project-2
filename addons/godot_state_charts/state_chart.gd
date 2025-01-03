@@ -5,9 +5,18 @@
 class_name StateChart 
 extends Node
 
-
 ## HACK THIS IS MY HACK CODE NOT THE PLUGIN
-func get_current_state(full_path : bool = false, full_path_result : String = "", root : Node = self):
+# ----------------------------------------
+
+## Sets the initial state based on a NodePath or String
+func set_initial_state(path : NodePath):
+	_state.initial_state = path
+
+func get_initial_state():
+	return _state.initial_state
+
+## Returns string val of current state. Useful for debugging
+func get_current_state(full_path : bool = false, full_path_result : String = "", root : Node = _state) -> String:
 	if root.get_child_count() > 0:
 		for i in root.get_child_count():
 			var child = root.get_child(i)
@@ -17,14 +26,47 @@ func get_current_state(full_path : bool = false, full_path_result : String = "",
 		
 		#We get through the loop and have no children to pass to
 		if full_path:
-			return full_path_result #Full path keeps capitalization
+			return full_path_result
 		else:
-			return root.name.to_lower()
+			return root.name
 	else: # If we have no children, we're the innermost active state
 		if full_path:
-			return full_path_result #Full path keeps capitalization
+			return full_path_result
 		else:
-			return root.name.to_lower()
+			return root.name
+
+## Returns full nodepath of current state
+func get_current_state_nodepath() -> NodePath:
+	var str : String = get_current_state(true)
+	var result = NodePath( str(get_path(),str) )
+	return result
+
+## Returns actual live node of current state
+func get_current_state_node() -> Node:
+	var str : String = get_current_state(true)
+	var result = get_node( str(get_path(),str) )
+	return result
+
+##
+func set_load_state(path : NodePath, trigger_transition : bool = false) -> void:
+	
+	var trans = _state.find_child("_on_load")
+	
+	if !trans:
+		trans = Transition.new()
+		trans.name = "_on_load"
+		trans.event = "_on_load"
+		_state.add_child(trans)
+		
+	trans.to = NodePath(str("../",path)) #Need the sibling prefix
+	print(trans)
+	print(trans.to)
+	
+	if trigger_transition:
+		send_event.call_deferred("_on_load")
+		print(get_current_state())
+
+# ----------------------------------------
 
 ## The the remote debugger
 const DebuggerRemote = preload("utilities/editor_debugger/editor_debugger_remote.gd")

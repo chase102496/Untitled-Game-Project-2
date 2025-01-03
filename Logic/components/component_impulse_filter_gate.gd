@@ -1,3 +1,4 @@
+## This will listen for the inputs under my_impulse, and when they are all activated, it will send its own impulse
 class_name component_impulse_filter_gate
 extends component_impulse_filter
 

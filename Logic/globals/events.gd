@@ -1,5 +1,10 @@
 extends Node
 
+## --- Utility ---
+
+signal debug_enabled
+signal debug_disabled
+
 ## --- GUI ---
 
 signal button_pressed_battle_ability(ability : Object)
