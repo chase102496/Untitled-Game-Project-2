@@ -34,7 +34,8 @@ func _ready():
 
 func on_save(all_data):
 	
-	var data : Dictionary = SaveManager.get_save_location_global(self,all_data,"player")
+	var key = SaveManager.get_save_id_global(self,all_data,"player")
+	var data = all_data[key]
 	
 	data.scene_name = SceneManager.current_scene.name
 	data.collision_mask = collision_mask
@@ -55,7 +56,8 @@ func on_save(all_data):
 
 func on_load(all_data):
 	
-	var data : Dictionary = SaveManager.get_save_location_global(self,all_data,"player")
+	var key = SaveManager.get_save_id_global(self,all_data,"player")
+	var data = all_data[key]
 	
 	##Player
 	#If we're loading the same exact scene as our save file, then we want to also load our position.
@@ -83,8 +85,7 @@ func on_load(all_data):
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
-var test_dict : Dictionary
-func _physics_process(delta: float) -> void:
+func _input(event: InputEvent) -> void:
 	
 	#if Input.is_action_just_pressed("move_forward"):
 		##if my_component_party.get_party():
@@ -100,16 +101,8 @@ func _physics_process(delta: float) -> void:
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	
-	
-	
 	if Input.is_action_just_pressed("debug"):
-		
-		Global.toggle_debug()
-		
-		if Global.debug:
-			test_dict = Global.serialize_data(self,["my_component_health.max_health","global_position","my_component_inventory.my_inventory","my_component_vis.vis"])
-		else:
-			Global.deserialize_data(self,test_dict)
+		Debug.toggle()
 	
 	if Input.is_action_just_pressed("save"):
 		SaveManager.save_data_persistent() #HACK

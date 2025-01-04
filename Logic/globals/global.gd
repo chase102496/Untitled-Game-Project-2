@@ -5,21 +5,8 @@ var camera_function : Node = null
 var camera_object : Node = null
 var player : Node3D = null
 var state_chart_already_exists : bool = false
-var debug : bool = false
 
 var peepee : Dictionary = {}
-
-## For toggling the debug state
-func toggle_debug():
-	
-	#Invert it
-	#Fuckin genius
-	debug = !debug
-	
-	if debug:
-		Events.debug_enabled.emit()
-	else:
-		Events.debug_disabled.emit()
 
 ## Grabs just the script name of the object
 func get_glossary_nickname(entity : Node):
@@ -104,6 +91,67 @@ func disconnect_all_connections(node: Object, signal_name: String) -> void:
 	for connection in connections:
 		node.disconnect(signal_name, connection["method"])
 
+## Object -> Dict
+## Takes all the strings found in export_data and returns them as key : value pairs in a dictionary
+## So if export_data = ["object.my_component_health.max_health"] is the array
+## It will pull that variable from the target, and return a dict of:
+## { "object.my_component_health.max_health" : (value it found) }
+func serialize_data(target: Object, export_data: PackedStringArray) -> Dictionary:
+	var result : Dictionary = {}
+	var is_valid : bool
+	
+	for path in export_data:
+		var keys = path.split(".") #E.g. splitting save_list which is PackedStringArray
+		var current = target
+		is_valid = true
+		
+		# Traverse the path to the final property
+		for i in keys.size() - 1:
+			if current.get(keys[i]):
+				current = current.get(keys[i])
+			else:
+				is_valid = false
+				push_error("Error: '%s' does not exist on '%s'" % [keys[i], current.name])
+				break
+		
+		if is_valid:
+			## Grabbing final key, which should be the string of the final part of the node
+			## E.g. "test.ing.thing" would be "thing"
+			var final_key : String = keys[-1]
+			
+			## Create nested dictionary structure in result
+			var nested = result
+			for i in keys.size() - 1:
+				if not nested.has(keys[i]):
+					nested[keys[i]] = {}
+				nested = nested[keys[i]]
+			
+			## Checking for special get conditions
+			## @ denotes we want to call a special function to save the object's info
+			## @state_current_nodepath will save the current state as a nodepath relative to state_chart._state
+			if final_key[0] == "@":
+				var cmd = final_key.substr(1)
+				
+				match cmd:
+					## Save the current state of the node as a NodePath
+					"state_current_nodepath":
+						if current.get("state_chart"):
+							nested[final_key] = current.state_chart.get_current_state_nodepath()
+						else:
+							push_error("Object has no state_chart to capture serialize states for: ",final_key," ",current)
+					_:
+						push_error("Could not match command: ",final_key," ",current)
+			
+			## Is just a normal variable
+			elif current.get(final_key):
+				## Set the value at the final level
+				nested[final_key] = current.get(final_key)
+			
+			else:
+				push_error("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
+	
+	return result
+
 ## Dict -> Object
 ## Sets vars found on imported_data dict onto the target
 ## Basically merges the imported_data into an existing object by setting all the vars to mirror the imported_data
@@ -122,9 +170,21 @@ func deserialize_data(target: Object, imported_data: Dictionary) -> void:
 					push_error("Error: Property '%s' is not an object and cannot have nested data." % key)
 			else:
 				push_error("Error: Property '%s' does not exist on target '%s'." % [key, target.name])
+		## This means we're inside the last dictionary, and we should be referencing the final part
 		else:
+			
+			if key[0] == "@":
+				var cmd = key.substr(1)
+				
+				match cmd:
+					## Transition to the state found in the dictionary, which should be a NodePath
+					"state_current_nodepath":
+						target.state_chart.set_load_state(imported_data[key],true)
+					_:
+						pass
+			
 			# Set the value directly
-			if target.get(key):
+			elif target.get(key):
 				if target.has_method(key):
 					Callable(target, key).call_deferred(imported_data[key])
 				else:
@@ -160,49 +220,3 @@ func deserialize_data_node(target : Object, imported_data_nodes : Dictionary) ->
 				current.set(final_key, value)
 		else:
 			push_error("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
-
-## Object -> Dict
-## Takes all the strings found in export_data and returns them as key : value pairs in a dictionary
-## So if export_data = ["object.my_component_health.max_health"] is the array
-## It will pull that variable from the target, and return a dict of:
-## { "object.my_component_health.max_health" : (value it found) }
-func serialize_data(target: Object, export_data: PackedStringArray) -> Dictionary:
-	var result : Dictionary = {}
-	var is_valid : bool
-	
-	for path in export_data:
-		var keys = path.split(".")
-		var current = target
-		is_valid = true
-		
-		# Traverse the path to the final property
-		for i in keys.size() - 1:
-			if current.get(keys[i]):
-				current = current.get(keys[i])
-			else:
-				is_valid = false
-				push_error("Error: '%s' does not exist on '%s'" % [keys[i], current.name])
-				break
-		
-		if is_valid:
-			var final_key = keys[-1]
-			if current.get(final_key):
-				
-				# Capturing current state properly to be serialized later
-				#if current.get(final_key) is StateChart:
-				#	current.get(final_key).get_current_state_nodepath()
-				
-				# Create nested dictionary structure in result
-				var nested = result
-				for i in keys.size() - 1:
-					if not nested.has(keys[i]):
-						nested[keys[i]] = {}
-					nested = nested[keys[i]]
-				
-				# Set the value at the final level
-				nested[final_key] = current.get(final_key)
-			
-			else:
-				push_error("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
-	
-	return result

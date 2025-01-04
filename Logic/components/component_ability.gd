@@ -55,13 +55,13 @@ class status_manager:
 	func add_passive(effect : Object):
 		PASSIVE.append(effect)
 		effect.fx_add()
-		print_debug("!passive added! - ",effect.title)
+		Debug.message(["!passive added! - ",effect.title],Debug.msg_category.BATTLE)
 		return PASSIVE[PASSIVE.find(effect)]
 		
 	func remove_passive(effect : Object) -> void:
 		PASSIVE.pop_at(PASSIVE.find(effect))
 		effect.fx_remove()
-		print_debug("!passive removed! - ",effect.title)
+		Debug.message(["!passive removed! - ",effect.title],Debug.msg_category.BATTLE)
 	
 	#Normal add for NORMAL and TETHER
 	func add(effect : Object, ignore_priorities : bool = false) -> Object:
@@ -71,30 +71,30 @@ class status_manager:
 		if !current_effect: #if there's no status effect
 			set(effect_str,effect)
 			effect.fx_add()
-			print_debug("!status added! - ",effect.title)
+			Debug.message(["!status added! - ",effect.title],Debug.msg_category.BATTLE)
 		elif current_effect.title == effect.title: #if they're the same status effect
-				print_debug("!target status is equal to applied status! - ",effect.title)
+				Debug.message(["!target status is equal to applied status! - ",effect.title],Debug.msg_category.BATTLE)
 				match effect.behavior:
 					Battle.status_behavior.STACK:
 						current_effect.duration += effect.duration
-						print_debug("!status duration increased! - ",effect.title)
+						Debug.message(["!status duration increased! - ",effect.title],Debug.msg_category.BATTLE)
 					Battle.status_behavior.RESET:
 						remove(current_effect)
 						set(effect_str,effect)
 						effect.fx_add()
-						print_debug("!status reapplied! - ",effect.title)
+						Debug.message(["!status reapplied! - ",effect.title],Debug.msg_category.BATTLE)
 					Battle.status_behavior.RESIST:
-						print_debug("!status ignored! - ",effect.title)
+						Debug.message(["!status ignored! - ",effect.title],Debug.msg_category.BATTLE)
 					_:
 						push_error("ERROR, status behavior not found: ",effect.behavior,effect.title)
 		elif ignore_priorities or current_effect.priority < effect.priority: #if our new status effect has higher priority or ignores prio
 			remove(current_effect)
 			set(effect_str,effect)
 			effect.fx_add()
-			print_debug("!status overwritten! - ",effect.title)
-			print_debug("ignore_priorities = ",ignore_priorities)
+			Debug.message(["!status overwritten! - ",effect.title],Debug.msg_category.BATTLE)
+			Debug.message(["ignore_priorities = ",ignore_priorities],Debug.msg_category.BATTLE)
 		else:
-			print_debug("!cannot overwrite current status effect! - ",effect.title)
+			Debug.message(["!cannot overwrite current status effect! - ",effect.title],Debug.msg_category.BATTLE)
 		
 		return get(effect_str)
 			
@@ -106,12 +106,12 @@ class status_manager:
 		if current_effect:
 			effect.fx_remove()
 			set(effect_str,null)
-			print_debug("!status removed! - ",effect.title)
+			Debug.message(["!status removed! - ",effect.title],Debug.msg_category.BATTLE)
 		else:
-			print_debug("!no status effect to remove! - ",effect.title)
+			Debug.message(["!no status effect to remove! - ",effect.title],Debug.msg_category.BATTLE)
 
 	func clear(clear_passive : bool = false) -> void:
-		print_debug("!removed all status effects! - ",NORMAL,TETHER)
+		Debug.message(["!removed all status effects! - ",NORMAL,TETHER],Debug.msg_category.BATTLE)
 		if NORMAL:
 			remove(NORMAL)
 		if TETHER:
@@ -215,7 +215,7 @@ class status_template_default:
 			on_expire()
 
 	func on_expire():
-		print_debug(title," wore off for ",host.name,"!")
+		Debug.message([title," wore off for ",host.name,"!"],Debug.msg_category.BATTLE)
 		host.my_component_ability.my_status.remove(self)
 	
 	func fx_add():
@@ -268,7 +268,7 @@ class status_burn:
 	func on_end():
 		if once_per_turn(): #If this is the first time applying this turn
 			host.my_component_health.change(-damage)
-			print_debug("Burn did ",damage," damage!")
+			Debug.message(["Burn did ",damage," damage!"],Debug.msg_category.BATTLE)
 
 class status_freeze:
 	extends status_template_default
@@ -293,7 +293,7 @@ class status_freeze:
 	func on_end():
 		if once_per_turn(): #If this is the first time applying this turn
 			host.my_component_vis.change(-siphon_amount)
-			print_debug(host," lost ",siphon_amount," vis from freeze!")
+			Debug.message([host," lost ",siphon_amount," vis from freeze!"],Debug.msg_category.BATTLE)
 
 class status_disabled: #Disabled, unable to act, and immune to damage. Essentially dead but still on the battle field
 	extends status_template_default
@@ -312,15 +312,15 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 	
 	func on_start():
 		host.state_chart.send_event("on_end") #skip our turn
-		print_debug(host.name," is disabled this turn")
+		Debug.message([host.name," is disabled this turn"],Debug.msg_category.BATTLE)
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
-		print_debug(entity_target.name," is immune to ",ability.title,"!")
+		Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
 		Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
 		return Battle.mitigation_type.IMMUNE
 	
 	func on_expire():
-		print_debug(host.name," is no longer disabled!")
+		Debug.message([host.name," is no longer disabled!"],Debug.msg_category.BATTLE)
 		host.my_component_ability.my_status.remove(self)
 		Events.battle_entity_disabled_expire.emit(host) #Tell everyone our disable expired
 
@@ -346,7 +346,7 @@ class status_heartlink:
 			for i in len(partners):
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
 					partners[i].my_component_health.change(amount,true)
-					print_debug(partners[i].name," took ",amount," points of mirror damage!")
+					Debug.message([partners[i].name," took ",amount," points of mirror damage!"],Debug.msg_category.BATTLE)
 	
 	func fx_add():
 		fx = Glossary.ui.heartlink.instantiate()
@@ -381,7 +381,7 @@ class status_ethereal: #Immune to everything but one type
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != weakness:
-			print_debug(entity_target.name," is immune to ",ability.title,"!")
+			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
 			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
@@ -414,7 +414,7 @@ class status_thorns:
 	func on_battle_entity_turn_end(entity : Node):
 		if reflect_target:
 			reflect_target.my_component_health.change(-damage)
-			print_debug(host.name," reflected ",damage," damage back to ",reflect_target.name,"!")
+			Debug.message([host.name," reflected ",damage," damage back to ",reflect_target.name,"!"],Debug.msg_category.BATTLE)
 			reflect_target = null
 
 class status_regrowth:
@@ -484,7 +484,7 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == immunity:
-			print_debug(entity_target.name," is immune to ",ability.title,"!")
+			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
 			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
@@ -510,7 +510,7 @@ class status_weakness: #Creates a specific type that we look for to do bonus thi
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == weakness:
-			print_debug(entity_target.name," is weak to ",ability.title,"!")
+			Debug.message([entity_target.name," is weak to ",ability.title,"!"],Debug.msg_category.BATTLE)
 			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation_bonus(entity_caster,host)
 			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Weakness!"),"float_away",Color.PURPLE,0.3)
 			return Battle.mitigation_type.WEAK
@@ -539,9 +539,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	func on_start():
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
 		mult_total = (len(paired_teammates) - 1)*mult_percent #teammates + mult percent for one teammate
-		print_debug("MULT: ",mult_total)
 		host.my_component_ability.my_stats.set_damage_multiplier_temp(mult_total)
-		print_debug("DAMAGE TOTAL MULT: ",host.my_component_ability.my_stats.damage_multiplier)
 	
 	func on_end():
 		host.my_component_ability.my_stats.reset_damage_multiplier_temp()
@@ -597,7 +595,7 @@ class ability:
 		return result
 	
 	func select_validate_failed():
-		print_debug("Can't do that")
+		Debug.message("Can't do that",Debug.msg_category.BATTLE)
 		#You can execute code here, run a Dialogic event to show them they can't use that, etc
 		#For example, if they don't have enough vis
 
@@ -614,7 +612,7 @@ class ability:
 			return false
 			
 	func cast_validate_failed():
-		print_debug("Missed!")
+		Debug.message("Missed!",Debug.msg_category.BATTLE)
 		Glossary.create_text_particle(caster.animations.selector_anchor,str("Missed!"),"float_away",Color.WHITE)
 	
 	func cast_main(): #Main function, calls on hit
@@ -665,7 +663,7 @@ func add_ability(ability : component_ability.ability) -> void:
 		ability.caster = owner
 		my_abilities.append(ability)
 	else:
-		print_debug("Cannot add ability, max count reached!")
+		Debug.message("Cannot add ability, max count reached!")
 
 func remove_ability(ability : component_ability.ability) -> void:
 	my_abilities.erase(ability)
@@ -760,7 +758,7 @@ class ability_template_default: #Standard ability with vis cost and skillcheck
 		else:
 			push_error("ERROR: Skillcheck result unhandled exception: ",result)
 		
-		print_debug("Result of skillcheck is ",result)
+		Debug.message(["Result of skillcheck is ",result],Debug.msg_category.BATTLE)
 
 class ability_spook:
 	extends ability_template_default
@@ -789,7 +787,7 @@ class ability_spook:
 		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
-		print_debug(caster.name, " tried to spook ", target.name,"!")
+		Debug.message([caster.name, " tried to spook ", target.name,"!"],Debug.msg_category.BATTLE)
 		target.my_component_health.change(-skillcheck_modifier*damage)
 		if apply_status_success():
 			target.my_component_ability.my_status.add(status_fear.new(target,skillcheck_modifier*2))
@@ -820,7 +818,7 @@ class ability_solar_flare:
 		target_type = Battle.target_type.OPPONENTS
 		
 	func cast_pre_mitigation_bonus(caster : Node, target : Node): #Does bonus damage, bonus burn damage, and 100% chance to proc burn
-		print_debug(caster.name, " scorched ", target.name," for double damage!")
+		Debug.message([caster.name, " scorched ", target.name," for double damage!"],Debug.msg_category.BATTLE)
 		target.my_component_ability.my_status.add(status_burn.new(target,skillcheck_modifier*2,damage*2))
 		target.my_component_health.change(-damage*2)
 		
@@ -829,7 +827,7 @@ class ability_solar_flare:
 		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node): #this it the spell run from the target's POV. It is run from the hit signal
-		print_debug(caster.name, " ignited ", target.name,"!")
+		Debug.message([caster.name, " ignited ", target.name,"!"],Debug.msg_category.BATTLE)
 		if apply_status_success():
 			target.my_component_ability.my_status.add(status_burn.new(target,skillcheck_modifier*2,damage))
 		target.my_component_health.change(-damage)
@@ -864,8 +862,8 @@ class ability_frigid_core:
 		#TODO add vis removal here
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
-		print_debug(caster.name, " froze ", target.name,"!")
-		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
+		Debug.message([caster.name, " froze ", target.name,"!"],Debug.msg_category.BATTLE)
+		Debug.message(["It did ", round(skillcheck_modifier*damage), " damage!"],Debug.msg_category.BATTLE)
 		target.my_component_health.change(-damage)
 		target.my_component_ability.my_status.add(status_freeze.new(target,skillcheck_modifier*1,1))
 
@@ -889,8 +887,8 @@ class ability_tackle: #Scales with skillcheck
 		target_type = Battle.target_type.OPPONENTS
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
-		print_debug(caster.name, " Tackled ", target.name,"!")
-		print_debug("It did ", round(skillcheck_modifier*damage), " damage!")
+		Debug.message([caster.name, " Tackled ", target.name,"!"],Debug.msg_category.BATTLE)
+		Debug.message(["It did ", round(skillcheck_modifier*damage), " damage!"],Debug.msg_category.BATTLE)
 		target.my_component_health.change(-skillcheck_modifier*damage)
 
 class ability_headbutt: #Scales with damage multiplier
@@ -914,8 +912,8 @@ class ability_headbutt: #Scales with damage multiplier
 	func cast_pre_mitigation(caster : Node, target : Node):
 		var mult = caster.my_component_ability.my_stats.damage_multiplier
 		var calc_damage = damage+(damage*mult)
-		print_debug(caster.name, " Charged ", target.name,"!")
-		print_debug("It did ", calc_damage, " damage!")
+		Debug.message([caster.name, " Charged ", target.name,"!"],Debug.msg_category.BATTLE)
+		Debug.message(["It did ", calc_damage, " damage!"],Debug.msg_category.BATTLE)
 		target.my_component_health.change(-calc_damage)
 
 class ability_heartlink:
@@ -950,14 +948,14 @@ class ability_heartlink:
 	func cast_pre_mitigation(caster : Node, target : Node):
 		##Make sure we're in the targets, idk why this is here tbh
 		if target in targets:
-			print_debug(caster.name, " tried to stitch ", target.name,"!")
+			Debug.message([caster.name, " tried to stitch ", target.name,"!"],Debug.msg_category.BATTLE)
 			target.my_component_health.change(-damage,true)
 			
 			##Verification for needing actual stitch
 			if targets.size() >= 2:
 				target.my_component_ability.my_status.add(status_heartlink.new(target,targets,skillcheck_modifier*2))
 			else:
-				print_debug("No valid target to stitch to - ",targets)
+				Debug.message(["No valid target to stitch to - ",targets],Debug.msg_category.BATTLE)
 	
 	func animation():
 		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO

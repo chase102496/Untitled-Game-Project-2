@@ -28,18 +28,13 @@ my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 
+[node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("4_0krx5")]
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_qdplk")
 
 [node name="StateChart" parent="." instance=ExtResource("3_n46cr")]
 unique_name_in_owner = true
-
-[node name="DEBUG_3D_TEXT" parent="." node_paths=PackedStringArray("my_component_state_controller_battle", "my_component_health", "my_component_vis", "my_component_ability") instance=ExtResource("4_0krx5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
-my_component_state_controller_battle = NodePath("../Components/component_state_controller_battle")
-my_component_health = NodePath("../Components/component_health")
-my_component_vis = NodePath("../Components/component_vis")
-my_component_ability = NodePath("../Components/component_ability")
 
 [node name="Components" type="Node3D" parent="."]
 

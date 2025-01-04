@@ -7,7 +7,7 @@ signal loaded()
 @export_enum("world","battle") var scene_type : String = "world"
 
 func _ready() -> void:
-	print_debug("Scene Loaded ",SceneManager.current_scene)
+	Debug.message(["Scene Loaded ",SceneManager.current_scene],Debug.msg_category.SCENE)
 
 func activate() -> void:
 	pass

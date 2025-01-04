@@ -112,6 +112,9 @@ func my_state_transition(
 				state_chart.send_event(str("on_",new_state_name))
 			
 			is_transitioning = false
+		#This runs when we have an impulse parent
+		else:
+			pass
 	else:
 		#print_debug("state transition for ",self," busy.")
 		pass

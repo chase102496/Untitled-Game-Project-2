@@ -32,4 +32,4 @@ func change(amt : int):
 			owner.my_component_health.change(overflow)
 	
 	vis = clamp(vis + amt,0,max_vis)
-	print_debug(old_vis," MP -> ",vis," MP")
+	Debug.message([old_vis," MP -> ",vis," MP"],Debug.msg_category.BATTLE)

@@ -36,9 +36,8 @@ func get_current_state(full_path : bool = false, full_path_result : String = "",
 			return root.name
 
 ## Returns full nodepath of current state
-func get_current_state_nodepath() -> NodePath:
-	var str : String = get_current_state(true)
-	var result = NodePath( str(get_path(),str) )
+func get_current_state_nodepath(full_path : bool = false) -> NodePath:
+	var result = NodePath( get_current_state(full_path) )
 	return result
 
 ## Returns actual live node of current state
@@ -48,23 +47,27 @@ func get_current_state_node() -> Node:
 	return result
 
 ##
-func set_load_state(path : NodePath, trigger_transition : bool = false) -> void:
+func set_load_state(path : NodePath, trigger_transition : bool = true) -> void:
 	
 	var trans = _state.find_child("_on_load")
+	var current_to = NodePath(str("../",get_current_state_nodepath()))
 	
 	if !trans:
-		trans = Transition.new()
-		trans.name = "_on_load"
-		trans.event = "_on_load"
-		_state.add_child(trans)
-		
-	trans.to = NodePath(str("../",path)) #Need the sibling prefix
-	print(trans)
-	print(trans.to)
+		push_error("No _on_load state transition found. Please add a state transition to use set_load_state")
+		#trans = Transition.new()
+		#trans.name = "_on_load"
+		#trans.event = "_on_load"
+		#_state.add_child(trans)
 	
+	trans.to = NodePath(str("../",path)) #Need the sibling prefix
+	
+	##If we want to instantly transition to this state, and it's currently NOT already in it
 	if trigger_transition:
-		send_event.call_deferred("_on_load")
-		print(get_current_state())
+		if trans.to != current_to:
+			send_event("_on_load")
+		else:
+			#print_debug("Requested load state already matches current state\n", "Current: ",current_to,"Load: ", trans.to)
+			pass
 
 # ----------------------------------------
 

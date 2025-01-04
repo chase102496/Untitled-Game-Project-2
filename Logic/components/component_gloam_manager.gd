@@ -90,15 +90,13 @@ var vignette_rate_end : float = 0.5
 func on_state_physics_processing_inside(delta : float) -> void:
 	
 	## So we can disable encounters when debugging
-	if !Global.debug:
+	if !Debug.enabled:
 		## If moving or at 90% of encounter, progress encounter rate
 		if owner.velocity.x != 0 or owner.velocity.z != 0 or encounter_rate/max_encounter_rate > 0.9:
 			encounter_rate_randomness = randf_range(0,1)
 			var result = encounter_rate_randomness * encounter_rate_base
 			encounter_rate = clamp(encounter_rate + (result * delta), 0, max_encounter_rate)
-			print(encounter_rate,"/",max_encounter_rate)
-		else:
-			pass
+			#Debug.message([encounter_rate,"/",max_encounter_rate]) #TODO weird edge case
 		
 		##Check new encounter progress
 		#Flickering? Maybe for certain milestones like 50% or 90%? Or for special encounters?
@@ -109,8 +107,6 @@ func on_state_physics_processing_inside(delta : float) -> void:
 		if encounter_rate == max_encounter_rate:
 			Battle.battle_initialize_verbose(Glossary.pick_weighted(encounter_pool))
 			state_chart.send_event("on_outside")
-		else:
-			pass
 	
 	## Negates the current gloam cloud by its exact amount. Negative clearing strength makes the clearing weaker, and vice versa
 	fog_strength = -(current_gloam_cloud.my_fog.material.get_shader_parameter("density") + clearing_strength)

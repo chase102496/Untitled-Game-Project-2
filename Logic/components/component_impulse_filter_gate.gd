@@ -2,8 +2,10 @@
 class_name component_impulse_filter_gate
 extends component_impulse_filter
 
+## Gates that are currently activated in our impulse list
 var gates_activated : int = 0
-var gates_count : int = 0
+## Total amount of gates in our impulse list
+var gates_total : int = 0
 
 @export_enum("AND","OR") var gate : String
 
@@ -30,28 +32,38 @@ func _ready() -> void:
 				"AND":
 					impulse_inst.activated.connect(_on_activated_AND)
 					impulse_inst.deactivated.connect(_on_deactivated_AND)
-					gates_count += 1
+					gates_total += 1
 				"OR":
 					impulse_inst.activated.connect(_on_activated_OR)
 					impulse_inst.deactivated.connect(_on_deactivated_OR)
-					gates_count += 1
+					gates_total += 1
 			
 
 ## --- AND --- ##
 # All signals activated = activated, otherwise, deactivated
 
+#func _update_gates() -> void:
+	#for impulse_child in [my_impulse_0,my_impulse_1,my_impulse_2,my_impulse_3,my_impulse_4,my_impulse_5,my_impulse_6,my_impulse_7]:
+		#if impulse_child:
+			#impulse_child.state_chart.get_current_state() == "Activated"
+
+func _update_gates_activated(val : int) -> void:
+	gates_activated = clamp(gates_activated + val,0,gates_total)
+	Debug.message(["++ ",gates_activated," / ",gates_total])
+
 func _on_activated_AND() -> void:
 	
-	gates_activated = clamp(gates_activated + 1,0,gates_count)
+	_update_gates_activated(1)
 	
-	if gates_activated == gates_count:
+	if gates_activated == gates_total:
+		Debug.message(["!! ",gates_activated," / ",gates_total])
 		activated.emit()
 
 func _on_deactivated_AND() -> void:
 	
-	gates_activated = clamp(gates_activated - 1,0,gates_count)
+	_update_gates_activated(-1)
 	
-	if gates_activated != gates_count:
+	if gates_activated != gates_total:
 		deactivated.emit()
 
 ## --- OR --- ##
@@ -59,13 +71,13 @@ func _on_deactivated_AND() -> void:
 
 func _on_activated_OR() -> void:
 	
-	gates_activated = clamp(gates_activated + 1,0,gates_count)
+	_update_gates_activated(1)
 	
 	activated.emit()
 
 func _on_deactivated_OR() -> void:
 
-	gates_activated = clamp(gates_activated - 1,0,gates_count)
+	_update_gates_activated(-1)
 	
 	if gates_activated == 0:
 		deactivated.emit()

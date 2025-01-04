@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://cw282fyqe5rxb"]
+[gd_scene load_steps=14 format=3 uid="uid://cw282fyqe5rxb"]
 
 [ext_resource type="Script" path="res://Scenes/characters/world/world_entity.gd" id="1_8kcuo"]
 [ext_resource type="PackedScene" uid="uid://dahgwygsnsabn" path="res://Scenes/state_chart_world.tscn" id="2_xjfrt"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="3_quy8a"]
 [ext_resource type="PackedScene" uid="uid://b4jd53pda4276" path="res://Logic/components/component_animation.tscn" id="4_hsqo4"]
-[ext_resource type="Script" path="res://Scenes/debug_3d_text_world.gd" id="4_ttisn"]
 [ext_resource type="PackedScene" uid="uid://ci3yj38s28xgq" path="res://Logic/components/component_ability.tscn" id="5_1ohn5"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_world.gd" id="6_ordbn"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="7_c4cgf"]
@@ -37,7 +36,6 @@ shape = SubResource("CapsuleShape3D_qdplk")
 
 [node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("3_quy8a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.270939)
-script = ExtResource("4_ttisn")
 
 [node name="Components" type="Node3D" parent="."]
 

@@ -27,37 +27,36 @@ func _ready() -> void:
 	if !save_parent:
 		save_parent = owner
 
-func on_save(all_data : Variant) -> void:
-	
-	@warning_ignore("unused_variable")
-	var data : Dictionary
+func find_save_id(all_data : Variant) -> String:
+	var result : String
 	
 	match my_save_type:
 		save_type.SCENE:
-			data = SaveManager.get_save_location_scene(self,all_data)
+			result = SaveManager.get_save_id_scene(self,all_data)
 		save_type.GLOBAL:
-			data = SaveManager.get_save_location_global(self,all_data,save_global_id)
+			result = SaveManager.get_save_id_global(self,all_data,save_global_id)
+		_:
+			push_error("Unable to find save_type when saving: ",my_save_type)
+			
+	return result
+
+func on_save(all_data : Variant) -> void:
+	
+	@warning_ignore("unused_variable")
+	var key : String = find_save_id(all_data)
 	
 	# Packs up all the variables and their paths in save_parent using save_list as ref to which to search for
 	# Then packs them up and returns them as a dictionary
-	data = Global.serialize_data(save_parent,save_list)
+	all_data[key] = Global.serialize_data(save_parent,save_list)
 	
-	#print($"../component_impulse_controller_switch".state_chart._state.initial_state)
-	Global.peepee[name] = NodePath("Activated")
-	#NodePath($"../component_impulse_controller_switch".state_chart.get_current_state())
-	#print(NodePath($"../component_impulse_controller_switch".state_chart.get_current_state()))
-	#print(Global.peepee)
-	
-	#print($"../component_impulse_controller_switch".state_chart._active_state)
-	#$"../component_impulse_controller_switch".state_chart_initial_state = test_2
+	Debug.message(["component_save saved data: ",all_data[key]],Debug.msg_category.SAVE)
 
 func on_load(all_data : Variant) -> void:
-	#$"../component_impulse_controller_switch".state_chart.set_initial_state(Global.peepee[name])
-	#print($"../component_impulse_controller_switch".state_chart.get_initial_state())
 	
-	$"../component_impulse_controller_switch".state_chart.set_load_state(Global.peepee[name],true)
+	@warning_ignore("unused_variable")
+	var key : String = find_save_id(all_data)
 	
-	#$"../component_impulse_controller_switch".state_chart._state._active_state._state_enter()
+	Global.deserialize_data(save_parent,all_data[key])
 	
-	#$"../component_impulse_controller_switch".state_chart._state._state_enter.call_deferred()
+	Debug.message(["component_save loaded data: ",all_data[key]],Debug.msg_category.SAVE)
 	

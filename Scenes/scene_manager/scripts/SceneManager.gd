@@ -58,7 +58,7 @@ func transition_to(scene: String) -> void:
 		var prefix = "res://Levels/"
 		var suffix = ".tscn"
 		SceneManager.prev_scene_path = str(prefix, current_scene.name, suffix)
-		print_debug("Unloading Scene... ",SceneManager.prev_scene_path)
+		Debug.message(["Unloading Scene... ",SceneManager.prev_scene_path],Debug.msg_category.SCENE)
 		
 		transition_in()
 		await transitioned_in

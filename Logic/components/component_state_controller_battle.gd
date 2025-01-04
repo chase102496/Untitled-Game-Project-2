@@ -122,8 +122,8 @@ func _on_state_entered_battle_waiting() -> void:
 	state_chart_memory = "on_waiting"
 
 func _on_state_entered_battle_start() -> void:
-	print_debug("-----------------------")
-	print_debug("Turn Start: ",owner.name)
+	Debug.message("-----------------------",Debug.msg_category.BATTLE)
+	Debug.message(["Turn Start: ",owner.name],Debug.msg_category.BATTLE)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
 	
 	my_component_ability.my_status.status_event("on_start")

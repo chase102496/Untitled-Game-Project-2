@@ -53,6 +53,7 @@ script = ExtResource("4_cyu3m")
 script = ExtResource("5_ry88a")
 to = NodePath("../../Inside")
 event = &"on_inside"
+delay_in_seconds = "0.0"
 
 [node name="Inside" type="Node" parent="StateChart/CompoundState"]
 script = ExtResource("4_cyu3m")
@@ -61,3 +62,4 @@ script = ExtResource("4_cyu3m")
 script = ExtResource("5_ry88a")
 to = NodePath("../../Outside")
 event = &"on_outside"
+delay_in_seconds = "0.0"

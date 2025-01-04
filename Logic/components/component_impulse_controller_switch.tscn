@@ -13,18 +13,26 @@ type_selection = 0
 [node name="Main" parent="StateChart" index="0"]
 initial_state = NodePath("Deactivated")
 
-[node name="Deactivated" type="Node" parent="StateChart/Main" index="0"]
+[node name="_on_load" type="Node" parent="StateChart/Main" index="0"]
+script = ExtResource("4_5pn0t")
+to = NodePath("..")
+event = &"_on_load"
+delay_in_seconds = "0.0"
+
+[node name="Deactivated" type="Node" parent="StateChart/Main" index="1"]
 script = ExtResource("3_mu63i")
 
 [node name="on_activated" type="Node" parent="StateChart/Main/Deactivated" index="0"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../../Activated")
 event = &"on_activated"
+delay_in_seconds = "0.0"
 
-[node name="Activated" type="Node" parent="StateChart/Main" index="1"]
+[node name="Activated" type="Node" parent="StateChart/Main" index="2"]
 script = ExtResource("3_mu63i")
 
 [node name="on_deactivated" type="Node" parent="StateChart/Main/Activated" index="0"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../../Deactivated")
 event = &"on_deactivated"
+delay_in_seconds = "0.0"

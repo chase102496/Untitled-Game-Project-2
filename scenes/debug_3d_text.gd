@@ -1,66 +1,69 @@
 extends Label3D
 
-@export var my_component_state_controller_battle : component_state_controller_battle
-@export var my_component_health : component_health
-@export var my_component_vis : component_vis
-@export var my_component_ability : component_ability 
-
-@onready var prev = "init"
-@onready var history = "history"
-@onready var state_subchart_battle
+var prev = "init"
+var history = ""
 
 func _ready() -> void:
-	state_subchart_battle = owner.get_node("StateChart/Main/Battle")
+	
+	Debug.debug_disabled.connect(_on_debug_disabled)
+	Debug.debug_enabled.connect(_on_debug_enabled)
+	
+	if Debug.enabled:
+		_on_debug_enabled()
+	else:
+		_on_debug_disabled()
+	
 	#position.y += randf_range(0,0.6)
 	modulate = Color(randf_range(0.5,1),randf_range(0.5,1),randf_range(0.5,1))
 
+func _on_debug_disabled() -> void:
+	hide()
+	owner.animations.status_hud.hide()
+	
+func _on_debug_enabled() -> void:
+	show()
+	owner.animations.status_hud.show()
+
 func _physics_process(delta: float) -> void:
 	
-	if Input.is_action_just_pressed("debug"):
-		if visible:
-			hide()
-		else:
-			show()
-	
-	var state = str(state_subchart_battle._active_state)
-	
-	if prev != state:
-		history = prev
-		prev = state
-	
-	var passive_effects_display : Array = []
-	var status_effects_display : Array = ["","",""]
-	var status_manager = my_component_ability.my_status
-	
-	if status_manager.NORMAL:
-		status_effects_display[0] = status_manager.NORMAL.title
-	if status_manager.TETHER:
-		status_effects_display[1] = status_manager.TETHER.title
-
-	for i in len(status_manager.PASSIVE):
-		passive_effects_display.append(status_manager.PASSIVE[i].title)
-	
-	var abil = owner.my_component_ability.get_data_ability_all()
-	var abil_names : Array = []
-	
-	for i in abil.size():
-		abil_names.append(abil[i].title)
-	
-	text = str(
-	owner.name,
-	"\n",
-	my_component_state_controller_battle.character_ready,
-	"\n",
-	abil_names,
-	"\n",
-	"Status: ",status_effects_display,
-	"\n",
-	"Passive: ",passive_effects_display,
-	"\n",
-	"HP: ",my_component_health.health,"/",my_component_health.max_health,
-	"\n",
-	"MP: ",my_component_vis.vis,"/",my_component_vis.max_vis,
-	"\n",
-	"Now: ", state.rsplit(":")[0],
-	"\n",
-	"Prev: ", history.rsplit(":")[0])
+	if Debug.enabled:
+		var abil = owner.my_component_ability.get_data_ability_all()
+		var abil_names : Array = []
+		
+		for i in abil.size():
+			abil_names.append(abil[i].title)
+		
+		var dreamkin_summons = Global.player.my_component_party.my_summons
+		var dreamkin_party = Global.player.my_component_party.my_party
+		
+		var dreamkin_list = []
+		
+		for i in dreamkin_summons.size():
+			dreamkin_list.append(dreamkin_summons[i].name)
+		dreamkin_list.append(" / ")
+		for i in dreamkin_party.size():
+			dreamkin_list.append(dreamkin_party[i].name)
+		
+		var status_list = []
+		if owner.my_component_ability.my_status.NORMAL:
+			status_list.append(owner.my_component_ability.my_status.NORMAL.title)
+		status_list.append(" / ")
+		for i in owner.my_component_ability.my_status.PASSIVE.size():
+			status_list.append(owner.my_component_ability.my_status.PASSIVE[i].title)
+		
+		#if history != owner.state_chart.get_current_state(true):
+			#history = prev
+			#prev = owner.state_chart.get_current_state(true)
+		
+		text = str(
+		owner.name,
+		"\n",
+		dreamkin_list,
+		"\n",
+		abil_names,
+		"\n",
+		status_list,
+		"\n",
+		owner.state_chart.get_current_state(true))
+		#"\n",
+		#"Prev: ", prev)

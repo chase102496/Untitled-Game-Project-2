@@ -14,9 +14,10 @@ extends battle_entity
 func _ready():
 	Global.player = self
 
-func on_save(raw_data):
+func on_save(all_data):
 	
-	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	var key = SaveManager.get_save_id_global(self,all_data,"player")
+	var data = all_data[key]
 	
 	##Player
 	data.health = my_component_health.health
@@ -32,9 +33,10 @@ func on_save(raw_data):
 	##Inventory
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
 
-func on_load(raw_data):
+func on_load(all_data):
 	
-	var data = SaveManager.get_save_location_global(self,raw_data,"player")
+	var key = SaveManager.get_save_id_global(self,all_data,"player")
+	var data = all_data[key]
 	
 	##Player
 	my_component_health.health = data.health
@@ -52,3 +54,7 @@ func on_load(raw_data):
 		Battle.add_member.call_deferred(inst,1) #Add to battle list
 	##Inventory
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("debug"):
+		Debug.toggle()

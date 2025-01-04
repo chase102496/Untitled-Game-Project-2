@@ -43,7 +43,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	
 	health = clamp(health + amt,0,max_health)
 	
-	print_debug(old_health," HP -> ",health," HP")
+	Debug.message([old_health," HP -> ",health," HP"],Debug.msg_category.BATTLE)
 	
 	##Death handling
 	if health == 0: #If we're dying

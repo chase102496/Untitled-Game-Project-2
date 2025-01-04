@@ -73,7 +73,7 @@ func _on_turn_end() -> void:
 	var old_index = Battle.active_character_index
 	var new_index
 	
-	print_debug("@@@ Ending turn for ",old_character.name," @@@")
+	Debug.message(["Ending turn for ",old_character.name],Debug.msg_category.BATTLE)
 	
 	#Validation check
 	if Battle.battle_list.find(old_character) == -1: #If we cannot find the old active character in the list,
@@ -90,7 +90,7 @@ func _on_turn_end() -> void:
 	if old_character.alignment != Battle.active_character.alignment:
 		Events.battle_team_start.emit(Battle.active_character.alignment)
 	
-	print_debug("@@@ Starting turn for ",Battle.active_character.name," @@@")
+	Debug.message(["Starting turn for ",Battle.active_character.name],Debug.msg_category.BATTLE)
 	
 	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
 	
@@ -99,11 +99,11 @@ func _on_turn_end() -> void:
 func _on_battle_finished(result) -> void:
 	if result == "Win":
 		SaveManager.save_data_session()
-		print_debug("Yay!")
+		Debug.message("Result = Win!",Debug.msg_category.BATTLE)
 		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 	elif result == "Lose":
 		SaveManager.save_data_session()
-		print_debug("womp womp")
+		Debug.message("Result = Lose!",Debug.msg_category.BATTLE)
 		SceneManager.transition_to("res://Levels/dream_garden.tscn")
 	else:
-		push_error("ERROR")
+		push_error("Unknown result ",result)

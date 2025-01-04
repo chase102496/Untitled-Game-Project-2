@@ -39,4 +39,6 @@ my_target = NodePath("../../MeshInstance3D")
 
 [node name="component_impulse_reciever_animation" parent="Components" instance=ExtResource("5_aebtn")]
 
-[node name="component_save" parent="Components" groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("6_w8t3l")]
+[node name="component_save" parent="Components" node_paths=PackedStringArray("save_parent") groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("6_w8t3l")]
+save_parent = NodePath("../component_impulse_controller_switch")
+save_list = PackedStringArray("@state_current_nodepath")

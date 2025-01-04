@@ -27,6 +27,7 @@ Global="*res://Logic/globals/Global.gd"
 Battle="*res://Logic/globals/Battle.gd"
 SceneManager="*res://Scenes/scene_manager/scene_manager.tscn"
 SaveManager="*res://Logic/globals/SaveManager.gd"
+Debug="*res://Logic/globals/Debug.gd"
 
 [debug]
 
