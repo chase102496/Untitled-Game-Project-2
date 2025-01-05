@@ -120,14 +120,14 @@ func my_state_transition(
 		pass
 
 ## Wrapper for updating all signals
-func update_signals(state_name : String, is_connecting : bool, is_failsafe : bool = false):
+func update_signals(state_name : String, is_connecting : bool, passive : bool = false):
 	
 	var call_enter : Callable = Callable(self,str("_on_target_entered_",state_name))
 	var call_exit : Callable = Callable(self,str("_on_target_exited_",state_name))
 	var call_interact : Callable = Callable(self,str("_on_target_interact_",state_name))
 	
 	# Checking if we transition without player interaction
-	if is_failsafe:
+	if passive:
 		if is_connecting:
 			if !my_component_interact_reciever.enter.is_connected(call_enter):
 				my_component_interact_reciever.enter.connect(call_enter)

@@ -176,7 +176,7 @@ void vertex() {
 
 
 void fragment() {
-	
+
 	vec3 opposing_color = vec3(1.0) - absorption_color.rgb;
 	vec3 normalized_wind_direction = normalize(wind_direction);
 	float wind_intens_factor = fma(wind_intensity, 0.7, 0.3);

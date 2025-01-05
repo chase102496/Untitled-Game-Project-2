@@ -86,7 +86,6 @@ func on_load(all_data):
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
 func _input(event: InputEvent) -> void:
-	
 	#if Input.is_action_just_pressed("move_forward"):
 		##if my_component_party.get_party():
 			##for i in my_component_party.get_party().size():
@@ -130,7 +129,7 @@ func _input(event: InputEvent) -> void:
 		},
 		]
 		
-		Battle.battle_initialize_verbose(Glossary.pick_weighted(encounter_pool))
+		Battle.battle_initialize_verbose(Global.pick_weighted(encounter_pool))
 		#var test = my_component_ability.add_ability(component_ability.ability_spook.new())
 		pass
 	

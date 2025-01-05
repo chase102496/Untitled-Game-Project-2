@@ -5,7 +5,7 @@ extends Node3D
 
 @export var active_interact_area : component_interact_controller
 
-@onready var dreamstitch : ability_dreamstitch# = ability_heartlink.new(owner)
+@onready var dreamstitch : ability_dreamstitch = ability_heartsurge.new(owner)
 @onready var loomlight : ability_loomlight = ability_loomlight.new(owner)
 @onready var active : ability = dreamstitch
 
@@ -38,14 +38,9 @@ func ability_use() -> void:
 ## --- Utility Functions --- ###
 
 ## Lets our current ability know this event is being called.
-
-## The reason we don't just use signals is because this can be used 
-## contextually and return a value directly after it is ran
-
 ## It doesn't have to do something, but we check just in case it exists
 ## For example, running code when walking, near a certain object, press a certain button, etc.
 ## Can use "my_component_equipment.active", "my_component_equipment.dreamstitch", or "my_component_equipment.loomlight" for new_ability
-
 func ability_event(new_ability : ability, method : String, args : Array = []) -> Variant:
 	if new_ability:
 		if new_ability.has_method(method):
@@ -69,23 +64,22 @@ func ability_unequip_active() -> void:
 		print_debug("Nothing to unequip")
 
 ## Swaps from dreamstitch to loomlight, or vice versa
-func ability_switch_active_toggle() -> void:
+func toggle_active() -> void:
 	if active == dreamstitch:
-		ability_switch_active(loomlight)
+		switch_active(loomlight)
 	elif active == loomlight:
-		ability_switch_active(dreamstitch)
+		switch_active(dreamstitch)
 	elif !active:
 		if loomlight:
-			ability_switch_active(loomlight)
+			switch_active(loomlight)
 		elif dreamstitch:
-			ability_switch_active(dreamstitch)
+			switch_active(dreamstitch)
 		else:
 			print_debug("No equipment available to swap to or from!")
 	else:
 		print_debug("Invalid or old active equipment, not sure what to swap to: ",active)
-		
 
-func ability_switch_active(new_ability : ability) -> void:
+func switch_active(new_ability : ability) -> void:
 	if new_ability:
 		if new_ability != active: #If we have a new ability, and if we're not swapping to something we already have equipped
 			
@@ -290,6 +284,148 @@ class ability_purge: # TBD
 		pass
 
 # Dreamstitch
+
+class ability_heartsurge:
+	extends ability_dreamstitch
+	
+	var is_mark_placed : bool = false
+	var mark_location : Vector3
+	var recall_time : float = 0.5
+	var recall_tween : Tween
+	
+	## Direction of recall
+	var recall_direction : Vector3
+	## Velocity right before reaching destination
+	var recall_magnitude : float
+	## This is just the direction and magnitude
+	var recall_velocity : Vector3
+	## Position when starting recall
+	var recall_start : Vector3
+	## Position right before reaching destination
+	var recall_frame : Vector3
+	## Time elapsed in recall the frame before reaching destination
+	var recall_frame_time : float
+	## Position when reached recall
+	var recall_end : Vector3
+	
+	var particle_character : Node
+	var particle_recall : Node
+	
+	func _init(caster : Node) -> void:
+		super._init(caster)
+		title = "Heartsurge"
+		interact_groups.append("interact_ability_heartsurge")
+	
+	func _set_mark() -> void:
+		mark_location = caster.global_position
+		_fx_set_mark()
+	
+	func _return_to_mark() -> void:
+		recall_tween = caster.create_tween()
+		recall_tween.set_ease(Tween.EASE_IN)
+		recall_tween.set_trans(Tween.TRANS_CUBIC)
+		recall_start = caster.global_position
+		recall_tween.tween_method(_tween_step,caster.global_position,mark_location,recall_time)
+		
+		caster.my_component_physics.disable()
+		caster.state_chart.send_event("on_disabled")
+		
+		_fx_return_to_mark()
+	
+	## Set Lumia's fx when returning to the mark
+	func _fx_return_to_mark() -> void:
+		particle_character = Glossary.create_fx_particle(caster,"heartsurge_node_lumia")
+		caster.animations.sprite.visible = false
+	
+	## Set the mark somewhere
+	func _fx_set_mark() -> void:
+		particle_recall = Glossary.create_fx_particle(caster.owner,"heartsurge_node_recall")
+		particle_recall.global_position = caster.global_position
+	
+	func _fx_normal() -> void:
+		var particle_clear = Glossary.create_fx_particle(caster.owner,"heartsurge_node_clear",true)
+		particle_clear.global_position = caster.global_position
+		particle_clear.amount = clamp(int(recall_magnitude),1,50)
+		particle_clear.process_material.spread = 180
+		particle_clear.process_material.initial_velocity_max = recall_magnitude+10
+		particle_clear.process_material.initial_velocity_min = recall_magnitude
+	
+	func _fx_slingshot() -> void:
+		var particle_clear = Glossary.create_fx_particle(caster.owner,"heartsurge_node_clear",true)
+		particle_clear.global_position = caster.global_position
+		particle_clear.process_material.direction = recall_direction
+		particle_clear.amount = clamp(int(recall_magnitude),1,50)
+		particle_clear.process_material.spread = 60
+		particle_clear.process_material.initial_velocity_max = recall_magnitude+5
+		particle_clear.process_material.initial_velocity_min = recall_magnitude
+	
+	## Clear both Lumia's fx and the mark's fx
+	func _fx_clear() -> void:
+		caster.animations.sprite.visible = true
+		if particle_character:
+			particle_character.queue_free()
+		if particle_recall:
+			particle_recall.queue_free()
+	
+	func _tween_step(pos : Vector3) -> void:
+		
+		caster.global_position = pos
+		
+		## Called at end of tween
+		if recall_tween.get_total_elapsed_time() >= recall_time:
+			
+			recall_end = caster.global_position
+			recall_direction = (recall_end - recall_start).normalized()
+			recall_magnitude = ( (recall_end - recall_frame)/(recall_time - recall_frame_time) ).length()
+			recall_velocity = recall_direction*recall_magnitude
+			
+			## If we are pressing the same ability button when we're at the end of the call
+			if Input.is_action_pressed("equipment_use"):
+				_fx_slingshot()
+				recall_tween.stop()
+				
+				#if calc.length() > 20:
+					#calc = calc.normalized()*20
+				
+				caster.velocity = recall_velocity
+			else:
+				_fx_normal()
+			
+			## Clear mark and Lumia's fx at end of tween regardless
+			_fx_clear()
+			
+			caster.my_component_physics.enable()
+			caster.state_chart.send_event("on_enabled")
+			
+		## Called before end of tween continuously
+		else:
+			recall_frame = caster.global_position
+			recall_frame_time = recall_tween.get_total_elapsed_time()
+	
+	### --- Events --- ###
+	
+	func verify_use() -> bool:
+		if true:
+			return true
+		else:
+			return false
+	
+	func on_use() -> void:
+		
+		Debug.message(["Mark placed = ",is_mark_placed],Debug.msg_category.WORLD)
+		
+		if verify_use():
+			if is_mark_placed:
+				_return_to_mark()
+			else:
+				_set_mark()
+				
+			is_mark_placed = !is_mark_placed
+	
+	func on_cancel() -> void:
+		if is_mark_placed:
+			is_mark_placed = !is_mark_placed
+			_fx_clear()
 
 class ability_heartlink:
 	extends ability_dreamstitch

@@ -1,0 +1,132 @@
+[gd_scene load_steps=19 format=3 uid="uid://4ec85bmw10f3"]
+
+[ext_resource type="Shader" path="res://test_junk/flame_shader.gdshader" id="1_vtprr"]
+[ext_resource type="Texture2D" uid="uid://c1jfqvko0tqj8" path="res://Art/particles/star_04.png" id="2_6wyvh"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ohs8f"]
+noise_type = 3
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hk2ft"]
+seamless = true
+noise = SubResource("FastNoiseLite_ohs8f")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xo4wg"]
+render_priority = 0
+shader = ExtResource("1_vtprr")
+shader_parameter/time_speed = 1.0
+shader_parameter/spin = 1.0
+shader_parameter/flame_brightness = 0.6
+shader_parameter/color_intensity = 0.0
+shader_parameter/horizontal_frequency = 1.0
+shader_parameter/vertical_frequency = 1.0
+shader_parameter/size = -0.5
+shader_parameter/core_size = 1.0
+shader_parameter/color1 = Color(0.568627, 0.239216, 0.443137, 1)
+shader_parameter/color2 = Color(0.929412, 0.717647, 0.623529, 1)
+shader_parameter/color3 = Color(1, 1, 1, 1)
+shader_parameter/color4 = Color(0.929412, 0.717647, 0.623529, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_hk2ft")
+
+[sub_resource type="SphereMesh" id="SphereMesh_fsh4b"]
+material = SubResource("ShaderMaterial_xo4wg")
+radius = 0.3
+height = 0.6
+radial_segments = 256
+rings = 256
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_yll2n"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+blend_mode = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_6wyvh")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+grow_amount = 5.884
+
+[sub_resource type="Gradient" id="Gradient_hq4ji"]
+offsets = PackedFloat32Array(0, 0.6, 0.9)
+colors = PackedColorArray(0.95, 0, 1, 1, 0.721, 0.07, 1, 1, 0.210724, 0.272321, 1, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7oeec"]
+gradient = SubResource("Gradient_hq4ji")
+
+[sub_resource type="Curve" id="Curve_87cd3"]
+max_value = 20.0
+_data = [Vector2(0, 0.4), 0.0, 140.185, 0, 0, Vector2(0.985075, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8dlva"]
+curve = SubResource("Curve_87cd3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t7pc2"]
+emission_shape = 2
+emission_sphere_radius = 0.3
+direction = Vector3(0, 0, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = 3.0
+damping_max = 0.05
+scale_min = 0.25
+scale_max = 0.5
+color = Color(0.496, 0.37, 1, 1)
+color_ramp = SubResource("GradientTexture1D_7oeec")
+emission_curve = SubResource("CurveTexture_8dlva")
+turbulence_noise_strength = 20.0
+turbulence_noise_scale = 5.0
+turbulence_noise_speed = Vector3(1, 1, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_bwovf"]
+lightmap_size_hint = Vector2i(7, 7)
+
+[sub_resource type="Curve" id="Curve_oxofv"]
+_data = [Vector2(0, 1), 0.0, -3.19363, 0, 0, Vector2(0.75, 0), 0.250447, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_i0a66"]
+curve = SubResource("Curve_oxofv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p6dkd"]
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -0.500002
+radial_accel_max = 0.499998
+scale_curve = SubResource("CurveTexture_i0a66")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ccl1"]
+blend_mode = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_s1sgy"]
+material = SubResource("StandardMaterial3D_3ccl1")
+radius = 0.1
+height = 0.2
+
+[node name="particle_heartsurge_node_lumia" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_fsh4b")
+
+[node name="particle_ambient_dream0" type="GPUParticles3D" parent="."]
+material_override = SubResource("ORMMaterial3D_yll2n")
+amount = 20
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_t7pc2")
+draw_pass_1 = SubResource("QuadMesh_bwovf")
+
+[node name="blob" type="GPUParticles3D" parent="."]
+amount = 100
+lifetime = 0.12
+fixed_fps = 1000
+process_material = SubResource("ParticleProcessMaterial_p6dkd")
+draw_pass_1 = SubResource("SphereMesh_s1sgy")

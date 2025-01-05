@@ -8,8 +8,9 @@ extends Entity
 @export_group("Components")
 
 @export var animations : Node3D #TODO Refactor name in code to my_component_animation
-@export var my_component_health: component_health
-@export var my_component_vis: component_vis
+@export var my_component_health : component_health
+@export var my_component_vis : component_vis
+@export var my_component_physics : component_physics
 
 @export var my_component_state_controller_world: component_state_controller_world
 

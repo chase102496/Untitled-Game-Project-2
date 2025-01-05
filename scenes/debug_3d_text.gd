@@ -64,6 +64,6 @@ func _physics_process(delta: float) -> void:
 		"\n",
 		status_list,
 		"\n",
-		owner.state_chart.get_current_state(true))
-		#"\n",
-		#"Prev: ", prev)
+		owner.state_chart.get_current_state(true),
+		"\n",
+		owner.velocity)

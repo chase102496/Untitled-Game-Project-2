@@ -28,6 +28,7 @@ omni_range = 0.513
 omni_attenuation = 0.2
 
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 flip_h = true
 sprite_frames = ExtResource("3_305wd")
 animation = &"default_idle"

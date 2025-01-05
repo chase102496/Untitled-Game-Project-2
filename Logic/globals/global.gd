@@ -6,7 +6,35 @@ var camera_object : Node = null
 var player : Node3D = null
 var state_chart_already_exists : bool = false
 
-var peepee : Dictionary = {}
+## Pick a random result in a list based on weight
+# {
+# "weight" : 0.0 -> 1.0
+# "result" : whatever you wanna return. Callable, variant, etc
+#}
+func pick_weighted(dict_list: Array):
+	
+	var current_weight : float
+	var total_weight : float = 0.0
+	
+	for dict in dict_list:
+		current_weight = dict["weight"]
+		if current_weight > 1.0 or current_weight < 0:
+			push_error("pick_weighted requires the dictionary keys to be float values between 0 and 1 - ",current_weight)
+			return
+		else:
+			total_weight += current_weight
+	
+	var random_choice = randf_range(0,total_weight)
+	
+	for dict in dict_list:
+		current_weight = dict["weight"]
+		random_choice -= current_weight
+		if random_choice <= 0:
+			return dict["result"]
+	
+	## Fallback
+	push_error("Could not find matching weight to randomly pick for pick_weighted(",dict_list,")")
+	return
 
 ## Grabs just the script name of the object
 func get_glossary_nickname(entity : Node):

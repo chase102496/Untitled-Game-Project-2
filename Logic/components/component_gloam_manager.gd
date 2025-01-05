@@ -65,7 +65,7 @@ func on_state_entered_inside() -> void:
 	
 	# Verify we have a loomlight and it can be equipped
 	if equipment.ability_event(equipment.loomlight,"verify_equip"):
-		equipment.ability_switch_active(equipment.loomlight)
+		equipment.switch_active(equipment.loomlight)
 
 var encounter_rate : float = 0.0
 var max_encounter_rate : float = 100.0 #Point at which encounter is triggered
@@ -105,7 +105,7 @@ func on_state_physics_processing_inside(delta : float) -> void:
 		owner.my_vignette.get_child(0).material.set_shader_parameter("outerRadius",vignette_rate_start - (encounter_rate/max_encounter_rate))
 		
 		if encounter_rate == max_encounter_rate:
-			Battle.battle_initialize_verbose(Glossary.pick_weighted(encounter_pool))
+			Battle.battle_initialize_verbose(Global.pick_weighted(encounter_pool))
 			state_chart.send_event("on_outside")
 	
 	## Negates the current gloam cloud by its exact amount. Negative clearing strength makes the clearing weaker, and vice versa

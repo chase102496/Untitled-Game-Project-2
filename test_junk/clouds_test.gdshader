@@ -88,7 +88,7 @@ float gen_fractal_ping_pong(vec2 pos, int seed, float frequency) {
 }
 
 float calculate_edge_fade(vec2 uv) {
-    vec2 fade = smoothstep(vec2(0.0), vec2(edge_fade), uv) * 
+    vec2 fade = smoothstep(vec2(0.0), vec2(edge_fade), uv) *
                 smoothstep(vec2(0.0), vec2(edge_fade), 1.0 - uv);
     return fade.x * fade.y;
 }
@@ -100,9 +100,9 @@ void fragment() {
     float sin_x = sin(clouds_direction * PI * 2.0);
     float cos_y = cos(clouds_direction * PI * 2.0);
     vec2 clouds_movement = vec2(sin_x, cos_y) * time;
-    
+
     float cloud_density;
-    
+
     if (use_custom_texture > 0.5) {
         // Use custom texture
         cloud_density = texture(noise_texture, base_uv + clouds_movement).r;
@@ -111,18 +111,18 @@ void fragment() {
         float noise_top = gen_fractal_ping_pong((base_uv + clouds_movement), 0, 0.5);
         float noise_middle = gen_fractal_ping_pong((base_uv + clouds_movement * 0.89), 1, 0.75);
         float noise_bottom = gen_fractal_ping_pong((base_uv + clouds_movement * 0.79), 2, 1.0);
-        
+
         // Combine noise layers
         float noise_bottom_smooth = smoothstep(clouds_cutoff, clouds_cutoff + clouds_fuzziness, noise_bottom);
         float noise_middle_smooth = smoothstep(clouds_cutoff, clouds_cutoff + clouds_fuzziness, noise_middle + noise_bottom_smooth * 0.2) * 1.1;
         float noise_top_smooth = smoothstep(clouds_cutoff, clouds_cutoff + clouds_fuzziness, noise_top + noise_middle_smooth * 0.4) * 1.2;
-        
+
         cloud_density = clamp(noise_top_smooth + noise_middle_smooth + noise_bottom_smooth, 0.0, 1.0);
     }
-    
+
     // Calculate edge fade
     float edge_alpha = calculate_edge_fade(UV);
-    
+
     // Apply cloud color and transparency with edge fade
     ALBEDO = clouds_color;
     ALPHA = cloud_density * edge_alpha;

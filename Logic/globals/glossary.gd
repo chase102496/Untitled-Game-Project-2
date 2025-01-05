@@ -80,6 +80,20 @@ func convert_entity_glossary(glossary_name : String, set_prefix : String):
 
 # Create
 
+func create_fx_particle(anchor : Node, type : String, one_shot : bool = false) -> Node:
+	if Glossary.particle.has(type):
+		var inst = Glossary.particle[type].instantiate()
+		anchor.add_child(inst)
+		
+		if one_shot:
+			inst.one_shot = true
+		
+		return inst
+		
+	else:
+		push_error("No particle type found when creating fx particle: ",type)
+		return null
+
 func create_text_particle(anchor : Node, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, delay : float = 0.0, size : int = 60):
 	if delay > 0:
 		await get_tree().create_timer(delay).timeout
@@ -382,36 +396,6 @@ func find_entity(glossary : String, set_prefix = null):
 		index = convert_entity_glossary(glossary,set_prefix)
 	return entity_scene[index]
 
-## Pick a random result in a list based on weight
-# {
-# "weight" : 0.0 -> 1.0
-# "result" : whatever you wanna return. Callable, variant, etc
-#}
-func pick_weighted(dict_list: Array):
-	
-	var current_weight : float
-	var total_weight : float = 0.0
-	
-	for dict in dict_list:
-		current_weight = dict["weight"]
-		if current_weight > 1.0 or current_weight < 0:
-			push_error("pick_weighted requires the dictionary keys to be float values between 0 and 1 - ",current_weight)
-			return
-		else:
-			total_weight += current_weight
-	
-	var random_choice = randf_range(0,total_weight)
-	
-	for dict in dict_list:
-		current_weight = dict["weight"]
-		random_choice -= current_weight
-		if random_choice <= 0:
-			return dict["result"]
-	
-	## Fallback
-	push_error("Could not find matching weight to randomly pick for pick_weighted(",dict_list,")")
-	return
-
 ## --- Dictionaries --- ##
 
 # Scenes
@@ -420,8 +404,11 @@ const particle : Dictionary = {
 	"fear" : preload("res://Scenes/particles/particle_fear.tscn"),
 	"burn" : preload("res://Scenes/particles/particle_burn.tscn"),
 	"freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
-	"disabled" : preload("res://Scenes/particles/particle_disabled.tscn")
-	}
+	"disabled" : preload("res://Scenes/particles/particle_disabled.tscn"),
+	"heartsurge_node_lumia" : preload("res://Scenes/particles/particle_heartsurge_node_lumia.tscn"),
+	"heartsurge_node_recall" : preload("res://Scenes/particles/particle_heartsurge_node_recall.tscn"),
+	"heartsurge_node_clear" : preload("res://Scenes/particles/particle_heartsurge_node_clear.tscn")
+}
 
 const text : Dictionary = {
 	"float_away" : preload("res://Scenes/particles/particle_text_damage.tscn")
@@ -434,11 +421,6 @@ var entity_scene : Dictionary = {
 	"battle_entity_enemy" : load("res://Scenes/characters/battle/battle_entity_enemy.tscn"),
 	"battle_entity_player" : load("res://Scenes/characters/battle/battle_entity_player.tscn"),
 	"world_entity_player" : load("res://Scenes/characters/world/world_entity_player.tscn"),
-	}
-
-## DEPRECATED DON'T USE THIS, USE visual_set or SPRITEFRAMES, ANIMATIONLIBRARY, AND NODESTATEANIMATIONTREE
-const sprite : Dictionary = {
-	"placeholder" : preload("res://Art/sprites/scenes/placeholder.tscn")
 	}
 
 ## Contains

@@ -2,6 +2,7 @@ class_name component_animation_controller_world
 extends Node
 
 @export var my_component_input_controller : Node
+@export var animations : component_animation
 
 func _ready() -> void:
 	#State Machine signals
@@ -18,10 +19,12 @@ func camera_billboard() -> void:
 
 func animation_update(dir : Vector2 = Vector2(0,0)) -> void:
 	
-	if dir.x >= 0:
+	if dir.x > 0:
 		owner.animations.rotation.y = PI
-	else:
+	elif dir.x < 0:
 		owner.animations.rotation.y = 0
+	else:
+		pass #Keep current direction if we didn't change it
 	
 	owner.animations.tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
 	owner.animations.tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)

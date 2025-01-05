@@ -200,7 +200,6 @@ class item_nectar:
 		self.recovery_amount = recovery_amount
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
-		sprite = Glossary.sprite.placeholder
 	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
@@ -236,10 +235,7 @@ class item_dewdrop:
 		self.recovery_amount = recovery_amount
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
-		sprite = Glossary.sprite.placeholder
-		
-		
-	
+
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
 	func on_option_use_world(target : Node = host):

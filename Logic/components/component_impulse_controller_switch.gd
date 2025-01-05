@@ -64,11 +64,12 @@ func on_state_exited_deactivated() -> void:
 
 func on_state_entered_activated() -> void:
 	activated.emit()
-	update_signals.call_deferred("activated", true, true) #Failsafe
 	
 	if one_way:
-		update_signals("activated", false)
+		update_signals.call_deferred("activated", false, true) #Failsafe
 		update_collision(false)
+	else:
+		update_signals.call_deferred("activated", true, true) #Failsafe
 
 #
 

@@ -12,20 +12,21 @@
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="10_jgp8j"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qdplk"]
-radius = 0.229798
-height = 1.02907
+radius = 0.25
+height = 0.5
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6qpdd"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1l2l5"]
 
-[node name="world_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_state_controller_world")]
+[node name="world_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_physics", "my_component_state_controller_world")]
 script = ExtResource("1_8kcuo")
 state_chart = NodePath("StateChart")
 collider = NodePath("CollisionShape3D")
 animations = NodePath("Components/component_animation")
 my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
+my_component_physics = NodePath("Components/component_physics")
 my_component_state_controller_world = NodePath("Components/component_state_controller_world")
 
 [node name="StateChart" parent="." instance=ExtResource("2_xjfrt")]
@@ -42,7 +43,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.2709
 [node name="component_animation" parent="Components" instance=ExtResource("4_hsqo4")]
 
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 sprite_frames = SubResource("SpriteFrames_6qpdd")
 
 [node name="status_hud" parent="Components/component_animation/character_sprite_position" index="1" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
@@ -72,8 +72,9 @@ script = ExtResource("8_3swv8")
 max_vis = 12
 status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
 
-[node name="component_animation_controller_world" type="Node" parent="Components"]
+[node name="component_animation_controller_world" type="Node" parent="Components" node_paths=PackedStringArray("animations")]
 script = ExtResource("9_l84gh")
+animations = NodePath("../component_animation")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("10_jgp8j")

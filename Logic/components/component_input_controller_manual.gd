@@ -30,9 +30,6 @@ func update_direction() -> void:
 	raw_direction = Input.get_vector("move_left","move_right","move_forward","move_backward")
 	direction = raw_direction.rotated(-Global.camera.global_rotation.y) #Move relative to camera
 
-func reset_jump_states() -> void:
-	pass
-
 ## Disabled
 
 func _on_state_entered_disabled() -> void:
@@ -41,14 +38,21 @@ func _on_state_entered_disabled() -> void:
 ## World
 
 func _on_state_physics_processing_world(_delta: float) -> void:
+	
+	## E
 	if Input.is_action_just_pressed("interact"):
 		my_component_interaction.interact()
-
+	
+	## R
 	if Input.is_action_just_pressed("equipment_use"):
 		my_component_equipment.ability_use()
-		
+	
+	if Input.is_action_just_pressed("cancel"):
+		my_component_equipment.ability_event(my_component_equipment.active,"on_cancel")
+	
+	## Q
 	if Input.is_action_just_pressed("equipment_switch"):
-		my_component_equipment.ability_switch_active_toggle()
+		my_component_equipment.toggle_active()
 
 ## TODO ADD EQUIPMENT INTERACTION AND STUFF HERE
 

@@ -1,3 +1,4 @@
+class_name component_animation
 extends Node3D
 
 @export var tree : AnimationTree
