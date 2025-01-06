@@ -345,19 +345,19 @@ class ability_heartsurge:
 	func _fx_normal() -> void:
 		var particle_clear = Glossary.create_fx_particle(caster.owner,"heartsurge_node_clear",true)
 		particle_clear.global_position = caster.global_position
-		particle_clear.amount = clamp(int(recall_magnitude),1,50)
+		particle_clear.amount = randi_range(40,60)
 		particle_clear.process_material.spread = 180
-		particle_clear.process_material.initial_velocity_max = recall_magnitude+10
-		particle_clear.process_material.initial_velocity_min = recall_magnitude
+		particle_clear.process_material.initial_velocity_max = 7
+		particle_clear.process_material.initial_velocity_min = 7
 	
 	func _fx_slingshot() -> void:
 		var particle_clear = Glossary.create_fx_particle(caster.owner,"heartsurge_node_clear",true)
 		particle_clear.global_position = caster.global_position
 		particle_clear.process_material.direction = recall_direction
-		particle_clear.amount = clamp(int(recall_magnitude),1,50)
-		particle_clear.process_material.spread = 60
-		particle_clear.process_material.initial_velocity_max = recall_magnitude+5
-		particle_clear.process_material.initial_velocity_min = recall_magnitude
+		particle_clear.amount = randi_range(40,60)
+		particle_clear.process_material.spread = 90
+		particle_clear.process_material.initial_velocity_max = max(recall_magnitude,7)
+		particle_clear.process_material.initial_velocity_min = 7#max(recall_magnitude,7)
 	
 	## Clear both Lumia's fx and the mark's fx
 	func _fx_clear() -> void:
@@ -412,8 +412,6 @@ class ability_heartsurge:
 	
 	func on_use() -> void:
 		
-		Debug.message(["Mark placed = ",is_mark_placed],Debug.msg_category.WORLD)
-		
 		if verify_use():
 			if is_mark_placed:
 				_return_to_mark()
@@ -421,6 +419,7 @@ class ability_heartsurge:
 				_set_mark()
 				
 			is_mark_placed = !is_mark_placed
+			Debug.message(["Mark placed = ",is_mark_placed],Debug.msg_category.WORLD)
 	
 	func on_cancel() -> void:
 		if is_mark_placed:

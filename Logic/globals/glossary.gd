@@ -84,6 +84,7 @@ func create_fx_particle(anchor : Node, type : String, one_shot : bool = false) -
 	if Glossary.particle.has(type):
 		var inst = Glossary.particle[type].instantiate()
 		anchor.add_child(inst)
+		inst.global_position = anchor.global_position
 		
 		if one_shot:
 			inst.one_shot = true

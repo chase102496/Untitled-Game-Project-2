@@ -7,6 +7,7 @@ extends Node
 
 var grav : float # Realtime gravity adding
 var _enabled : bool = true
+var velocity_history : Array = []
 
 @export var base_grav : float = 35 # To revert to our default
 @export var max_grav : float = -70 # Our max downward velocity
@@ -26,10 +27,26 @@ func disable():
 func grav_reset() -> void:
 	grav = base_grav
 
+func _clean_velocity_history() -> void:
+	## Limit to 60 units
+	if velocity_history.size() > 60:
+		velocity_history.pop_front()
+		_clean_velocity_history()
+
+func _store_velocity_history() -> void:
+	velocity_history.append(owner.velocity)
+	_clean_velocity_history()
+
+func get_velocity_history(depth : int = 60) -> Array:
+	if depth > 60:
+		push_error("Velocity History is not stored for more than 60 previous frames : ",depth)
+		return velocity_history
+	else:
+		return velocity_history.slice(velocity_history.size() - depth)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	if _enabled:
+		_store_velocity_history()
 		owner.move_and_slide()
 		owner.velocity.y = move_toward(owner.velocity.y, max_grav, grav * delta)
-	else:
-		pass

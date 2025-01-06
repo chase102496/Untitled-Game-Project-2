@@ -248,3 +248,8 @@ func deserialize_data_node(target : Object, imported_data_nodes : Dictionary) ->
 				current.set(final_key, value)
 		else:
 			push_error("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
+
+func create_hitstop(time : float) -> void:
+	get_tree().paused = true
+	await get_tree().create_timer(time).timeout
+	get_tree().paused = false

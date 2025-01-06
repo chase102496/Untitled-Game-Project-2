@@ -15,7 +15,7 @@ extends world_entity
 @export var my_vignette : Control
 
 func _ready():
-	
+
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.add_ability(component_ability.ability_tackle.new())
