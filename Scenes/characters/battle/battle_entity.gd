@@ -12,6 +12,7 @@ extends Entity
 @export var my_component_vis: component_vis
 @export var my_component_ability: component_ability
 @export var my_component_state_controller_battle: component_state_controller_battle
+@export var my_component_physics : component_physics
 
 @export_group("Other")
 @export_enum("FRIENDS","FOES") var alignment : String

@@ -33,7 +33,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	
 	## Healing
 	if amt > 0:
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.GREEN)
+		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.LIGHT_GREEN)
 	## Damage
 	elif amt < 0:
 		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.RED)

@@ -21,7 +21,7 @@ func change(amt : int):
 	
 	## Adding to Vis
 	if amt > 0:
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.BLUE)
+		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.LIGHT_SKY_BLUE)
 	
 	## Removing from Vis
 	elif amt < 0:

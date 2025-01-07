@@ -20,9 +20,7 @@ func init(my_parent : Node, my_position : Vector3) -> world_entity_dreamkin:
 	return self
 
 func _ready():
-	##TODO remove
 	var abil = my_component_ability
-	abil.add_ability(abil.ability_tackle.new())
 	abil.add_ability(abil.ability_solar_flare.new(1,1.0))
 	my_component_ability.my_status.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 

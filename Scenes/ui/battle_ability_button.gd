@@ -13,7 +13,7 @@ func _ready() -> void:
 	text = str(ability.type.ICON," ",ability.title)
 
 func _on_button_pressed() -> void:
-	Events.button_pressed_battle_ability.emit(ability)
+	Events.button_pressed_echoes_ability.emit(ability)
 
 func _on_button_mouse_entered() -> void:
 	description_box.show()

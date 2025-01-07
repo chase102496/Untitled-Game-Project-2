@@ -4,6 +4,9 @@ class_name AnimationComponent extends Node
 @export var hover_scale := Vector2(1,1)
 @export var time := 0.1
 @export var transition_type : Tween.TransitionType
+@export var ease_type : Tween.EaseType
+## Delay the signal pressed until after we finish the full press animation
+@export var delay_press_signal : bool = true
 
 var target : Control
 var default_scale : Vector2
@@ -11,11 +14,12 @@ var default_scale : Vector2
 func _ready() -> void:
 	target = get_parent()
 	connect_signals()
-	call_deferred("setup")
+	setup.call_deferred()
 
 func connect_signals() -> void:
 	target.mouse_entered.connect(_on_hover)
 	target.mouse_exited.connect(_off_hover)
+	target.pressed.connect(_on_pressed)
 
 func setup() -> void:
 	if from_center:
@@ -27,6 +31,7 @@ func _off_select() -> void:
 	pass
 
 func _on_hover() -> void:
+	
 	add_tween("scale", hover_scale, time)
 	
 func _off_hover() -> void:
@@ -35,4 +40,8 @@ func _off_hover() -> void:
 func add_tween(property: String, value, seconds: float) -> void:
 	var tween = self.create_tween()
 	if tween:
-		tween.tween_property(target, property, value, seconds).set_trans(transition_type)
+		tween.tween_property(target, property, value, seconds).set_trans(transition_type).set_ease(ease_type)
+
+func _on_pressed() -> void:
+	pass
+	#add_tween("scale", hover_scale, time)

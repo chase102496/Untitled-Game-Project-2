@@ -18,7 +18,6 @@ func _ready():
 
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
-	my_component_ability.add_ability(component_ability.ability_tackle.new())
 	my_component_ability.add_ability(component_ability.ability_heartlink.new())
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))

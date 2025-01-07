@@ -18,7 +18,7 @@
 radius = 0.229798
 height = 1.02907
 
-[node name="battle_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle")]
+[node name="battle_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle", "my_component_physics")]
 script = ExtResource("1_xrh1h")
 state_chart = NodePath("StateChart")
 collider = NodePath("CollisionShape3D")
@@ -27,6 +27,7 @@ my_component_health = NodePath("Components/component_health")
 my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
+my_component_physics = NodePath("Components/component_physics")
 
 [node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("4_0krx5")]
 

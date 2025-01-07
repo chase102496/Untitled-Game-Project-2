@@ -10,7 +10,7 @@ extends Control
 @onready var ui_panel_menu : Node = %Menu #Panel Container containing Menu
 
 @onready var ui_grid_main : Node = %Menu/Main #The screen that shows battle, items, switch, escape
-@onready var ui_grid_battle : Node = %Menu/Battle #The screen that shows abilities
+@onready var ui_grid_echoes : Node = %Menu/Echoes #The screen that shows abilities
 @onready var ui_grid_switch : Node = %Menu/Switch #The screen that shows dreamkin
 @onready var ui_grid_items : Node = %Menu/Items #The screen that shows items
 
@@ -19,7 +19,8 @@ extends Control
 @onready var ui_skillcheck_cursor_anim : Node = %Skillcheck/Cursor/AnimationPlayer
 @onready var ui_skillcheck_result : String = ""
 
-@onready var ui_button_battle : Node = %Menu/Main/Battle
+@onready var ui_button_attack : Node = %Menu/Main/Attack
+@onready var ui_button_echoes : Node = %Menu/Main/Echoes
 @onready var ui_button_switch : Node = %Menu/Main/Switch
 @onready var ui_button_items : Node = %Menu/Main/Items
 @onready var ui_button_escape : Node = %Menu/Main/Escape
@@ -30,46 +31,70 @@ extends Control
 @onready var state_chart : StateChart = %StateChart
 
 func _ready() -> void:
-	##UI Hiding
-	ui_skillcheck.hide()
-	ui_description_box.hide()
-	ui_panel_menu.hide()
+	
+	#we could do a for loop on children of main and menu? and have the name of the button determine the callable
+	
+	#export vars for all stuff
 	#
-	ui_grid_main.hide()
-	ui_grid_battle.hide()
-	ui_grid_switch.hide()
-	ui_grid_items.hide()
-	## Buttons
-	ui_button_battle.pressed.connect(_on_button_pressed_battle)
-	ui_button_escape.pressed.connect(_on_button_pressed_escape)
-	ui_button_switch.pressed.connect(_on_button_pressed_switch)
-	ui_button_items.pressed.connect(_on_button_pressed_items)
-	## Events
-	Events.skillcheck_hit.connect(_on_skillcheck_hit)
-	Events.button_pressed_battle_ability.connect(_on_button_pressed_battle_ability)
+
 	## Main
+	ui_grid_main.hide()
 	%StateChart/Battle_GUI/Main.state_entered.connect(_on_state_entered_battle_gui_main)
 	%StateChart/Battle_GUI/Main.state_exited.connect(_on_state_exited_battle_gui_main)
-	%StateChart/Battle_GUI/Disabled.state_entered.connect(_on_state_entered_battle_gui_disabled)
-	%StateChart/Battle_GUI/Disabled.state_exited.connect(_on_state_exited_battle_gui_disabled)
-	## Battle
-	%StateChart/Battle_GUI/Battle.state_entered.connect(_on_state_entered_battle_gui_battle)
-	%StateChart/Battle_GUI/Battle.state_physics_processing.connect(_on_state_physics_processing_battle_gui_battle)
-	%StateChart/Battle_GUI/Battle.state_exited.connect(_on_state_exited_battle_gui_battle)
-	%StateChart/Battle_GUI/Select.state_entered.connect(_on_state_entered_battle_gui_select)
-	%StateChart/Battle_GUI/Select.state_exited.connect(_on_state_exited_battle_gui_select)
-	%StateChart/Battle_GUI/Select.state_physics_processing.connect(_on_state_physics_processing_battle_gui_select)
+	
+	## Attack
+	ui_button_attack.pressed.connect(_on_button_pressed_attack)
+	
+	## Echoes
+	ui_grid_echoes.hide()
+	ui_button_echoes.pressed.connect(_on_button_pressed_echoes)
+	Events.button_pressed_echoes_ability.connect(_on_button_pressed_echoes_ability)
+	%StateChart/Battle_GUI/Echoes.state_entered.connect(_on_state_entered_battle_gui_echoes)
+	%StateChart/Battle_GUI/Echoes.state_physics_processing.connect(_on_state_physics_processing_battle_gui_echoes)
+	%StateChart/Battle_GUI/Echoes.state_exited.connect(_on_state_exited_battle_gui_echoes)
+	
+	## Switch
+	if ui_grid_switch:
+		ui_grid_switch.hide()
+		ui_button_switch.pressed.connect(_on_button_pressed_switch)
+		%StateChart/Battle_GUI/Switch.state_entered.connect(_on_state_entered_battle_gui_switch)
+		%StateChart/Battle_GUI/Switch.state_physics_processing.connect(_on_state_physics_processing_battle_gui_switch)
+		%StateChart/Battle_GUI/Switch.state_exited.connect(_on_state_exited_battle_gui_switch)
+	
+	## Items
+	if ui_grid_items:
+		ui_grid_items.hide()
+		ui_button_items.pressed.connect(_on_button_pressed_items)
+		%StateChart/Battle_GUI/Items.state_entered.connect(_on_state_entered_battle_gui_items)
+		%StateChart/Battle_GUI/Items.state_physics_processing.connect(_on_state_physics_processing_battle_gui_items)
+		%StateChart/Battle_GUI/Items.state_exited.connect(_on_state_exited_battle_gui_items)
+	
+	## Escape
+	ui_button_escape.pressed.connect(_on_button_pressed_escape)
+	
+	## Skillcheck
+	ui_skillcheck.hide()
+	Events.skillcheck_hit.connect(_on_skillcheck_hit)
 	%StateChart/Battle_GUI/Skillcheck.state_entered.connect(_on_state_entered_battle_gui_skillcheck)
 	%StateChart/Battle_GUI/Skillcheck.state_physics_processing.connect(_on_state_physics_processing_battle_gui_skillcheck) #long af
 	%StateChart/Battle_GUI/Skillcheck.state_exited.connect(_on_state_exited_battle_gui_skillcheck)
-	## Switch
-	%StateChart/Battle_GUI/Switch.state_entered.connect(_on_state_entered_battle_gui_switch)
-	%StateChart/Battle_GUI/Switch.state_physics_processing.connect(_on_state_physics_processing_battle_gui_switch)
-	%StateChart/Battle_GUI/Switch.state_exited.connect(_on_state_exited_battle_gui_switch)
-	## Item
-	%StateChart/Battle_GUI/Items.state_entered.connect(_on_state_entered_battle_gui_items)
-	%StateChart/Battle_GUI/Items.state_physics_processing.connect(_on_state_physics_processing_battle_gui_items)
-	%StateChart/Battle_GUI/Items.state_exited.connect(_on_state_exited_battle_gui_items)
+	
+	## Misc
+	# When enabled
+	%StateChart/Battle_GUI.state_input.connect(_on_state_input_battle_gui)
+	# 
+	ui_description_box.hide()
+	ui_panel_menu.hide()
+	# Disabled
+	%StateChart/Battle_GUI/Disabled.state_entered.connect(_on_state_entered_battle_gui_disabled)
+	%StateChart/Battle_GUI/Disabled.state_exited.connect(_on_state_exited_battle_gui_disabled)
+	# Select
+	%StateChart/Battle_GUI/Select.state_entered.connect(_on_state_entered_battle_gui_select)
+	%StateChart/Battle_GUI/Select.state_exited.connect(_on_state_exited_battle_gui_select)
+	%StateChart/Battle_GUI/Select.state_physics_processing.connect(_on_state_physics_processing_battle_gui_select)
+
+#TODO add back button for GUIs in state machine?
+# on_back and then it points to diff state depending on its current one
 
 ## --- Utility Functions ---
 
@@ -80,28 +105,48 @@ func update_selector_position() -> void:
 
 ## --- States ----
 
-func _on_state_entered_battle_gui_disabled():
+## Enabled
+
+func _on_state_input_battle_gui(event : InputEvent) -> void:
+	if Input.is_action_just_pressed("ui_cancel"):
+		state_chart.send_event("on_cancel")
+
+## Disabled
+
+func _on_state_entered_battle_gui_disabled() -> void:
 	hide()
-func _on_state_exited_battle_gui_disabled():
+func _on_state_exited_battle_gui_disabled() -> void:
 	show()
 
-## Main menu
+## "Main" or Main menu
 
-func _on_state_entered_battle_gui_main():
+func _on_state_entered_battle_gui_main() -> void:
 	ui_panel_menu.show() #Show main panel
 	ui_grid_main.show() #Show main grid of buttons
-func _on_state_exited_battle_gui_main():
+func _on_state_exited_battle_gui_main() -> void:
 	ui_panel_menu.hide() #Hide main panel
 	ui_grid_main.hide() #Hide main grid of buttons
 
+## Attack
+
+func _on_button_pressed_attack() -> void:
+	
+	var abil = component_ability.ability_tackle.new()
+	abil.caster = owner
+	
+	var properties = {
+		"ability" : abil
+	}
+	_on_button_pressed_echoes_ability(properties)
+
 ## Battle
 
-func _on_state_entered_battle_gui_battle():
+func _on_state_entered_battle_gui_echoes() -> void:
 	ui_panel_menu.show() #Show main panel
-	ui_grid_battle.show() #Show battle grid of buttons
+	ui_grid_echoes.show() #Show battle grid of buttons
 	
 	#removing old abilities
-	for child in ui_grid_battle.get_children():
+	for child in ui_grid_echoes.get_children():
 			child.queue_free()
 	#adding new ones
 	for ability in owner.my_component_ability.get_abilities():
@@ -116,28 +161,27 @@ func _on_state_entered_battle_gui_battle():
 		new_button.properties.description_label = ui_description_label
 		
 		## Signals
-		new_button.button_pressed_properties.connect(_on_button_pressed_battle_ability)
+		new_button.button_pressed_properties.connect(_on_button_pressed_echoes_ability)
 		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_battle_ability)
 		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_battle_ability)
 		
-		ui_grid_battle.add_child(new_button)
+		ui_grid_echoes.add_child(new_button)
 		new_button.show()
 
-func _on_state_physics_processing_battle_gui_battle(delta: float) -> void:
+func _on_state_physics_processing_battle_gui_echoes(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		state_chart.send_event("on_gui_main")
 
-func _on_state_exited_battle_gui_battle():
+func _on_state_exited_battle_gui_echoes() -> void:
 	ui_panel_menu.hide() #Hide main panel
-	ui_grid_battle.hide() #Hide battle grid of buttons
+	ui_grid_echoes.hide() #Hide battle grid of buttons
 
-# Select target
+# Select
 
-func _on_state_entered_battle_gui_select():
+func _on_state_entered_battle_gui_select() -> void:
 	selected_target = selector_list[0]
 	update_selector_position()
 	selector_sprite.show()
-
 
 func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 
@@ -156,7 +200,7 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 	#Other
 	
 	if Input.is_action_just_pressed("ui_cancel"):
-		state_chart.send_event("on_gui_battle")
+		state_chart.send_event("on_gui_echoes")
 	
 	if Input.is_action_just_pressed("ui_select"):
 		owner.my_component_ability.cast_queue = selected_ability #Set the spell for casting
@@ -171,13 +215,13 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 		state_chart.send_event("on_gui_skillcheck") #End of GUI stuff
 		selector_sprite.hide()
 
-func _on_state_exited_battle_gui_select():
+func _on_state_exited_battle_gui_select() -> void:
 	selected_target = selector_list[0]
 	selector_sprite.hide()
 
 # Skillcheck
 	
-func _on_state_entered_battle_gui_skillcheck():
+func _on_state_entered_battle_gui_skillcheck() -> void:
 	ui_skillcheck.show()
 	ui_skillcheck_cursor_anim.speed_scale = owner.my_component_ability.skillcheck_difficulty
 
@@ -202,16 +246,16 @@ func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 		state_chart.send_event("on_gui_disabled")
 		owner.state_chart.send_event("on_execution")
 
-func _on_skillcheck_hit(area,ability_queued):
+func _on_skillcheck_hit(area,ability_queued) -> void:
 	pass
 
-func _on_state_exited_battle_gui_skillcheck():
+func _on_state_exited_battle_gui_skillcheck() -> void:
 	ui_skillcheck.hide()
 	ui_skillcheck_cursor_anim.play()
 
 ## Switch
 
-func _on_state_entered_battle_gui_switch():
+func _on_state_entered_battle_gui_switch() -> void:
 	ui_panel_menu.show()
 	ui_grid_switch.show()
 	
@@ -240,13 +284,13 @@ func _on_state_physics_processing_battle_gui_switch(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		state_chart.send_event("on_gui_main")
 
-func _on_state_exited_battle_gui_switch():
+func _on_state_exited_battle_gui_switch() -> void:
 	ui_panel_menu.hide()
 	ui_grid_switch.hide()
 
 ## Item
 
-func _on_state_entered_battle_gui_items():
+func _on_state_entered_battle_gui_items() -> void:
 	ui_panel_menu.show()
 	ui_grid_items.show()
 	
@@ -270,19 +314,23 @@ func _on_state_entered_battle_gui_items():
 func _on_state_physics_processing_battle_gui_items(delta: float) -> void:
 	pass
 
-func _on_state_exited_battle_gui_items():
+func _on_state_exited_battle_gui_items() -> void:
 	ui_panel_menu.hide()
 	ui_grid_items.hide()
 
-## --- Buttons ---
+## Escape
 
-## Battle
+func _on_button_pressed_escape() -> void:
+	Battle.battle_finalize()
 
-func _on_button_pressed_battle():
-	state_chart.send_event("on_gui_battle")
-	#TODO add back button for GUIs
+## --- Submenu Buttons ---
 
-func _on_button_pressed_battle_ability(properties : Dictionary):
+## Echoes
+
+func _on_button_pressed_echoes() -> void:
+	state_chart.send_event("on_gui_echoes")
+
+func _on_button_pressed_echoes_ability(properties : Dictionary):
 	
 	var ability = properties.ability
 
@@ -294,6 +342,8 @@ func _on_button_pressed_battle_ability(properties : Dictionary):
 		state_chart.send_event("on_gui_select")
 	else:
 		ability.select_validate_failed()
+	
+	
 
 func _on_button_enter_hover_battle_ability(properties : Dictionary):
 	
@@ -313,7 +363,7 @@ func _on_button_exit_hover_battle_ability(properties : Dictionary):
 
 ## Switch
 
-func _on_button_pressed_switch():
+func _on_button_pressed_switch() -> void:
 	##Verify we can switch Dreamkin
 	#Later this will include a debuff where we can't swap too
 	if Global.player.my_component_party.my_party.size() > 0:
@@ -353,7 +403,7 @@ func _on_button_pressed_switch_dreamkin(properties : Dictionary):
 			
 			state_chart.send_event("on_gui_disabled") #Disable gui
 			
-			await new_dreamkin_inst._ready
+			#await new_dreamkin_inst.ready TBD don't need??
 			Events.turn_end.emit.call_deferred() #End turn without any phases
 			#owner.state_chart.send_event("on_end") #End our turn
 	else:
@@ -382,7 +432,7 @@ func _on_button_exit_hover_switch_dreamkin(properties : Dictionary):
 
 ## Item
 
-func _on_button_pressed_items():
+func _on_button_pressed_items() -> void:
 	var item_list = Global.player.my_component_inventory.get_items_from_category(Glossary.item_category.ITEMS.TITLE)
 	if item_list.size() > 0:
 		state_chart.send_event("on_gui_items")
@@ -427,8 +477,3 @@ func _on_button_enter_hover_items_option(properties : Dictionary):
 
 func _on_button_exit_hover_items_option(properties : Dictionary):
 	ui_description_box.hide()
-
-## Escape
-
-func _on_button_pressed_escape():
-	Battle.battle_finalize()

@@ -2,7 +2,7 @@ extends Node
 
 ## --- GUI ---
 
-signal button_pressed_battle_ability(ability : Object)
+signal button_pressed_echoes_ability(ability : Object)
 signal button_pressed_inventory_item(item : Object)
 signal mouse_entered_inventory_item(item : Object)
 signal mouse_exited_inventory_item(item : Object)

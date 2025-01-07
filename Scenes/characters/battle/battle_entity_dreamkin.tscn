@@ -1,12 +1,10 @@
-[gd_scene load_steps=42 format=3 uid="uid://bkeuje6cbfrkx"]
+[gd_scene load_steps=40 format=3 uid="uid://bkeuje6cbfrkx"]
 
 [ext_resource type="PackedScene" uid="uid://b5f4cvf272kh2" path="res://Scenes/characters/battle/battle_entity.tscn" id="1_jan3h"]
 [ext_resource type="Script" path="res://Scenes/characters/battle/battle_entity_dreamkin.gd" id="2_76bv3"]
 [ext_resource type="PackedScene" uid="uid://c5r06amfsateg" path="res://Scenes/ui/battle_gui.tscn" id="2_j6lbs"]
-[ext_resource type="AnimationLibrary" uid="uid://fmaut2uju8nw" path="res://Resources/AnimationLibrary/default_basic.tres" id="2_wxp2v"]
 [ext_resource type="Texture2D" uid="uid://cui7icj43e4ex" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Blue_Death.png" id="4_inqnw"]
 [ext_resource type="Texture2D" uid="uid://c6vyve2d1ob3n" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Blue_Floating_Idle.png" id="5_cm5wc"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cb2bhc37utoc8" path="res://Resources/AnimationNodeStateMachine/default_basic.tres" id="6_6nh42"]
 [ext_resource type="Texture2D" uid="uid://b0comk27jk454" path="res://Art/sprites/Axolotl/Spritesheets/Axolotl_Blue_Swimming.png" id="6_w7twy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vqngx"]
@@ -259,23 +257,13 @@ classification = "DREAMKIN"
 
 [node name="Battle_GUI" parent="." index="0" instance=ExtResource("2_j6lbs")]
 
+[node name="Items" parent="Battle_GUI/HBoxContainer/Menu/Main" index="2"]
+visible = false
+
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
 flip_h = true
 sprite_frames = SubResource("SpriteFrames_njpwc")
-animation = &"default_idle"
-frame = 1
 
-[node name="character_animation_player" parent="Components/component_animation" index="2"]
-libraries = {
-"": ExtResource("2_wxp2v")
-}
-
-[node name="character_animation_tree" parent="Components/component_animation" index="3"]
-tree_root = ExtResource("6_6nh42")
-parameters/Death/TimeScale/scale = 1.0
-parameters/Hurt/TimeScale/scale = 1.0
-parameters/Idle/TimeScale/scale = 1.0
-parameters/Walk/TimeScale/scale = 1.0
-
+[editable path="Battle_GUI"]
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]

@@ -26,6 +26,9 @@ my_component_inventory = NodePath("../Components/component_inventory")
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="Switch" parent="Battle_GUI/HBoxContainer/Menu/Main" index="3"]
+visible = false
+
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 sprite_frames = ExtResource("8_0sqpw")
@@ -47,5 +50,6 @@ script = ExtResource("26_jxo4h")
 [node name="component_party" type="Node" parent="Components" index="8"]
 script = ExtResource("33_s503q")
 
+[editable path="Battle_GUI"]
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]
