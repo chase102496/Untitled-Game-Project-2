@@ -4,7 +4,3 @@
 
 [node name="component_ability" type="Node"]
 script = ExtResource("1_ff4i2")
-
-[node name="my_abilities" type="Node" parent="."]
-
-[node name="my_status" type="Node" parent="."]

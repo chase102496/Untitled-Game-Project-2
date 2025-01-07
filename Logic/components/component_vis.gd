@@ -1,5 +1,5 @@
 class_name component_vis
-extends Node
+extends component_node
 
 @export var max_vis : int = 6
 var vis : int

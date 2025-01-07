@@ -1,5 +1,7 @@
+@icon("res://Art/icons/node icons/node/icon_bag.png")
+
 class_name component_inventory
-extends Node
+extends component_node
 
 ## --- Inventory Manager ---
 

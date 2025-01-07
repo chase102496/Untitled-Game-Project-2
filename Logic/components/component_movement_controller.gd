@@ -1,5 +1,5 @@
 class_name component_movement_controller
-extends Node
+extends component_node
 
 @export var my_component_input_controller : Node
 @export var my_component_physics : component_physics

@@ -1,5 +1,5 @@
 class_name component_input_controller_default
-extends Node
+extends component_node
 
 @export var my_component_movement_controller : component_movement_controller
 

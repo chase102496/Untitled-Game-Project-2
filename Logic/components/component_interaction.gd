@@ -3,7 +3,7 @@
 ## This is the TRANSMITTER or HOST
 ## For recievers, like an NPC or a lever, use component_interact_reciever
 class_name component_interaction
-extends Node3D
+extends component_node_3d
 
 @export var active_interact_area : component_interact_controller
 

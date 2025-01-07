@@ -1,5 +1,5 @@
 class_name component_gloam_manager
-extends Node3D
+extends component_node_3d
 
 var current_gloam_cloud : Node
 

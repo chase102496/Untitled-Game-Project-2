@@ -1,3 +1,5 @@
+@icon("res://Art/icons/node icons/node_3D/icon_area_meteo.png")
+
 class_name component_impact_monitor
 extends Area3D
 

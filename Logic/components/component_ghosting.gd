@@ -1,5 +1,5 @@
 class_name component_ghosting
-extends Node
+extends component_node
 
 @export var mesh : MeshInstance3D
 @export_range(0, 1, 0.1) var ghosting_strength: float = 0.5

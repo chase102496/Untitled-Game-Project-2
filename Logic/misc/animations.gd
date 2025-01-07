@@ -1,3 +1,5 @@
+@icon("res://Art/icons/node icons/node_3D/icon_mirror.png")
+
 class_name component_animation
 extends Node3D
 

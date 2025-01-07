@@ -1,2 +1,2 @@
 class_name component_impulse
-extends Node
+extends component_node

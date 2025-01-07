@@ -1,5 +1,5 @@
 class_name component_physics
-extends Node
+extends component_node
 
 #For functions, emit a signal, and then just connect it on the parent end and create a function to run when it is signalled
 

@@ -1,5 +1,5 @@
 class_name component_animation_controller_world
-extends Node
+extends component_node
 
 @export var my_component_input_controller : Node
 @export var animations : component_animation

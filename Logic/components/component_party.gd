@@ -1,5 +1,7 @@
+@icon("res://Art/icons/node icons/node/icon_follow.png")
+
 class_name component_party
-extends Node
+extends component_node
 
 var my_summons : Array = [] #Our actual party members summoned currently
 var my_party : Array = [] #The reference data of all our party members

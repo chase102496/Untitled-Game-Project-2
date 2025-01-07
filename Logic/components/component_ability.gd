@@ -1,5 +1,5 @@
 class_name component_ability
-extends Node
+extends component_node
 
 ## For picking abilities and holding onto them for a bit
 var cast_queue : ability = null

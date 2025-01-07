@@ -1,5 +1,5 @@
 class_name component_equipment
-extends Node3D
+extends component_node_3d
 
 @export var gloam_manager : Node3D
 

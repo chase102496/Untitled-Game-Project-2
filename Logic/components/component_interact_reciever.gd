@@ -21,6 +21,8 @@
 
 # Attach this to an NPC to trigger their talk dialogue by connecting the NPC to the interact signal
 
+@icon("res://Art/icons/node icons/node_3D/icon_signal.png")
+
 class_name component_interact_reciever
 extends Area3D
 
