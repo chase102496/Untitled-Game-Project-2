@@ -219,8 +219,7 @@ class status_template_default:
 		host.my_component_ability.my_status.remove(self)
 	
 	func fx_add():
-		host.animations.sprite.add_child(fx)
-		fx.global_position = host.animations.sprite.global_position
+		host.animations.fx_anchor.add_child(fx)
 	
 	func fx_remove():
 		fx.queue_free()
@@ -805,7 +804,7 @@ class ability_solar_flare:
 		"vis_cost" : vis_cost
 		}
 	
-	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
+	func _init(damage : int = 1, chance : float = 1.0, vis_cost : int = 1) -> void:
 		#Default changes
 		id = "ability_solar_flare"
 		title = "Solar Flare"

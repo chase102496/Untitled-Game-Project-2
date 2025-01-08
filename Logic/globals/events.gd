@@ -1,5 +1,8 @@
 extends Node
 
+signal entity_health_changed(entity : Node, amt : int)
+signal entity_vis_changed(entity : Node, amt : int)
+
 ## --- GUI ---
 
 signal button_pressed_echoes_ability(ability : Object)

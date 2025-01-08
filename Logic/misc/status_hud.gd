@@ -14,8 +14,8 @@ var hud_timer : float = 0
 func _ready() -> void:
 	hide()
 
-func reset_hud_timer():
-	hud_timer = max_hud_timer
+#func reset_hud_timer():
+	#hud_timer = max_hud_timer
 
 func _physics_process(delta: float) -> void:
 	

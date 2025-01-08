@@ -1,21 +1,27 @@
 class_name component_vis
 extends component_node
 
-@export var max_vis : int = 6
-var vis : int
+signal vis_changed(amt : int)
 
+@export var max_vis : int = 6
 @export var status_hud : Node3D
 
-func _ready() -> void:
-	vis = max_vis
+var vis : int:
+	set(value):
+		vis = value
+		_update(value)
 
-func update_status_hud() -> void:
-	if status_hud and SceneManager.current_scene.scene_type == "world":
-		status_hud.reset_hud_timer()
+func _ready() -> void:
+	if !vis:
+		vis = max_vis
+	_update(0)
+
+## Local and global emission of health changed event
+func _update(amt : int) -> void:
+	vis_changed.emit(amt)
+	Events.entity_vis_changed.emit(owner,amt)
 
 func change(amt : int):
-	
-	update_status_hud()
 	
 	var old_vis = vis
 	
@@ -33,3 +39,5 @@ func change(amt : int):
 	
 	vis = clamp(vis + amt,0,max_vis)
 	Debug.message([old_vis," MP -> ",vis," MP"],Debug.msg_category.BATTLE)
+	
+	_update(amt)

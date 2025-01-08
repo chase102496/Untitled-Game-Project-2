@@ -39,10 +39,12 @@ func _physics_process(delta: float) -> void:
 		var dreamkin_list = []
 		
 		for i in dreamkin_summons.size():
-			dreamkin_list.append(dreamkin_summons[i].name)
+			if is_instance_valid(dreamkin_summons[i]):
+				dreamkin_list.append(dreamkin_summons[i].name)
 		dreamkin_list.append(" / ")
 		for i in dreamkin_party.size():
-			dreamkin_list.append(dreamkin_party[i].name)
+			if is_instance_valid(dreamkin_party[i]):
+				dreamkin_list.append(dreamkin_party[i].name)
 		
 		var status_list = []
 		if owner.my_component_ability.my_status.NORMAL:

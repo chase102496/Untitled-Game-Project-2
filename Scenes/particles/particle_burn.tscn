@@ -1,50 +1,54 @@
 [gd_scene load_steps=14 format=3 uid="uid://gd2xs1mu1ksn"]
 
-[ext_resource type="Texture2D" uid="uid://cd0kujbdcivgy" path="res://Art/particles/flame_06.png" id="1_lfg86"]
+[ext_resource type="Texture2D" uid="uid://dyc4xn08f5bp5" path="res://Art/particles/fire_01.png" id="1_x5be7"]
+[ext_resource type="Shader" path="res://test_junk/flame_shader.gdshader" id="2_686dk"]
 
-[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_mun4g"]
-transparency = 1
-blend_mode = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_lfg86")
-billboard_mode = 3
-billboard_keep_scale = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-grow_amount = 2.299
+[sub_resource type="Gradient" id="Gradient_igmpq"]
+offsets = PackedFloat32Array(0, 0.73301)
+colors = PackedColorArray(0.98, 0.392, 0, 1, 1, 0, 0.0166664, 1)
 
-[sub_resource type="Curve" id="Curve_mcdeq"]
-_data = [Vector2(0, 0.802801), 0.0, 0.0, 0, 0, Vector2(0.504451, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_uyheu"]
+gradient = SubResource("Gradient_igmpq")
+
+[sub_resource type="Curve" id="Curve_7705o"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.418803, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_svprq"]
-curve = SubResource("Curve_mcdeq")
+curve = SubResource("Curve_7705o")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7mwrs"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rrnao"]
 resource_local_to_scene = true
-emission_shape_scale = Vector3(0.1, 0.5, 0.1)
-emission_shape = 1
-emission_sphere_radius = 0.3
-angle_min = 1.07288e-05
-angle_max = 180.0
-angular_velocity_min = 147.92
-angular_velocity_max = 147.92
-gravity = Vector3(0, 2, 0)
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
+emission_shape = 2
+emission_sphere_radius = 0.1
+angle_min = 394.7
+angle_max = 432.0
+angular_velocity_min = 200.0
+angular_velocity_max = 300.0
+gravity = Vector3(0, 1.75, 0)
 attractor_interaction_enabled = false
 scale_curve = SubResource("CurveTexture_svprq")
-color = Color(1, 0.583333, 0, 1)
+color_ramp = SubResource("GradientTexture1D_uyheu")
+turbulence_enabled = true
+turbulence_noise_scale = 20.0
+turbulence_noise_speed = Vector3(1, 0, 1)
+turbulence_noise_speed_random = 3.0
+turbulence_influence_min = 0.01
+turbulence_influence_max = 0.05
+turbulence_initial_displacement_min = 1.49012e-06
+turbulence_initial_displacement_max = 1.49012e-06
 
-[sub_resource type="QuadMesh" id="QuadMesh_45jo3"]
-lightmap_size_hint = Vector2i(7, 7)
-
-[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_1awx7"]
-transparency = 1
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_mun4g"]
+transparency = 2
+alpha_scissor_threshold = 0.45
+alpha_antialiasing_mode = 0
 blend_mode = 1
 shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
 vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_lfg86")
+albedo_texture = ExtResource("1_x5be7")
 billboard_mode = 3
 billboard_keep_scale = true
 particles_anim_h_frames = 1
@@ -52,51 +56,53 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 grow_amount = 2.299
 
-[sub_resource type="Curve" id="Curve_s10ck"]
-min_value = -1.0
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_sy3q0"]
-curve = SubResource("Curve_s10ck")
-
-[sub_resource type="Curve" id="Curve_3bewe"]
-_data = [Vector2(0, 0.802801), 0.0, 0.0, 0, 0, Vector2(0.504451, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_62kd6"]
-curve = SubResource("Curve_3bewe")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_m5m1g"]
-resource_local_to_scene = true
-emission_shape_scale = Vector3(0.1, 0.5, 0.1)
-emission_shape = 1
-emission_sphere_radius = 0.3
-angle_min = 1.07288e-05
-angle_max = 180.0
-angular_velocity_min = 147.92
-angular_velocity_max = 147.92
-gravity = Vector3(0, 2, 0)
-attractor_interaction_enabled = false
-scale_curve = SubResource("CurveTexture_62kd6")
-color = Color(1, 0.133333, 0, 1)
-hue_variation_curve = SubResource("CurveTexture_sy3q0")
-
-[sub_resource type="QuadMesh" id="QuadMesh_24vml"]
+[sub_resource type="QuadMesh" id="QuadMesh_hkyp0"]
 lightmap_size_hint = Vector2i(7, 7)
+material = SubResource("ORMMaterial3D_mun4g")
+size = Vector2(0.3, 0.5)
 
-[node name="particle_burn2" type="GPUParticles3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-material_override = SubResource("ORMMaterial3D_mun4g")
-transparency = 0.85
-amount = 20
-process_material = SubResource("ParticleProcessMaterial_7mwrs")
-draw_pass_1 = SubResource("QuadMesh_45jo3")
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cjj7m"]
+noise_type = 3
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mohba"]
+seamless = true
+noise = SubResource("FastNoiseLite_cjj7m")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6wn4p"]
+render_priority = 0
+shader = ExtResource("2_686dk")
+shader_parameter/time_speed = 1.0
+shader_parameter/spin = 0.0
+shader_parameter/flame_brightness = 0.6
+shader_parameter/color_intensity = 1.0
+shader_parameter/horizontal_frequency = 1.0
+shader_parameter/vertical_frequency = 1.0
+shader_parameter/size = -0.3
+shader_parameter/core_size = 1.0
+shader_parameter/color1 = Color(1, 0.8635, 0.37, 1)
+shader_parameter/color2 = Color(0.93, 0.6665, 0, 1)
+shader_parameter/color3 = Color(1, 0.483333, 0, 1)
+shader_parameter/color4 = Color(0.93, 0.826615, 0.6603, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_mohba")
+
+[sub_resource type="SphereMesh" id="SphereMesh_nmmgu"]
+material = SubResource("ShaderMaterial_6wn4p")
+radius = 0.2
+height = 0.4
+radial_segments = 256
+rings = 256
+
+[node name="particle_burn_fireplace" type="Node3D"]
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-material_override = SubResource("ORMMaterial3D_1awx7")
-transparency = 0.85
-amount = 20
-process_material = SubResource("ParticleProcessMaterial_m5m1g")
-draw_pass_1 = SubResource("QuadMesh_24vml")
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+amount = 40
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_rrnao")
+draw_pass_1 = SubResource("QuadMesh_hkyp0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_nmmgu")
+skeleton = NodePath("../GPUParticles3D")

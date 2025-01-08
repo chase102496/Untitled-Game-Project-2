@@ -37,7 +37,7 @@ func _on_state_entered_battle_hurt() -> void:
 	owner.animations.tree.get("parameters/playback").travel("Hurt")
 
 func _on_state_entered_battle_waiting() -> void:
-	owner.animations.status_hud.show()
+	#owner.animations.status_hud.show()
 	#Sets us facing the right way, depending on our side
 	owner.animations.tree.get("parameters/playback").travel("Idle")
 	if owner.alignment == Battle.alignment.FRIENDS:
@@ -52,4 +52,5 @@ func _on_state_entered_battle_execution() -> void:
 	owner.animations.status_hud.hide()
 	
 func _on_state_exited_battle_execution() -> void:
-	owner.animations.status_hud.show()
+	#owner.animations.status_hud.show()
+	pass

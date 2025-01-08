@@ -47,7 +47,7 @@ sprite_frames = ExtResource("5_c5nv1")
 animation = &"default_idle"
 frame = 1
 
-[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="1" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
+[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
 my_component_health = NodePath("../../../component_health")
 my_component_vis = NodePath("../../../component_vis")
 collider = NodePath("../../../../CollisionShape3D")

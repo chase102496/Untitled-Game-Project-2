@@ -1,5 +1,5 @@
 class_name component_state_controller_battle
-extends Node
+extends component_node
 
 @export var my_component_ability: component_ability
 

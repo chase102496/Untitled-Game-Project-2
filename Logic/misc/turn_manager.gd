@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var spotlight : SpotLight3D
+
 #DO NOT PUT ANYTHING BESIDES THE UNITS THAT WILL BE FIGHTING AND TAKING TURNS IN THE IMMEDIATE CHILD SECTION OF TURN_MANAGER
 
 ## Makes sure no matter what, when we unload the battlefield the Battle list is cleared
@@ -8,6 +10,8 @@ func _exit_tree() -> void:
 
 #Init and set active character to the first in our child list and emit start of turn
 func _ready() -> void:
+	#Setting current spotlight for reference in Battle
+	Battle.battle_spotlight = spotlight
 	
 	#Init for event bus, so we can recieve char end turn
 	Events.battle_entity_death.connect(_on_battle_entity_death)

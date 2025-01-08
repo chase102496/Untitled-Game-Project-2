@@ -4,6 +4,9 @@ var active_character : Node3D = null
 var active_character_index : int = 0
 var battle_list : Array = []
 var battle_list_ready : bool = true
+var battle_spotlight : SpotLight3D
+var battle_spotlight_target : Node3D
+var battle_spotlight_tween : Tween
 
 ## --- Dictionaries --- ##
 
@@ -353,3 +356,29 @@ func check_ready():
 
 func camera_update():
 	Global.camera.follow_target = active_character
+	set_battle_spotlight_target(active_character)
+
+func set_battle_spotlight_target(target: Node3D) -> void:
+	var tween_time = 0.3
+	if target != battle_spotlight_target:
+		battle_spotlight_target = target
+		
+		battle_spotlight_tween = create_tween()
+		battle_spotlight_tween.set_ease(Tween.EASE_OUT)
+		battle_spotlight_tween.set_trans(Tween.TRANS_BACK)
+		battle_spotlight_tween.tween_property(battle_spotlight,"global_position",Vector3(target.global_position.x,battle_spotlight.global_position.y,target.global_position.z),tween_time)
+		battle_spotlight.reparent.call_deferred(target.animations.sprite_position)
+		
+		#battle_spotlight.get_parent().remove_child(battle_spotlight)
+		#target.animations.sprite.add_child(battle_spotlight)
+
+func set_battle_spotlight_brightness(brightness : float,time : float = 0) -> void:
+	if battle_spotlight.light_energy != brightness:
+		var tween = create_tween()
+		tween.tween_property(battle_spotlight,"light_energy",brightness,time)
+
+func reset_battle_spotlight_brightness(time : float = 0) -> void:
+	var brightness = 12
+	if battle_spotlight.light_energy != brightness:
+		var tween = create_tween()
+		tween.tween_property(battle_spotlight,"light_energy",brightness,time)

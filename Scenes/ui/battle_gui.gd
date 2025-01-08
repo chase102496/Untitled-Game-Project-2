@@ -1,17 +1,20 @@
 class_name battle_gui
 extends Control
 
+@export var active_portrait : Control
+@onready var portrait_list : Array = $Portraits.get_children() #TODO REMOVE THIS
+
 @onready var selector_list : Array
 @onready var selected_ability : Object
 @onready var selected_target : Object
 
-@onready var selector_sprite : Node = $selector_sprite
+#@onready var selector_sprite : Node = $selector_sprite
 
 @onready var ui_panel_menu : Node = %Menu #Panel Container containing Menu
 
-@onready var ui_grid_main : Node = %Menu/Main #The screen that shows battle, items, switch, escape
+@onready var ui_grid_main : Node = %Menu/Main #The screen that shows echoes, items, party, escape
 @onready var ui_grid_echoes : Node = %Menu/Echoes #The screen that shows abilities
-@onready var ui_grid_switch : Node = %Menu/Switch #The screen that shows dreamkin
+@onready var ui_grid_party : Node = %Menu/Party #The screen that shows dreamkin
 @onready var ui_grid_items : Node = %Menu/Items #The screen that shows items
 
 @onready var ui_skillcheck : Node = %Skillcheck
@@ -21,21 +24,17 @@ extends Control
 
 @onready var ui_button_attack : Node = %Menu/Main/Attack
 @onready var ui_button_echoes : Node = %Menu/Main/Echoes
-@onready var ui_button_switch : Node = %Menu/Main/Switch
+@onready var ui_button_party : Node = %Menu/Main/Party
 @onready var ui_button_items : Node = %Menu/Main/Items
 @onready var ui_button_escape : Node = %Menu/Main/Escape
 
 @onready var ui_description_box : PanelContainer = %Description
+@onready var ui_description_title : RichTextLabel = %"Description/VBoxContainer/Description Title"
 @onready var ui_description_label : RichTextLabel = %"Description/VBoxContainer/Description Label"
 
 @onready var state_chart : StateChart = %StateChart
 
 func _ready() -> void:
-	
-	#we could do a for loop on children of main and menu? and have the name of the button determine the callable
-	
-	#export vars for all stuff
-	#
 
 	## Main
 	ui_grid_main.hide()
@@ -53,13 +52,13 @@ func _ready() -> void:
 	%StateChart/Battle_GUI/Echoes.state_physics_processing.connect(_on_state_physics_processing_battle_gui_echoes)
 	%StateChart/Battle_GUI/Echoes.state_exited.connect(_on_state_exited_battle_gui_echoes)
 	
-	## Switch
-	if ui_grid_switch:
-		ui_grid_switch.hide()
-		ui_button_switch.pressed.connect(_on_button_pressed_switch)
-		%StateChart/Battle_GUI/Switch.state_entered.connect(_on_state_entered_battle_gui_switch)
-		%StateChart/Battle_GUI/Switch.state_physics_processing.connect(_on_state_physics_processing_battle_gui_switch)
-		%StateChart/Battle_GUI/Switch.state_exited.connect(_on_state_exited_battle_gui_switch)
+	## Party
+	if ui_grid_party:
+		ui_grid_party.hide()
+		ui_button_party.pressed.connect(_on_button_pressed_party)
+		%StateChart/Battle_GUI/Party.state_entered.connect(_on_state_entered_battle_gui_party)
+		%StateChart/Battle_GUI/Party.state_physics_processing.connect(_on_state_physics_processing_battle_gui_party)
+		%StateChart/Battle_GUI/Party.state_exited.connect(_on_state_exited_battle_gui_party)
 	
 	## Items
 	if ui_grid_items:
@@ -99,9 +98,12 @@ func _ready() -> void:
 ## --- Utility Functions ---
 
 func update_selector_position() -> void:
-	selector_sprite.global_position.x = selected_target.animations.selector_anchor.global_position.x
-	selector_sprite.global_position.y = selected_target.animations.selector_anchor.global_position.y
-	selector_sprite.global_position.z = selected_target.animations.selector_anchor.global_position.z
+	
+	Battle.set_battle_spotlight_target(selected_target)
+	
+	#selector_sprite.global_position.x = selected_target.animations.selector_anchor.global_position.x
+	#selector_sprite.global_position.y = selected_target.animations.selector_anchor.global_position.y
+	#selector_sprite.global_position.z = selected_target.animations.selector_anchor.global_position.z
 
 ## --- States ----
 
@@ -114,13 +116,15 @@ func _on_state_input_battle_gui(event : InputEvent) -> void:
 ## Disabled
 
 func _on_state_entered_battle_gui_disabled() -> void:
-	hide()
+	active_portrait.modulate = Color("808080")
+	ui_panel_menu.hide()
 func _on_state_exited_battle_gui_disabled() -> void:
-	show()
+	ui_panel_menu.show()
 
 ## "Main" or Main menu
 
 func _on_state_entered_battle_gui_main() -> void:
+	active_portrait.modulate = Color("ffffff")
 	ui_panel_menu.show() #Show main panel
 	ui_grid_main.show() #Show main grid of buttons
 func _on_state_exited_battle_gui_main() -> void:
@@ -181,7 +185,7 @@ func _on_state_exited_battle_gui_echoes() -> void:
 func _on_state_entered_battle_gui_select() -> void:
 	selected_target = selector_list[0]
 	update_selector_position()
-	selector_sprite.show()
+	#selector_sprite.show()
 
 func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 
@@ -213,17 +217,18 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 			)
 		owner.state_chart.send_event("on_skillcheck") #Run skillcheck
 		state_chart.send_event("on_gui_skillcheck") #End of GUI stuff
-		selector_sprite.hide()
 
 func _on_state_exited_battle_gui_select() -> void:
 	selected_target = selector_list[0]
-	selector_sprite.hide()
+	Battle.set_battle_spotlight_target(owner)
+	#selector_sprite.hide()
 
 # Skillcheck
 	
 func _on_state_entered_battle_gui_skillcheck() -> void:
 	ui_skillcheck.show()
 	ui_skillcheck_cursor_anim.speed_scale = owner.my_component_ability.skillcheck_difficulty
+	Battle.set_battle_spotlight_brightness(0)
 
 func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 	
@@ -252,15 +257,16 @@ func _on_skillcheck_hit(area,ability_queued) -> void:
 func _on_state_exited_battle_gui_skillcheck() -> void:
 	ui_skillcheck.hide()
 	ui_skillcheck_cursor_anim.play()
+	Battle.reset_battle_spotlight_brightness()
 
 ## Switch
 
-func _on_state_entered_battle_gui_switch() -> void:
+func _on_state_entered_battle_gui_party() -> void:
 	ui_panel_menu.show()
-	ui_grid_switch.show()
+	ui_grid_party.show()
 	
 	#removing old dreamkin buttons
-	for child in ui_grid_switch.get_children():
+	for child in ui_grid_party.get_children():
 		child.queue_free()
 	#adding new ones
 	for i in Global.player.my_component_party.my_party.size(): #TODO Won't work if player is actually dead rn
@@ -272,21 +278,21 @@ func _on_state_entered_battle_gui_switch() -> void:
 		new_button.properties.dreamkin = dreamkin_inst
 		
 		## Signals
-		new_button.button_pressed_properties.connect(_on_button_pressed_switch_dreamkin)
-		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_switch_dreamkin)
-		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_switch_dreamkin)
+		new_button.button_pressed_properties.connect(_on_button_pressed_party_dreamkin)
+		new_button.button_enter_hover_properties.connect(_on_button_enter_hover_party_dreamkin)
+		new_button.button_exit_hover_properties.connect(_on_button_exit_hover_party_dreamkin)
 		
 		## Finalize
-		ui_grid_switch.add_child(new_button)
+		ui_grid_party.add_child(new_button)
 		new_button.show()
 
-func _on_state_physics_processing_battle_gui_switch(delta: float) -> void:
+func _on_state_physics_processing_battle_gui_party(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		state_chart.send_event("on_gui_main")
 
-func _on_state_exited_battle_gui_switch() -> void:
+func _on_state_exited_battle_gui_party() -> void:
 	ui_panel_menu.hide()
-	ui_grid_switch.hide()
+	ui_grid_party.hide()
 
 ## Item
 
@@ -349,8 +355,9 @@ func _on_button_enter_hover_battle_ability(properties : Dictionary):
 	
 	var ability = properties.ability
 	
+	ui_description_title.text = str(Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",ability.vis_cost," ",Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.type.TITLE)
+	
 	ui_description_label.text = str(
-		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",ability.vis_cost,"  ",Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.type.TITLE,"\n",
 		ability.description,"\n",
 		"\n",
 		Battle.type_color("DESCRIPTION"),ability.target_selector.DESCRIPTION,"[/color]","\n",
@@ -363,15 +370,15 @@ func _on_button_exit_hover_battle_ability(properties : Dictionary):
 
 ## Switch
 
-func _on_button_pressed_switch() -> void:
+func _on_button_pressed_party() -> void:
 	##Verify we can switch Dreamkin
 	#Later this will include a debuff where we can't swap too
 	if Global.player.my_component_party.my_party.size() > 0:
-		state_chart.send_event("on_gui_switch")
+		state_chart.send_event("on_gui_party")
 	else:
 		print_debug("No party members to swap to!")
 
-func _on_button_pressed_switch_dreamkin(properties : Dictionary):
+func _on_button_pressed_party_dreamkin(properties : Dictionary):
 	
 	var dreamkin = properties.dreamkin
 	
@@ -409,7 +416,7 @@ func _on_button_pressed_switch_dreamkin(properties : Dictionary):
 	else:
 		print(dreamkin.name," is unconscious!")
 
-func _on_button_enter_hover_switch_dreamkin(properties : Dictionary):
+func _on_button_enter_hover_party_dreamkin(properties : Dictionary):
 	var dreamkin = properties.dreamkin
 	var abil_list = ""
 	
@@ -417,7 +424,7 @@ func _on_button_enter_hover_switch_dreamkin(properties : Dictionary):
 		abil_list += str(Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.title,
 		"\n")
 	
-	ui_description_label.text = str(
+	ui_description_title.text = str(
 		#Battle.type_color_dict(dreamkin.type),dreamkin.type.ICON,"[/color] ",dreamkin.name,"\n",
 		Battle.type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",dreamkin.health,"/",dreamkin.max_health,"  ",
 		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",dreamkin.vis,"/",dreamkin.max_vis,"\n",
@@ -426,7 +433,7 @@ func _on_button_enter_hover_switch_dreamkin(properties : Dictionary):
 	
 	ui_description_box.show()
 
-func _on_button_exit_hover_switch_dreamkin(properties : Dictionary):
+func _on_button_exit_hover_party_dreamkin(properties : Dictionary):
 	ui_description_box.hide()
 	ui_description_label.text = ""
 
@@ -445,6 +452,9 @@ func _on_button_pressed_items_item(properties : Dictionary):
 func _on_button_enter_hover_items_item(properties : Dictionary):
 	
 	var item = properties.item
+	
+	#TBD
+	ui_description_title.text = str("meep meep")
 	
 	ui_description_label.text = str(
 		Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color]",

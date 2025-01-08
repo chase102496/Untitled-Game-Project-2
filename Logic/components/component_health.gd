@@ -1,24 +1,31 @@
 class_name component_health
 extends component_node
 
-@export var max_health : int = 6
+signal health_changed(amt : int)
 
+@export var max_health : int = 6
 @export var status_hud : Node3D
 
-var health : int
-var previous_particle : Node
+var health : int:
+	set(value):
+		health = value
+		_update(value)
 
 func _ready() -> void:
 	if !health: #If we didn't set health manually
 		health = max_health
+	_update(0)
 
-func update_status_hud() -> void:
-	if status_hud and SceneManager.current_scene.scene_type == "world":
-		status_hud.reset_hud_timer()
+## For calcs
+func get_current_ratio() -> float:
+	return float(health)/float(max_health)
+
+## Local and global emission of health changed event
+func _update(amt : int) -> void:
+	health_changed.emit(amt)
+	Events.entity_health_changed.emit(owner,amt)
 
 func revive():
-	
-	update_status_hud()
 	
 	Glossary.create_text_particle(owner.animations.selector_anchor,str("Revived!"),"float_away",Color.GREEN_YELLOW)
 	
@@ -26,8 +33,6 @@ func revive():
 	health = max_health
 
 func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
-	
-	update_status_hud()
 	
 	var old_health = health
 	
@@ -55,7 +60,12 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 			owner.animations.tree.get("parameters/playback").travel("Death") #queue us for death
 		
 	elif amt < 0:
-		owner.state_chart.send_event("on_hurt")
+		if owner.state_chart.get_current_state() == "Hurt":
+			owner.animations.tree.get("parameters/playback").travel("Hurt")
+		else:
+			owner.state_chart.send_event("on_hurt")
+	
+	_update(amt)
 	
 	
 	
