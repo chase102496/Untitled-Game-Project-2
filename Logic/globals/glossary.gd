@@ -80,9 +80,26 @@ func convert_entity_glossary(glossary_name : String, set_prefix : String):
 
 # Create
 
+## Create custom parameters of a particle. Will modify the particle settings in the function
+func create_fx_particle_custom(anchor : Node, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : float = -1.0) -> Node:
+	var inst = create_fx_particle(anchor,type,one_shot)
+	if amt != -1:
+		inst.amount = amt
+	if spread != -1:
+		inst.process_material.spread = spread
+	if speed != -1:
+		inst.process_material.initial_velocity_max = speed
+		inst.process_material.initial_velocity_min = speed
+	if direction != -1:
+		inst.process_material.direction = direction
+	
+	return inst
+
+## Quickly and easily create a particle. Will run however it was preconfigured
 func create_fx_particle(anchor : Node, type : String, one_shot : bool = false) -> Node:
-	if Glossary.particle.has(type):
-		var inst = Glossary.particle[type].instantiate()
+	var inst = Glossary.particle.get(type).instantiate()
+	if inst:
+		
 		anchor.add_child(inst)
 		inst.global_position = anchor.global_position
 		
@@ -95,24 +112,42 @@ func create_fx_particle(anchor : Node, type : String, one_shot : bool = false) -
 		push_error("No particle type found when creating fx particle: ",type)
 		return null
 
+## Creates an icon to be displayed in the status bar
+## anchor in this case
+## type is the name of the key in the status_icon glossary
+## category is the status category. NORMAL, TETHER, or PASSIVE
+func create_status_icon(anchor : Node, type : String) -> TextureRect:
+	var inst = Glossary.status_icon.get(type).instantiate()
+	if inst:
+		anchor.add_child(inst)
+		inst.global_position = anchor.global_position
+		return inst
+	else:
+		push_error("No status_icon type found when creating status_icon: ",type)
+		return
+
 func create_text_particle(anchor : Node, text : String = "TEST", type : String = "float_away", color : Color = Color.WHITE, delay : float = 0.0, size : int = 60):
 	if delay > 0:
 		await get_tree().create_timer(delay).timeout
 	
 	##Creation stuff
 	var inst = Glossary.text.get(type).instantiate()
-	var particle_label = inst.get_node("%particle_label")
-	particle_label.text = text
-	particle_label.label_settings.font_color = color
-	particle_label.label_settings.font_size = size
-	
-	##Anchor stuff
-	anchor.add_child(inst)
-	#inst.global_position = anchor.global_position
-	##Adjustments
-	#inst.global_position.z += sign(Global.camera.global_position.z - inst.global_position.z) #Nudges us a bit toward the camera so we won't be behind the object
-	
-	return particle_label
+	if inst:
+		var particle_label = inst.get_node("%particle_label")
+		particle_label.text = text
+		particle_label.label_settings.font_color = color
+		particle_label.label_settings.font_size = size
+		
+		##Anchor stuff
+		anchor.add_child(inst)
+		#inst.global_position = anchor.global_position
+		##Adjustments
+		#inst.global_position.z += sign(Global.camera.global_position.z - inst.global_position.z) #Nudges us a bit toward the camera so we won't be behind the object
+		
+		return particle_label
+	else:
+		push_error("Text particle type ",type," not found.")
+		return
 
 func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
 	
@@ -402,10 +437,12 @@ func find_entity(glossary : String, set_prefix = null):
 # Scenes
 
 const particle : Dictionary = {
-	"fear" : preload("res://Scenes/particles/particle_fear.tscn"),
-	"burn" : preload("res://Scenes/particles/particle_burn.tscn"),
-	"freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
-	"disabled" : preload("res://Scenes/particles/particle_disabled.tscn"),
+	### Status effects
+	"status_fear" : preload("res://Scenes/particles/particle_fear.tscn"),
+	"status_burn" : preload("res://Scenes/particles/particle_burn.tscn"),
+	"status_freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
+	"status_disabled" : preload("res://Scenes/particles/particle_disabled.tscn"),
+	### World effects
 	"heartsurge_node_lumia" : preload("res://Scenes/particles/particle_heartsurge_node_lumia.tscn"),
 	"heartsurge_node_recall" : preload("res://Scenes/particles/particle_heartsurge_node_recall.tscn"),
 	"heartsurge_node_clear" : preload("res://Scenes/particles/particle_heartsurge_node_clear.tscn")
@@ -424,7 +461,7 @@ var entity_scene : Dictionary = {
 	"world_entity_player" : load("res://Scenes/characters/world/world_entity_player.tscn"),
 	}
 
-## Contains
+## Contains all stuff needed to change visuals of an entity
 const visual_set : Dictionary = {
 	"axolotl_red" : {
 		"SpriteFrames" : preload("res://Resources/SpriteFrames/dreamkin_red.tres"),
@@ -433,8 +470,12 @@ const visual_set : Dictionary = {
 	}
 }
 
+const status_icon : Dictionary = {
+	"status_heartlink" : preload("res://Scenes/ui/status_effect_heartlink.tscn"),
+	"status_burn" : preload("res://Scenes/ui/status_effect_burn.tscn"),
+}
+
 const ui : Dictionary = {
-	"heartlink" : preload("res://Scenes/ui/status_effect_heartlink.tscn"),
 	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn")
 	}
 

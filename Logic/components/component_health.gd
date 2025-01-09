@@ -50,7 +50,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	
 	Debug.message([old_health," HP -> ",health," HP"],Debug.msg_category.BATTLE)
 	
-	##Death handling
+	## We are dying
 	if health == 0: #If we're dying
 		##Query our death protection statuses to see if any want to intervene with a message before we die
 		var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection",[amt,from_tether,type],true)
@@ -59,13 +59,14 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 		if death_protection_result.size() == 0:
 			owner.animations.tree.get("parameters/playback").travel("Death") #queue us for death
 		
+	## We are getting hurt by something
 	elif amt < 0:
 		if owner.state_chart.get_current_state() == "Hurt":
 			owner.animations.tree.get("parameters/playback").travel("Hurt")
 		else:
 			owner.state_chart.send_event("on_hurt")
 	
-	_update(amt)
+	_update(health - old_health)
 	
 	
 	

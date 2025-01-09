@@ -23,9 +23,6 @@ func animations_reset(dir : Vector2 = Vector2(0,0)) -> void:
 		owner.animations.rotation.y = PI
 	else:
 		owner.animations.rotation.y = 0
-	
-	owner.animations.tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
-	owner.animations.tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
 
 func _on_state_entered_death() -> void:
 	pass
@@ -37,20 +34,19 @@ func _on_state_entered_battle_hurt() -> void:
 	owner.animations.tree.get("parameters/playback").travel("Hurt")
 
 func _on_state_entered_battle_waiting() -> void:
-	#owner.animations.status_hud.show()
 	#Sets us facing the right way, depending on our side
 	owner.animations.tree.get("parameters/playback").travel("Idle")
+	
 	if owner.alignment == Battle.alignment.FRIENDS:
 		animations_reset(Vector2(1,1))
 	else:
 		animations_reset(Vector2(-1,-1))
 
 func _on_state_exited_battle() -> void:
-	owner.animations.status_hud.hide()
+	pass
 
 func _on_state_entered_battle_execution() -> void:
-	owner.animations.status_hud.hide()
+	pass
 	
 func _on_state_exited_battle_execution() -> void:
-	#owner.animations.status_hud.show()
 	pass

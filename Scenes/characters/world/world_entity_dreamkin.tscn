@@ -27,12 +27,16 @@ light_specular = 0.0
 omni_range = 0.513
 omni_attenuation = 0.2
 
+[node name="DEBUG_3D_TEXT" parent="." index="3"]
+visible = true
+
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-flip_h = true
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 sprite_frames = ExtResource("3_305wd")
 animation = &"default_idle"
-frame = 1
+
+[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2"]
+visible = true
 
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {

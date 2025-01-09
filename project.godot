@@ -28,6 +28,8 @@ Battle="*res://Logic/globals/Battle.gd"
 SceneManager="*res://Scenes/scene_manager/scene_manager.tscn"
 SaveManager="*res://Logic/globals/SaveManager.gd"
 Debug="*res://Logic/globals/Debug.gd"
+Shaker="*res://addons/shaker/src/Shaker.gd"
+Camera="*res://Logic/globals/Camera.gd"
 
 [debug]
 
@@ -82,7 +84,7 @@ project/assembly_name="Untitled-Game-Project-2"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/shaker/plugin.cfg")
 
 [filesystem]
 

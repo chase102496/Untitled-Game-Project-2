@@ -3,6 +3,9 @@
 class_name PhantomCamera3D
 extends Node3D
 
+## HACK I ADDED THIS CODE WHEEEEEEEEEEEEEEE
+@export var shaker : ShakerComponent3D
+
 ## Controls a scene's [Camera3D] and applies logic to it.
 ##
 ## The scene's [param Camera3D] will follow the position of the
@@ -582,6 +585,10 @@ func _validate_property(property: Dictionary) -> void:
 #region Private Functions
 
 func _enter_tree() -> void:
+	
+	## HACK I ADDED THIS CODE WHEEEEEEEEEEEEEEE
+	Camera.current = self
+	
 	_phantom_camera_manager = get_tree().root.get_node(_constants.PCAM_MANAGER_NODE_NAME)
 
 	_phantom_camera_manager.pcam_added(self)

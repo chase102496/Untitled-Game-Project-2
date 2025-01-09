@@ -18,11 +18,11 @@ func _ready() -> void:
 
 func _on_debug_disabled() -> void:
 	hide()
-	owner.animations.status_hud.hide()
+	owner.animations.status_hud.display_stats(false)
 	
 func _on_debug_enabled() -> void:
 	show()
-	owner.animations.status_hud.show()
+	owner.animations.status_hud.display_stats(true)
 
 func _physics_process(delta: float) -> void:
 	

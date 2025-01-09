@@ -148,9 +148,11 @@ class status:
 	var duration : int = 0 #How many turns it lasts
 	var title : String = "---"
 	var description : String = ""
-	var fx : Node #Visual fx
 	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
 	var new_turn : bool #Whether we ran this once per turn already
+	
+	var fx_visual : Node
+	var fx_icon : TextureRect
 
 	func set_data(new_metadata : Dictionary):
 		for key in new_metadata:
@@ -199,11 +201,20 @@ class status:
 	func on_death():
 		pass
 	
+	## Add our fx using our id as the identifier for this fx
 	func fx_add():
-		pass
+		if !fx_visual and Glossary.particle.get(id):
+			fx_visual = Glossary.create_fx_particle(host.animations.sprite_position,id)
+		if !fx_icon and Glossary.status_icon.get(id):
+			fx_icon = Glossary.create_status_icon(host.animations.status_hud.grid,id)
 	
 	func fx_remove():
-		pass
+		if fx_visual:
+			fx_visual.queue_free()
+			fx_visual = null
+		if fx_icon:
+			fx_icon.queue_free()
+			fx_icon = null
 # ---
 
 class status_template_default:
@@ -217,13 +228,6 @@ class status_template_default:
 	func on_expire():
 		Debug.message([title," wore off for ",host.name,"!"],Debug.msg_category.BATTLE)
 		host.my_component_ability.my_status.remove(self)
-	
-	func fx_add():
-		host.animations.fx_anchor.add_child(fx)
-	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
 
 # NORMAL
 class status_fear:
@@ -239,7 +243,6 @@ class status_fear:
 		description = "Causes the target to lose accuracy on attacks"
 		self.host = host
 		self.duration = duration
-		fx = Glossary.particle.fear.instantiate()
 	
 	func on_skillcheck():
 		host.my_component_ability.skillcheck_difficulty += 1
@@ -262,7 +265,6 @@ class status_burn:
 		self.host = host
 		self.duration = duration
 		self.damage = damage
-		fx = Glossary.particle.burn.instantiate()
 	
 	func on_end():
 		if once_per_turn(): #If this is the first time applying this turn
@@ -287,7 +289,6 @@ class status_freeze:
 		self.host = host
 		self.duration = duration
 		self.siphon_amount = siphon_amount
-		fx = Glossary.particle.freeze.instantiate()
 	
 	func on_end():
 		if once_per_turn(): #If this is the first time applying this turn
@@ -307,7 +308,6 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 		self.host = host
 		self.duration = duration
 		priority = 999 #Nothing should overwrite us
-		fx = Glossary.particle.disabled.instantiate()
 	
 	func on_start():
 		host.state_chart.send_event("on_end") #skip our turn
@@ -346,14 +346,6 @@ class status_heartlink:
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
 					partners[i].my_component_health.change(amount,true)
 					Debug.message([partners[i].name," took ",amount," points of mirror damage!"],Debug.msg_category.BATTLE)
-	
-	func fx_add():
-		fx = Glossary.ui.heartlink.instantiate()
-		host.animations.status_hud.grid.add_child(fx)
-	
-	func fx_remove():
-		fx.queue_free()
-		fx = null
 
 # PASSIVE
 #Basically the same thing but PRIORITY here works differently. It runs through them when checking things that stack like ability mitigation.
@@ -565,14 +557,17 @@ class ability:
 	var chance : float = 1.0 #Chance of something happening, kinda a placeholder
 	var description : String = ""
 	
+	## For Deserialization
+	## Sets all vars that match the keys in the metadata to the values in the metadata
 	func set_data(new_metadata : Dictionary):
 		for key in new_metadata:
 			var value = new_metadata[key]
 			set(key,value)
 	
+	## For Serialization
 	## Default data pulled for every item
 	## Just here for removing some redundant code
-	func get_data_default():
+	func get_data_default() -> Dictionary:
 		return {
 			"id" : id,
 			"title" : title,
@@ -585,52 +580,61 @@ class ability:
 			#"damage" : damage,
 		}
 	
+	## For Serialization
 	## Any additional data we want to pull besides the defaults
-	func get_data():
+	func get_data() -> Dictionary:
 		return {}
 	
-	func select_validate(): #run validations, check vis, health, etc
-		var result = false #default so we cannot use this move
-		return result
+	## Checks, when we select an ability, if we can use it
+	func select_validate() -> bool:
+		return false
 	
-	func select_validate_failed():
+	## If we try to select this ability, but we can't use it (no vis, etc)
+	func _select_validate_failed() -> void:
 		Debug.message("Can't do that",Debug.msg_category.BATTLE)
 		#You can execute code here, run a Dialogic event to show them they can't use that, etc
 		#For example, if they don't have enough vis
 
-	func apply_status_success():
+	## If we successfully apply a status effect associated with this ability
+	func apply_status_success() -> float:
 		return randf_range(0,1) <= chance*skillcheck_modifier
 
-	func skillcheck(result):
+	## Calculations done to pull the skillcheck result for our ability
+	func skillcheck(result) -> void:
 		pass
 	
-	func cast_validate():
+	## Checks, when we make contact and the attack has already been selected, if we can cast it
+	func cast_validate() -> bool:
 		if skillcheck_modifier > 0:
 			return true
 		else:
 			return false
-			
-	func cast_validate_failed():
+	
+	## If our skillcheck fails, or we don't meet conditions when attack lands
+	func cast_validate_failed() -> void:
 		Debug.message("Missed!",Debug.msg_category.BATTLE)
 		Glossary.create_text_particle(caster.animations.selector_anchor,str("Missed!"),"float_away",Color.WHITE)
 	
-	func cast_main(): #Main function, calls on hit
+	## Function called mid-animation when we make contact
+	func cast_main() -> void:
 		pass
 	
-	func cast_pre_mitigation_bonus(caster : Node, target : Node): #Internal function, call when there is a bonus effect
+	## Function called when we make contact, used for effects
+	func fx_cast_main() -> void:
+		Glossary.create_fx_particle_custom(primary_target,"heartsurge_node_clear",true,10,180)
+		Camera.shake()
+	
+	## Damage run on target-side, they are weak to this ability
+	func cast_pre_mitigation_bonus(caster : Node, target : Node):
 		cast_pre_mitigation(caster,target)
 	
-	func cast_pre_mitigation(caster : Node, target : Node): #Internal function, call in the body of each target
+	## Damage run on target-side
+	func cast_pre_mitigation(caster : Node, target : Node):
 		pass
 	
-	func animation():
+	## Animation we call when using this ability
+	func animation() -> void:
 		caster.animations.tree.get("parameters/playback").travel("default_attack")
-	
-	#Put status effect in here, and when we cast, we add our spell to their status_effects array based on conditions (only one status at a time, if it's used we send a message saying they're immune)
-	#They run their normal course, but are "infected" with our functions. Now the empty method calls 
-	#when they were healthy will reference any calls in our spell's vocab and we don't have to do anything on character-side
-	#E.g. Poison spell
-	#Has function status_effect_on_start
 
 ### --- Interfaces --- ###
 
@@ -738,12 +742,11 @@ class ability_template_default: #Standard ability with vis cost and skillcheck
 		target_type = Battle.target_type.OPPONENTS
 	
 	func select_validate():
-		return true #HACK now vis does damage to us if it's at 0 instead of removing this stat
-		#if caster.my_component_vis.vis >= vis_cost:
-			#return true
-		#else:
-			#print_debug("Not enough Vis!")
-			#return false
+		if caster.my_component_vis.vis >= vis_cost:
+			return true
+		else:
+			_select_validate_failed()
+			return false
 	
 	func skillcheck(result):
 		if result == "Miss":

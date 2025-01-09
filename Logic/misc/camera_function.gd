@@ -1,15 +1,19 @@
 extends Node
 
-@onready var camera_ray_cast : RayCast3D = get_parent().get_node("RayCast3D")
-@onready var camera_ray_cast_default : RayCast3D = get_parent().get_node("RayCast3D2")
+@export var shaker : ShakerComponent3D
+@export var camera_ray_cast : RayCast3D
+@export var camera_ray_cast_default : RayCast3D
 
 var obstacle : Node = null
 var obstacles_exit : Array = []
 var get_all_colliders : Array = []
 
 func _ready() -> void:
+	## Camera functions we want to create
 	Global.camera_function = self
+	## The phantom camera controller
 	Global.camera = owner
+	## The actual camera node
 	Global.camera_object = $"../Camera3D"
 
 func shot_transition(new_location):

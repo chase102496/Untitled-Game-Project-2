@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://gd2xs1mu1ksn"]
+[gd_scene load_steps=9 format=3 uid="uid://gd2xs1mu1ksn"]
 
 [ext_resource type="Texture2D" uid="uid://dyc4xn08f5bp5" path="res://Art/particles/fire_01.png" id="1_x5be7"]
-[ext_resource type="Shader" path="res://test_junk/flame_shader.gdshader" id="2_686dk"]
 
 [sub_resource type="Gradient" id="Gradient_igmpq"]
 offsets = PackedFloat32Array(0, 0.73301)
@@ -21,7 +20,7 @@ curve = SubResource("Curve_7705o")
 resource_local_to_scene = true
 emission_shape_scale = Vector3(0.1, 0.1, 0.1)
 emission_shape = 2
-emission_sphere_radius = 0.1
+emission_sphere_radius = 0.5
 angle_min = 394.7
 angle_max = 432.0
 angular_velocity_min = 200.0
@@ -40,14 +39,13 @@ turbulence_initial_displacement_min = 1.49012e-06
 turbulence_initial_displacement_max = 1.49012e-06
 
 [sub_resource type="ORMMaterial3D" id="ORMMaterial3D_mun4g"]
-transparency = 2
-alpha_scissor_threshold = 0.45
-alpha_antialiasing_mode = 0
+transparency = 1
 blend_mode = 1
 shading_mode = 0
 diffuse_mode = 3
 specular_mode = 1
 vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.0784314)
 albedo_texture = ExtResource("1_x5be7")
 billboard_mode = 3
 billboard_keep_scale = true
@@ -55,54 +53,15 @@ particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 grow_amount = 2.299
+distance_fade_max_distance = 0.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_hkyp0"]
 lightmap_size_hint = Vector2i(7, 7)
 material = SubResource("ORMMaterial3D_mun4g")
-size = Vector2(0.3, 0.5)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_cjj7m"]
-noise_type = 3
-fractal_octaves = 1
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mohba"]
-seamless = true
-noise = SubResource("FastNoiseLite_cjj7m")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6wn4p"]
-render_priority = 0
-shader = ExtResource("2_686dk")
-shader_parameter/time_speed = 1.0
-shader_parameter/spin = 0.0
-shader_parameter/flame_brightness = 0.6
-shader_parameter/color_intensity = 1.0
-shader_parameter/horizontal_frequency = 1.0
-shader_parameter/vertical_frequency = 1.0
-shader_parameter/size = -0.3
-shader_parameter/core_size = 1.0
-shader_parameter/color1 = Color(1, 0.8635, 0.37, 1)
-shader_parameter/color2 = Color(0.93, 0.6665, 0, 1)
-shader_parameter/color3 = Color(1, 0.483333, 0, 1)
-shader_parameter/color4 = Color(0.93, 0.826615, 0.6603, 1)
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_mohba")
-
-[sub_resource type="SphereMesh" id="SphereMesh_nmmgu"]
-material = SubResource("ShaderMaterial_6wn4p")
-radius = 0.2
-height = 0.4
-radial_segments = 256
-rings = 256
-
-[node name="particle_burn_fireplace" type="Node3D"]
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+[node name="GPUParticles3D" type="GPUParticles3D"]
 amount = 40
+lifetime = 1.2
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_rrnao")
 draw_pass_1 = SubResource("QuadMesh_hkyp0")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("SphereMesh_nmmgu")
-skeleton = NodePath("../GPUParticles3D")

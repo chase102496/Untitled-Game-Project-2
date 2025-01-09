@@ -90,6 +90,7 @@ func _on_battle_entity_hit(entity_caster : Node, entity_targets : Array, ability
 	
 	if owner == entity_caster: #if we are casting
 		entity_caster.my_component_ability.cast_queue.cast_main()
+		entity_caster.my_component_ability.cast_queue.fx_cast_main()
 	elif owner in entity_targets: #if we're being hit with something
 		#run our mitigation, and the 'true' is to return a result so we can tell if anything cares about mitigation in our status
 		var query_results = my_component_ability.my_status.status_event("on_ability_mitigation",[entity_caster,owner,ability],true)

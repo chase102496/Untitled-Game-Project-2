@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://crb5erkuxjhuf"]
+[gd_scene load_steps=5 format=3 uid="uid://crb5erkuxjhuf"]
 
 [ext_resource type="PackedScene" uid="uid://b5f4cvf272kh2" path="res://Scenes/characters/battle/battle_entity.tscn" id="1_ksxuo"]
 [ext_resource type="Script" path="res://Scenes/characters/battle/battle_entity_enemy.gd" id="2_pp4ft"]
 [ext_resource type="SpriteFrames" uid="uid://c5dn4s56v1ile" path="res://Resources/SpriteFrames/dreamkin_green.tres" id="3_kf3m6"]
+[ext_resource type="AnimationLibrary" uid="uid://v882pt2pml8q" path="res://Resources/AnimationLibrary/animations_dreamkin_battle.tres" id="4_aypdr"]
 
 [node name="battle_entity_enemy" instance=ExtResource("1_ksxuo")]
 script = ExtResource("2_pp4ft")
@@ -10,11 +11,18 @@ alignment = "FOES"
 classification = "ENEMY"
 
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 flip_h = true
 sprite_frames = ExtResource("3_kf3m6")
+frame = 0
 
 [node name="fx_anchor" parent="Components/component_animation/character_sprite_position" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.25, -0.15)
+
+[node name="character_animation_player" parent="Components/component_animation" index="2"]
+libraries = {
+"": ExtResource("4_aypdr")
+}
 
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]

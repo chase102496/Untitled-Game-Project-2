@@ -6,5 +6,5 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_jhfq7")
-shader_parameter/Brightness = 0.1
+shader_parameter/Brightness = 0.2
 shader_parameter/Texture2DParameter = ExtResource("2_fmqps")
