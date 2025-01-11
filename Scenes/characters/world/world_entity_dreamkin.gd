@@ -23,6 +23,7 @@ func _ready():
 	var abil = my_component_ability
 	abil.add_ability(abil.ability_solar_flare.new(1,1.0))
 	my_component_ability.my_status.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
+	
 
 ##If we are being summoned from a party object, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):

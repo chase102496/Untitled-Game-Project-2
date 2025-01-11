@@ -1,0 +1,92 @@
+[gd_scene load_steps=7 format=3 uid="uid://5mp38mw6jfv5"]
+
+[ext_resource type="Texture2D" uid="uid://bx6h1huj5k332" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_ghost_12.png" id="1_vtfgl"]
+[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="2_hqvwu"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
+size = Vector2(100, 100)
+
+[sub_resource type="Animation" id="Animation_ybdww"]
+length = 0.001
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_jfvho"]
+resource_name = "new_animation"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.450625, 1.10957),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.12549)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f0afr"]
+_data = {
+"RESET": SubResource("Animation_ybdww"),
+"new_animation": SubResource("Animation_jfvho")
+}
+
+[node name="TextureRect" type="TextureRect"]
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 100.0
+offset_bottom = 100.0
+pivot_offset = Vector2(50, 50)
+texture = SubResource("PlaceholderTexture2D_w1aip")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+texture = ExtResource("1_vtfgl")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../TextureRect")
+libraries = {
+"": SubResource("AnimationLibrary_f0afr")
+}
+script = ExtResource("2_hqvwu")

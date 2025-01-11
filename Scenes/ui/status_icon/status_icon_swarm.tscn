@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=3 uid="uid://b28vgwemekfq4"]
+
+[ext_resource type="Texture2D" uid="uid://emx4p0t84mns" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_demon_133.png" id="1_re5wy"]
+[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="4_udcgr"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
+size = Vector2(100, 100)
+
+[sub_resource type="Animation" id="Animation_ybdww"]
+length = 0.001
+loop_mode = 2
+
+[sub_resource type="Animation" id="Animation_jfvho"]
+resource_name = "new_animation"
+length = 0.2
+loop_mode = 2
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f0afr"]
+_data = {
+"RESET": SubResource("Animation_ybdww"),
+"new_animation": SubResource("Animation_jfvho")
+}
+
+[node name="TextureRect" type="TextureRect"]
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 100.0
+offset_bottom = 100.0
+pivot_offset = Vector2(50, 50)
+texture = SubResource("PlaceholderTexture2D_w1aip")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_left = 21.0
+offset_top = 39.0
+offset_right = 81.0
+offset_bottom = 99.0
+size_flags_vertical = 8
+texture = ExtResource("1_re5wy")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 44.0
+offset_bottom = 46.0
+size_flags_vertical = 8
+texture = ExtResource("1_re5wy")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_left = 56.0
+offset_top = 6.0
+offset_right = 96.0
+offset_bottom = 46.0
+size_flags_vertical = 8
+texture = ExtResource("1_re5wy")
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../TextureRect")
+libraries = {
+"": SubResource("AnimationLibrary_f0afr")
+}
+script = ExtResource("4_udcgr")

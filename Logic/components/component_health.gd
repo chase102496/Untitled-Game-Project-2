@@ -3,7 +3,7 @@ extends component_node
 
 signal health_changed(amt : int)
 
-@export var max_health : int = 6
+@export var max_health : int = 24
 @export var status_hud : Node3D
 
 var health : int:
@@ -42,7 +42,7 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	## Damage
 	elif amt < 0:
 		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.RED)
-		#To protect recursive when using heartlink
+		#To protect recursive when using heartsurge
 		if !from_tether:
 			Events.battle_entity_damaged.emit(owner,amt)
 	
@@ -67,9 +67,3 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 			owner.state_chart.send_event("on_hurt")
 	
 	_update(health - old_health)
-	
-	
-	
-
-	
-	

@@ -426,36 +426,37 @@ class ability_heartsurge:
 			is_mark_placed = !is_mark_placed
 			_fx_clear()
 
-class ability_heartlink:
-	extends ability_dreamstitch
-	
-	var heartlink_max : int = 2
-	
-	func _init(caster : Node) -> void:
-		super._init(caster)
-		title = "Dreamstitch"
-		interact_groups.append("interact_ability_heartlink")
-	
-	func verify_use() -> bool:
-		## If we can still add heartlinks
-		if caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active").size() < heartlink_max and current_interaction_areas.size() > 0:
-			return true
-		else:
-			return false
-		
-	func on_use() -> void:
-		## If we're trying to link a controller
-		if verify_use():
-			for area in current_interaction_areas: #Runs through all verified areas in "interact_ability_heartlink"
-				## Add first one we find to our heartlink active group
-				if !area.my_component_impulse_controller.is_in_group("interact_ability_heartlink_active"):
-					#emit heartlink signal to add it
-					area.my_component_impulse_controller.add_to_group("interact_ability_heartlink_active")
-					return
-		## If we are trying to clear our heartlink actives
-		else:
-			for controller in caster.get_tree().get_nodes_in_group("interact_ability_heartlink_active"):
-				controller.remove_from_group("interact_ability_heartlink_active")
+## NOT IN USE YET
+#class ability_heartstitch:
+	#extends ability_dreamstitch
+	#
+	#var heartsurge_max : int = 2
+	#
+	#func _init(caster : Node) -> void:
+		#super._init(caster)
+		#title = "Dreamstitch"
+		#interact_groups.append("interact_ability_heartsurge")
+	#
+	#func verify_use() -> bool:
+		### If we can still add heartsurges
+		#if caster.get_tree().get_nodes_in_group("interact_ability_heartsurge_active").size() < heartsurge_max and current_interaction_areas.size() > 0:
+			#return true
+		#else:
+			#return false
+		#
+	#func on_use() -> void:
+		### If we're trying to link a controller
+		#if verify_use():
+			#for area in current_interaction_areas: #Runs through all verified areas in "interact_ability_heartsurge"
+				### Add first one we find to our heartsurge active group
+				#if !area.my_component_impulse_controller.is_in_group("interact_ability_heartsurge_active"):
+					##emit heartsurge signal to add it
+					#area.my_component_impulse_controller.add_to_group("interact_ability_heartsurge_active")
+					#return
+		### If we are trying to clear our heartsurge actives
+		#else:
+			#for controller in caster.get_tree().get_nodes_in_group("interact_ability_heartsurge_active"):
+				#controller.remove_from_group("interact_ability_heartsurge_active")
 
 class ability_gustbloom: #TBD
 	extends ability_dreamstitch

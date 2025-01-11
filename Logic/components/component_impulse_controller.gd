@@ -73,12 +73,12 @@ func my_state_transition(
 			
 			is_transitioning = true
 			
-			## If I'm currently linked with heartlink and this isn't already a heartlink sourced signal
-			if is_in_group("interact_ability_heartlink_active") and !mirror:
-				#for child in get_tree().get_nodes_in_group("interact_ability_heartlink_active"):
+			## If I'm currently linked with heartsurge and this isn't already a heartsurge sourced signal
+			if is_in_group("interact_ability_heartsurge_active") and !mirror:
+				#for child in get_tree().get_nodes_in_group("interact_ability_heartsurge_active"):
 					#if child.impulse_parent and child.impulse_parent == self: #If we find someone we're controlling
 						#pass
-				get_tree().call_group("interact_ability_heartlink_active","my_state_transition_toggle",true,true)
+				get_tree().call_group("interact_ability_heartsurge_active","my_state_transition_toggle",true,true)
 			
 			## If we're running a state change with no need for collision updates
 			if ignore_collision:

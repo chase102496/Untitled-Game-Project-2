@@ -40,17 +40,30 @@ class status_manager:
 	var TETHER #Primarily for Lumia's stitch mechanic
 	var PASSIVE : Array = [] #Primarily for semi-permanent status effects that start at battle initialize and don't interact with NORMAL and TETHER
 	
-	func search_title(title_query : String): #Returns first result matching the title of the input, or null if no result TODO BROKEN
-		if NORMAL and NORMAL.title == title_query:
-			return NORMAL
-		elif TETHER and TETHER.title == title_query:
-			return TETHER
-		elif len(PASSIVE) > 0:
-			for i in len(PASSIVE):
-				if PASSIVE[i].title == title_query:
-					return PASSIVE
-		else:
+	## Returns current status effects matching the id arg
+	## Type determines if we should only check one status effect category
+	## Defaults to checking all of them
+	func find_all(id : String, types : Array = [Battle.status_category.NORMAL,Battle.status_category.TETHER,Battle.status_category.PASSIVE]):
+		
+		var result : Array = []
+		
+		for my_status_cat in types:
+			var my_status = get(my_status_cat)
+			## If it exists
+			if my_status:
+				if my_status is Array:
+					for my_status_inst in my_status:
+						if my_status.id == id:
+							result.append(my_status)
+				else:
+					if my_status.id == id:
+						result.append(my_status)
+		
+		if result.is_empty():
 			return null
+		else:
+			return result
+	
 	
 	func add_passive(effect : Object):
 		PASSIVE.append(effect)
@@ -295,14 +308,15 @@ class status_freeze:
 			host.my_component_vis.change(-siphon_amount)
 			Debug.message([host," lost ",siphon_amount," vis from freeze!"],Debug.msg_category.BATTLE)
 
-class status_disabled: #Disabled, unable to act, and immune to damage. Essentially dead but still on the battle field
+#Unable to act or be acted upon. Essentially dead but still on the battle field.
+class status_disable:
 	extends status_template_default
 	
 	func get_data():
 		return {}
 	
 	func _init(host : Node, duration : int = 2) -> void:
-		id = "status_disabled"
+		id = "status_disable"
 		title = "Disabled"
 		description = "Completely disables the target, preventing them from getting attacked and also from attacking"
 		self.host = host
@@ -325,14 +339,14 @@ class status_disabled: #Disabled, unable to act, and immune to damage. Essential
 
 # TETHER
 
-class status_heartlink:
+class status_heartsurge:
 	extends status_template_default
 	
 	var partners : Array
 	
 	func _init(host : Node,partners : Array,duration : int) -> void:
-		id = "status_heartlink"
-		title = "Heartlink"
+		id = "status_heartsurge"
+		title = "heartsurge"
 		description = "This target is sharing damage with another"
 		self.host = host #who is the initial target of the link
 		self.partners = partners #who is paired to the host
@@ -340,7 +354,7 @@ class status_heartlink:
 		behavior = Battle.status_behavior.RESET
 		category = Battle.status_category.TETHER
 	
-	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartlink
+	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartsurge
 		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
 			for i in len(partners):
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
@@ -351,6 +365,62 @@ class status_heartlink:
 #Basically the same thing but PRIORITY here works differently. It runs through them when checking things that stack like ability mitigation.
 #the highest prio is checked first and if it finds something of interest it will handle it
 
+## Weak to one aspect
+class status_weakness:
+	extends status
+	
+	func get_data():
+		return {
+		"weakness" : weakness
+		}
+	
+	var weakness : Dictionary
+	
+	func _init(host : Node, weakness : Dictionary = Battle.type.BALANCE) -> void:
+		id = "status_weakness"
+		title = "Weakness"
+		description = "This target is weak to an aspect"
+		self.host = host
+		self.weakness = weakness
+		category = Battle.status_category.PASSIVE
+	
+	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
+		if ability.type == weakness:
+			Debug.message([entity_target.name," is weak to ",ability.title,"!"],Debug.msg_category.BATTLE)
+			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation_bonus(entity_caster,host)
+			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Weakness!"),"float_away",Color.PURPLE,0.3)
+			return Battle.mitigation_type.WEAK
+		else:
+			return Battle.mitigation_type.PASS
+
+## Immune to one aspect
+class status_immunity: #Creates a specific immunity where if it's matching the type, they are immune
+	extends status
+	
+	func get_data():
+		return {
+		"immunity" : immunity
+		}
+	
+	var immunity : Dictionary
+	
+	func _init(host : Node, immunity : Dictionary = Battle.type.BALANCE) -> void:
+		id = "status_immunity"
+		title = "Immunity"
+		description = "This target is immune to an aspect"
+		self.host = host
+		self.immunity = immunity
+		category = Battle.status_category.PASSIVE
+	
+	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
+		if ability.type == immunity:
+			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
+			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
+			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
+		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
+			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
+
+## Immune to all aspects except one
 class status_ethereal: #Immune to everything but one type
 	extends status
 	
@@ -365,7 +435,7 @@ class status_ethereal: #Immune to everything but one type
 	func _init(host : Node, weakness : Dictionary = Battle.type.CHAOS) -> void:
 		id = "status_ethereal"
 		title = "Ethereal"
-		description = "This target is immune to all types of damage except one"
+		description = "This target is immune to all aspects except one"
 		self.host = host
 		self.weakness = weakness
 		category = Battle.status_category.PASSIVE
@@ -378,6 +448,7 @@ class status_ethereal: #Immune to everything but one type
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
 
+## Deals damage to attacker on-hit
 class status_thorns:
 	extends status
 	
@@ -408,6 +479,7 @@ class status_thorns:
 			Debug.message([host.name," reflected ",damage," damage back to ",reflect_target.name,"!"],Debug.msg_category.BATTLE)
 			reflect_target = null
 
+## Resurrects when others with this passive are still alive
 class status_regrowth:
 	extends status
 	
@@ -430,83 +502,31 @@ class status_regrowth:
 					host.my_component_health.revive() #Revive us
 					death_protection_enabled = false
 	
-	func on_dying(): #We started the dying animation
+	## We started the dying animation
+	func on_dying():
 		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
 		for i in len(paired_teammates):
 			paired_teammates[i].my_component_ability.my_status.clear() #Clear status fx
 			paired_teammates[i].animations.tree.get("parameters/playback").travel("Death") #Begin their death anim
 	
+	## Out health reaches 0
 	func on_death_protection(amt : int, mirror_damage : bool = false, type : Dictionary = Battle.type.BALANCE):
-		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
-		var living_teammates = false
 		
-		for i in len(paired_teammates): #If we find a single teammate about 0 HP
-			if paired_teammates[i].my_component_health.health > 0:
-				living_teammates = true
+		var living_teammates : Array = []
 		
-		if living_teammates: #If we find ANY other matching teammate glossaries of us that are alive and not in disabled mode
-			
-			#if status_disabled not in host.my_component_ability.my_status.PASSIVE:
-				#print("EEE") TODO
-			
+		for teammate in Battle.my_team(host):
+			## If we query this teammate and find anything
+			if teammate.my_component_ability.status_manager.find_all(id):
+				## If the teammate's health is above 0
+				if teammate.my_component_health.health > 0:
+					living_teammates.append(teammate)
+		
+		if !living_teammates.is_empty():
 			if !death_protection_enabled: #If it hasn't already been triggered this death
 				host.my_component_ability.my_status.clear() #Clear status fx first
-				host.my_component_ability.my_status.add(status_disabled.new(host,2),true) #Then disable us
+				host.my_component_ability.my_status.add(status_disable.new(host,2),true) #Then disable us
 				death_protection_enabled = true #We are now in "incapacitated" mode
 			return true #Always return true for letting health know we aren't dead yet
-
-class status_immunity: #Creates a specific immunity where if it's matching the type, they are immune
-	extends status
-	
-	func get_data():
-		return {
-		"immunity" : immunity
-		}
-	
-	var immunity : Dictionary
-	
-	func _init(host : Node, immunity : Dictionary = Battle.type.BALANCE) -> void:
-		id = "status_immunity"
-		title = "Immunity"
-		description = "This target is immune to an aspect"
-		self.host = host
-		self.immunity = immunity
-		category = Battle.status_category.PASSIVE
-	
-	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
-		if ability.type == immunity:
-			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
-			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
-		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
-			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
-
-class status_weakness: #Creates a specific type that we look for to do bonus things when hit
-	extends status
-	
-	func get_data():
-		return {
-		"weakness" : weakness
-		}
-	
-	var weakness : Dictionary
-	
-	func _init(host : Node, weakness : Dictionary = Battle.type.BALANCE) -> void:
-		id = "status_weakness"
-		title = "Weakness"
-		description = "This target is weak to an aspect"
-		self.host = host
-		self.weakness = weakness
-		category = Battle.status_category.PASSIVE
-	
-	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
-		if ability.type == weakness:
-			Debug.message([entity_target.name," is weak to ",ability.title,"!"],Debug.msg_category.BATTLE)
-			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation_bonus(entity_caster,host)
-			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Weakness!"),"float_away",Color.PURPLE,0.3)
-			return Battle.mitigation_type.WEAK
-		else:
-			return Battle.mitigation_type.PASS
 
 class status_swarm: #Adds a percent to our damage based on how many of us are on the field (besides us)
 	extends status
@@ -535,7 +555,104 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 	func on_end():
 		host.my_component_ability.my_stats.reset_damage_multiplier_temp()
 
+class status_stealth: #Cannot be targeted directly by attacks and echoes (needs AoE or heartsurge)
+	extends status
+
 ### --- Abilities --- ###
+
+func find_ability(ability : component_ability.ability) -> component_ability.ability:
+	var index = get_abilities().find(ability)
+	return get_abilities()[index]
+
+func clear_abilities() -> void:
+	my_abilities.clear()
+
+func is_room_for_abilities() -> bool:
+	if get_abilities().size() < max_ability_count:
+		return true
+	else:
+		return false
+
+func get_abilities() -> Array:
+	return my_abilities
+
+func set_abilities(ability_array : Array) -> void:
+	clear_abilities()
+	for abil in ability_array:
+		add_ability(abil)
+
+func add_ability(ability : component_ability.ability) -> void:
+	if is_room_for_abilities():
+		ability.caster = owner
+		my_abilities.append(ability)
+	else:
+		Debug.message("Cannot add ability, max count reached!")
+
+func remove_ability(ability : component_ability.ability) -> void:
+	my_abilities.erase(ability)
+
+### --- Serialization --- ###
+
+##Returns all get_data() functions on status effects to store in a data list for a save file
+func get_data_status_all() -> Dictionary:
+	var result : Dictionary = {}
+	
+	##NORMAL
+	var normal_status_unit : Dictionary = {} #Reset it
+	if my_status.NORMAL: #Check if we have effects to add
+		normal_status_unit = my_status.NORMAL.get_data_default()
+		normal_status_unit.merge(my_status.NORMAL.get_data(),true)
+	result["NORMAL"] = normal_status_unit
+	##PASSIVES
+	var passive_status_list : Array = [] #Reset it
+	for i in my_status.PASSIVE.size(): #Check if we have effects and iterate thru it
+		var passive_unit : Dictionary = {}
+		passive_unit = my_status.PASSIVE[i].get_data_default() #Set default vars
+		passive_unit.merge(my_status.PASSIVE[i].get_data(),true) #Include and overwrite any defaults like id, etc
+		passive_status_list.append(passive_unit) #Append this merged data to our entry in the array
+	result["PASSIVE"] = passive_status_list
+	
+	#print_debug("Retrieved data for ",owner," ",result)
+	return result
+
+#Creates new statuses and sets their params based on data file
+func set_data_status_all(host : Node, status_data : Dictionary):
+	##NORMAL
+	if my_status.NORMAL: #Remove any current NORMAL status
+		my_status.remove(my_status.NORMAL)
+	if !status_data["NORMAL"].is_empty(): #Check if NORMAL data is empty
+		var normal_eff = my_status.add(Glossary.status_class[status_data["NORMAL"]["id"]].new(host),true) #Create the normal status and overwrite old status
+		normal_eff.set_data(status_data["NORMAL"]) #Send the status our data for all its variables to change to
+		
+		#print_debug("set data for ",status_data["NORMAL"]["id"])
+	##PASSIVE
+	for i in my_status.PASSIVE.size(): #Remove any previous passives first
+		my_status.remove_passive(my_status.PASSIVE[i])
+	for i in status_data["PASSIVE"].size(): #Check if PASSIVE data is empty and also iterate thru array of dictionaries in PASSIVE
+		var passive_eff = my_status.add_passive(Glossary.status_class[status_data["PASSIVE"][i]["id"]].new(host)) #Create the passive
+		passive_eff.set_data(status_data["PASSIVE"][i]) #Send the indexed status our data for all its variables to change to
+		
+		#print_debug("set data for ",owner," ",status_data["PASSIVE"])
+
+##Returns all get_data() functions on abilities to store in a data list for a save file
+func get_data_ability_all():
+	var result : Array = []
+	for ability in get_abilities():
+		var sub_result : Dictionary = {}
+		sub_result = ability.get_data_default() #Set default vars
+		sub_result.merge(ability.get_data(),true) #Include and overwrite any defaults like id, etc
+		result.append(sub_result) #Append this merged data to our entry in the array
+	return result
+
+##Creates new abilties and sets their params based on data file
+func set_data_ability_all(caster : Node, ability_data_list : Array):
+	clear_abilities()
+	for i in ability_data_list.size(): #iterate thru list
+		var inst = Glossary.ability_class[ability_data_list[i]["id"]].new() #search glossary for the name we found in metadata
+		inst.set_data(ability_data_list[i])
+		add_ability(inst)
+
+# Abilities
 
 class ability:
 	extends Node
@@ -621,8 +738,8 @@ class ability:
 	
 	## Function called when we make contact, used for effects
 	func fx_cast_main() -> void:
-		Glossary.create_fx_particle_custom(primary_target,"heartsurge_node_clear",true,10,180)
-		Camera.shake()
+		Glossary.create_fx_particle_custom(primary_target,"heartsurge_node_clear",true,5,180,5)
+		Camera.shake(0.2,0.5)
 	
 	## Damage run on target-side, they are weak to this ability
 	func cast_pre_mitigation_bonus(caster : Node, target : Node):
@@ -636,105 +753,6 @@ class ability:
 	func animation() -> void:
 		caster.animations.tree.get("parameters/playback").travel("default_attack")
 
-### --- Interfaces --- ###
-
-# Abilities
-
-func find_ability(ability : component_ability.ability) -> component_ability.ability:
-	var index = get_abilities().find(ability)
-	return get_abilities()[index]
-
-func clear_abilities() -> void:
-	my_abilities.clear()
-
-func is_room_for_abilities() -> bool:
-	if get_abilities().size() < max_ability_count:
-		return true
-	else:
-		return false
-
-func get_abilities() -> Array:
-	return my_abilities
-
-func set_abilities(ability_array : Array) -> void:
-	clear_abilities()
-	for abil in ability_array:
-		add_ability(abil)
-
-func add_ability(ability : component_ability.ability) -> void:
-	if is_room_for_abilities():
-		ability.caster = owner
-		my_abilities.append(ability)
-	else:
-		Debug.message("Cannot add ability, max count reached!")
-
-func remove_ability(ability : component_ability.ability) -> void:
-	my_abilities.erase(ability)
-
-### --- Serialization --- ###
-
-# Abilities
-
-##Returns all get_data() functions on status effects to store in a data list for a save file
-func get_data_status_all() -> Dictionary:
-	var result : Dictionary = {}
-	
-	##NORMAL
-	var normal_status_unit : Dictionary = {} #Reset it
-	if my_status.NORMAL: #Check if we have effects to add
-		normal_status_unit = my_status.NORMAL.get_data_default()
-		normal_status_unit.merge(my_status.NORMAL.get_data(),true)
-	result["NORMAL"] = normal_status_unit
-	##PASSIVES
-	var passive_status_list : Array = [] #Reset it
-	for i in my_status.PASSIVE.size(): #Check if we have effects and iterate thru it
-		var passive_unit : Dictionary = {}
-		passive_unit = my_status.PASSIVE[i].get_data_default() #Set default vars
-		passive_unit.merge(my_status.PASSIVE[i].get_data(),true) #Include and overwrite any defaults like id, etc
-		passive_status_list.append(passive_unit) #Append this merged data to our entry in the array
-	result["PASSIVE"] = passive_status_list
-	
-	#print_debug("Retrieved data for ",owner," ",result)
-	return result
-
-#Creates new statuses and sets their params based on data file
-func set_data_status_all(host : Node, status_data : Dictionary):
-	##NORMAL
-	if my_status.NORMAL: #Remove any current NORMAL status
-		my_status.remove(my_status.NORMAL)
-	if !status_data["NORMAL"].is_empty(): #Check if NORMAL data is empty
-		var normal_eff = my_status.add(Glossary.status_class[status_data["NORMAL"]["id"]].new(host),true) #Create the normal status and overwrite old status
-		normal_eff.set_data(status_data["NORMAL"]) #Send the status our data for all its variables to change to
-		
-		#print_debug("set data for ",status_data["NORMAL"]["id"])
-	##PASSIVE
-	for i in my_status.PASSIVE.size(): #Remove any previous passives first
-		my_status.remove_passive(my_status.PASSIVE[i])
-	for i in status_data["PASSIVE"].size(): #Check if PASSIVE data is empty and also iterate thru array of dictionaries in PASSIVE
-		var passive_eff = my_status.add_passive(Glossary.status_class[status_data["PASSIVE"][i]["id"]].new(host)) #Create the passive
-		passive_eff.set_data(status_data["PASSIVE"][i]) #Send the indexed status our data for all its variables to change to
-		
-		#print_debug("set data for ",owner," ",status_data["PASSIVE"])
-
-##Returns all get_data() functions on abilities to store in a data list for a save file
-func get_data_ability_all():
-	var result : Array = []
-	for ability in get_abilities():
-		var sub_result : Dictionary = {}
-		sub_result = ability.get_data_default() #Set default vars
-		sub_result.merge(ability.get_data(),true) #Include and overwrite any defaults like id, etc
-		result.append(sub_result) #Append this merged data to our entry in the array
-	return result
-
-##Creates new abilties and sets their params based on data file
-func set_data_ability_all(caster : Node, ability_data_list : Array):
-	clear_abilities()
-	for i in ability_data_list.size(): #iterate thru list
-		var inst = Glossary.ability_class[ability_data_list[i]["id"]].new() #search glossary for the name we found in metadata
-		inst.set_data(ability_data_list[i])
-		add_ability(inst)
-
-#
 class ability_template_default: #Standard ability with vis cost and skillcheck
 	extends ability
 	
@@ -918,7 +936,7 @@ class ability_headbutt: #Scales with damage multiplier
 		Debug.message(["It did ", calc_damage, " damage!"],Debug.msg_category.BATTLE)
 		target.my_component_health.change(-calc_damage)
 
-class ability_heartlink:
+class ability_heartsurge:
 	extends ability_template_default
 	
 	func get_data():
@@ -928,8 +946,8 @@ class ability_heartlink:
 
 	func _init() -> void:
 		#Default changes
-		id = "ability_heartlink"
-		title = "Heartlink"
+		id = "ability_heartsurge"
+		title = "Heartsurge"
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		target_type = Battle.target_type.OPPONENTS
@@ -943,7 +961,7 @@ class ability_heartlink:
 		for i in len(old_targets): #remove instances from old targets
 			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
 				var teth = old_targets[i].my_component_ability.my_status.TETHER
-				if teth and teth is status_heartlink: #If we find they still have our old buff
+				if teth and teth is status_heartsurge: #If we find they still have our old buff
 					old_targets[i].my_component_ability.my_status.remove(old_targets[i].my_component_ability.my_status.TETHER)
 		old_targets = targets
 	
@@ -955,7 +973,7 @@ class ability_heartlink:
 			
 			##Verification for needing actual stitch
 			if targets.size() >= 2:
-				target.my_component_ability.my_status.add(status_heartlink.new(target,targets,skillcheck_modifier*2))
+				target.my_component_ability.my_status.add(status_heartsurge.new(target,targets,skillcheck_modifier*2))
 			else:
 				Debug.message(["No valid target to stitch to - ",targets],Debug.msg_category.BATTLE)
 	

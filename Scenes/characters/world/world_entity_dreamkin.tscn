@@ -34,6 +34,7 @@ visible = true
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 sprite_frames = ExtResource("3_305wd")
 animation = &"default_idle"
+frame = 1
 
 [node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2"]
 visible = true

@@ -587,7 +587,8 @@ func _validate_property(property: Dictionary) -> void:
 func _enter_tree() -> void:
 	
 	## HACK I ADDED THIS CODE WHEEEEEEEEEEEEEEE
-	Camera.current = self
+	if not Engine.is_editor_hint():
+		Camera.current = self
 	
 	_phantom_camera_manager = get_tree().root.get_node(_constants.PCAM_MANAGER_NODE_NAME)
 

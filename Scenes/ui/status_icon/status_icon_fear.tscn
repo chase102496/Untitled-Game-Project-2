@@ -1,0 +1,118 @@
+[gd_scene load_steps=7 format=3 uid="uid://beh6lu3mrcx1m"]
+
+[ext_resource type="Texture2D" uid="uid://fh0dndd7cddg" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_cursed_37.png" id="1_f6x2h"]
+[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="2_mg4lq"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
+size = Vector2(100, 100)
+
+[sub_resource type="Animation" id="Animation_ybdww"]
+length = 0.001
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jfvho"]
+resource_name = "new_animation"
+length = 0.2
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(5, 0), Vector2(-5, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f0afr"]
+_data = {
+"RESET": SubResource("Animation_ybdww"),
+"new_animation": SubResource("Animation_jfvho")
+}
+
+[node name="TextureRect" type="TextureRect"]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 2.53187
+offset_right = 102.532
+offset_bottom = 100.0
+pivot_offset = Vector2(50, 50)
+texture = SubResource("PlaceholderTexture2D_w1aip")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+texture = ExtResource("1_f6x2h")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+texture_filter = 6
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_vertical = 8
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../TextureRect")
+libraries = {
+"": SubResource("AnimationLibrary_f0afr")
+}
+script = ExtResource("2_mg4lq")

@@ -434,19 +434,33 @@ func find_entity(glossary : String, set_prefix = null):
 
 ## --- Dictionaries --- ##
 
-# Scenes
+# Packed Scenes
 
 const particle : Dictionary = {
-	### Status effects
-	"status_fear" : preload("res://Scenes/particles/particle_fear.tscn"),
-	"status_burn" : preload("res://Scenes/particles/particle_burn.tscn"),
-	"status_freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
-	"status_disabled" : preload("res://Scenes/particles/particle_disabled.tscn"),
+	### Status effects TBD
+	#"status_fear" : preload("res://Scenes/particles/particle_fear.tscn"),
+	#"status_burn" : preload("res://Scenes/particles/particle_burn.tscn"),
+	#"status_freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
+	#"status_disable" : preload("res://Scenes/particles/particle_disabled.tscn"),
 	### World effects
 	"heartsurge_node_lumia" : preload("res://Scenes/particles/particle_heartsurge_node_lumia.tscn"),
 	"heartsurge_node_recall" : preload("res://Scenes/particles/particle_heartsurge_node_recall.tscn"),
 	"heartsurge_node_clear" : preload("res://Scenes/particles/particle_heartsurge_node_clear.tscn")
-}
+	}
+
+const status_icon : Dictionary = {
+	"status_burn" : preload("res://Scenes/ui/status_icon/status_icon_burn.tscn"),
+	"status_disable" : preload("res://Scenes/ui/status_icon/status_icon_disable.tscn"),
+	"status_ethereal" : preload("res://Scenes/ui/status_icon/status_icon_ethereal.tscn"),
+	"status_fear" : preload("res://Scenes/ui/status_icon/status_icon_fear.tscn"),
+	"status_freeze" : preload("res://Scenes/ui/status_icon/status_icon_freeze.tscn"),
+	"status_heartsurge" : preload("res://Scenes/ui/status_icon/status_icon_heartsurge.tscn"),
+	"status_immunity" : preload("res://Scenes/ui/status_icon/status_icon_immunity.tscn"),
+	"status_regrowth" : preload("res://Scenes/ui/status_icon/status_icon_regrowth.tscn"),
+	"status_swarm" : preload("res://Scenes/ui/status_icon/status_icon_swarm.tscn"),
+	"status_thorns" : preload("res://Scenes/ui/status_icon/status_icon_thorns.tscn"),
+	"status_weakness" : preload("res://Scenes/ui/status_icon/status_icon_weakness.tscn"),
+	}
 
 const text : Dictionary = {
 	"float_away" : preload("res://Scenes/particles/particle_text_damage.tscn")
@@ -468,12 +482,7 @@ const visual_set : Dictionary = {
 		"AnimationLibrary" : preload("res://Resources/AnimationLibrary/default_basic.tres"),
 		"AnimationNodeStateMachine" : preload("res://Resources/AnimationNodeStateMachine/default_basic.tres"),
 	}
-}
-
-const status_icon : Dictionary = {
-	"status_heartlink" : preload("res://Scenes/ui/status_effect_heartlink.tscn"),
-	"status_burn" : preload("res://Scenes/ui/status_effect_burn.tscn"),
-}
+	}
 
 const ui : Dictionary = {
 	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn")
@@ -485,7 +494,7 @@ var ability_class : Dictionary = {
 	"ability_tackle" : component_ability.ability_tackle,
 	"ability_headbutt" : component_ability.ability_headbutt,
 	"ability_solar_flare" : component_ability.ability_solar_flare,
-	"ability_heartlink" : component_ability.ability_heartlink,
+	"ability_heartsurge" : component_ability.ability_heartsurge,
 	"ability_switchstitch" : component_ability.ability_switchstitch,
 	"ability_spook" : component_ability.ability_spook,
 	"ability_frigid_core" : component_ability.ability_frigid_core,
@@ -497,12 +506,12 @@ var status_class : Dictionary = {
 	"status_burn" : component_ability.status_burn,
 	"status_freeze" : component_ability.status_freeze,
 	##Tethers
-	"status_heartlink" : component_ability.status_heartlink,
+	"status_heartsurge" : component_ability.status_heartsurge,
 	##Passives
 	"status_immunity" : component_ability.status_immunity, #Immune to specific aspect
 	"status_weakness" : component_ability.status_weakness, #Weak to specific aspect
 	"status_ethereal" : component_ability.status_ethereal, #Immune to all but one aspect
-	"status_disabled" : component_ability.status_disabled, #Immune to everything and disabled
+	"status_disable" : component_ability.status_disable, #Immune to everything and disabled
 	"status_swarm" : component_ability.status_swarm, #Damage based on how many of it are on field
 	"status_regrowth" : component_ability.status_regrowth, #Doesn't die unless its kind are all dead aswell
 	"status_thorns" : component_ability.status_thorns, #Reflects damage on direct hit
