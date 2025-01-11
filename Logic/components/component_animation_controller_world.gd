@@ -20,19 +20,20 @@ func camera_billboard() -> void:
 func animation_update(dir : Vector2 = Vector2(0,0)) -> void:
 	
 	if dir.x > 0:
-		owner.animations.rotation.y = PI
+		animations.rotation.y = PI
 	elif dir.x < 0:
-		owner.animations.rotation.y = 0
+		animations.rotation.y = 0
 	else:
 		pass #Keep current direction if we didn't change it
 	
-	owner.animations.tree.set("parameters/Walk/BlendSpace2D/blend_position",dir)
-	owner.animations.tree.set("parameters/Idle/BlendSpace2D/blend_position",dir)
+	animations.tree.set_blend_2d(dir,"Idle")
+	animations.tree.set_blend_2d(dir,"Walk")
 
 ## Disabled
 
 func _on_state_entered_disabled() -> void:
-	owner.animations.tree.get("parameters/playback").travel("Idle")
+	
+	animations.tree.set_state("Idle",true)
 
 ## World
 
@@ -48,9 +49,9 @@ func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 			animation_update(-my_component_input_controller.raw_direction)
 
 func _on_state_entered_world_grounded_idle() -> void:
-	owner.animations.tree.get("parameters/playback").travel("Idle")
+	animations.tree.set_state("Idle")
 
 func _on_state_entered_world_grounded_walking() -> void:
-	owner.animations.tree.get("parameters/playback").travel("Walk")
+	animations.tree.set_state("Walk")
 
 ## Airborne

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbns3x6a8qntp"]
+
+[ext_resource type="Script" path="res://Logic/components/component_animation_controller_world.gd" id="1_5hehf"]
+
+[node name="component_animation_controller_world" type="Node"]
+script = ExtResource("1_5hehf")

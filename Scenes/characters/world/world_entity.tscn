@@ -45,7 +45,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.2709
 [node name="character_animation_sprite" parent="Components/component_animation" index="0"]
 sprite_frames = SubResource("SpriteFrames_6qpdd")
 
-[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="1" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
+[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
 my_component_health = NodePath("../../../component_health")
 my_component_vis = NodePath("../../../component_vis")
 collider = NodePath("../../../../CollisionShape3D")

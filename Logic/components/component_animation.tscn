@@ -31,7 +31,6 @@ update_scale = false
 [node name="fx_anchor" type="Marker3D" parent="character_sprite_position"]
 
 [node name="status_hud" parent="character_sprite_position" instance=ExtResource("11_s71nu")]
-visible = false
 
 [node name="character_animation_player" type="AnimationPlayer" parent="."]
 root_node = NodePath("../character_animation_sprite")
@@ -41,6 +40,3 @@ active = false
 root_node = NodePath("../character_animation_sprite")
 anim_player = NodePath("../character_animation_player")
 script = ExtResource("13_arqnv")
-
-[connection signal="animation_finished" from="character_animation_tree" to="character_animation_tree" method="_on_animation_finished"]
-[connection signal="animation_started" from="character_animation_tree" to="character_animation_tree" method="_on_animation_started"]

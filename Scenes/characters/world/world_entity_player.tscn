@@ -570,9 +570,6 @@ sprite_frames = SubResource("SpriteFrames_uviii")
 animation = &"default_idle"
 frame = 1
 
-[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2"]
-visible = true
-
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {
 "": ExtResource("4_4yea3")
