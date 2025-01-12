@@ -1,4 +1,4 @@
-[gd_resource type="AnimationLibrary" load_steps=11 format=3 uid="uid://bia4tx8dc3gjm"]
+[gd_resource type="AnimationLibrary" load_steps=12 format=3 uid="uid://bia4tx8dc3gjm"]
 
 [ext_resource type="Animation" uid="uid://du1bvrwog5esr" path="res://Resources/Animation/RESET.res" id="1_8m6li"]
 [ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Resources/Animation/default_attack.res" id="2_gs5fe"]
@@ -88,6 +88,83 @@ tracks/5/keys = {
 "values": [Vector2(0, 500)]
 }
 
+[sub_resource type="Animation" id="Animation_m6odr"]
+resource_name = "default_walk_down_start"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_walk_down"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.4875, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(2.46229),
+"update": 0,
+"values": [Vector3(0.15, 0.15, 0.15)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:offset")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 500)]
+}
+
 [resource]
 _data = {
 "RESET": ExtResource("1_8m6li"),
@@ -99,5 +176,6 @@ _data = {
 "default_idle_up": ExtResource("8_trb4o"),
 "default_slide_down": SubResource("Animation_mjvnf"),
 "default_walk_down": ExtResource("11_01kty"),
+"default_walk_down_start": SubResource("Animation_m6odr"),
 "default_walk_up": ExtResource("12_te883")
 }

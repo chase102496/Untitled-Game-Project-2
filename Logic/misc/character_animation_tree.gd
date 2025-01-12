@@ -36,10 +36,7 @@ func set_state(state : String, interrupt : bool = false) -> void:
 	else:
 		_playback().travel(state)
 
-func get_blend_2d() -> Vector2:
-	return Vector2.ZERO
-
-func set_blend_2d(dir : Vector2, state : String = get_state()) -> void:
+func set_blend(dir : Vector2, state : String = get_state()) -> void:
 	set("parameters/"+state+"/BlendSpace2D/blend_position",dir)
 
 # Signals

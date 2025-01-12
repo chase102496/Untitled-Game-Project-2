@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bdyo4iaddo5x8"]
+[gd_scene load_steps=52 format=3 uid="uid://bdyo4iaddo5x8"]
 
 [ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_w8yip"]
 [ext_resource type="Script" path="res://Scenes/characters/world/world_entity_player.gd" id="2_q04t1"]
@@ -14,13 +14,16 @@
 [ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="10_qjgfm"]
 [ext_resource type="Texture2D" uid="uid://dnon1483cmx8p" path="res://Art/sprites/Lumia/idle_front_quarter/lumia_idle_front_quarter_1.png" id="11_5txbc"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="12_do3sr"]
+[ext_resource type="Texture2D" uid="uid://d25yo0ke5sxxb" path="res://Art/sprites/Lumia/idle_back_quarter/Lumia_idle_Back1.png" id="12_eybh4"]
 [ext_resource type="Texture2D" uid="uid://covcwbjl3qr8x" path="res://Art/sprites/The Adventurer - Free/Idle/idle_right_up.png" id="12_ikouu"]
+[ext_resource type="Texture2D" uid="uid://dtqa0jy5tej8t" path="res://Art/sprites/Lumia/idle_back_quarter/Lumia_idle_Back2.png" id="13_emh55"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_u5omi"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="14_luuhe"]
 [ext_resource type="Texture2D" uid="uid://bdmefc4xovgwp" path="res://Art/sprites/Lumia/walk_front_quarter/Lumia_run1.png" id="15_junhg"]
 [ext_resource type="Texture2D" uid="uid://bu52bfmsc6n3m" path="res://Art/sprites/Lumia/walk_front_quarter/Lumia_run2.png" id="16_r3xep"]
 [ext_resource type="Texture2D" uid="uid://clesust7ky2f1" path="res://Art/sprites/The Adventurer - Free/Walk/walk_right_up.png" id="16_w0p3s"]
 [ext_resource type="Texture2D" uid="uid://c55ykowkxjcjv" path="res://Art/sprites/Lumia/walk_front_quarter/Lumia_run3.png" id="17_v8xbv"]
+[ext_resource type="Texture2D" uid="uid://dgq71i4ksegsu" path="res://Art/sprites/Lumia/walk_front_quarter/Lumia_runTransition.png" id="18_d1hjr"]
 [ext_resource type="Texture2D" uid="uid://bi2o2fx2pxyxm" path="res://Art/sprites/Lumia/walk_front_quarter/Lumia_run4.png" id="18_hwyec"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pa3yv"]
@@ -196,28 +199,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2aqsq")
+"texture": ExtResource("12_eybh4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1mh33")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_argqd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3fumn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_skv2p")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8e3lf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s3my5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vi6be")
+"texture": ExtResource("13_emh55")
 }],
 "loop": true,
 "name": &"default_idle_up",
@@ -238,6 +223,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"default_walk_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_d1hjr")
+}],
+"loop": true,
+"name": &"default_walk_down_start",
 "speed": 5.0
 }, {
 "frames": [{
@@ -336,7 +329,9 @@ parameters/Hurt/TimeScale/scale = 1.0
 parameters/Idle/BlendSpace2D/blend_position = Vector2(0.00173056, 0.052381)
 parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
-parameters/Walk/TimeScale/scale = 0.4
+parameters/Walk/TimeScale/scale = 2.0
+"parameters/Walk 2/BlendSpace2D/blend_position" = Vector2(0, 0)
+"parameters/Walk 2/TimeScale/scale" = 0.5
 
 [node name="component_inventory" type="Node" parent="Components" index="4"]
 script = ExtResource("10_qjgfm")

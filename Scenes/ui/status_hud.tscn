@@ -74,6 +74,7 @@ vis = NodePath("SubViewport_Stats/PanelContainer/VBoxContainer/Stats/Vis")
 
 [node name="Stats" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 mesh = SubResource("QuadMesh_68cot")
 
 [node name="SubViewport_Stats" type="SubViewport" parent="."]
