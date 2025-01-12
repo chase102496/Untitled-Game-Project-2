@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	text = str(
 	owner.name,
 	"\n",
-	my_component_state_controller_battle.character_ready,
+	my_component_state_controller_battle.is_character_ready,
 	"\n",
 	abil_names,
 	"\n",

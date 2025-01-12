@@ -2,11 +2,16 @@ extends Node
 
 var active_character : Node3D = null
 var active_character_index : int = 0
+var active_character_alignment : String
+
 var battle_list : Array = []
 var battle_list_ready : bool = true
+
 var battle_spotlight : SpotLight3D
 var battle_spotlight_target : Node3D
 var battle_spotlight_tween : Tween
+
+var death_queue : Array = []
 
 ## --- Dictionaries --- ##
 
@@ -127,7 +132,9 @@ const mitigation_type : Dictionary = { #Informs our system if something mitigate
 
 ## Takes a list of nodes and their stats (or just an empty object with a stats dictionary telling us what to make it), an optional stat overwrite for variation via dictionary,
 #and the old and new scenes they will be transitioning from and to.
-func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn"):
+func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_arena.tscn") -> void:
+	
+	_battle_reset()
 	
 	##Save our current world info to load up
 	SaveManager.save_data_session()
@@ -167,7 +174,9 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 		
 	SceneManager.transition_to(scene_new)
 
-func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://Levels/turn_arena.tscn"):
+func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://Levels/turn_arena.tscn") -> void:
+	
+	_battle_reset()
 	
 	##Save our current world info to load up later
 	SaveManager.save_data_session()
@@ -182,10 +191,34 @@ func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://
 	
 	SceneManager.transition_to(scene_new)
 
-func battle_finalize():
-	Battle.battle_list.clear.call_deferred()
+func battle_finalize() -> void:
+	_battle_reset.call_deferred()
 	SaveManager.save_data_session()
 	SceneManager.transition_to_prev()
+
+func _battle_reset() -> void:
+	Battle.battle_list.clear()
+
+# Turns and event handling
+
+## Trigger the next death in death queue
+func run_death_queue() -> void:
+	for inst in death_queue:
+		inst.state_chart.send_event("on_death")
+		death_queue.erase(inst)
+
+## Add someone to die soon
+func add_death_queue(char : Node) -> void:
+	if char in death_queue:
+		Debug.message("Character already exists in death_queue. Cannot add",Debug.msg_category.BATTLE)
+	else:
+		death_queue.append(char)
+
+func check_ready() -> bool:
+	for char in battle_list:
+		if char and !char.my_component_state_controller_battle.is_character_ready:
+			return false
+	return true
 
 # Misc
 
@@ -347,18 +380,19 @@ func get_team(alignment : String):
 			team.append(battle_list[i])
 	return team
 
-func check_ready():
-	var result = true
-	for i in len(battle_list):
-		if !battle_list[i].my_component_state_controller_battle.character_ready:
-			result = false
-	return result
-
 func camera_update():
 	Global.camera.follow_target = active_character
 	set_battle_spotlight_target(active_character)
 
+func orphan_battle_spotlight() -> void:
+	battle_spotlight.reparent(battle_spotlight_target.get_parent())
+	battle_spotlight.hide()
+
 func set_battle_spotlight_target(target: Node3D) -> void:
+	
+	if !battle_spotlight.visible:
+		battle_spotlight.show()
+	
 	var tween_time = 0.3
 	if target != battle_spotlight_target:
 		battle_spotlight_target = target

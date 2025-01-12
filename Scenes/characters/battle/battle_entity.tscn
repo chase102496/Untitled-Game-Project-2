@@ -48,7 +48,6 @@ animation = &"default_idle"
 frame = 1
 
 [node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
-visible = true
 my_component_health = NodePath("../../../component_health")
 my_component_vis = NodePath("../../../component_vis")
 collider = NodePath("../../../../CollisionShape3D")
@@ -81,8 +80,9 @@ script = ExtResource("16_c1w3d")
 max_vis = 12
 status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
 
-[node name="component_animation_controller_battle" type="Node" parent="Components"]
+[node name="component_animation_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("animations")]
 script = ExtResource("17_jodlc")
+animations = NodePath("../component_animation")
 
 [node name="component_physics" type="Node" parent="Components"]
 script = ExtResource("18_t1psr")

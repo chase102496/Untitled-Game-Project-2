@@ -3,7 +3,9 @@ extends component_node
 
 @export var my_component_ability: component_ability
 
-@onready var character_ready : bool = true
+## Used to determine if this character should be waited for before starting next turn
+@onready var is_character_ready : bool = true
+## Used to go back to whatever previous state we were in
 @onready var state_chart_memory : String = ""
 
 func _ready() -> void:
@@ -31,8 +33,6 @@ func _ready() -> void:
 	%StateChart/Main/Battle/End.state_entered.connect(_on_state_entered_battle_end)
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
 	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_entered_battle_dying)
-	%StateChart/Main/Battle/Dying.state_physics_processing.connect(_on_state_physics_processing_battle_dying)
-	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_exited_battle_dying)
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
 # SIGNALS
@@ -43,15 +43,14 @@ func _on_animation_started(anim_name,character) -> void:
 		regex.compile("(default_)(attack|hurt|death)(_.*)?")
 		var result = regex.search(anim_name)
 		if result:
-			character_ready = false #Set ready to false, we're doin something important
 			match result.get_string(2):
 				"attack":
-					pass
+					is_character_ready = false
 				"hurt":
-					pass
+					is_character_ready = false
 				"death":
-					owner.state_chart.send_event("on_dying")
-					my_component_ability.my_status.status_event("on_dying")
+					is_character_ready = false
+					
 func _on_animation_finished(anim_name,character) -> void:
 	if character == owner:
 		var regex = RegEx.new()
@@ -60,11 +59,13 @@ func _on_animation_finished(anim_name,character) -> void:
 		if result: #If result is not null
 			match result.get_string(2): #match only 2nd group attack|hurt|death
 				"attack":
-					owner.state_chart.send_event("on_end")
+					if owner.animations.tree.is_attack_final:
+						owner.state_chart.send_event("on_end")
 				"hurt":
 					owner.state_chart.send_event(state_chart_memory) #Statecharts has a bug so I bandaided it
 				"death":
-					owner.state_chart.send_event("on_death")
+					## Once death animation is finished, we are ready to be deleted whenever turn_manager is ready for next turn
+					Battle.add_death_queue(owner)
 
 # GLOBAL EVENTS
 
@@ -119,7 +120,7 @@ func _on_battle_entity_death(entity : Node):
 # STATE EVENTS FOR THIS ENTITY
 
 func _on_state_entered_battle_waiting() -> void:
-	character_ready = true
+	is_character_ready = true
 	state_chart_memory = "on_waiting"
 
 func _on_state_entered_battle_start() -> void:
@@ -199,26 +200,14 @@ func _on_state_entered_battle_end() -> void:
 	my_component_ability.my_status.status_event("on_end") #Including status effects
 
 func _on_state_physics_processing_battle_end(_delta: float) -> void:
-	
-	#Do a check similar to on_death in health, where we poll all our status effects for an end turn thing. If there is one, run that and have it handle turn_end
-	
-	#End code goes here, then we ready up
-	if Battle.check_ready():
-		owner.state_chart.send_event("on_waiting")
-		Events.turn_end.emit()
-	
-	character_ready = true
+	owner.state_chart.send_event("on_waiting")
+	Events.turn_end.emit()
 
 func _on_state_entered_battle_dying() -> void:
-	pass
-
-func _on_state_physics_processing_battle_dying(_delta: float) -> void:
-	pass
-
-func _on_state_exited_battle_dying() -> void:
-	pass
+	is_character_ready = false
+	my_component_ability.my_status.status_event("on_dying")
+	Events.battle_entity_dying.emit(owner)
 
 func _on_state_entered_death() -> void:
 	state_chart_memory = "on_death"
-	character_ready = false
-	Events.battle_entity_death.emit(owner) #let everyone know we died rip
+	Events.battle_entity_death.emit(owner)

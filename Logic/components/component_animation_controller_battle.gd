@@ -2,8 +2,7 @@ class_name component_animation_controller_battle
 extends component_node
 
 @export var my_component_input_controller : Node
-
-var direction = Vector2.ZERO
+@export var animations : component_animation
 
 func _ready() -> void:
 	#State Machine signals
@@ -13,6 +12,7 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
 	%StateChart/Main/Battle/Execution.state_exited.connect(_on_state_exited_battle_execution)
 	%StateChart/Main/Battle/Hurt.state_entered.connect(_on_state_entered_battle_hurt)
+	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_entered_battle_dying)
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
 func camera_billboard() -> void:
@@ -23,6 +23,9 @@ func animations_reset(dir : Vector2 = Vector2(0,0)) -> void:
 		owner.animations.rotation.y = PI
 	else:
 		owner.animations.rotation.y = 0
+
+func _on_state_entered_battle_dying() -> void:
+	animations.tree.set_state("Death")
 
 func _on_state_entered_death() -> void:
 	pass

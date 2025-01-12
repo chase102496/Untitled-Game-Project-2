@@ -96,17 +96,36 @@ func create_fx_particle_custom(anchor : Node, type : String, one_shot : bool = f
 	return inst
 
 ## Quickly and easily create a particle. Will run however it was preconfigured
-func create_fx_particle(anchor : Node, type : String, one_shot : bool = false) -> Node:
-	var inst = Glossary.particle.get(type).instantiate()
-	if inst:
-		
-		anchor.add_child(inst)
-		inst.global_position = anchor.global_position
-		
-		if one_shot:
-			inst.one_shot = true
-		
-		return inst
+## Can use array as anchor to anchor to multiple nodes
+func create_fx_particle(anchor, type : String, one_shot : bool = false):
+	var scene = Glossary.particle.get(type)
+	if scene:
+		if anchor is Node:
+			var inst = scene.instantiate()
+			anchor.add_child(inst)
+			inst.global_position = anchor.global_position
+			
+			if one_shot:
+				inst.one_shot = true
+			
+			return inst
+		elif anchor is Array:
+			for each in anchor:
+				if each is Node:
+					var inst = scene.instantiate()
+					each.add_child(inst)
+					inst.global_position = each.global_position
+					
+					if one_shot:
+						inst.one_shot = true
+					
+					return inst
+				else:
+					push_error("Cannot use type for anchor in array: ",each," ",anchor)
+					return null
+		else:
+			push_error("Unknown particle anchor: ",anchor)
+			return null
 		
 	else:
 		push_error("No particle type found when creating fx particle: ",type)

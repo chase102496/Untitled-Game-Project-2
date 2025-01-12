@@ -71,13 +71,17 @@ _data = {
 
 [node name="TextureRect" type="TextureRect"]
 self_modulate = Color(1, 1, 1, 0)
-offset_left = 2.53187
-offset_right = 102.532
+offset_right = 100.0
 offset_bottom = 100.0
 pivot_offset = Vector2(50, 50)
 texture = SubResource("PlaceholderTexture2D_w1aip")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -86,7 +90,7 @@ size_flags_vertical = 8
 texture = ExtResource("1_f6x2h")
 expand_mode = 1
 
-[node name="TextureRect2" type="TextureRect" parent="."]
+[node name="TextureRect2" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -94,7 +98,7 @@ offset_bottom = 100.0
 size_flags_vertical = 8
 expand_mode = 1
 
-[node name="TextureRect3" type="TextureRect" parent="."]
+[node name="TextureRect3" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -102,7 +106,7 @@ offset_bottom = 100.0
 size_flags_vertical = 8
 expand_mode = 1
 
-[node name="TextureRect4" type="TextureRect" parent="."]
+[node name="TextureRect4" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -111,7 +115,7 @@ size_flags_vertical = 8
 expand_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../TextureRect")
+root_node = NodePath("../TextureRect/TextureRect")
 libraries = {
 "": SubResource("AnimationLibrary_f0afr")
 }

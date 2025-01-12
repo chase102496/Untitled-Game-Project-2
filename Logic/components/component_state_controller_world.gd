@@ -11,6 +11,8 @@ func _ready() -> void:
 	#Grounded
 	%StateChart/Main/World/Grounded.state_physics_processing.connect(_on_state_physics_processing_world_grounded)
 	%StateChart/Main/World/Grounded/Idle.state_physics_processing.connect(_on_state_physics_processing_world_grounded_idle)
+	%StateChart/Main/World/Grounded/Idle/Still.state_physics_processing.connect(_on_state_physics_processing_world_grounded_idle_still)
+	%StateChart/Main/World/Grounded/Idle/Sliding.state_physics_processing.connect(_on_state_physics_processing_world_grounded_idle_sliding)
 	%StateChart/Main/World/Grounded/Walking.state_physics_processing.connect(_on_state_physics_processing_world_grounded_walking)
 	
 	#Airborne
@@ -38,19 +40,30 @@ func _on_state_physics_processing_world_airborne(_delta: float) -> void:
 	if owner.is_on_floor():
 		owner.state_chart.send_event("on_grounded")
 
-## Grounded
+### Grounded
 
 func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 	if !owner.is_on_floor():
 		owner.state_chart.send_event("on_airborne")
 
-# Idle
+## Idle
 
 func _on_state_physics_processing_world_grounded_idle(_delta: float) -> void:
+	pass
+	
+
+# Still
+
+func _on_state_physics_processing_world_grounded_idle_still(_delta : float) -> void:
 	if direction != Vector2.ZERO:
 		owner.state_chart.send_event("on_walking")
 
-# Walking
+# Sliding
+
+func _on_state_physics_processing_world_grounded_idle_sliding(_delta: float) -> void:
+	pass
+
+## Walking
 
 func _on_state_physics_processing_world_grounded_walking(_delta: float) -> void:
 	

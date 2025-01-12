@@ -17,7 +17,6 @@ initial_state = NodePath("World")
 
 [node name="on_idle" type="Node" parent="Main"]
 script = ExtResource("5_2iali")
-to = NodePath("../World/Grounded/Idle")
 event = &"on_idle"
 delay_in_seconds = "0.0"
 
@@ -58,12 +57,31 @@ event = &"on_airborne"
 delay_in_seconds = "0.0"
 
 [node name="Idle" type="Node" parent="Main/World/Grounded"]
-script = ExtResource("3_l3k1k")
+script = ExtResource("2_sifvc")
+initial_state = NodePath("Still")
 
 [node name="on_walking" type="Node" parent="Main/World/Grounded/Idle"]
 script = ExtResource("5_2iali")
 to = NodePath("../../Walking")
 event = &"on_walking"
+delay_in_seconds = "0.0"
+
+[node name="Still" type="Node" parent="Main/World/Grounded/Idle"]
+script = ExtResource("3_l3k1k")
+
+[node name="on_sliding" type="Node" parent="Main/World/Grounded/Idle/Still"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Sliding")
+event = &"on_sliding"
+delay_in_seconds = "0.0"
+
+[node name="Sliding" type="Node" parent="Main/World/Grounded/Idle"]
+script = ExtResource("3_l3k1k")
+
+[node name="on_still" type="Node" parent="Main/World/Grounded/Idle/Sliding"]
+script = ExtResource("5_2iali")
+to = NodePath("../../Still")
+event = &"on_still"
 delay_in_seconds = "0.0"
 
 [node name="Walking" type="Node" parent="Main/World/Grounded"]

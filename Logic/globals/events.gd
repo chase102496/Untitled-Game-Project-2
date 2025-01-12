@@ -38,6 +38,7 @@ signal battle_entity_turn_end(entity : Node)
 signal battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object)
 signal battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object) #someone was hit with an ability
 signal battle_entity_damaged(entity : Node, amount : int,type : String) #someone took damage
+signal battle_entity_dying(entity : Node) #dying, but not dead yet. Needs to go thru death queue
 signal battle_entity_death(entity : Node) #someone died rip
 
 signal battle_finished(result : String)

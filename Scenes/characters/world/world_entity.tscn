@@ -55,7 +55,8 @@ libraries = {
 "": SubResource("AnimationLibrary_1l2l5")
 }
 
-[node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("my_owner")]
+[node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("animations", "my_owner")]
+animations = NodePath("..")
 my_owner = NodePath("../../..")
 
 [node name="component_ability" parent="Components" instance=ExtResource("5_1ohn5")]

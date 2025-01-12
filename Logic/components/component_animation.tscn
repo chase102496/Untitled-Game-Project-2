@@ -35,8 +35,9 @@ update_scale = false
 [node name="character_animation_player" type="AnimationPlayer" parent="."]
 root_node = NodePath("../character_animation_sprite")
 
-[node name="character_animation_tree" type="AnimationTree" parent="."]
+[node name="character_animation_tree" type="AnimationTree" parent="." node_paths=PackedStringArray("animations")]
 active = false
 root_node = NodePath("../character_animation_sprite")
 anim_player = NodePath("../character_animation_player")
 script = ExtResource("13_arqnv")
+animations = NodePath("..")

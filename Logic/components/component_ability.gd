@@ -739,7 +739,7 @@ class ability:
 	## Function called when we make contact, used for effects
 	func fx_cast_main() -> void:
 		Glossary.create_fx_particle_custom(primary_target,"heartsurge_node_clear",true,5,180,5)
-		Camera.shake(0.2,0.5)
+		Camera.shake()
 	
 	## Damage run on target-side, they are weak to this ability
 	func cast_pre_mitigation_bonus(caster : Node, target : Node):
