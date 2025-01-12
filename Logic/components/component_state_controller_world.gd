@@ -49,14 +49,14 @@ func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 ## Idle
 
 func _on_state_physics_processing_world_grounded_idle(_delta: float) -> void:
-	pass
+	if direction != Vector2.ZERO:
+		owner.state_chart.send_event("on_walking")
 	
 
 # Still
 
 func _on_state_physics_processing_world_grounded_idle_still(_delta : float) -> void:
-	if direction != Vector2.ZERO:
-		owner.state_chart.send_event("on_walking")
+	pass
 
 # Sliding
 

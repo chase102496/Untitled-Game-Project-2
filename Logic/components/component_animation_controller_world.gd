@@ -10,8 +10,6 @@ func _ready() -> void:
 	%StateChart/Main/World/Grounded.state_physics_processing.connect(_on_state_physics_processing_world_grounded)
 	%StateChart/Main/World/Grounded/Idle.state_entered.connect(_on_state_entered_world_grounded_idle)
 	%StateChart/Main/World/Grounded/Idle.state_physics_processing.connect(_on_state_physics_processing_world_grounded_idle)
-	%StateChart/Main/World/Grounded/Sliding.state_physics_processing.connect(_on_state_physics_processing_world_grounded_idle)
-	%StateChart/Main/World/Grounded/Sliding.state_physics_processing.connect(_on_state_physics_processing_world_grounded_idle)
 	%StateChart/Main/World/Grounded/Walking.state_entered.connect(_on_state_entered_world_grounded_walking)
 	%StateChart/Main/World/Grounded/Walking.state_physics_processing.connect(_on_state_physics_processing_world_grounded_walking)
 	%StateChart/Main/Disabled.state_entered.connect(_on_state_entered_disabled)
@@ -50,22 +48,18 @@ func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 	
 	if my_component_input_controller:
 		if my_component_input_controller.raw_direction != Vector2.ZERO:
-			pass
+			animation_update(-my_component_input_controller.raw_direction)
 
 func _on_state_entered_world_grounded_idle() -> void:
-	#if round(owner.velocity.x) == 0 and round(owner.velocity.z) == 0:
-		#animations.tree.set_state("Idle")
-	#else:
-		#animations.tree.set_state("default_slide_down")
-	pass
+	animations.tree.set_state("Idle")
 
 func _on_state_physics_processing_world_grounded_idle(_delta : float) -> void:
-	animation_update(Vector2(owner.velocity.zx,owner.velocity.z))
+	pass
 
 func _on_state_entered_world_grounded_walking() -> void:
 	animations.tree.set_state("Walk")
 
 func _on_state_physics_processing_world_grounded_walking(_delta : float) -> void:
-	animation_update(-my_component_input_controller.raw_direction)
+	pass
 
 ## Airborne
