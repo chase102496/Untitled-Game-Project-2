@@ -1,15 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdyo4iaddo5x8"]
+[gd_scene load_steps=15 format=3 uid="uid://bdyo4iaddo5x8"]
 
 [ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_w8yip"]
 [ext_resource type="Script" path="res://Scenes/characters/world/world_entity_player.gd" id="2_q04t1"]
 [ext_resource type="PackedScene" uid="uid://baowwbhogqe0c" path="res://test_junk/vignette.tscn" id="3_6833w"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://Scenes/ui/inventory_gui.tscn" id="3_sq4rn"]
-[ext_resource type="AnimationLibrary" uid="uid://bia4tx8dc3gjm" path="res://Resources/AnimationLibrary/default_player.tres" id="4_4yea3"]
 [ext_resource type="PackedScene" uid="uid://r6lxipom563d" path="res://Logic/components/component_interaction.tscn" id="4_l3hcv"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://q575ewtqb03g" path="res://Resources/AnimationNodeStateMachine/default.tres" id="5_do7lw"]
 [ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="5_ke17l"]
 [ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="6_smvuq"]
-[ext_resource type="SpriteFrames" uid="uid://cm25hsl341o8q" path="res://Resources/SpriteFrames/Lumia/lumia_default.tres" id="8_sjfrr"]
+[ext_resource type="SpriteFrames" uid="uid://cy4mmdcs8cwrj" path="res://Resources/SpriteFrames/player/default_player.tres" id="8_vijqw"]
+[ext_resource type="AnimationLibrary" uid="uid://sqc4n6qes1ts" path="res://Resources/AnimationLibrary/player/default_player.res" id="9_d7rs2"]
 [ext_resource type="Script" path="res://Logic/components/component_inventory.gd" id="10_qjgfm"]
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="12_do3sr"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_u5omi"]
@@ -65,26 +64,30 @@ gloam_manager = NodePath("../component_gloam_manager")
 [node name="component_gloam_manager" parent="Components" index="2" node_paths=PackedStringArray("equipment") instance=ExtResource("6_smvuq")]
 equipment = NodePath("../component_equipment")
 
-[node name="character_animation_sprite" parent="Components/component_animation" index="0"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-sprite_frames = ExtResource("8_sjfrr")
-animation = &"default_idle"
+[node name="character_animation_sprite" parent="Components/component_animation/AnimationTransform" index="0"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, -0.488, 0)
+offset = Vector2(0, 500)
+sprite_frames = ExtResource("8_vijqw")
+animation = &"default_idle_down"
 frame = 1
+
+[node name="character_sprite_position" parent="Components/component_animation" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.488, 0)
+
+[node name="selector_anchor" parent="Components/component_animation/character_sprite_position" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {
-"": ExtResource("4_4yea3")
+"": ExtResource("9_d7rs2")
 }
 
 [node name="character_animation_tree" parent="Components/component_animation" index="3"]
-tree_root = ExtResource("5_do7lw")
-parameters/Death/TimeScale/scale = 1.0
-parameters/Hurt/TimeScale/scale = 1.0
-parameters/Idle/BlendSpace2D/blend_position = Vector2(0.00173056, 0.052381)
-parameters/Idle/TimeScale/scale = 1.0
-parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.00215471, 0.0394872)
 parameters/Walk/TimeScale/scale = 4.0
-"parameters/Walk 2/BlendSpace2D/blend_position" = Vector2(0, 0)
 "parameters/Walk 2/TimeScale/scale" = 0.5
 
 [node name="component_inventory" type="Node" parent="Components" index="4"]

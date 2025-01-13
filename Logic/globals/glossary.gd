@@ -496,11 +496,11 @@ var entity_scene : Dictionary = {
 
 ## Contains all stuff needed to change visuals of an entity
 const visual_set : Dictionary = {
-	"axolotl_red" : {
-		"SpriteFrames" : preload("res://Resources/SpriteFrames/dreamkin_red.tres"),
-		"AnimationLibrary" : preload("res://Resources/AnimationLibrary/default_basic.tres"),
-		"AnimationNodeStateMachine" : preload("res://Resources/AnimationNodeStateMachine/default_basic.tres"),
-	}
+	#"axolotl_red" : { TBD NEEDS REWORK
+		#"SpriteFrames" : preload("res://Resources/SpriteFrames/dreamkin_red.tres"),
+		#"AnimationLibrary" : preload("res://Resources/AnimationLibrary/default_basic.tres"),
+		#"AnimationNodeStateMachine" : preload("res://Resources/AnimationNodeStateMachine/default_basic.tres"),
+	#}
 	}
 
 const ui : Dictionary = {

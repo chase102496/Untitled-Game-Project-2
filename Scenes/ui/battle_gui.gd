@@ -224,11 +224,16 @@ func _on_state_exited_battle_gui_select() -> void:
 	#selector_sprite.hide()
 
 # Skillcheck
-	
+## TODO Consider re-adding after playtest? Find a new way to incorporate it
+
 func _on_state_entered_battle_gui_skillcheck() -> void:
-	ui_skillcheck.show()
-	ui_skillcheck_cursor_anim.speed_scale = owner.my_component_ability.skillcheck_difficulty
-	Battle.set_battle_spotlight_brightness(0)
+	ui_skillcheck_result = "Good"
+	state_chart.send_event("on_gui_disabled")
+	owner.state_chart.send_event("on_execution")
+	
+	#ui_skillcheck.show()
+	#ui_skillcheck_cursor_anim.speed_scale = owner.my_component_ability.skillcheck_difficulty
+	#Battle.set_battle_spotlight_brightness(0)
 
 func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 	

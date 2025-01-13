@@ -8,19 +8,21 @@
 script = ExtResource("1_t62b6")
 tree = NodePath("character_animation_tree")
 player = NodePath("character_animation_player")
-sprite = NodePath("character_animation_sprite")
+sprite = NodePath("AnimationTransform/character_animation_sprite")
 selector_anchor = NodePath("character_sprite_position/selector_anchor")
 fx_anchor = NodePath("character_sprite_position/fx_anchor")
 status_hud = NodePath("character_sprite_position/status_hud")
 sprite_position = NodePath("character_sprite_position")
 
-[node name="character_animation_sprite" type="AnimatedSprite3D" parent="."]
+[node name="AnimationTransform" type="Node3D" parent="."]
+
+[node name="character_animation_sprite" type="AnimatedSprite3D" parent="AnimationTransform"]
 gi_mode = 2
 shaded = true
 texture_filter = 0
 
-[node name="RemoteTransform3DPosition" type="RemoteTransform3D" parent="character_animation_sprite"]
-remote_path = NodePath("../../character_sprite_position")
+[node name="RemoteTransform3DPosition" type="RemoteTransform3D" parent="AnimationTransform/character_animation_sprite"]
+remote_path = NodePath("../../../character_sprite_position")
 update_rotation = false
 update_scale = false
 
@@ -33,11 +35,11 @@ update_scale = false
 [node name="status_hud" parent="character_sprite_position" instance=ExtResource("11_s71nu")]
 
 [node name="character_animation_player" type="AnimationPlayer" parent="."]
-root_node = NodePath("../character_animation_sprite")
+root_node = NodePath("../AnimationTransform/character_animation_sprite")
 
 [node name="character_animation_tree" type="AnimationTree" parent="." node_paths=PackedStringArray("animations")]
 active = false
-root_node = NodePath("../character_animation_sprite")
+root_node = NodePath("../AnimationTransform/character_animation_sprite")
 anim_player = NodePath("../character_animation_player")
 script = ExtResource("13_arqnv")
 animations = NodePath("..")

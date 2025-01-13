@@ -1,8 +1,5 @@
 class_name component_animation_controller_battle
-extends component_node
-
-@export var my_component_input_controller : Node
-@export var animations : component_animation
+extends component_animation_controller
 
 func _ready() -> void:
 	#State Machine signals
@@ -15,15 +12,6 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_entered_battle_dying)
 	%StateChart/Main/Battle/Death.state_entered.connect(_on_state_entered_death)
 
-func camera_billboard() -> void:
-	owner.rotation.y = Global.camera.rotation.y
-
-func animations_reset(dir : Vector2 = Vector2(0,0)) -> void:
-	if dir.x >= 0:
-		owner.animations.rotation.y = PI
-	else:
-		owner.animations.rotation.y = 0
-
 func _on_state_entered_battle_dying() -> void:
 	animations.tree.set_state("Death")
 
@@ -34,16 +22,16 @@ func _on_state_entered_battle() -> void:
 	pass
 
 func _on_state_entered_battle_hurt() -> void:
-	owner.animations.tree.get("parameters/playback").travel("Hurt")
+	animations.tree.set_state("Hurt")
 
 func _on_state_entered_battle_waiting() -> void:
 	#Sets us facing the right way, depending on our side
-	owner.animations.tree.get("parameters/playback").travel("Idle")
+	animations.tree.set_state("Idle")
 	
 	if owner.alignment == Battle.alignment.FRIENDS:
-		animations_reset(Vector2(1,1))
+		animation_update(Vector2(1,1))
 	else:
-		animations_reset(Vector2(-1,-1))
+		animation_update(Vector2(-1,-1))
 
 func _on_state_exited_battle() -> void:
 	pass

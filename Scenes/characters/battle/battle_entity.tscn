@@ -1,12 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://b5f4cvf272kh2"]
+[gd_scene load_steps=14 format=3 uid="uid://b5f4cvf272kh2"]
 
 [ext_resource type="Script" path="res://Scenes/characters/battle/battle_entity.gd" id="1_xrh1h"]
 [ext_resource type="PackedScene" uid="uid://djw4yjejthj5q" path="res://Scenes/state_chart_battle.tscn" id="3_n46cr"]
 [ext_resource type="PackedScene" uid="uid://b7x2uimrghas2" path="res://test_junk/debug_3d_text.tscn" id="4_0krx5"]
-[ext_resource type="SpriteFrames" uid="uid://xbnydnlduvvj" path="res://Resources/SpriteFrames/dreamkin_red.tres" id="5_c5nv1"]
 [ext_resource type="PackedScene" uid="uid://b4jd53pda4276" path="res://Logic/components/component_animation.tscn" id="5_mdf11"]
-[ext_resource type="AnimationLibrary" uid="uid://dxqlvc4d1r1wb" path="res://Resources/AnimationLibrary/animations_player_battle.tres" id="6_561v6"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cb2bhc37utoc8" path="res://Resources/AnimationNodeStateMachine/default_basic.tres" id="6_ettuc"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://biw8mj4onqdoy" path="res://Resources/AnimationNodeStateMachine/battle/default_battle.tres" id="5_mi4sx"]
 [ext_resource type="PackedScene" uid="uid://ci3yj38s28xgq" path="res://Logic/components/component_ability.tscn" id="13_b0o3b"]
 [ext_resource type="Script" path="res://Logic/components/component_state_controller_battle.gd" id="14_yhqed"]
 [ext_resource type="Script" path="res://Logic/components/component_health.gd" id="15_76mtu"]
@@ -17,6 +15,8 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qdplk"]
 radius = 0.229798
 height = 1.02907
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j6r5n"]
 
 [node name="battle_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle", "my_component_physics")]
 script = ExtResource("1_xrh1h")
@@ -41,30 +41,25 @@ unique_name_in_owner = true
 
 [node name="component_animation" parent="Components" instance=ExtResource("5_mdf11")]
 
-[node name="character_animation_sprite" parent="Components/component_animation" index="0"]
+[node name="character_animation_sprite" parent="Components/component_animation/AnimationTransform" index="0"]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-offset = Vector2(0, 500)
-sprite_frames = ExtResource("5_c5nv1")
-animation = &"default_idle"
-
-[node name="character_sprite_position" parent="Components/component_animation" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.488, 0)
+sprite_frames = SubResource("SpriteFrames_j6r5n")
 
 [node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
 my_component_health = NodePath("../../../component_health")
 my_component_vis = NodePath("../../../component_vis")
 collider = NodePath("../../../../CollisionShape3D")
 
-[node name="character_animation_player" parent="Components/component_animation" index="2"]
-libraries = {
-"": ExtResource("6_561v6")
-}
-
 [node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("my_owner")]
-tree_root = ExtResource("6_ettuc")
+tree_root = ExtResource("5_mi4sx")
 parameters/Death/TimeScale/scale = 1.0
 parameters/Hurt/TimeScale/scale = 1.0
+parameters/Idle/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Idle/TimeScale/scale = 1.0
+parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Walk/TimeScale/scale = 1.0
+"parameters/Walk 2/BlendSpace2D/blend_position" = Vector2(0, 0)
+"parameters/Walk 2/TimeScale/scale" = 1.0
 my_owner = NodePath("../../..")
 
 [node name="component_ability" parent="Components" instance=ExtResource("13_b0o3b")]

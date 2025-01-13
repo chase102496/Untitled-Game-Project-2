@@ -7,7 +7,6 @@ extends world_entity
 @export var my_component_party : component_party
 @export var my_component_ability : component_ability
 @export var my_component_inventory : component_inventory
-@export var my_component_respawn_handler : component_respawn_handler
 @export var my_component_equipment : component_equipment
 @export var my_component_interaction : component_interaction
 @export var my_inventory_gui : Control
@@ -109,9 +108,9 @@ func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("clear_save"):
 		SaveManager.reset_data_persistent()
 	
-	if Input.is_action_just_pressed("num1"):
-		if my_component_party.my_summons.size() > 0:
-			my_component_party.my_summons[0].animations.import_visual_set(Glossary.visual_set["axolotl_red"])
+	#if Input.is_action_just_pressed("num1"):
+		#if my_component_party.my_summons.size() > 0:
+			#my_component_party.my_summons[0].animations.import_visual_set(Glossary.visual_set["axolotl_red"])
 	
 	if Input.is_action_just_pressed("num0"):
 		#Battle.encounter["gloam_trio"].call()

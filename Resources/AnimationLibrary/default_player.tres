@@ -1,11 +1,10 @@
 [gd_resource type="AnimationLibrary" load_steps=12 format=3 uid="uid://bia4tx8dc3gjm"]
 
 [ext_resource type="Animation" uid="uid://du1bvrwog5esr" path="res://Resources/Animation/RESET.res" id="1_8m6li"]
-[ext_resource type="Animation" uid="uid://b0fryt1t0s35a" path="res://Resources/Animation/default_attack.res" id="2_gs5fe"]
-[ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Resources/Animation/default_attack_spook.res" id="3_33mt1"]
 [ext_resource type="Animation" uid="uid://b3l8ge82bf28l" path="res://Resources/Animation/default_death.res" id="4_fiobl"]
 [ext_resource type="Animation" uid="uid://me7jyxsoattq" path="res://Resources/Animation/default_hurt.res" id="5_kk0pa"]
 [ext_resource type="Animation" uid="uid://cg6mwvsp8tbm1" path="res://Resources/Animation/default_idle_left_down.res" id="7_d7jk6"]
+[ext_resource type="Animation" uid="uid://dn1eaqnjpc81h" path="res://Resources/Animation/universal/default_attack_skillcheck.res" id="8_qkkla"]
 [ext_resource type="Animation" uid="uid://cj6nc5lxj1kvt" path="res://Resources/Animation/default_idle_left_up.res" id="8_trb4o"]
 [ext_resource type="Animation" uid="uid://dei742bvbnhbt" path="res://Resources/Animation/default_walk_left_down.res" id="11_01kty"]
 [ext_resource type="Animation" uid="uid://ev0qrbsdak2y" path="res://Resources/Animation/default_walk_left_up.res" id="12_te883"]
@@ -165,13 +164,43 @@ tracks/5/keys = {
 "values": [Vector2(0, 500)]
 }
 
+[sub_resource type="Animation" id="Animation_04iac"]
+resource_name = "default_idle_battle"
+length = 1.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default_idle_up"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
 [resource]
 _data = {
 "RESET": ExtResource("1_8m6li"),
-"default_attack": ExtResource("2_gs5fe"),
-"default_attack_spook": ExtResource("3_33mt1"),
+"default_attack": ExtResource("8_qkkla"),
 "default_death": ExtResource("4_fiobl"),
 "default_hurt": ExtResource("5_kk0pa"),
+"default_idle_battle": SubResource("Animation_04iac"),
 "default_idle_down": ExtResource("7_d7jk6"),
 "default_idle_up": ExtResource("8_trb4o"),
 "default_slide_down": SubResource("Animation_mjvnf"),

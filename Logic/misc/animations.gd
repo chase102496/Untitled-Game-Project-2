@@ -7,16 +7,16 @@ extends Node3D
 @export var player : AnimationPlayer
 @export var sprite : AnimatedSprite3D
 @export var selector_anchor : Marker3D
-@export var fx_anchor : Marker3D
+@export var fx_anchor : Marker3D #Not in use, but will be later
 @export var status_hud : Node3D
 @export var sprite_position : Node3D
 
-func import_visual_set(dict : Dictionary) -> void:
-	for key in dict:
-		match key:
-			"SpriteFrames":
-				sprite.sprite_frames = dict[key]
-			"AnimationLibrary":
-				player.libraries[""] = dict[key]
-			"AnimationNodeStateMachine":
-				tree.tree_root = dict[key]
+#func import_visual_set(dict : Dictionary) -> void:
+	#for key in dict:
+		#match key:
+			#"SpriteFrames":
+				#sprite.sprite_frames = dict[key]
+			#"AnimationLibrary":
+				#player.libraries[""] = dict[key]
+			#"AnimationNodeStateMachine":
+				#tree.tree_root = dict[key]

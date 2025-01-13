@@ -109,6 +109,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("5_01lux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_2dlnh")
+}],
+"loop": true,
+"name": &"default_idle_battle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_53rdy")
 }, {
 "duration": 1.0,
