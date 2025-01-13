@@ -2,7 +2,7 @@
 
 [ext_resource type="Animation" uid="uid://cm0mlwsh5hmjv" path="res://Resources/Animation/universal/default_death.res" id="1_mth8t"]
 [ext_resource type="Animation" uid="uid://c5u3pjxa7thfr" path="res://Resources/Animation/universal/default_hurt.res" id="2_youuj"]
-[ext_resource type="Animation" uid="uid://ctque4l8yu5x7" path="res://Resources/Animation/universal/default_attack_no_skillcheck.res" id="3_jyxgd"]
+[ext_resource type="Animation" uid="uid://dn1eaqnjpc81h" path="res://Resources/Animation/universal/default_attack_skillcheck.res" id="3_anaca"]
 
 [sub_resource type="Animation" id="Animation_e26tp"]
 length = 0.001
@@ -364,7 +364,7 @@ tracks/1/keys = {
 [resource]
 _data = {
 "RESET": SubResource("Animation_e26tp"),
-"default_attack": ExtResource("3_jyxgd"),
+"default_attack": ExtResource("3_anaca"),
 "default_death": ExtResource("1_mth8t"),
 "default_hurt": ExtResource("2_youuj"),
 "default_idle_battle": SubResource("Animation_1fj2r"),

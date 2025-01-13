@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://b3707fwdhap4h"]
 
 [ext_resource type="Script" path="res://Logic/misc/status_hud.gd" id="1_ked1w"]
-[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://ui/Fancake.ttf" id="2_5t26x"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="2_5t26x"]
 [ext_resource type="Texture2D" uid="uid://byww4f6mw08uo" path="res://test_junk/status_hud_stats_viewport.tres" id="3_v6wk8"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vcokd"]
@@ -145,6 +145,7 @@ scale = Vector2(2, 2)
 theme = SubResource("Theme_v0tqo")
 
 [node name="Status" type="VBoxContainer" parent="SubViewport_Status/PanelContainer"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -155,7 +156,7 @@ offset_bottom = 458.0
 grow_horizontal = 2
 
 [node name="GridContainer" type="GridContainer" parent="SubViewport_Status/PanelContainer/Status"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
 columns = 3

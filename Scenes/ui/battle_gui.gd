@@ -22,11 +22,11 @@ extends Control
 @onready var ui_skillcheck_cursor_anim : Node = %Skillcheck/Cursor/AnimationPlayer
 @onready var ui_skillcheck_result : String = ""
 
-@onready var ui_button_attack : Node = %Menu/Main/Attack
-@onready var ui_button_echoes : Node = %Menu/Main/Echoes
-@onready var ui_button_party : Node = %Menu/Main/Party
-@onready var ui_button_items : Node = %Menu/Main/Items
-@onready var ui_button_escape : Node = %Menu/Main/Escape
+@onready var ui_button_attack : Node = %Menu/Main/Attack/Button
+@onready var ui_button_echoes : Node = %Menu/Main/Echoes/Button
+@onready var ui_button_party : Node = %Menu/Main/Party/Button
+@onready var ui_button_items : Node = %Menu/Main/Items/Button
+@onready var ui_button_escape : Node = %Menu/Main/Escape/Button
 
 @onready var ui_description_box : PanelContainer = %Description
 @onready var ui_description_title : RichTextLabel = %"Description/VBoxContainer/Description Title"

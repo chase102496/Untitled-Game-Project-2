@@ -5,6 +5,14 @@ signal health_changed(amt : int)
 
 @export var max_health : int = 24
 @export var status_hud : Node3D
+## Subtracts damage on-hit
+@export var armor : int = 0
+## Subtracts damage on-hit and disappears after blocking
+@export var temporary_armor : int = 0
+## When we successfully block, how much damage do we negate?
+@export var block_power : int = 1
+## Super-temporary armor that resets every attack
+var block_armor : int = 0
 
 var health : int:
 	set(value):
@@ -12,9 +20,17 @@ var health : int:
 		_update(value)
 
 func _ready() -> void:
+	
+	Events.turn_end.connect(_on_turn_end)
+	
 	if !health: #If we didn't set health manually
 		health = max_health
 	_update(0)
+
+## Private
+
+func _on_turn_end() -> void:
+	_reset_armor_block()
 
 ## For calcs
 func get_current_ratio() -> float:
@@ -25,47 +41,8 @@ func _update(amt : int) -> void:
 	health_changed.emit(amt)
 	Events.entity_health_changed.emit(owner,amt)
 
-func revive():
-	
-	Glossary.create_text_particle(owner.animations.selector_anchor,str("Revived!"),"float_away",Color.GREEN_YELLOW)
-	
-	#Events.battle_entity_revived.emit(owner)
-	health = max_health
-
-func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
-	
-	## Calculation
-	var old_health = health
-	health = clamp(health + amt,0,max_health)
-	var amt_changed = health - old_health
-	
-	Debug.message([old_health," HP -> ",health," HP"],Debug.msg_category.BATTLE)
-	
-	## Healing
-	if amt_changed > 0:
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.LIGHT_GREEN)
-	
-	## Damage
-	elif amt_changed < 0:
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt),"float_away",Color.RED)
-		#To protect recursive when using heartsurge
-		if !from_tether:
-			Events.battle_entity_damaged.emit(owner,amt)
-
-		## We are dying
-		if health == 0: #If we're dying
-			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection",[amt,from_tether,type],true)
-			if death_protection_result.is_empty():
-				_on_dying(death_protection_result)
-			## This means the code will be handled in status effect preventing death or modifying it in some way
-			else:
-				pass
-		## We are getting hurt by something
-		else:
-			_on_hurt()
-	
-	## Updates the actual health change
-	_update(amt_changed)
+func _reset_armor_block() -> void:
+	block_armor = 0
 
 func _on_dying(result : Array) -> void:
 	owner.state_chart.send_event("on_dying")
@@ -78,3 +55,67 @@ func _on_hurt() -> void:
 		#owner.state_chart.send_event("on_hurt")
 		
 	owner.state_chart.send_event("on_hurt")
+
+## Public
+
+func revive():
+	
+	Glossary.create_text_particle(owner.animations.selector_anchor,str("Revived!"),"float_away",Color.GREEN_YELLOW)
+	
+	#Events.battle_entity_revived.emit(owner)
+	health = max_health
+
+## Permanent armor
+func change_armor(amt : int) -> void:
+	armor = max(0,armor + amt)
+
+## Will stay until damage is dealt, then it is negated
+func change_armor_temporary(amt : int) -> void:
+	temporary_armor = max(0,temporary_armor + amt)
+
+func change_armor_block(amt : int) -> void:
+	block_armor = max(0,block_armor + amt)
+
+func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
+	
+	## Calculation
+	var old_health = health
+	
+	var amt_post_mitigation = amt
+	if amt < 0:
+		var amt_post_armor = min(0, amt + armor + block_armor)
+		amt_post_mitigation = min(0, amt_post_armor + temporary_armor)
+		var temporary_armor_used = amt_post_armor - amt_post_mitigation
+		change_armor_temporary(temporary_armor_used)
+	
+	health = clamp(health + amt_post_mitigation,0,max_health)
+	
+	var amt_changed = health - old_health
+	
+	Debug.message([old_health," HP -> ",health," HP  Pre-mitigation: ",amt," Post-mitigation: ",amt_post_mitigation],Debug.msg_category.BATTLE)
+	
+	## Healing
+	if amt_changed > 0:
+		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_changed),"float_away",Color.LIGHT_GREEN)
+	
+	## Damage
+	elif amt_changed < 0:
+		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_changed),"float_away",Color.RED)
+		#To protect recursive when using heartsurge
+		if !from_tether:
+			Events.battle_entity_damaged.emit(owner,amt_changed)
+
+		## We are dying
+		if health == 0: #If we're dying
+			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection",[amt_post_mitigation,from_tether,type],true)
+			if death_protection_result.is_empty():
+				_on_dying(death_protection_result)
+			## This means the code will be handled in status effect preventing death or modifying it in some way
+			else:
+				Debug.message("Death Protection Activated!",Debug.msg_category.BATTLE)
+		## We are getting hurt by something
+		else:
+			_on_hurt()
+	
+	## Updates the actual health change
+	_update(amt_changed)

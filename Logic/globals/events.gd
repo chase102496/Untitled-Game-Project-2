@@ -34,11 +34,21 @@ signal battle_team_start(team : String) #When a team has started their turn
 
 signal battle_entity_disabled_expire(entity : Node) #When an entity came out of a disable
 
+##
 signal battle_entity_turn_end(entity : Node)
+##
 signal battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object)
-signal battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object) #someone was hit with an ability
-signal battle_entity_damaged(entity : Node, amount : int,type : String) #someone took damage
+## Someone was hit with an ability
+signal battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object)
+## Someone took damage
+signal battle_entity_damaged(entity : Node, amount : int,type : String)
+## If someone successfully blocked an attack
+signal battle_entity_blocked(entity : Node)
+##
+signal battle_entity_combo(entity : Node, combo_amt : int)
+##
 signal battle_entity_dying(entity : Node) #dying, but not dead yet. Needs to go thru death queue
+##
 signal battle_entity_death(entity : Node) #someone died rip
-
+##
 signal battle_finished(result : String)

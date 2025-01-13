@@ -45,23 +45,28 @@ _data = {
 "new_animation": SubResource("Animation_jfvho")
 }
 
-[node name="TextureRect" type="TextureRect"]
-self_modulate = Color(1, 1, 1, 0)
-offset_right = 100.0
-offset_bottom = 100.0
-pivot_offset = Vector2(50, 50)
-texture = SubResource("PlaceholderTexture2D_w1aip")
+[node name="MarginContainer" type="MarginContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_w1aip")
+expand_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 size_flags_vertical = 8
 texture = ExtResource("1_pa1u4")
-expand_mode = 1
+expand_mode = 2
 
-[node name="TextureRect2" type="TextureRect" parent="."]
+[node name="TextureRect2" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -69,7 +74,7 @@ offset_bottom = 100.0
 size_flags_vertical = 8
 expand_mode = 1
 
-[node name="TextureRect3" type="TextureRect" parent="."]
+[node name="TextureRect3" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -77,7 +82,7 @@ offset_bottom = 100.0
 size_flags_vertical = 8
 expand_mode = 1
 
-[node name="TextureRect4" type="TextureRect" parent="."]
+[node name="TextureRect4" type="TextureRect" parent="TextureRect"]
 texture_filter = 6
 layout_mode = 0
 offset_right = 100.0
@@ -85,7 +90,7 @@ offset_bottom = 100.0
 size_flags_vertical = 8
 expand_mode = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextureRect"]
 root_node = NodePath("../TextureRect")
 libraries = {
 "": SubResource("AnimationLibrary_f0afr")

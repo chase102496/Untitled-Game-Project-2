@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://b1s71hosugqju"]
 
-[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_027ve"]
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://Interface/menu_theme.tres" id="1_027ve"]
 [ext_resource type="Script" path="res://Scenes/ui/inventory_gui.gd" id="2_b6dus"]
-[ext_resource type="StyleBox" uid="uid://b0gg650riimlg" path="res://ui/menu_style_box_no_shadow.tres" id="2_eui1b"]
+[ext_resource type="StyleBox" uid="uid://b0gg650riimlg" path="res://Interface/menu_style_box_no_shadow.tres" id="2_eui1b"]
 [ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="2_l2cim"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_gemym"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_jujvs"]

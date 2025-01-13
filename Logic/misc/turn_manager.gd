@@ -65,10 +65,10 @@ func _on_battle_entity_dying(entity : Node) -> void:
 		Battle.orphan_battle_spotlight()
 
 func _is_battle_over() -> bool:
-	if Battle.get_team("FRIENDS").size() == 0:
+	if Battle.get_team(Battle.alignment.FRIENDS).size() == 0:
 		Events.battle_finished.emit("Lose")
 		return true
-	elif Battle.get_team("FOES").size() == 0:
+	elif Battle.get_team(Battle.alignment.FOES).size() == 0:
 		Events.battle_finished.emit("Win")
 		return true
 	else:

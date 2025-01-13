@@ -1,0 +1,98 @@
+[gd_scene load_steps=8 format=3 uid="uid://b3m1kptnsllkk"]
+
+[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="1_o383k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1865b"]
+
+[sub_resource type="Theme" id="Theme_imp3b"]
+PanelContainer/styles/panel = SubResource("StyleBoxEmpty_1865b")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_3nowu"]
+size = Vector2(100, 100)
+
+[sub_resource type="Animation" id="Animation_ybdww"]
+length = 0.001
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jfvho"]
+resource_name = "new_animation"
+length = 0.2
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(5, 0), Vector2(-5, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f0afr"]
+_data = {
+"RESET": SubResource("Animation_ybdww"),
+"new_animation": SubResource("Animation_jfvho")
+}
+
+[node name="status_icon_" type="MarginContainer"]
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_imp3b")
+
+[node name="PanelContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer"]
+texture_filter = 6
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_3nowu")
+expand_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../PanelContainer/TextureRect")
+libraries = {
+"": SubResource("AnimationLibrary_f0afr")
+}
+script = ExtResource("1_o383k")

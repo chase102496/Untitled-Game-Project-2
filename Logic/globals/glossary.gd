@@ -135,7 +135,7 @@ func create_fx_particle(anchor, type : String, one_shot : bool = false):
 ## anchor in this case
 ## type is the name of the key in the status_icon glossary
 ## category is the status category. NORMAL, TETHER, or PASSIVE
-func create_status_icon(anchor : Node, type : String) -> TextureRect:
+func create_status_icon(anchor : Node, type : String) -> Control:
 	var inst = Glossary.status_icon.get(type).instantiate()
 	if inst:
 		anchor.add_child(inst)
@@ -588,7 +588,7 @@ var encounter : Dictionary = {
 			"glossary" : "battle_entity_enemy",
 			"overrides" : {
 				"my_component_health.max_health" : randi_range(4,12),
-				"my_component_ability.add_ability" : [ability_class[ability_class.keys().pick_random()].new()]
+				"my_component_ability.add_ability" : [component_ability.ability_spook.new()]
 				}
 		},
 		

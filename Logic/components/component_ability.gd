@@ -165,7 +165,7 @@ class status:
 	var new_turn : bool #Whether we ran this once per turn already
 	
 	var fx_visual : Node
-	var fx_icon : TextureRect
+	var fx_icon# : TextureRect TODO DISABLED TEMPORARILY
 
 	func set_data(new_metadata : Dictionary):
 		for key in new_metadata:
@@ -813,7 +813,7 @@ class ability_spook:
 			target.my_component_ability.my_status.add(status_fear.new(target,skillcheck_modifier*2))
 	
 	func animation():
-		caster.animations.tree.get("parameters/playback").travel("default_attack_spook")
+		caster.animations.tree.set_state("default_attack")
 
 class ability_solar_flare:
 	extends ability_template_default
@@ -853,7 +853,7 @@ class ability_solar_flare:
 		target.my_component_health.change(-damage)
 		
 	func animation():
-		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO make solar flare animation or FX
+		caster.animations.tree.set_state("default_attack") #TODO make solar flare animation or FX
 
 class ability_frigid_core:
 	extends ability_template_default

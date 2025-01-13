@@ -1,0 +1,320 @@
+[gd_scene load_steps=20 format=3 uid="uid://c5r06amfsateg"]
+
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://ui/menu_theme.tres" id="1_al4xi"]
+[ext_resource type="Script" path="res://ui/battle_gui.gd" id="1_jw2rn"]
+[ext_resource type="Texture2D" uid="uid://dgvkniyh48b7f" path="res://sprites/hand_thin_small_point.svg" id="2_obblc"]
+[ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://ui/animation_component.tscn" id="3_75k8e"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="5_e75bu"]
+[ext_resource type="Texture2D" uid="uid://dayliakedilhw" path="res://sprites/Skillcheck GUI/12-0 Clock 2x2.png" id="5_jdbcn"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="6_154vc"]
+[ext_resource type="Texture2D" uid="uid://1a6it20lxggm" path="res://sprites/Cursor/Outline/pointer_toon_a.svg" id="6_hayiy"]
+[ext_resource type="Script" path="res://ui/wheel_area.gd" id="6_rhj8w"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="7_t4p3g"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="8_rxcdg"]
+
+[sub_resource type="Animation" id="Animation_nsg2u"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2, 2, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_vwle6"]
+resource_name = "pointer_hover"
+length = 0.433
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_obblc")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.433333),
+"transitions": PackedFloat32Array(1, 1, 2.2974),
+"update": 0,
+"values": [Vector3(1.8, 1.8, 1.8), Vector3(2, 2, 2), Vector3(1.5, 1.5, 1.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vgfiw"]
+_data = {
+"RESET": SubResource("Animation_nsg2u"),
+"pointer_hover": SubResource("Animation_vwle6")
+}
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_qswi7"]
+a = Vector2(-6.66663, -263.333)
+b = Vector2(-130, -230)
+
+[sub_resource type="Animation" id="Animation_dvh4e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cursor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.92699]
+}
+
+[sub_resource type="Animation" id="Animation_1juto"]
+resource_name = "skillcheck_spin"
+loop_mode = 1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Wheel:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_jdbcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Cursor:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_hayiy")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Cursor:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.785398, 3.92699, 7.06858]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("../..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0],
+"method": &"_on_skillcheck_hit"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_47fjt"]
+_data = {
+"RESET": SubResource("Animation_dvh4e"),
+"skillcheck_spin": SubResource("Animation_1juto")
+}
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_eaoy5"]
+b = Vector2(-57.8152, -58.4672)
+
+[node name="Battle_GUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jw2rn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_vgfiw")
+}
+autoplay = "pointer_hover"
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1.92498, -0.542645, 0, 0.542645, 1.92498, 0, 0, 0, 2, 0, 0, 0)
+visible = false
+offset = Vector2(-15, -5)
+flip_h = true
+flip_v = true
+texture_filter = 0
+texture = ExtResource("2_obblc")
+
+[node name="Container" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -201.0
+offset_right = 600.0
+offset_bottom = -1.0
+grow_vertical = 0
+theme = ExtResource("1_al4xi")
+
+[node name="Panel1" type="PanelContainer" parent="Container"]
+modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 2
+theme = ExtResource("1_al4xi")
+
+[node name="Main" type="GridContainer" parent="Container/Panel1"]
+visible = false
+layout_mode = 2
+columns = 2
+
+[node name="Battle" type="Button" parent="Container/Panel1/Main"]
+texture_filter = 2
+layout_mode = 2
+theme = ExtResource("1_al4xi")
+action_mode = 0
+text = "🟐 Battle"
+
+[node name="AnimationComponent" parent="Container/Panel1/Main/Battle" instance=ExtResource("3_75k8e")]
+
+[node name="Switch" type="Button" parent="Container/Panel1/Main"]
+texture_filter = 2
+layout_mode = 2
+theme = ExtResource("1_al4xi")
+action_mode = 0
+text = "🗘 Switch"
+
+[node name="AnimationComponent" parent="Container/Panel1/Main/Switch" instance=ExtResource("3_75k8e")]
+
+[node name="Item" type="Button" parent="Container/Panel1/Main"]
+texture_filter = 2
+layout_mode = 2
+theme = ExtResource("1_al4xi")
+action_mode = 0
+text = "⍟ Item"
+
+[node name="AnimationComponent" parent="Container/Panel1/Main/Item" instance=ExtResource("3_75k8e")]
+
+[node name="Escape" type="Button" parent="Container/Panel1/Main"]
+texture_filter = 2
+layout_mode = 2
+theme = ExtResource("1_al4xi")
+action_mode = 0
+text = "↜ Escape"
+
+[node name="AnimationComponent" parent="Container/Panel1/Main/Escape" instance=ExtResource("3_75k8e")]
+
+[node name="Battle" type="GridContainer" parent="Container/Panel1"]
+visible = false
+layout_mode = 2
+columns = 2
+
+[node name="Skillcheck" type="Control" parent="Container"]
+layout_mode = 2
+
+[node name="Wheel" type="Sprite2D" parent="Container/Skillcheck"]
+position = Vector2(31, -31)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_jdbcn")
+
+[node name="Area2D" type="Area2D" parent="Container/Skillcheck/Wheel"]
+scale = Vector2(1, 1)
+script = ExtResource("6_rhj8w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Wheel/Area2D"]
+position = Vector2(3.8147e-06, -1.52588e-05)
+shape = SubResource("SegmentShape2D_qswi7")
+debug_color = Color(1, 0.766667, 0, 1)
+
+[node name="Cursor" type="Sprite2D" parent="Container/Skillcheck"]
+texture_filter = 6
+position = Vector2(31, -31)
+rotation = 3.92699
+texture = ExtResource("6_hayiy")
+offset = Vector2(-16, -16)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Container/Skillcheck/Cursor"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_47fjt")
+}
+autoplay = "skillcheck_spin"
+
+[node name="Area2D" type="Area2D" parent="Container/Skillcheck/Cursor"]
+scale = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Container/Skillcheck/Cursor/Area2D"]
+shape = SubResource("SegmentShape2D_eaoy5")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("5_e75bu")
+
+[node name="Battle GUI" type="Node" parent="StateChart"]
+script = ExtResource("6_154vc")
+initial_state = NodePath("Disabled")
+
+[node name="on_gui_disabled" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../Disabled")
+event = &"on_gui_disabled"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_main" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../Main")
+event = &"on_gui_main"
+delay_in_seconds = "0.0"
+
+[node name="Disabled" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
+
+[node name="Main" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
+
+[node name="on_gui_battle" type="Node" parent="StateChart/Battle GUI/Main"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Battle")
+event = &"on_gui_battle"
+delay_in_seconds = "0.0"
+
+[node name="Battle" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
+
+[node name="on_gui_main" type="Node" parent="StateChart/Battle GUI/Battle"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Main")
+event = &"on_gui_main"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_select" type="Node" parent="StateChart/Battle GUI/Battle"]
+script = ExtResource("8_rxcdg")
+to = NodePath("../../Select")
+event = &"on_gui_select"
+delay_in_seconds = "0.0"
+
+[node name="Select" type="Node" parent="StateChart/Battle GUI"]
+script = ExtResource("7_t4p3g")
+
+[connection signal="area_entered" from="Container/Skillcheck/Wheel/Area2D" to="Container/Skillcheck/Wheel/Area2D" method="_on_area_entered"]

@@ -15,7 +15,6 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 flip_h = true
 sprite_frames = ExtResource("3_8cca7")
 animation = &"default_idle_down"
-frame = 1
 
 [node name="fx_anchor" parent="Components/component_animation/character_sprite_position" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, -0.25, -0.15)
