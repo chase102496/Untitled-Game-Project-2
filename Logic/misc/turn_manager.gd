@@ -64,24 +64,22 @@ func _on_battle_entity_dying(entity : Node) -> void:
 		Events.turn_end.emit()
 		Battle.orphan_battle_spotlight()
 
+func _is_battle_over() -> bool:
+	if Battle.get_team("FRIENDS").size() == 0:
+		Events.battle_finished.emit("Lose")
+		return true
+	elif Battle.get_team("FOES").size() == 0:
+		Events.battle_finished.emit("Win")
+		return true
+	else:
+		return false
+
 func _on_battle_entity_death(entity : Node) -> void:
 	
 	Debug.message("Handling dead entity...",Debug.msg_category.BATTLE)
 	
-	## Checking win/lose condition
-	if len(Battle.my_team(entity)) == 1:
-		if entity.alignment == Battle.alignment.FOES:
-			Events.battle_finished.emit("Win")
-		elif entity.alignment == Battle.alignment.FRIENDS:
-			Events.battle_finished.emit("Lose")
-		else:
-			push_error("Alignment unknown foe entity ",entity)
-		
-		Battle.battle_list[Battle.battle_list.find(entity)] = null
-	## Removing them from the queue
-	else:
-		Battle.battle_list[Battle.battle_list.find(entity)] = null
-		entity.my_component_ability.my_status.status_event("on_death") #trigger on death for all status stuff
+	 #trigger on death for all status stuff
+	Battle.battle_list[Battle.battle_list.find(entity)] = null
 	
 	## Remove them from the world
 	entity.queue_free()
@@ -115,7 +113,7 @@ func _find_next_valid_character(old_index : int):
 	
 	for i in Battle.battle_list.size():
 		## Setting it to a new val
-		var new_index = (old_index + 1) % Battle.battle_list.size()
+		var new_index = (old_index + 1 + i) % Battle.battle_list.size()
 		var character = Battle.battle_list[new_index]
 		
 		## If it's null, try again
@@ -129,7 +127,7 @@ func _find_next_valid_character(old_index : int):
 			return Battle.battle_list.find(character)
 	
 	## If no valid character is found
-	Debug.message("No valid characters found for next index", Debug.msg_category.BATTLE)
+	push_error("No valid characters found for next index! ", old_index," ",Battle.battle_list)
 	return -1
 
 ## Clearing the null values if they exist
@@ -155,6 +153,9 @@ func _load_next_character() -> void:
 		Events.battle_team_start.emit(Battle.active_character_alignment)
 
 func _next_turn() -> void:
+	
+	if _is_battle_over():
+		return #Run some other code here later for post-game screen
 	
 	_load_next_character()
 	

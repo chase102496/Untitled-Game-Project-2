@@ -1,6 +1,7 @@
 [gd_resource type="AnimationLibrary" load_steps=8 format=3 uid="uid://v882pt2pml8q"]
 
 [ext_resource type="Animation" uid="uid://bbqy6it0be0cv" path="res://Resources/Animation/default_attack_spook.res" id="1_gjyb3"]
+[ext_resource type="Animation" uid="uid://6d6ofvgv64ye" path="res://Resources/Animation/default_attack_skillcheck.res" id="2_oer08"]
 
 [sub_resource type="Animation" id="Animation_e26tp"]
 length = 0.001
@@ -87,72 +88,6 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_jvi1r"]
-resource_name = "default_attack"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 0.7, 0.766667, 1, 1.5),
-"transitions": PackedFloat32Array(0.341511, 1, 2.54912, 1, 1, 1.03527),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-0.183, 0, 0), Vector3(-0.183, 0, 0), Vector3(1, 0, -1), Vector3(1, 0, -1), Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.7, 0.766667, 1, 1.5),
-"transitions": PackedFloat32Array(1, 1, 8.28211, 8.28211, 1),
-"update": 0,
-"values": [Vector3(2, 2, 2), Vector3(2, 2, 2), Vector3(3, 3, 3), Vector3(2.5, 2.5, 2.5), Vector3(2, 2, 2)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:animation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default_idle"]
-}
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../character_animation_tree")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.766667),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"_on_attack_contact"
-}]
 }
 
 [sub_resource type="Animation" id="Animation_l8wqm"]
@@ -324,7 +259,7 @@ tracks/1/keys = {
 [resource]
 _data = {
 "RESET": SubResource("Animation_e26tp"),
-"default_attack": SubResource("Animation_jvi1r"),
+"default_attack": ExtResource("2_oer08"),
 "default_attack_spook": ExtResource("1_gjyb3"),
 "default_death": SubResource("Animation_l8wqm"),
 "default_hurt": SubResource("Animation_0joem"),

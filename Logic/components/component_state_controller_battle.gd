@@ -210,4 +210,5 @@ func _on_state_entered_battle_dying() -> void:
 
 func _on_state_entered_death() -> void:
 	state_chart_memory = "on_death"
+	my_component_ability.my_status.status_event("on_death")
 	Events.battle_entity_death.emit(owner)

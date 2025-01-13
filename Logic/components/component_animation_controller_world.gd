@@ -29,8 +29,7 @@ func animation_update(dir : Vector2 = Vector2(0,0)) -> void:
 		pass #Keep current direction if we didn't change it
 	
 	if dir.y != 0:
-		animations.tree.set_blend(dir,"Idle")
-		animations.tree.set_blend(dir,"Walk")
+		animations.tree.set_blend_group(dir,["Idle","Walk"])
 		#animations.tree.set_blend(dir) TODO CHANGE THIS WHEN WE GET BACK SIDE OF WALK
 	
 	#animations.tree.set_blend(dir)

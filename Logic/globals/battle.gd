@@ -373,11 +373,13 @@ func opposing_team(character : Node):
 	else:
 		return get_team(Battle.alignment.FRIENDS)
 
+## Returns the given alignment, either FRIENDS or FOES
+## If an entity is dead (I.E. null value in the list) we ignore it and only pull non-dead entities
 func get_team(alignment : String):
-	var team = []
-	for i in len(battle_list):
-		if battle_list[i].alignment == alignment:
-			team.append(battle_list[i])
+	var team : Array = []
+	for entity in battle_list:
+		if entity and entity.alignment == alignment:
+			team.append(entity)
 	return team
 
 func camera_update():

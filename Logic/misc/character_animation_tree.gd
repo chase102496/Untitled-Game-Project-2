@@ -36,6 +36,10 @@ func set_state(state : String, interrupt : bool = false) -> void:
 	else:
 		_playback().travel(state)
 
+func set_blend_group(dir : Vector2, states : PackedStringArray) -> void:
+	for state in states:
+		set_blend(dir,state)
+
 func set_blend(dir : Vector2, state : String = get_state()) -> void:
 	set("parameters/"+state+"/BlendSpace2D/blend_position",dir)
 
@@ -77,7 +81,7 @@ func start_skillcheck_window(time : float) -> void:
 	
 	attack_window_buffer_max = time/2
 	
-	print("CURRENT ATTACK BUFFER EDGE: ",attack_window_buffer)
+	Debug.message(["CURRENT ATTACK BUFFER EDGE: ",attack_window_buffer],Debug.msg_category.BATTLE)
 	
 	if attack_window_buffer:
 		await get_tree().create_timer(attack_window_buffer).timeout
@@ -96,13 +100,12 @@ func _skillcheck_buffer_change(amt : float) -> void:
 	attack_window_buffer = clamp(attack_window_buffer + amt,0,attack_window_buffer_max)
 
 func _skillcheck_success() -> void:
-	## Set attack not as final
+	## Set attack not as final, preventing turn end
 	is_attack_final = false
 	Glossary.create_fx_particle(owner.my_component_ability.cast_queue.targets,"heartsurge_node_clear",true)
-	print("*** GOT IT!")
 	
-	## Slice 30% off the total window
-	_skillcheck_buffer_change(attack_window_buffer_max*0.1)
+	## Slice 20% off the total available attack window, making the next attack's skillcheck harder
+	_skillcheck_buffer_change(attack_window_buffer_max*0.2)
 	
 	## Queue next attack
 	await animation_finished
