@@ -1385,11 +1385,12 @@ func get_look_at_mode() -> int:
 
 ## Assigns new [Node3D] as [member look_at_target].
 func set_look_at_target(value: Node3D) -> void:
+	
 	look_at_target = value
 	_check_physics_body(value)
 	#_look_at_target_node = get_node_or_null(value)
 	look_at_target_changed
-	if is_instance_valid(look_at_target):
+	if look_at_target and is_instance_valid(look_at_target):
 		_should_look_at = true
 	else:
 		_should_look_at = false
@@ -1402,6 +1403,11 @@ func get_look_at_target():
 
 ## Sets an array of type [Node3D] to [member set_look_at_targets].
 func set_look_at_targets(value: Array[Node3D]) -> void:
+	
+	## HACK Fucking stupid logic I fixed
+	var _valid_results : Array[Node3D] = []
+	
+	## Ignores list if it's already matching
 	if look_at_targets == value: return
 	look_at_targets = value
 
@@ -1411,19 +1417,23 @@ func set_look_at_targets(value: Array[Node3D]) -> void:
 		_should_look_at = false
 		_multiple_look_at_targets = false
 	else:
-		var valid_instances: int = 0
 		for target in look_at_targets:
 			if is_instance_valid(target):
-				valid_instances += 1
 				_should_look_at = true
-				_valid_look_at_targets.append(target)
+				_valid_results.append(target)
+				
 				_check_physics_body(target)
 
-			if valid_instances > 1:
+			if _valid_results.size() > 1:
 				_multiple_look_at_targets = true
-			elif valid_instances == 0:
+				_should_look_at = true
+			elif _valid_results.size() == 0:
 				_should_look_at = false
 				_multiple_look_at_targets = false
+	
+	## HACK Fucking stupid logic I fixed
+	_valid_look_at_targets = _valid_results
+	
 	notify_property_list_changed()
 
 ## Appends a [Node3D] to [member look_at_targets] array.

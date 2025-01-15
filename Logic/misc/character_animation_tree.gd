@@ -5,10 +5,14 @@ extends AnimationTree
 
 ## Means the system is looking for input at this moment
 var is_attack_window_open : bool = false
-## Size max that attack window can be. Should be half of total window
-var attack_window_buffer_max : float = 0.05
 ## Size of the buffer on edges of the attack window
-var attack_window_buffer : float = 0
+var attack_window_open_time : float = 0
+## Size max that attack window can be. Should be half of total window
+var attack_window_close_time : float
+## Total time to play with
+var attack_window_total_time : float
+## How much is given to open and taken from closed each combo
+var attack_window_modifier : float = 0.1
 ## Amount of attacks we've success'd
 var attack_combo : int = 0
 ## 
@@ -20,6 +24,7 @@ func _ready() -> void:
 	
 	animation_finished.connect(_on_animation_finished)
 	animation_started.connect(_on_animation_started)
+	Events.battle_entity_damaged.connect(_on_battle_entity_damaged)
 	
 	active = true
 	
@@ -27,7 +32,126 @@ func _ready() -> void:
 	if my_owner:
 		owner = my_owner
 
-# Utility
+### --- Signals --- ###
+
+func _input(event: InputEvent) -> void:
+	if is_attack_window_open:
+		if Input.is_action_just_pressed("ui_select"):
+			if owner.alignment == Battle.alignment.FRIENDS:
+				_skillcheck_success_offense()
+			elif owner.alignment == Battle.alignment.FOES:
+				_skillcheck_success_defense()
+			else:
+				push_error("Could not find alignment to calculate attack window ",owner.alignment)
+
+func _on_animation_finished(anim_name: StringName) -> void:
+	Events.animation_finished.emit(anim_name,owner)
+	
+	if is_attack_final:
+		_skillcheck_end()
+	else:
+		set_state("default_attack")
+
+func _on_animation_started(anim_name: StringName) -> void:
+	Events.animation_started.emit(anim_name,owner)
+
+## Runs when an animation has a skillcheck
+## Before attack_contact
+func start_skillcheck_window(time : float) -> void:
+	attack_window_total_time = time
+	
+	## Initialize attack as final, changes if skillcheck lands
+	is_attack_final = true
+	
+	## Calculating timing window
+	attack_window_open_time = ((attack_combo*attack_window_modifier) * attack_window_total_time)/2
+	attack_window_close_time = attack_window_total_time - attack_window_open_time
+	
+	## Creates the start buffer, which starts at 0 and grows as the buffer does
+	if attack_window_open_time > 0:
+		await get_tree().create_timer(attack_window_open_time).timeout
+	
+	is_attack_window_open = true
+	
+	## Creates the end buffer, which starts at the full length
+	await get_tree().create_timer(attack_window_close_time).timeout
+	
+	is_attack_window_open = false
+	
+	## If we missed the attack window
+	if is_attack_final:
+		_skillcheck_end()
+
+func _on_battle_entity_damaged(entity : Node, amount : int) -> void:
+	var cast_queue : Node = owner.my_component_ability.cast_queue
+	if cast_queue and cast_queue.primary_target and entity == cast_queue.primary_target:
+		if entity.my_component_health.health <= 0:
+			_skillcheck_end()
+
+## Called when an attack lands
+func _on_attack_contact() -> void:
+	
+	## Checking for cast success
+	if owner.my_component_ability.cast_queue.cast_validate():
+		
+		if is_attack_blocked:
+			for tgt in owner.my_component_ability.cast_queue.targets:
+				tgt.my_component_health.change_armor_block(tgt.my_component_health.block_power)
+				Glossary.create_text_particle(tgt.animations.selector_anchor,"Blocked!","text_float_away",Color.WHITE)
+				Events.battle_entity_blocked.emit(tgt)
+		
+		Events.battle_entity_hit.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue)
+	## Cast failed
+	else:
+		Events.battle_entity_missed.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue)
+
+	## Reset attack blocked status
+	is_attack_blocked = false
+
+### --- Skillcheck Calulator --- ###
+
+## Skillcheck callable when landing offense window
+func _skillcheck_success_offense() -> void:
+	## Set attack not as final, preventing turn end
+	is_attack_final = false
+	## Raise attack combo
+	_attack_combo_change(1)
+	## Signal to others we landed a combo
+	Events.battle_entity_combo.emit(owner,attack_combo)
+
+## Skillcheck callable when landing defense window
+func _skillcheck_success_defense() -> void:
+	## Set attack to blocked, queuing our block stuff
+	is_attack_blocked = true
+
+func _attack_window_clear() -> void:
+	is_attack_window_open = false
+	attack_window_open_time = 0
+
+func _attack_combo_clear() -> void:
+	attack_combo = 0
+
+func _attack_combo_change(amt : int) -> int:
+	attack_combo += amt
+	match attack_combo:
+		1:
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,180,5,180,Color.YELLOW)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Color.YELLOW)
+		2:
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,180,8,180,Color.ORANGE)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Color.ORANGE)
+		_:
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,180,10,180,Color.RED)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Color.RED)
+	
+	return attack_combo
+
+func _skillcheck_end() -> void:
+	is_attack_final = true
+	_attack_window_clear()
+	_attack_combo_clear()
+
+### --- General Utility --- ###
 
 func _playback() -> AnimationNodeStateMachinePlayback:
 	return get("parameters/playback")
@@ -55,97 +179,3 @@ func set_blend_group(dir : Vector2, states : PackedStringArray) -> void:
 
 func set_blend(dir : Vector2, state : String = get_state()) -> void:
 	set("parameters/"+state+"/BlendSpace2D/blend_position",dir)
-
-### --- Signals --- ###
-
-func _on_animation_finished(anim_name: StringName) -> void:
-	Events.animation_finished.emit(anim_name,owner)
-
-func _on_animation_started(anim_name: StringName) -> void:
-	Events.animation_started.emit(anim_name,owner)
-
-### --- Skillcheck --- ###
-
-## Runs when an animation has a skillcheck
-func start_skillcheck_window(time : float) -> void:
-	## Initialize attack as final, changes if skillcheck lands
-	is_attack_final = true
-	
-	attack_window_buffer_max = time/2
-	
-	Debug.message(["CURRENT ATTACK BUFFER EDGE: ",attack_window_buffer],Debug.msg_category.BATTLE)
-	
-	if attack_window_buffer:
-		await get_tree().create_timer(attack_window_buffer).timeout
-	
-	is_attack_window_open = true
-
-	await get_tree().create_timer(attack_window_buffer_max - attack_window_buffer).timeout
-	
-	## If we missed the attack window
-	if !is_attack_final:
-		_attack_combo_clear()
-	
-	is_attack_window_open = false
-
-## Checking for skillcheck input
-func _input(event: InputEvent) -> void:
-	if is_attack_window_open:
-		if Input.is_action_just_pressed("ui_select"):
-			if owner.alignment == Battle.alignment.FRIENDS:
-				_skillcheck_success_offense()
-			elif owner.alignment == Battle.alignment.FOES:
-				_skillcheck_success_defense()
-			else:
-				push_error("Could not find alignment to calculate attack window ",owner.alignment)
-
-## Skillcheck callable for offense
-func _skillcheck_success_offense() -> void:
-	## Set attack not as final, preventing turn end
-	is_attack_final = false
-	## Raise attack combo
-	_attack_combo_change(1)
-	## Effects
-	Glossary.create_fx_particle(owner.my_component_ability.cast_queue.targets,"heartsurge_node_clear",true)
-	## Signal to others we landed a combo
-	Events.battle_entity_combo.emit(owner,attack_combo)
-	## Debug msg
-	Debug.message("Successful Combo!",Debug.msg_category.BATTLE)
-	
-	## Slice 20% off the total available attack window, making the next attack's skillcheck harder
-	_skillcheck_buffer_change(attack_window_buffer_max*0.2)
-	
-	## Queue next attack
-	await animation_finished
-	set_state("default_attack")
-
-## Skillcheck callable for defense
-func _skillcheck_success_defense() -> void:
-	is_attack_blocked = true
-
-## Called when an attack lands
-func _on_attack_contact() -> void:
-
-	if owner.my_component_ability.cast_queue.cast_validate(): #if we didn't miss
-		
-		if is_attack_blocked:
-			for tgt in owner.my_component_ability.cast_queue.targets:
-				tgt.my_component_health.change_armor_block(tgt.my_component_health.block_power)
-				Events.battle_entity_blocked.emit(tgt)
-				is_attack_blocked = false
-				Debug.message("Successful Block!",Debug.msg_category.BATTLE)
-		
-		Events.battle_entity_hit.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue)
-	else:
-		Events.battle_entity_missed.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue)
-
-## Misc
-
-func _attack_combo_clear() -> void:
-	attack_combo = 0
-
-func _attack_combo_change(amt : int) -> int:
-	return attack_combo
-
-func _skillcheck_buffer_change(amt : float) -> void:
-	attack_window_buffer = clamp(attack_window_buffer + amt,0,attack_window_buffer_max)

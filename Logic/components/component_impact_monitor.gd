@@ -3,7 +3,9 @@
 class_name component_impact_monitor
 extends Area3D
 
+## What speed of velocity_length() do we trigger this monitor?
 @export var velocity_thereshold : float = 18
+## If stopped after reaching the velocity threshold, the object regains its previous velocity, useful for breaking objects after hitting static bodies.
 @export var preserve_velocity_on_impact : bool = true
 
 signal body_impacted(body : Node3D, vel : Vector3)

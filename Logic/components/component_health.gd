@@ -60,7 +60,7 @@ func _on_hurt() -> void:
 
 func revive():
 	
-	Glossary.create_text_particle(owner.animations.selector_anchor,str("Revived!"),"float_away",Color.GREEN_YELLOW)
+	Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Revived!"),"text_float_away",Color.GREEN_YELLOW)
 	
 	#Events.battle_entity_revived.emit(owner)
 	health = max_health
@@ -76,7 +76,7 @@ func change_armor_temporary(amt : int) -> void:
 func change_armor_block(amt : int) -> void:
 	block_armor = max(0,block_armor + amt)
 
-func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
+func change(amt : int, from_tether : bool = false, display : bool = true):
 	
 	## Calculation
 	var old_health = health
@@ -96,22 +96,34 @@ func change(amt : int, from_tether : bool = false, type : Dictionary = {}):
 	
 	## Healing
 	if amt_changed > 0:
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_changed),"float_away",Color.LIGHT_GREEN)
+		if display: #TBD Need to make an icon for this too
+			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_heart",Color.WHITE)
+			# Some health particle fx
 	
 	## Damage
+	elif amt_changed == 0:
+		if display:
+			Glossary.create_fx_particle_custom(owner,"star_explosion",true,10,180,4,180,Color.WHITE)
+	
 	elif amt_changed < 0:
-		Glossary.create_text_particle(owner.animations.selector_anchor,str(amt_changed),"float_away",Color.RED)
+		if display:
+			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_star",Color.WHITE)
+			Glossary.create_fx_particle_custom(owner.animations.selector_anchor,"star_explosion",true,10,180,3,180,Color.YELLOW)
+			Camera.shake()
 		#To protect recursive when using heartsurge
 		if !from_tether:
 			Events.battle_entity_damaged.emit(owner,amt_changed)
 
 		## We are dying
 		if health == 0: #If we're dying
-			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection",[amt_post_mitigation,from_tether,type],true)
+			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection",[amt_post_mitigation,from_tether],true)
 			if death_protection_result.is_empty():
+				Glossary.create_text_particle_queue(owner.animations.selector_anchor,"KO!")
+				Glossary.create_fx_particle_custom(owner.animations.selector_anchor,"star_explosion",true,10,180,5,180,Color.YELLOW)
 				_on_dying(death_protection_result)
 			## This means the code will be handled in status effect preventing death or modifying it in some way
 			else:
+				Glossary.create_text_particle_queue(owner.animations.selector_anchor,"Death Protection!")
 				Debug.message("Death Protection Activated!",Debug.msg_category.BATTLE)
 		## We are getting hurt by something
 		else:

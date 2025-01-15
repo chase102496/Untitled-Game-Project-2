@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ordpfist8sd4"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impact_monitor.gd" id="1_hqblc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mkwvt"]
+size = Vector3(1.1, 1.1, 1.1)
+
+[node name="Monitor" type="Area3D"]
+script = ExtResource("1_hqblc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_mkwvt")

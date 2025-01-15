@@ -19,6 +19,7 @@ height = 1.02907
 [sub_resource type="SpriteFrames" id="SpriteFrames_j6r5n"]
 
 [node name="battle_entity" type="CharacterBody3D" node_paths=PackedStringArray("state_chart", "collider", "animations", "my_component_health", "my_component_vis", "my_component_ability", "my_component_state_controller_battle", "my_component_physics")]
+collision_layer = 0
 script = ExtResource("1_xrh1h")
 state_chart = NodePath("StateChart")
 collider = NodePath("CollisionShape3D")
@@ -28,6 +29,7 @@ my_component_vis = NodePath("Components/component_vis")
 my_component_ability = NodePath("Components/component_ability")
 my_component_state_controller_battle = NodePath("Components/component_state_controller_battle")
 my_component_physics = NodePath("Components/component_physics")
+spacing = Vector3(0.35, 0, -0.1)
 
 [node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("4_0krx5")]
 
@@ -53,7 +55,7 @@ collider = NodePath("../../../../CollisionShape3D")
 [node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("my_owner")]
 tree_root = ExtResource("5_mi4sx")
 parameters/Death/TimeScale/scale = 1.0
-parameters/Hurt/TimeScale/scale = 1.0
+parameters/Hurt/TimeScale/scale = 0.6
 parameters/Idle/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)

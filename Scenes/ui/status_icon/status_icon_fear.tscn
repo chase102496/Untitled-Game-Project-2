@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://beh6lu3mrcx1m"]
 
 [ext_resource type="Texture2D" uid="uid://fh0dndd7cddg" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_cursed_37.png" id="1_f6x2h"]
-[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="2_mg4lq"]
+[ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="2_mg4lq"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)

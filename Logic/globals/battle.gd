@@ -7,7 +7,7 @@ var active_character_alignment : String
 var battle_list : Array = []
 var battle_list_ready : bool = true
 
-var battle_spotlight : SpotLight3D
+var battle_spotlight : BattleSpotlight
 var battle_spotlight_target : Node3D
 var battle_spotlight_tween : Tween
 
@@ -273,10 +273,12 @@ func update_positions(): #Updates all units positions to reflect a change (like 
 		
 		if !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
 			if unit.alignment == Battle.alignment.FOES:
-				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.position.y,foes_offset.z),0.5)
+				foes_offset -= unit.spacing
+				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.5)
 				foes_offset -= unit.spacing
 			else:
-				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.position.y,friends_offset.z),0.5)
+				friends_offset += unit.spacing
+				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.collider.shape.height/2,friends_offset.z),0.5)
 				friends_offset += unit.spacing
 
 func search_glossary_name(character_name : String, character_list : Array, first_result : bool = true): #Search glossary names of all characters specified and return matches
@@ -382,12 +384,20 @@ func get_team(alignment : String):
 			team.append(entity)
 	return team
 
+##
+
 func camera_update():
 	Global.camera.follow_target = active_character
 	set_battle_spotlight_target(active_character)
+	
+	var validated_targets : Array[Node3D] = []
+	for unit in battle_list:
+		if unit is Node3D:
+			validated_targets.append(unit)
+	Global.camera.set_look_at_targets(validated_targets)
 
 func orphan_battle_spotlight() -> void:
-	battle_spotlight.reparent(battle_spotlight_target.get_parent())
+	battle_spotlight.remote_transform.remote_path = ""
 	battle_spotlight.hide()
 
 func set_battle_spotlight_target(target: Node3D) -> void:
@@ -403,18 +413,15 @@ func set_battle_spotlight_target(target: Node3D) -> void:
 		battle_spotlight_tween.set_ease(Tween.EASE_OUT)
 		battle_spotlight_tween.set_trans(Tween.TRANS_BACK)
 		battle_spotlight_tween.tween_property(battle_spotlight,"global_position",Vector3(target.global_position.x,battle_spotlight.global_position.y,target.global_position.z),tween_time)
-		battle_spotlight.reparent.call_deferred(target.animations.sprite_position)
-		
-		#battle_spotlight.get_parent().remove_child(battle_spotlight)
-		#target.animations.sprite.add_child(battle_spotlight)
+		battle_spotlight.remote_transform.remote_path = get_path_to(target)
 
 func set_battle_spotlight_brightness(brightness : float,time : float = 0) -> void:
-	if battle_spotlight.light_energy != brightness:
+	if battle_spotlight.light.light_energy != brightness:
 		var tween = create_tween()
-		tween.tween_property(battle_spotlight,"light_energy",brightness,time)
+		tween.tween_property(battle_spotlight.light,"light_energy",brightness,time)
 
 func reset_battle_spotlight_brightness(time : float = 0) -> void:
 	var brightness = 12
-	if battle_spotlight.light_energy != brightness:
+	if battle_spotlight.light.light_energy != brightness:
 		var tween = create_tween()
-		tween.tween_property(battle_spotlight,"light_energy",brightness,time)
+		tween.tween_property(battle_spotlight.light,"light_energy",brightness,time)

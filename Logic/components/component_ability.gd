@@ -329,7 +329,7 @@ class status_disable:
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-		Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
+		Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Immune!"),"text_float_away")
 		return Battle.mitigation_type.IMMUNE
 	
 	func on_expire():
@@ -354,9 +354,22 @@ class status_heartsurge:
 		behavior = Battle.status_behavior.RESET
 		category = Battle.status_category.TETHER
 	
+	func _verify_partners() -> Array:
+		var verified_partners : Array = []
+		for inst in partners:
+			if inst:
+				verified_partners.append(inst)
+		return verified_partners
+	
+	func on_duration() -> void:
+		super.on_duration()
+		if _verify_partners().size() < 2:
+			print("EE")
+			on_expire()
+	
 	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartsurge
-		if entity == host and len(partners) > 1: #if person hurt was our host, and partners aint all ded
-			for i in len(partners):
+		if entity == host and partners.size() > 1: #if person hurt was our host, and partners aint all ded
+			for i in partners.size():
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
 					partners[i].my_component_health.change(amount,true)
 					Debug.message([partners[i].name," took ",amount," points of mirror damage!"],Debug.msg_category.BATTLE)
@@ -388,7 +401,7 @@ class status_weakness:
 		if ability.type == weakness:
 			Debug.message([entity_target.name," is weak to ",ability.title,"!"],Debug.msg_category.BATTLE)
 			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation_bonus(entity_caster,host)
-			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Weakness!"),"float_away",Color.PURPLE,0.3)
+			Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Weakness!"),"text_float_away",Color.PURPLE)
 			return Battle.mitigation_type.WEAK
 		else:
 			return Battle.mitigation_type.PASS
@@ -415,7 +428,7 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == immunity:
 			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
+			Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Immune!"),"text_float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
@@ -443,7 +456,7 @@ class status_ethereal: #Immune to everything but one type
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != weakness:
 			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-			Glossary.create_text_particle(entity_target.animations.selector_anchor,str("Immune!"),"float_away")
+			Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Immune!"),"text_float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
@@ -510,7 +523,7 @@ class status_regrowth:
 			paired_teammates[i].animations.tree.get("parameters/playback").travel("Death") #Begin their death anim
 	
 	## Out health reaches 0
-	func on_death_protection(amt : int, mirror_damage : bool = false, type : Dictionary = Battle.type.BALANCE):
+	func on_death_protection(amt : int, mirror_damage : bool = false):
 		
 		var living_teammates : Array = []
 		
@@ -730,16 +743,15 @@ class ability:
 	## If our skillcheck fails, or we don't meet conditions when attack lands
 	func cast_validate_failed() -> void:
 		Debug.message("Missed!",Debug.msg_category.BATTLE)
-		Glossary.create_text_particle(caster.animations.selector_anchor,str("Missed!"),"float_away",Color.WHITE)
+		Glossary.create_text_particle_queue(caster.animations.selector_anchor,str("Missed!"),"text_float_away",Color.WHITE)
 	
-	## Function called mid-animation when we make contact
+	## Called when we make contact, on caster-side
 	func cast_main() -> void:
 		pass
 	
-	## Function called when we make contact, used for effects
+	## Called when we make contact, on targets-side. One for each
 	func fx_cast_main() -> void:
-		Glossary.create_fx_particle_custom(primary_target,"heartsurge_node_clear",true,5,180,5)
-		Camera.shake()
+		pass
 	
 	## Damage run on target-side, they are weak to this ability
 	func cast_pre_mitigation_bonus(caster : Node, target : Node):

@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://di5k73lvep3i5" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_defense_80.png" id="1_b0t7o"]
 [ext_resource type="Texture2D" uid="uid://des5y0b1575wd" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_stunned_48.png" id="2_6nqf3"]
-[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="2_ryeoy"]
+[ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="2_ryeoy"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)

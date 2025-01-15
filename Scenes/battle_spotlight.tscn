@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://c22ug6gxw0bbt"]
+
+[ext_resource type="Script" path="res://Scenes/battle_spotlight.gd" id="1_oqygn"]
+
+[node name="Battle Spotlight" type="Node3D" node_paths=PackedStringArray("light", "remote_transform")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -3.75, 6.9575, -0.633017)
+script = ExtResource("1_oqygn")
+light = NodePath("RemoteTransform3D/SpotLight3D")
+remote_transform = NodePath("RemoteTransform3D")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="."]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="RemoteTransform3D"]
+light_color = Color(1, 0.9565, 0.91, 1)
+light_energy = 12.0
+light_volumetric_fog_energy = 300.0
+shadow_enabled = true
+shadow_opacity = 0.5
+spot_range = 8.25
+spot_angle = 5.17092

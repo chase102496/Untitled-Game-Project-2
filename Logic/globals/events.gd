@@ -41,7 +41,7 @@ signal battle_entity_missed(entity_caster : Node, entity_targets : Array, abilit
 ## Someone was hit with an ability
 signal battle_entity_hit(entity_caster : Node, entity_targets : Array, ability : Object)
 ## Someone took damage
-signal battle_entity_damaged(entity : Node, amount : int,type : String)
+signal battle_entity_damaged(entity : Node, amount : int)
 ## If someone successfully blocked an attack
 signal battle_entity_blocked(entity : Node)
 ##

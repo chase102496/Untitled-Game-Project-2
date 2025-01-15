@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://4qv2uamdpj4t"]
+
+[ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_p8iev"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="2_r3dv8"]
+
+[sub_resource type="Curve" id="Curve_kp78f"]
+resource_local_to_scene = true
+_data = [Vector2(0, 0), 0.0, 14.8445, 0, 0, Vector2(0.338279, 1), 0.0, 0.0, 0, 0, Vector2(0.637982, 1), 0.0, 0.0, 0, 0, Vector2(0.997033, 0), -13.5663, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_eptdu"]
+resource_local_to_scene = true
+curve = SubResource("Curve_kp78f")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x3yc7"]
+resource_local_to_scene = true
+lifetime_randomness = 0.2
+direction = Vector3(0, 0, 0)
+spread = 0.0
+initial_velocity_min = 0.5
+initial_velocity_max = 0.5
+gravity = Vector3(0, 1, 0)
+damping_min = 1.0
+damping_max = 1.0
+attractor_interaction_enabled = false
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_eptdu")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8u5ee"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hopef"]
+resource_local_to_scene = true
+render_priority = 101
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_8u5ee")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_vvn7n"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_hopef")
+size = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_r2ura"]
+resource_local_to_scene = true
+font = ExtResource("2_r3dv8")
+font_size = 150
+outline_size = 92
+outline_color = Color(0.08, 0.08, 0.08, 1)
+shadow_size = 60
+shadow_color = Color(0, 0, 0, 0.266667)
+shadow_offset = Vector2(18, 18)
+
+[node name="particle_text_float_away" type="GPUParticles3D"]
+amount = 1
+explosiveness = 1.0
+fixed_fps = 144
+process_material = SubResource("ParticleProcessMaterial_x3yc7")
+draw_pass_1 = SubResource("QuadMesh_vvn7n")
+script = ExtResource("1_p8iev")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(2048, 2048)
+render_target_update_mode = 4
+
+[node name="PanelContainer" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="particle_label" type="Label" parent="SubViewport/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.1309
+text = "TEST"
+label_settings = SubResource("LabelSettings_r2ura")
+horizontal_alignment = 1
+vertical_alignment = 1

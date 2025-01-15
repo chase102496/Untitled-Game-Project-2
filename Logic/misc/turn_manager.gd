@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var spotlight : SpotLight3D
+@export var spotlight : BattleSpotlight
 
 #ability queue = []
 #add an object, their function, and args
@@ -25,25 +25,13 @@ func _ready() -> void:
 	Events.battle_finished.connect(_on_battle_finished)
 	
 	#Initialize characters and battle list
-	var friends_offset := Vector3.ZERO
-	var foes_offset := Vector3.ZERO
-	
 	for i in Battle.battle_list.size():
 		
 		var instance = Battle.battle_list[i] #Our object to move into scene
 		var parent = get_node(instance.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
 		
-		var tween = get_tree().create_tween()
-		
-		if instance.alignment == Battle.alignment.FOES:
-			instance.position.y = instance.collider.shape.height/2
-			tween.tween_property(instance,"position",Vector3(foes_offset.x,instance.position.y,foes_offset.z),0.2)
-			foes_offset -= instance.spacing
-		else:
-			instance.position.y = instance.collider.shape.height/2
-			tween.tween_property(instance,"position",Vector3(friends_offset.x,instance.position.y,friends_offset.z),0.2)
-			friends_offset += instance.spacing
+		Battle.update_positions.call_deferred()
 		
 		if i != 0:
 			instance.state_chart.send_event.call_deferred("on_waiting")

@@ -246,10 +246,10 @@ func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 			ui_skillcheck_result = "Miss"
 		
 		match ui_skillcheck_result:
-			"Miss" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Whoops..."),"float_away",Color.SLATE_GRAY,0,20)
-			"Good" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Nice!"),"float_away",Color.SKY_BLUE,0,30)
-			"Great" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Great!"),"float_away",Color.MEDIUM_SLATE_BLUE,0,40)
-			"Excellent" : Glossary.create_text_particle(owner.animations.selector_anchor,str("Excellent!"),"float_away",Color.PURPLE,0,50)
+			"Miss" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Whoops..."),"text_float_away",Color.SLATE_GRAY)
+			"Good" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Nice!"),"text_float_away",Color.SKY_BLUE)
+			"Great" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Great!"),"text_float_away",Color.MEDIUM_SLATE_BLUE)
+			"Excellent" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Excellent!"),"text_float_away",Color.PURPLE)
 		
 		await get_tree().create_timer(1.0).timeout
 

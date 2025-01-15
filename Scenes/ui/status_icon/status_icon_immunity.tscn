@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://di5k73lvep3i5" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_defense_80.png" id="1_abe8k"]
 [ext_resource type="Texture2D" uid="uid://c4vv3cfpvp80g" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_star_134.png" id="2_6vceg"]
 [ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="3_p4855"]
-[ext_resource type="Script" path="res://Logic/misc/autoplay.gd" id="4_nvbvo"]
+[ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="4_nvbvo"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)
