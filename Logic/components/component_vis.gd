@@ -23,26 +23,26 @@ func _update(amt : int) -> void:
 
 ## Change current vis
 ## Display will show the change above this entity in colored text
-func change(amt : int, display : bool = false):
+func change(amt : int, display : bool = true):
 	
 	var old_vis = vis
+	vis = clamp(vis + amt,0,max_vis)
+	var amt_changed = vis - old_vis
 	
 	## Adding to Vis
 	if amt > 0:
 		if display:
-			Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("+ ",abs(amt)),"text_float_away",Color.LIGHT_SKY_BLUE)
+			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_water")
 	
 	## Removing from Vis
 	elif amt < 0:
 		if display:
-			Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("- ",abs(amt)),"text_float_away",Color.FUCHSIA)
+			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_fall_water")
 		### Checking for overflow damage WIP
 		#var overflow = amt + vis
 		#if overflow < 0:
 			#owner.my_component_health.change(overflow)
 	
-	vis = clamp(vis + amt,0,max_vis)
-	
 	Debug.message([old_vis," MP -> ",vis," MP"],Debug.msg_category.BATTLE)
 	
-	_update(vis - old_vis)
+	_update(amt_changed)

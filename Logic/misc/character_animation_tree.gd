@@ -3,6 +3,9 @@ extends AnimationTree
 @export var animations : component_animation
 @export var my_owner : Node
 
+##Total time of the attack window left
+var attack_timer : SceneTreeTimer
+
 ## Means the system is looking for input at this moment
 var is_attack_window_open : bool = false
 ## Size of the buffer on edges of the attack window
@@ -38,9 +41,9 @@ func _input(event: InputEvent) -> void:
 	if is_attack_window_open:
 		if Input.is_action_just_pressed("ui_select"):
 			if owner.alignment == Battle.alignment.FRIENDS:
-				_skillcheck_success_offense()
+				is_attack_final = false
 			elif owner.alignment == Battle.alignment.FOES:
-				_skillcheck_success_defense()
+				is_attack_blocked = true
 			else:
 				push_error("Could not find alignment to calculate attack window ",owner.alignment)
 
@@ -58,6 +61,8 @@ func _on_animation_started(anim_name: StringName) -> void:
 ## Runs when an animation has a skillcheck
 ## Before attack_contact
 func start_skillcheck_window(time : float) -> void:
+	
+	attack_timer = get_tree().create_timer(time)
 	attack_window_total_time = time
 	
 	## Initialize attack as final, changes if skillcheck lands
@@ -91,14 +96,16 @@ func _on_battle_entity_damaged(entity : Node, amount : int) -> void:
 ## Called when an attack lands
 func _on_attack_contact() -> void:
 	
-	## Checking for cast success
+	## If landing a successful attack,
 	if owner.my_component_ability.cast_queue.cast_validate():
 		
+		await get_tree().create_timer(attack_timer.time_left).timeout
+		
 		if is_attack_blocked:
-			for tgt in owner.my_component_ability.cast_queue.targets:
-				tgt.my_component_health.change_armor_block(tgt.my_component_health.block_power)
-				Glossary.create_text_particle(tgt.animations.selector_anchor,"Blocked!","text_float_away",Color.WHITE)
-				Events.battle_entity_blocked.emit(tgt)
+			_skillcheck_success_defense()
+		
+		if !is_attack_final:
+			_skillcheck_success_offense()
 		
 		Events.battle_entity_hit.emit(owner,owner.my_component_ability.cast_queue.targets,owner.my_component_ability.cast_queue)
 	## Cast failed
@@ -108,12 +115,10 @@ func _on_attack_contact() -> void:
 	## Reset attack blocked status
 	is_attack_blocked = false
 
-### --- Skillcheck Calulator --- ###
+### --- Skillcheck Calc --- ###
 
 ## Skillcheck callable when landing offense window
 func _skillcheck_success_offense() -> void:
-	## Set attack not as final, preventing turn end
-	is_attack_final = false
 	## Raise attack combo
 	_attack_combo_change(1)
 	## Signal to others we landed a combo
@@ -121,8 +126,11 @@ func _skillcheck_success_offense() -> void:
 
 ## Skillcheck callable when landing defense window
 func _skillcheck_success_defense() -> void:
-	## Set attack to blocked, queuing our block stuff
-	is_attack_blocked = true
+	for tgt in owner.my_component_ability.cast_queue.targets:
+		
+		Glossary.create_icon_particle(tgt.animations.selector_anchor,"status_defense","icon_pop_fly")
+		tgt.my_component_health.change_armor_block(tgt.my_component_health.block_power)
+		Events.battle_entity_blocked.emit(tgt)
 
 func _attack_window_clear() -> void:
 	is_attack_window_open = false
@@ -135,14 +143,14 @@ func _attack_combo_change(amt : int) -> int:
 	attack_combo += amt
 	match attack_combo:
 		1:
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,180,5,180,Color.YELLOW)
 			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Color.YELLOW)
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Color.YELLOW)
 		2:
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,180,8,180,Color.ORANGE)
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Color.ORANGE)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Color.WEB_GREEN)
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Color.WEB_GREEN)
 		_:
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,180,10,180,Color.RED)
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Color.RED)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Color.REBECCA_PURPLE)
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Color.REBECCA_PURPLE)
 	
 	return attack_combo
 

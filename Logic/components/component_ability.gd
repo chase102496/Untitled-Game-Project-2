@@ -77,7 +77,7 @@ class status_manager:
 		Debug.message(["!passive removed! - ",effect.title],Debug.msg_category.BATTLE)
 	
 	#Normal add for NORMAL and TETHER
-	func add(effect : Object, ignore_priorities : bool = false) -> Object:
+	func add(effect : Object, ignore_priorities : bool = false, is_silent : bool = false) -> Object:
 		var effect_str = effect.category #NORMAL or TETHER
 		var current_effect = get(effect_str)
 		
@@ -103,7 +103,7 @@ class status_manager:
 		elif ignore_priorities or current_effect.priority < effect.priority: #if our new status effect has higher priority or ignores prio
 			remove(current_effect)
 			set(effect_str,effect)
-			effect.fx_add()
+			effect.fx_add(is_silent)
 			Debug.message(["!status overwritten! - ",effect.title],Debug.msg_category.BATTLE)
 			Debug.message(["ignore_priorities = ",ignore_priorities],Debug.msg_category.BATTLE)
 		else:
@@ -112,12 +112,12 @@ class status_manager:
 		return get(effect_str)
 			
 	#Normal remove for non-lists
-	func remove(effect : Object) -> void:
+	func remove(effect : Object, is_silent : bool = false) -> void:
 		var effect_str = effect.category
 		var current_effect = get(effect_str)
 		
 		if current_effect:
-			effect.fx_remove()
+			effect.fx_remove(is_silent)
 			set(effect_str,null)
 			Debug.message(["!status removed! - ",effect.title],Debug.msg_category.BATTLE)
 		else:
@@ -126,9 +126,9 @@ class status_manager:
 	func clear(clear_passive : bool = false) -> void:
 		Debug.message(["!removed all status effects! - ",NORMAL,TETHER],Debug.msg_category.BATTLE)
 		if NORMAL:
-			remove(NORMAL)
+			remove(NORMAL,true)
 		if TETHER:
-			remove(TETHER)
+			remove(TETHER,true)
 		if clear_passive:
 			for i in PASSIVE.size():
 				remove_passive(PASSIVE[i])
@@ -158,15 +158,22 @@ class status:
 	var host : Node #The owner of the status effect. Who to apply it to
 	var behavior : String = Battle.status_behavior.RESIST #How overwriting status fx works
 	var category : String = Battle.status_category.NORMAL #NORMAL, TETHER, or PASSIVE
+	var type : Dictionary = Battle.type.EMPTY
 	var duration : int = 0 #How many turns it lasts
 	var title : String = "---"
+	var title_notification : String = "?"
 	var description : String = ""
 	var priority : int = 0 #Whether a buff can overwrite it. Higher means it can
 	var new_turn : bool #Whether we ran this once per turn already
 	
 	var fx_visual : Node
 	var fx_icon# : TextureRect TODO DISABLED TEMPORARILY
-
+	
+	func _init(host : Node) -> void:
+		self.host = host
+	
+	### --- Serialization --- ###
+	
 	func set_data(new_metadata : Dictionary):
 		for key in new_metadata:
 			var value = new_metadata[key]
@@ -184,17 +191,18 @@ class status:
 	
 	func get_data():
 		return {}
-
+	
+	### --- Internal --- ###
+	
 	## If we only wanna run this once per turn. Used if we modify state of host somehow, so it doesn't forget it already ran us
-	func once_per_turn():
+	func _once_per_turn():
 		if new_turn:
 			new_turn = false
 			return true
 		else:
 			return false
 	
-	func _init(host : Node) -> void:
-		self.host = host
+	### --- Events --- ###
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		return false #false means we don't fuck with mitigation for this status effect
@@ -208,20 +216,33 @@ class status:
 	func on_end(): #runs on end of turn
 		pass
 	
+	func on_duration():
+		pass
+	
 	func on_expire(): #runs when status effect expires
 		pass
 	
 	func on_death():
 		pass
 	
+	### --- Feedback --- ###
+	
 	## Add our fx using our id as the identifier for this fx
-	func fx_add():
+	func fx_add(is_silent : bool = false):
+		
+		if !is_silent:
+			Glossary.create_icon_particle_queue(host.animations.selector_anchor,id)
+			
 		if !fx_visual and Glossary.particle.get(id):
-			fx_visual = Glossary.create_fx_particle(host.animations.sprite_position,id)
+			fx_visual = Glossary.create_fx_particle(host.animations.selector_anchor,id)
 		if !fx_icon and Glossary.status_icon.get(id):
 			fx_icon = Glossary.create_status_icon(host.animations.status_hud.grid,id)
 	
-	func fx_remove():
+	func fx_remove(is_silent : bool = false):
+		
+		if !is_silent:
+			pass
+		
 		if fx_visual:
 			fx_visual.queue_free()
 			fx_visual = null
@@ -230,21 +251,30 @@ class status:
 			fx_icon = null
 # ---
 
-class status_template_default:
+class status_template_normal:
 	extends status
 	
-	func on_duration():
-		duration -= 1
+	func on_duration() -> void:
+		super.on_duration()
+		
+		duration = max(duration - 1,0)
 		if duration <= 0:
 			on_expire()
 
-	func on_expire():
-		Debug.message([title," wore off for ",host.name,"!"],Debug.msg_category.BATTLE)
+	func on_expire() -> void:
+		super.on_expire()
+		
 		host.my_component_ability.my_status.remove(self)
+
+class status_template_passive:
+	extends status
+	
+	func fx_add(is_silent : bool = true) -> void:
+		super.fx_add(is_silent)
 
 # NORMAL
 class status_fear:
-	extends status_template_default
+	extends status_template_normal
 	
 	func get_data():
 		return {}
@@ -261,7 +291,7 @@ class status_fear:
 		host.my_component_ability.skillcheck_difficulty += 1
 
 class status_burn:
-	extends status_template_default
+	extends status_template_normal
 	
 	func get_data():
 		return {
@@ -280,12 +310,12 @@ class status_burn:
 		self.damage = damage
 	
 	func on_end():
-		if once_per_turn(): #If this is the first time applying this turn
+		if _once_per_turn(): #If this is the first time applying this turn
 			host.my_component_health.change(-damage)
 			Debug.message(["Burn did ",damage," damage!"],Debug.msg_category.BATTLE)
 
 class status_freeze:
-	extends status_template_default
+	extends status_template_normal
 	
 	func get_data():
 		return {
@@ -304,13 +334,13 @@ class status_freeze:
 		self.siphon_amount = siphon_amount
 	
 	func on_end():
-		if once_per_turn(): #If this is the first time applying this turn
+		if _once_per_turn(): #If this is the first time applying this turn
 			host.my_component_vis.change(-siphon_amount)
 			Debug.message([host," lost ",siphon_amount," vis from freeze!"],Debug.msg_category.BATTLE)
 
 #Unable to act or be acted upon. Essentially dead but still on the battle field.
 class status_disable:
-	extends status_template_default
+	extends status_template_normal
 	
 	func get_data():
 		return {}
@@ -340,7 +370,7 @@ class status_disable:
 # TETHER
 
 class status_heartsurge:
-	extends status_template_default
+	extends status_template_normal
 	
 	var partners : Array
 	
@@ -380,7 +410,7 @@ class status_heartsurge:
 
 ## Weak to one aspect
 class status_weakness:
-	extends status
+	extends status_template_passive
 	
 	func get_data():
 		return {
@@ -408,7 +438,7 @@ class status_weakness:
 
 ## Immune to one aspect
 class status_immunity: #Creates a specific immunity where if it's matching the type, they are immune
-	extends status
+	extends status_template_passive
 	
 	func get_data():
 		return {
@@ -435,7 +465,7 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 
 ## Immune to all aspects except one
 class status_ethereal: #Immune to everything but one type
-	extends status
+	extends status_template_passive
 	
 	func get_data():
 		return {
@@ -463,7 +493,7 @@ class status_ethereal: #Immune to everything but one type
 
 ## Deals damage to attacker on-hit
 class status_thorns:
-	extends status
+	extends status_template_passive
 	
 	func get_data():
 		return {
@@ -494,7 +524,7 @@ class status_thorns:
 
 ## Resurrects when others with this passive are still alive
 class status_regrowth:
-	extends status
+	extends status_template_passive
 	
 	func get_data():
 		return {
@@ -542,7 +572,7 @@ class status_regrowth:
 			return true #Always return true for letting health know we aren't dead yet
 
 class status_swarm: #Adds a percent to our damage based on how many of us are on the field (besides us)
-	extends status
+	extends status_template_passive
 	
 	func get_data():
 		return {
@@ -569,7 +599,7 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 		host.my_component_ability.my_stats.reset_damage_multiplier_temp()
 
 class status_stealth: #Cannot be targeted directly by attacks and echoes (needs AoE or heartsurge)
-	extends status
+	extends status_template_passive
 
 ### --- Abilities --- ###
 
@@ -682,10 +712,18 @@ class ability:
 	var title : String = "---"
 	var type : Dictionary = Battle.type.EMPTY
 	
-	var damage : int = 0 #Base damage
+	## Base Damage
+	var damage : int = 0
+	## Cost for ability
 	var vis_cost : int = 0
-	var chance : float = 1.0 #Chance of something happening, kinda a placeholder
+	## Chance of applying status or whatever additional effect we want
+	var chance : float = 1.0
 	var description : String = ""
+	
+	func _init() -> void:
+		pass
+	
+	### --- Serialization --- ###
 	
 	## For Deserialization
 	## Sets all vars that match the keys in the metadata to the values in the metadata
@@ -705,9 +743,6 @@ class ability:
 			"description" : description,
 			"target_type" : target_type,
 			"target_selector" : target_selector,
-			#"skillcheck_modifier" : skillcheck_modifier,
-			#"vis_cost" : vis_cost,
-			#"damage" : damage,
 		}
 	
 	## For Serialization
@@ -715,70 +750,102 @@ class ability:
 	func get_data() -> Dictionary:
 		return {}
 	
+	### --- Validations --- ###
+	
+	## Checks, when we make contact and the attack has already been selected, if we can succeeded
+	func cast_validate():
+		pass
+	
 	## Checks, when we select an ability, if we can use it
-	func select_validate() -> bool:
-		return false
+	## Should return a bool
+	func select_validate():
+		pass
 	
 	## If we try to select this ability, but we can't use it (no vis, etc)
 	func _select_validate_failed() -> void:
-		Debug.message("Can't do that",Debug.msg_category.BATTLE)
-		#You can execute code here, run a Dialogic event to show them they can't use that, etc
-		#For example, if they don't have enough vis
-
-	## If we successfully apply a status effect associated with this ability
-	func apply_status_success() -> float:
-		return randf_range(0,1) <= chance*skillcheck_modifier
-
+		pass
+	
+	## If our skillcheck fails, or we don't meet conditions when attack lands
+	func cast_validate_failed() -> void:
+		pass
+	
+	### --- Skillcheck --- ###
+	
 	## Calculations done to pull the skillcheck result for our ability
 	func skillcheck(result) -> void:
 		pass
 	
-	## Checks, when we make contact and the attack has already been selected, if we can cast it
-	func cast_validate() -> bool:
-		if skillcheck_modifier > 0:
-			return true
-		else:
-			return false
-	
-	## If our skillcheck fails, or we don't meet conditions when attack lands
-	func cast_validate_failed() -> void:
-		Debug.message("Missed!",Debug.msg_category.BATTLE)
-		Glossary.create_text_particle_queue(caster.animations.selector_anchor,str("Missed!"),"text_float_away",Color.WHITE)
+	### --- Casting --- ###
 	
 	## Called when we make contact, on caster-side
 	func cast_main() -> void:
 		pass
 	
-	## Called when we make contact, on targets-side. One for each
-	func fx_cast_main() -> void:
-		pass
-	
-	## Damage run on target-side, they are weak to this ability
-	func cast_pre_mitigation_bonus(caster : Node, target : Node):
-		cast_pre_mitigation(caster,target)
-	
 	## Damage run on target-side
 	func cast_pre_mitigation(caster : Node, target : Node):
 		pass
 	
-	## Animation we call when using this ability
-	func animation() -> void:
-		caster.animations.tree.get("parameters/playback").travel("default_attack")
+	## Damage run on target-side, they are weak to this ability
+	func cast_pre_mitigation_bonus(caster : Node, target : Node) -> void:
+		pass
+	
+	## If we successfully apply a status effect associated with this ability
+	func apply_status_success():
+		pass
 
-class ability_template_default: #Standard ability with vis cost and skillcheck
+	### --- Feedback --- ###
+	
+	## Called when we make contact, on targets-side. One for each
+	func fx_cast_main() -> void:
+		pass
+	
+	## Animation we call when using this ability
+	func animation():
+		pass
+
+class ability_template_standard: #Standard ability with vis cost and skillcheck
 	extends ability
 	
 	func _init() -> void:
+		super._init()
+		target_selector = Battle.target_selector.SINGLE
 		target_type = Battle.target_type.OPPONENTS
 	
-	func select_validate():
+	### --- Private --- ###
+	
+	func _select_validate_failed() -> void:
+		super._select_validate_failed()
+		
+		Debug.message("Can't do that",Debug.msg_category.BATTLE)
+	
+	### --- Validation --- ###
+	
+	func select_validate() -> bool:
+		super.select_validate()
+		
 		if caster.my_component_vis.vis >= vis_cost:
 			return true
 		else:
 			_select_validate_failed()
 			return false
 	
-	func skillcheck(result):
+	func cast_validate() -> bool:
+		if skillcheck_modifier > 0:
+			return true
+		else:
+			return false
+	
+	func cast_validate_failed() -> void:
+		super.cast_validate_failed()
+		
+		Debug.message("Missed!",Debug.msg_category.BATTLE)
+		Glossary.create_text_particle_queue(caster.animations.selector_anchor,str("Missed!"),"text_float_away",Color.WHITE)
+	
+	### --- Skillcheck --- ###
+	
+	func skillcheck(result) -> void:
+		super.skillcheck(result)
+		
 		if result == "Miss":
 			skillcheck_modifier = 0
 		elif result == "Good":
@@ -791,9 +858,32 @@ class ability_template_default: #Standard ability with vis cost and skillcheck
 			push_error("ERROR: Skillcheck result unhandled exception: ",result)
 		
 		Debug.message(["Result of skillcheck is ",result],Debug.msg_category.BATTLE)
+	
+	### --- Casting --- ###
+	
+	## When on_contact is called, caster-side
+	func cast_main() -> void:
+		super.cast_main()
+		
+		caster.my_component_vis.change(-vis_cost,false)
+	
+	func cast_pre_mitigation_bonus(caster : Node, target : Node) -> void:
+		super.cast_pre_mitigation_bonus(caster,target)
+		
+		cast_pre_mitigation(caster,target)
+	
+	func apply_status_success() -> float:
+		super.apply_status_success()
+		
+		return randf_range(0,1) <= chance*skillcheck_modifier
+	
+	### --- Feedback --- ###
+	
+	func animation() -> void:
+		caster.animations.tree.get("parameters/playback").travel("default_attack")
 
 class ability_spook:
-	extends ability_template_default
+	extends ability_template_standard
 	
 	func get_data():
 		return {
@@ -803,20 +893,14 @@ class ability_spook:
 		}
 	
 	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
-		#Default changes
-		
-		id = "ability_spook"
-		title = "Spook"
-		description = "Unleashes an unsettling aura that disrupts the target's focus.\nHas a chance to fear target."
+		super._init()
 		self.damage = damage
 		self.chance = chance
 		self.vis_cost = vis_cost
+		id = "ability_spook"
+		title = "Spook"
+		description = "Unleashes an unsettling aura that disrupts the target's focus.\nHas a chance to fear target."
 		type = Battle.type.VOID
-		target_selector = Battle.target_selector.SINGLE
-		target_type = Battle.target_type.OPPONENTS
-
-	func cast_main():
-		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		Debug.message([caster.name, " tried to spook ", target.name,"!"],Debug.msg_category.BATTLE)
@@ -828,7 +912,7 @@ class ability_spook:
 		caster.animations.tree.set_state("default_attack")
 
 class ability_solar_flare:
-	extends ability_template_default
+	extends ability_template_standard
 	
 	func get_data():
 		return {
@@ -838,7 +922,7 @@ class ability_solar_flare:
 		}
 	
 	func _init(damage : int = 1, chance : float = 1.0, vis_cost : int = 1) -> void:
-		#Default changes
+		super._init()
 		id = "ability_solar_flare"
 		title = "Solar Flare"
 		description = "Summons a dazzling burst of radiant energy that coats the target in molten flame.\nHas a chance to burn target."
@@ -846,17 +930,11 @@ class ability_solar_flare:
 		self.chance = chance
 		self.vis_cost = vis_cost
 		type = Battle.type.CHAOS
-		target_selector = Battle.target_selector.SINGLE
-		target_type = Battle.target_type.OPPONENTS
 		
 	func cast_pre_mitigation_bonus(caster : Node, target : Node): #Does bonus damage, bonus burn damage, and 100% chance to proc burn
 		Debug.message([caster.name, " scorched ", target.name," for double damage!"],Debug.msg_category.BATTLE)
 		target.my_component_ability.my_status.add(status_burn.new(target,skillcheck_modifier*2,damage*2))
 		target.my_component_health.change(-damage*2)
-		
-	
-	func cast_main(): #now runs all the excess that isn't affecting a specific target
-		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node): #this it the spell run from the target's POV. It is run from the hit signal
 		Debug.message([caster.name, " ignited ", target.name,"!"],Debug.msg_category.BATTLE)
@@ -868,7 +946,7 @@ class ability_solar_flare:
 		caster.animations.tree.set_state("default_attack") #TODO make solar flare animation or FX
 
 class ability_frigid_core:
-	extends ability_template_default
+	extends ability_template_standard
 	
 	func get_data():
 		return {
@@ -878,7 +956,7 @@ class ability_frigid_core:
 		}
 	
 	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
-		#Default changes
+		super._init()
 		id = "ability_solar_flare"
 		title = "Frigid Core"
 		description = "Summons a chilling pulse of frozen energy inside the target.\nHas a chance to freeze."
@@ -886,8 +964,6 @@ class ability_frigid_core:
 		self.chance = chance
 		self.vis_cost = vis_cost
 		type = Battle.type.VOID
-		target_selector = Battle.target_selector.SINGLE
-		target_type = Battle.target_type.OPPONENTS
 		
 	func cast_main():
 		pass
@@ -900,7 +976,7 @@ class ability_frigid_core:
 		target.my_component_ability.my_status.add(status_freeze.new(target,skillcheck_modifier*1,1))
 
 class ability_tackle: #Scales with skillcheck
-	extends ability_template_default
+	extends ability_template_standard
 	
 	##What gets exported between scenes and games
 	func get_data():
@@ -909,14 +985,12 @@ class ability_tackle: #Scales with skillcheck
 		}
 	
 	func _init(damage : int = 1) -> void:
-		#Default changes
+		super._init()
 		id = "ability_tackle"
 		title = "Tackle"
 		description = "A forceful rush at the target, dealing damage"
 		self.damage = damage
 		type = Battle.type.BALANCE
-		target_selector = Battle.target_selector.SINGLE
-		target_type = Battle.target_type.OPPONENTS
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		Debug.message([caster.name, " Tackled ", target.name,"!"],Debug.msg_category.BATTLE)
@@ -924,7 +998,7 @@ class ability_tackle: #Scales with skillcheck
 		target.my_component_health.change(-skillcheck_modifier*damage)
 
 class ability_headbutt: #Scales with damage multiplier
-	extends ability_template_default
+	extends ability_template_standard
 	
 	func get_data():
 		return {
@@ -932,14 +1006,12 @@ class ability_headbutt: #Scales with damage multiplier
 		}
 	
 	func _init(damage : int = 1) -> void:
-		#Default changes
+		super._init()
+		self.damage = damage
 		id = "ability_headbutt"
 		title = "Headbutt"
 		description = "Charges the target, dealing damage"
-		self.damage = damage
 		type = Battle.type.BALANCE
-		target_selector = Battle.target_selector.SINGLE
-		target_type = Battle.target_type.OPPONENTS
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		var mult = caster.my_component_ability.my_stats.damage_multiplier
@@ -949,28 +1021,28 @@ class ability_headbutt: #Scales with damage multiplier
 		target.my_component_health.change(-calc_damage)
 
 class ability_heartsurge:
-	extends ability_template_default
+	extends ability_template_standard
 	
 	func get_data():
 		return {}
 	
 	var old_targets : Array = []
 
-	func _init() -> void:
-		#Default changes
+	func _init(damage : int = 1, vis_cost : int = 1) -> void:
+		super._init()
+		self.damage = damage
+		self.vis_cost = vis_cost
 		id = "ability_heartsurge"
 		title = "Heartsurge"
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		target_selector = Battle.target_selector.SINGLE_RIGHT
-		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.TETHER
-		damage = 1
-		vis_cost = 1
+
 	
 	func cast_main():
-		caster.my_component_vis.change(-vis_cost)
+		super.cast_main()
 		
-		for i in len(old_targets): #remove instances from old targets
+		for i in old_targets.size(): #remove instances from old targets
 			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
 				var teth = old_targets[i].my_component_ability.my_status.TETHER
 				if teth and teth is status_heartsurge: #If we find they still have our old buff
@@ -993,24 +1065,20 @@ class ability_heartsurge:
 		caster.animations.tree.get("parameters/playback").travel("default_attack") #TODO
 
 class ability_switchstitch:
-	extends ability_template_default
+	extends ability_template_standard
 	
 	func get_data():
 		return {}
 	
-	func _init() -> void:
-		#Default changes
+	func _init(damage : int = 1) -> void:
+		super._init()
+		
+		self.damage = damage
 		id = "ability_switchstitch"
 		title = "Switch-stitch"
 		description = "Forces two targeted enemies to swap positions"
 		target_selector = Battle.target_selector.SINGLE_RIGHT
-		target_type = Battle.target_type.OPPONENTS
 		type = Battle.type.FLOW
-		damage = 1
-		vis_cost = 1
-	
-	func cast_main():
-		caster.my_component_vis.change(-vis_cost)
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		if target == primary_target:

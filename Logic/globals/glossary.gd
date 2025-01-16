@@ -83,20 +83,7 @@ func convert_entity_glossary(glossary_name : String, set_prefix : String):
 ## Create custom parameters of a particle. Will modify the particle settings in the function
 func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : float = -1.0,color : Color = Color.WHEAT):
 	var result = create_fx_particle(anchor,type,one_shot)
-	if result is Array:
-		var inst_array : Array = []
-		for inst in result:
-			if amt != -1:
-				inst.amount = amt
-			if spread != -1:
-				inst.process_material.spread = spread
-			if speed != -1:
-				inst.process_material.initial_velocity_max = speed
-				inst.process_material.initial_velocity_min = speed
-			if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
-				inst.draw_pass_1.material.albedo_color = color
-		return inst_array
-	elif result is Node:
+	if result is Node:
 		var inst = result
 		if amt != -1:
 			inst.amount = amt
@@ -107,6 +94,7 @@ func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, a
 			inst.process_material.initial_velocity_min = speed
 		if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
 			inst.draw_pass_1.material.albedo_color = color
+		inst.one_shot = one_shot
 		return inst
 	else:
 		push_error("Unknown particle anchor: ",anchor)
@@ -123,23 +111,9 @@ func create_fx_particle(anchor, type : String, one_shot : bool = false):
 			inst.global_position = anchor.global_position
 			inst.one_shot = one_shot
 			return inst
-		elif anchor is Array:
-			var inst_array : Array = []
-			for each in anchor:
-				if each is Node:
-					var inst = scene.instantiate()
-					each.add_child(inst)
-					inst.global_position = each.global_position
-					inst.one_shot = one_shot
-					inst_array.append(inst)
-				else:
-					push_error("Cannot use type for anchor in array: ",each," ",anchor)
-					return null
-			return inst_array
 		else:
 			push_error("Unknown particle anchor: ",anchor)
 			return null
-		
 	else:
 		push_error("No particle type found when creating fx particle: ",type)
 		return null
@@ -158,6 +132,10 @@ func create_status_icon(anchor : Node, type : String) -> Control:
 		push_error("No status_icon type found when creating status_icon: ",type)
 		return
 
+##
+# add queue priority?
+# 0 goes first, 1 next, just sort by queue prio every iteration
+
 ## So we can see everything that happened on screen instead of it bombarding us all at once
 var text_particle_queue : Array = []
 ## Recursion protection and single-instance running. No parallels.
@@ -166,12 +144,12 @@ var is_text_particle_queue_running : bool = false
 var text_particle_queue_buffer : float = 1.0
 ## Creates a text-based particle
 ## For example, damage, or status effect changes
-func _run_text_particle_queue() -> void:
-	
+func _run_particle_queue() -> void:
+
 	## Bail if already running
 	if is_text_particle_queue_running:
 		return
-
+	
 	## Start processing the queue
 	is_text_particle_queue_running = true
 	
@@ -183,7 +161,7 @@ func _run_text_particle_queue() -> void:
 		if !inst or inst is not Callable:
 			push_error("Wrong type added to text_particle_queue: ", inst)
 			continue
-			
+		
 		## Running the callable
 		inst.call()
 		
@@ -194,29 +172,57 @@ func _run_text_particle_queue() -> void:
 	is_text_particle_queue_running = false
 
 ## Internal adding
-func _add_text_particle_queue(part_callable : Callable) -> void:
+func _add_particle_queue(part_callable : Callable) -> void:
 	text_particle_queue.append(part_callable)
 
+## Icon Particles
+
+func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
+	
+	var icon_ref = Glossary.status_icon.get(icon)
+	var inst = create_fx_particle_custom(anchor,type,one_shot,-1,-1,-1,direction)
+	var particle_icon = inst.get_node("%particle_icon")
+	
+	if icon_ref:
+		icon_ref = icon_ref.instantiate()
+		if particle_icon:
+			particle_icon.add_child(icon_ref)
+			if size != -1:
+				inst.draw_pass_1.size = inst.draw_pass_1.size*Vector2(size,size)
+		else:
+			push_error("Icon reference for icon_particle unknown: ",icon_ref)
+	else:
+		push_error("Node reference for icon_particle unknown: ",icon_ref)
+
+func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
+	_run_icon_particle(anchor,icon,type,color,size,one_shot,direction)
+
+func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
+	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction)
+	_add_particle_queue(part_callable)
+	_run_particle_queue()
+
+## Text Particles
+
 ## This is the internal function to actually instantiate the particle
-func _run_text_particle(anchor : Node, text : String, type : String, color : Color, size : float, one_shot : bool, direction : float) -> void:
+func _run_text_particle(anchor, text : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
 	##Creation stuff
 	var inst = create_fx_particle_custom(anchor,type,one_shot,-1,-1,-1,direction)
 	var particle_label = inst.get_node("%particle_label")
 	particle_label.text = text
 	particle_label.label_settings.font_color = color
-	inst.one_shot = one_shot
 	if size != -1:
 		inst.draw_pass_1.size = inst.draw_pass_1.size*Vector2(size,size)
 
 ## This is the external function used to create the particles
-func create_text_particle(anchor : Node, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.4, one_shot : bool = true, direction : float = 0) -> void:
+func create_text_particle(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction : float = 0) -> void:
 	_run_text_particle(anchor,text,type,color,size,one_shot,direction)
 
 ## This is for them to obey the queue
-func create_text_particle_queue(anchor : Node, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.4, one_shot : bool = true, direction : float = 0) -> void:
+func create_text_particle_queue(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction : float = 0) -> void:
 	var part_callable = _run_text_particle.bind(anchor,text,type,color,size,one_shot,direction)
-	_add_text_particle_queue(part_callable)
-	_run_text_particle_queue()
+	_add_particle_queue(part_callable)
+	_run_particle_queue()
 
 ##
 
@@ -522,6 +528,11 @@ const particle : Dictionary = {
 	"text_float_away" : preload("res://Scenes/particles/particle_text_float_away.tscn"),
 	"text_float_star" : preload("res://Scenes/particles/particle_text_float_star.tscn"),
 	"text_float_heart" : preload("res://Scenes/particles/particle_text_float_heart.tscn"),
+	"text_float_water" : preload("res://Scenes/particles/particle_text_float_water.tscn"),
+	"text_fall_water" : preload("res://Scenes/particles/particle_text_fall_water.tscn"),
+	### Icon effects
+	"icon_float_away" : preload("res://Scenes/particles/particle_icon_float_away.tscn"),
+	"icon_pop_fly" : preload("res://Scenes/particles/particle_icon_pop_fly.tscn"),
 	}
 
 const status_icon : Dictionary = {
@@ -536,6 +547,7 @@ const status_icon : Dictionary = {
 	"status_swarm" : preload("res://Scenes/ui/status_icon/status_icon_swarm.tscn"),
 	"status_thorns" : preload("res://Scenes/ui/status_icon/status_icon_thorns.tscn"),
 	"status_weakness" : preload("res://Scenes/ui/status_icon/status_icon_weakness.tscn"),
+	"status_defense" : preload("res://Scenes/ui/status_icon/status_icon_defense.tscn"),
 	}
 
 var entity_scene : Dictionary = {
@@ -605,7 +617,7 @@ var encounter : Dictionary = {
 			"glossary" : "battle_entity_enemy",
 			"overrides" : {
 				"my_component_health.max_health" : randi_range(4,12),
-				"my_component_ability.add_ability" : [ability_class[ability_class.keys().pick_random()].new()]
+				"my_component_ability.add_ability" : [component_ability.ability_frigid_core.new(1,1)]
 				}
 		},
 	
@@ -633,7 +645,7 @@ var encounter : Dictionary = {
 			"glossary" : "battle_entity_enemy",
 			"overrides" : {
 				"my_component_health.max_health" : randi_range(4,12),
-				"my_component_ability.add_ability" : [component_ability.ability_solar_flare.new()]
+				"my_component_ability.add_ability" : [component_ability.ability_solar_flare.new(1,1)]
 				}
 		},
 	
@@ -641,7 +653,7 @@ var encounter : Dictionary = {
 			"glossary" : "battle_entity_enemy",
 			"overrides" : {
 				"my_component_health.max_health" : randi_range(4,12),
-				"my_component_ability.add_ability" : [component_ability.ability_spook.new()]
+				"my_component_ability.add_ability" : [component_ability.ability_spook.new(1,1)]
 				}
 		},
 		

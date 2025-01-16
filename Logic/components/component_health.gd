@@ -21,7 +21,7 @@ var health : int:
 
 func _ready() -> void:
 	
-	Events.turn_end.connect(_on_turn_end)
+	Events.turn_start.connect(_on_turn_start)
 	
 	if !health: #If we didn't set health manually
 		health = max_health
@@ -29,7 +29,7 @@ func _ready() -> void:
 
 ## Private
 
-func _on_turn_end() -> void:
+func _on_turn_start() -> void:
 	_reset_armor_block()
 
 ## For calcs
@@ -60,7 +60,7 @@ func _on_hurt() -> void:
 
 func revive():
 	
-	Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Revived!"),"text_float_away",Color.GREEN_YELLOW)
+	Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Revived!"),"text_float_away",Color.GREEN_YELLOW,0.4)
 	
 	#Events.battle_entity_revived.emit(owner)
 	health = max_health
@@ -97,7 +97,7 @@ func change(amt : int, from_tether : bool = false, display : bool = true):
 	## Healing
 	if amt_changed > 0:
 		if display: #TBD Need to make an icon for this too
-			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_heart",Color.WHITE)
+			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_heart")
 			# Some health particle fx
 	
 	## Damage
@@ -107,7 +107,7 @@ func change(amt : int, from_tether : bool = false, display : bool = true):
 	
 	elif amt_changed < 0:
 		if display:
-			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_star",Color.WHITE)
+			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_star")
 			Glossary.create_fx_particle_custom(owner.animations.selector_anchor,"star_explosion",true,10,180,3,180,Color.YELLOW)
 			Camera.shake()
 		#To protect recursive when using heartsurge

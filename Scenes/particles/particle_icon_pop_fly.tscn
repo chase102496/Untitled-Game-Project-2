@@ -1,7 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://4qv2uamdpj4t"]
+[gd_scene load_steps=9 format=3 uid="uid://746n6ajjpqv5"]
 
-[ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_p8iev"]
-[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="2_r3dv8"]
+[ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_3bbf0"]
+[ext_resource type="PackedScene" uid="uid://b72uulki5s4iw" path="res://Scenes/ui/status_icon/status_icon_defense.tscn" id="2_07qxy"]
 
 [sub_resource type="Curve" id="Curve_kp78f"]
 resource_local_to_scene = true
@@ -15,13 +15,13 @@ curve = SubResource("Curve_kp78f")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x3yc7"]
 resource_local_to_scene = true
 lifetime_randomness = 0.2
-direction = Vector3(0, 0, 0)
-spread = 0.0
-initial_velocity_min = 0.5
-initial_velocity_max = 0.5
-gravity = Vector3(0, 1, 0)
-damping_min = 1.0
-damping_max = 1.0
+direction = Vector3(0.5, 1, 0)
+spread = 15.0
+initial_velocity_min = 3.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -8, 0)
+damping_min = 2.0
+damping_max = 2.0
 attractor_interaction_enabled = false
 scale_min = 2.0
 scale_max = 2.0
@@ -47,30 +47,20 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_hopef")
 size = Vector2(4, 4)
 
-[sub_resource type="LabelSettings" id="LabelSettings_r2ura"]
-resource_local_to_scene = true
-font = ExtResource("2_r3dv8")
-font_size = 150
-outline_size = 92
-outline_color = Color(0.08, 0.08, 0.08, 1)
-shadow_size = 60
-shadow_color = Color(0, 0, 0, 0.266667)
-shadow_offset = Vector2(18, 18)
-
-[node name="particle_text_float_away" type="GPUParticles3D"]
+[node name="particle_icon_pop_fly" type="GPUParticles3D"]
 amount = 1
-explosiveness = 1.0
 fixed_fps = 144
 process_material = SubResource("ParticleProcessMaterial_x3yc7")
 draw_pass_1 = SubResource("QuadMesh_vvn7n")
-script = ExtResource("1_p8iev")
+script = ExtResource("1_3bbf0")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(2048, 2048)
 
-[node name="PanelContainer" type="Control" parent="SubViewport"]
+[node name="particle_icon" type="Control" parent="SubViewport"]
+unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -82,16 +72,5 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="particle_label" type="Label" parent="SubViewport/PanelContainer"]
-unique_name_in_owner = true
+[node name="TextureRect" parent="SubViewport/particle_icon" instance=ExtResource("2_07qxy")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = -0.1309
-text = "TEST"
-label_settings = SubResource("LabelSettings_r2ura")
-horizontal_alignment = 1
-vertical_alignment = 1
