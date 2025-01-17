@@ -1,10 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://b28vgwemekfq4"]
+[gd_scene load_steps=11 format=3 uid="uid://b28vgwemekfq4"]
 
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_1iwyg"]
 [ext_resource type="Texture2D" uid="uid://emx4p0t84mns" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_demon_133.png" id="1_re5wy"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="4_udcgr"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)
+
+[sub_resource type="Gradient" id="Gradient_pffqt"]
+offsets = PackedFloat32Array(0, 0.515924, 1)
+colors = PackedColorArray(0.33, 0.1386, 0.25663, 1, 0.568627, 0.239216, 0.443137, 1, 0.929412, 0.717647, 0.623529, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5qy75"]
+gradient = SubResource("Gradient_pffqt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_omfpq"]
+shader = ExtResource("1_1iwyg")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_5qy75")
 
 [sub_resource type="Animation" id="Animation_ybdww"]
 length = 0.001
@@ -39,6 +56,7 @@ texture = SubResource("PlaceholderTexture2D_w1aip")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 6
+material = SubResource("ShaderMaterial_omfpq")
 layout_mode = 0
 offset_left = 21.0
 offset_top = 39.0
@@ -50,6 +68,7 @@ expand_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="."]
 texture_filter = 6
+material = SubResource("ShaderMaterial_omfpq")
 layout_mode = 0
 offset_left = 4.0
 offset_top = 6.0
@@ -61,6 +80,7 @@ expand_mode = 1
 
 [node name="TextureRect3" type="TextureRect" parent="."]
 texture_filter = 6
+material = SubResource("ShaderMaterial_omfpq")
 layout_mode = 0
 offset_left = 56.0
 offset_top = 6.0
@@ -68,14 +88,6 @@ offset_right = 96.0
 offset_bottom = 46.0
 size_flags_vertical = 8
 texture = ExtResource("1_re5wy")
-expand_mode = 1
-
-[node name="TextureRect4" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
 expand_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

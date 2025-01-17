@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://b35mxcc3d74di"]
 
 [ext_resource type="PackedScene" uid="uid://bmmvgvbtdalfx" path="res://Scenes/environment/templates/water.tscn" id="1_0tlw1"]
-[ext_resource type="Shader" path="res://Art/shaders/water/water.gdshader" id="2_ws1sl"]
+[ext_resource type="Shader" path="res://Resources/Shader/water/water.gdshader" id="2_ws1sl"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_1kx03"]
 noise_type = 0
@@ -25,7 +25,7 @@ seamless_blend_skirt = 0.325
 noise = SubResource("FastNoiseLite_iswus")
 
 [sub_resource type="Gradient" id="Gradient_lmnlh"]
-offsets = PackedFloat32Array(0, 0.0836013)
+offsets = PackedFloat32Array(0, 0.116352)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_cv0sp"]
@@ -54,7 +54,7 @@ shader_parameter/roughness = 1.0
 shader_parameter/specular = 0.0
 shader_parameter/depth_distance = 0.0
 shader_parameter/beers_law = 4.5
-shader_parameter/displacement_strength = 0.1
+shader_parameter/displacement_strength = 0.0
 shader_parameter/displacement_scroll_speed = 0.8
 shader_parameter/displacement_scroll_offset = Vector2(-0.2, 0.3)
 shader_parameter/displacement_scale_offset = 5.195
@@ -65,11 +65,11 @@ shader_parameter/edge_speed = 0.35
 shader_parameter/edge_noise_scale = Vector2(0.4, 0.4)
 shader_parameter/edge_noise = SubResource("NoiseTexture2D_p6hx7")
 shader_parameter/edge_ramp = SubResource("GradientTexture1D_cv0sp")
-shader_parameter/influence_size = 0.0
+shader_parameter/influence_size = 1.0
 shader_parameter/player_wave_frequenzy = 10.0
 shader_parameter/player_wave_speed = 5.0
 shader_parameter/caustic_size = 1.5
-shader_parameter/caustic_range = 20.0
+shader_parameter/caustic_range = 40.0
 shader_parameter/caustic_strength = 0.08
 shader_parameter/refraction_strength = 1.25
 shader_parameter/normal_map_strength = 1.0
@@ -81,6 +81,8 @@ shader_parameter/normal_map = SubResource("NoiseTexture2D_41smi")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y1pmy"]
 material = SubResource("ShaderMaterial_v1oyo")
+subdivide_width = 12
+subdivide_depth = 12
 
 [node name="water_chroma" type="Node3D"]
 

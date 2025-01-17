@@ -1,0 +1,47 @@
+[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://l17rf1h30j1y"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_vw5w3"]
+parameter_name = "Texture2DParameter"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_i7tiq"]
+expanded_output_ports = [0]
+input_name = "node_position_world"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ys3tn"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_y8mpv"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_qivdn"]
+source = 5
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_wr2yo"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_dhc4l"]
+function = 12
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, world_vertex_coords;
+
+
+
+"
+flags/world_vertex_coords = true
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_vw5w3")
+nodes/fragment/2/position = Vector2(-1020, 540)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_i7tiq")
+nodes/fragment/4/position = Vector2(-1020, 360)
+nodes/fragment/5/node = SubResource("VisualShaderNodeTexture_ys3tn")
+nodes/fragment/5/position = Vector2(-500, 180)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTexture_y8mpv")
+nodes/fragment/6/position = Vector2(-500, 380)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_qivdn")
+nodes/fragment/7/position = Vector2(-500, 580)
+nodes/fragment/8/node = SubResource("VisualShaderNodeInput_wr2yo")
+nodes/fragment/8/position = Vector2(-620, 780)
+nodes/fragment/9/node = SubResource("VisualShaderNodeFloatFunc_dhc4l")
+nodes/fragment/9/position = Vector2(-280, 780)
+nodes/fragment/connections = PackedInt32Array(2, 0, 5, 2, 4, 1, 5, 0, 4, 2, 6, 0, 4, 3, 7, 0, 8, 0, 9, 0)

@@ -78,63 +78,7 @@ func convert_entity_glossary(glossary_name : String, set_prefix : String):
 		
 	return result
 
-# Create
-
-## Create custom parameters of a particle. Will modify the particle settings in the function
-func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : float = -1.0,color : Color = Color.WHEAT):
-	var result = create_fx_particle(anchor,type,one_shot)
-	if result is Node:
-		var inst = result
-		if amt != -1:
-			inst.amount = amt
-		if spread != -1:
-			inst.process_material.spread = spread
-		if speed != -1:
-			inst.process_material.initial_velocity_max = speed
-			inst.process_material.initial_velocity_min = speed
-		if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
-			inst.draw_pass_1.material.albedo_color = color
-		inst.one_shot = one_shot
-		return inst
-	else:
-		push_error("Unknown particle anchor: ",anchor)
-		return null
-
-## Quickly and easily create a particle. Will run however it was preconfigured
-## Can use array as anchor to anchor to multiple nodes
-func create_fx_particle(anchor, type : String, one_shot : bool = false):
-	var scene = Glossary.particle.get(type)
-	if scene:
-		if anchor is Node:
-			var inst = scene.instantiate()
-			anchor.add_child(inst)
-			inst.global_position = anchor.global_position
-			inst.one_shot = one_shot
-			return inst
-		else:
-			push_error("Unknown particle anchor: ",anchor)
-			return null
-	else:
-		push_error("No particle type found when creating fx particle: ",type)
-		return null
-
-## Creates an icon to be displayed in the status bar
-## anchor in this case
-## type is the name of the key in the status_icon glossary
-## category is the status category. NORMAL, TETHER, or PASSIVE
-func create_status_icon(anchor : Node, type : String) -> Control:
-	var inst = Glossary.status_icon.get(type).instantiate()
-	if inst:
-		anchor.add_child(inst)
-		inst.global_position = anchor.global_position
-		return inst
-	else:
-		push_error("No status_icon type found when creating status_icon: ",type)
-		return
-
-##
-# add queue priority?
-# 0 goes first, 1 next, just sort by queue prio every iteration
+# Particle System
 
 ## So we can see everything that happened on screen instead of it bombarding us all at once
 var text_particle_queue : Array = []
@@ -175,8 +119,7 @@ func _run_particle_queue() -> void:
 func _add_particle_queue(part_callable : Callable) -> void:
 	text_particle_queue.append(part_callable)
 
-## Icon Particles
-
+## This is the internal function to actually instantiate the particle
 func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
 	
 	var icon_ref = Glossary.status_icon.get(icon)
@@ -194,16 +137,6 @@ func _run_icon_particle(anchor, icon : String, type : String, color : Color, siz
 	else:
 		push_error("Node reference for icon_particle unknown: ",icon_ref)
 
-func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
-	_run_icon_particle(anchor,icon,type,color,size,one_shot,direction)
-
-func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
-	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction)
-	_add_particle_queue(part_callable)
-	_run_particle_queue()
-
-## Text Particles
-
 ## This is the internal function to actually instantiate the particle
 func _run_text_particle(anchor, text : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
 	##Creation stuff
@@ -213,6 +146,61 @@ func _run_text_particle(anchor, text : String, type : String, color : Color, siz
 	particle_label.label_settings.font_color = color
 	if size != -1:
 		inst.draw_pass_1.size = inst.draw_pass_1.size*Vector2(size,size)
+
+## Create
+
+## Create custom parameters of a particle. Will modify the particle settings in the function
+func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : float = -1.0,color : Color = Color.WHEAT):
+	var result = create_fx_particle(anchor,type,one_shot)
+	if result is Node:
+		var inst = result
+		if amt != -1:
+			inst.amount = amt
+		if spread != -1:
+			inst.process_material.spread = spread
+		if speed != -1:
+			inst.process_material.initial_velocity_max = speed
+			inst.process_material.initial_velocity_min = speed
+		if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
+			inst.draw_pass_1.material.albedo_color = color
+		inst.one_shot = one_shot
+		return inst
+	else:
+		push_error("Unknown particle anchor: ",anchor)
+		return null
+
+## Quickly and easily create a particle. Will run however it was preconfigured
+## Can use array as anchor to anchor to multiple nodes
+func create_fx_particle(anchor, type : String, one_shot : bool = false):
+	var scene = Glossary.particle.get(type)
+	if scene:
+		if anchor is Node:
+			var inst = scene.instantiate()
+			anchor.add_child(inst)
+			inst.global_position = anchor.global_position
+			if one_shot:
+				inst.one_shot = one_shot
+			return inst
+		else:
+			push_error("Unknown particle anchor: ",anchor)
+			return null
+	else:
+		push_error("No particle type found when creating fx particle: ",type)
+		return null
+
+## Creates an icon to be displayed in the status bar
+## anchor in this case
+## type is the name of the key in the status_icon glossary
+## category is the status category. NORMAL, TETHER, or PASSIVE
+func create_status_icon(anchor : Node, type : String) -> Control:
+	var inst = Glossary.status_icon.get(type).instantiate()
+	if inst:
+		anchor.add_child(inst)
+		inst.global_position = anchor.global_position
+		return inst
+	else:
+		push_error("No status_icon type found when creating status_icon: ",type)
+		return
 
 ## This is the external function used to create the particles
 func create_text_particle(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction : float = 0) -> void:
@@ -225,6 +213,16 @@ func create_text_particle_queue(anchor, text : String, type : String = "text_flo
 	_run_particle_queue()
 
 ##
+func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
+	_run_icon_particle(anchor,icon,type,color,size,one_shot,direction)
+
+##
+func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
+	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction)
+	_add_particle_queue(part_callable)
+	_run_particle_queue()
+
+## Buttons
 
 func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
 	
@@ -547,7 +545,7 @@ const status_icon : Dictionary = {
 	"status_swarm" : preload("res://Scenes/ui/status_icon/status_icon_swarm.tscn"),
 	"status_thorns" : preload("res://Scenes/ui/status_icon/status_icon_thorns.tscn"),
 	"status_weakness" : preload("res://Scenes/ui/status_icon/status_icon_weakness.tscn"),
-	"status_defense" : preload("res://Scenes/ui/status_icon/status_icon_defense.tscn"),
+	"status_defense" : preload("res://Scenes/ui/status_icon/status_icon_block.tscn"),
 	}
 
 var entity_scene : Dictionary = {

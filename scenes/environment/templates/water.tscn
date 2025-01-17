@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bmmvgvbtdalfx"]
 
-[ext_resource type="Material" uid="uid://cr8yf6r3utjih" path="res://Art/shaders/water/water_mat.tres" id="1_orlc5"]
+[ext_resource type="Material" uid="uid://cr8yf6r3utjih" path="res://Resources/Shader/water/water_mat.tres" id="1_orlc5"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fl288"]
 material = ExtResource("1_orlc5")

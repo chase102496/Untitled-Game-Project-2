@@ -1,10 +1,28 @@
-[gd_scene load_steps=7 format=3 uid="uid://cg8nrchuktpgg"]
+[gd_scene load_steps=11 format=3 uid="uid://cg8nrchuktpgg"]
 
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_bwe5b"]
 [ext_resource type="Texture2D" uid="uid://begq480hsmshe" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_growing_15.png" id="1_tsp80"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="3_t0jq5"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)
+
+[sub_resource type="Gradient" id="Gradient_mh01p"]
+offsets = PackedFloat32Array(0, 0.171975, 0.624204)
+colors = PackedColorArray(0, 0, 0, 1, 0.14927, 0.1403, 0.23, 1, 0.380392, 0.72549, 0.772549, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fcunf"]
+gradient = SubResource("Gradient_mh01p")
+width = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a2uop"]
+shader = ExtResource("1_bwe5b")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_fcunf")
 
 [sub_resource type="Animation" id="Animation_ybdww"]
 length = 0.001
@@ -63,37 +81,12 @@ texture = SubResource("PlaceholderTexture2D_w1aip")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_filter = 6
+material = SubResource("ShaderMaterial_a2uop")
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 size_flags_vertical = 8
 texture = ExtResource("1_tsp80")
-expand_mode = 1
-
-[node name="TextureRect2" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 86.0
-offset_bottom = 81.0
-size_flags_vertical = 8
-expand_mode = 1
-flip_h = true
-flip_v = true
-
-[node name="TextureRect3" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
-
-[node name="TextureRect4" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
 expand_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

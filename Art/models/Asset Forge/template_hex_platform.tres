@@ -1,12 +1,6 @@
-[gd_resource type="ArrayMesh" load_steps=5 format=4 uid="uid://b1e1p1a603yqq"]
+[gd_resource type="ArrayMesh" load_steps=4 format=4 uid="uid://b1e1p1a603yqq"]
 
-[ext_resource type="Texture2D" uid="uid://cp16p18v8vki4" path="res://Art/textures/chroma/Dirt1_Color.png" id="1_rqpmy"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_th8np"]
-albedo_texture = ExtResource("1_rqpmy")
-uv1_scale = Vector3(0.4, 0.4, 0.4)
-uv1_triplanar = true
-uv1_world_triplanar = true
+[ext_resource type="Material" uid="uid://lnt7sbbo7elo" path="res://Resources/ShaderMaterial/default_dirt.tres" id="1_gximc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbmk7"]
 uv1_scale = Vector3(0.2, 0.2, 0.2)
@@ -35,7 +29,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 60,
 "index_data": PackedByteArray("AgAAAAEAAQADAAIABgAEAAUABQAHAAYACgAIAAkACQALAAoACQAMAAsADAANAAsAEAAOAA8ADwARABAAFAASABMAEwAVABQAGAAWABcAFwAZABgAHAAaABsAGwAdABwAHQAeABwAHQAfAB4AIgAgACEAIQAjACIA"),
-"material": SubResource("StandardMaterial3D_th8np"),
+"material": ExtResource("1_gximc"),
 "name": "stone(Clone)",
 "primitive": 3,
 "uv_scale": Vector4(0.82, 2.94691, 0, 0),

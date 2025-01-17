@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://cq2mllyapg4d8"]
+
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_f6xch"]
+[ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="2_avsn4"]
+
+[sub_resource type="Gradient" id="Gradient_ojtoj"]
+offsets = PackedFloat32Array(0, 0.993631, 1)
+colors = PackedColorArray(0.3479, 0.667755, 0.71, 1, 0.888947, 0.89749, 0.90888, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3gonk"]
+gradient = SubResource("Gradient_ojtoj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h1n6f"]
+shader = ExtResource("1_f6xch")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.481
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_3gonk")
+
+[node name="TextureRect3" type="TextureRect"]
+texture_filter = 6
+material = SubResource("ShaderMaterial_h1n6f")
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_vertical = 8
+texture = ExtResource("2_avsn4")
+expand_mode = 1

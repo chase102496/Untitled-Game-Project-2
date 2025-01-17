@@ -1,12 +1,30 @@
-[gd_scene load_steps=9 format=3 uid="uid://dhysoyjqrdidw"]
+[gd_scene load_steps=12 format=3 uid="uid://dhysoyjqrdidw"]
 
-[ext_resource type="Texture2D" uid="uid://di5k73lvep3i5" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_defense_80.png" id="1_abe8k"]
-[ext_resource type="Texture2D" uid="uid://c4vv3cfpvp80g" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_star_134.png" id="2_6vceg"]
-[ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="3_p4855"]
+[ext_resource type="PackedScene" uid="uid://bmltbauhegb4m" path="res://Scenes/ui/base_icon/icon_shield_default.tscn" id="1_r2pgj"]
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="2_ex7ab"]
+[ext_resource type="PackedScene" uid="uid://bg7sc05trqsx8" path="res://Scenes/ui/base_icon/icon_star.tscn" id="3_lv8il"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="4_nvbvo"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)
+
+[sub_resource type="Gradient" id="Gradient_3bayt"]
+offsets = PackedFloat32Array(0.0636943, 1)
+colors = PackedColorArray(0.0823529, 0.152941, 0.247059, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_prafv"]
+gradient = SubResource("Gradient_3bayt")
+width = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lhrn6"]
+resource_local_to_scene = true
+shader = ExtResource("2_ex7ab")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 1.389
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_prafv")
 
 [sub_resource type="Animation" id="Animation_ybdww"]
 length = 0.001
@@ -39,45 +57,37 @@ grow_vertical = 2
 pivot_offset = Vector2(50, 50)
 texture = SubResource("PlaceholderTexture2D_w1aip")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-texture_filter = 6
+[node name="icon_shield_default" parent="." instance=ExtResource("1_r2pgj")]
+material = SubResource("ShaderMaterial_lhrn6")
 layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
 offset_right = 100.0
 offset_bottom = 100.0
-size_flags_vertical = 8
-texture = ExtResource("1_abe8k")
-expand_mode = 1
+grow_horizontal = 1
+grow_vertical = 1
 
-[node name="TextureRect2" type="TextureRect" parent="."]
-texture_filter = 6
+[node name="icon_star" parent="." instance=ExtResource("3_lv8il")]
 layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 20.0
-offset_top = 23.0
+offset_top = 19.0
 offset_right = 80.0
-offset_bottom = 83.0
-size_flags_vertical = 8
-texture = ExtResource("2_6vceg")
-expand_mode = 1
-
-[node name="TextureRect3" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-size_flags_vertical = 8
-texture = ExtResource("3_p4855")
-expand_mode = 1
-
-[node name="TextureRect4" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
+offset_bottom = 79.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../TextureRect")
+root_node = NodePath("")
 libraries = {
 "": SubResource("AnimationLibrary_f0afr")
 }

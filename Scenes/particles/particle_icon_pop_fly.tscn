@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://746n6ajjpqv5"]
 
 [ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_3bbf0"]
-[ext_resource type="PackedScene" uid="uid://b72uulki5s4iw" path="res://Scenes/ui/status_icon/status_icon_defense.tscn" id="2_07qxy"]
+[ext_resource type="PackedScene" uid="uid://b72uulki5s4iw" path="res://Scenes/ui/status_icon/status_icon_block.tscn" id="2_07qxy"]
 
 [sub_resource type="Curve" id="Curve_kp78f"]
 resource_local_to_scene = true

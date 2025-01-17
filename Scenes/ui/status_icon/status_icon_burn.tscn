@@ -1,10 +1,73 @@
-[gd_scene load_steps=7 format=3 uid="uid://cfcqf4owag2vi"]
+[gd_scene load_steps=11 format=3 uid="uid://cfcqf4owag2vi"]
 
-[ext_resource type="Texture2D" uid="uid://ng5ok3ckrbuu" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_fire_96.png" id="1_pa1u4"]
+[ext_resource type="PackedScene" uid="uid://buoxwsjrunb0y" path="res://Scenes/ui/base_icon/icon_fire_default.tscn" id="1_pnpph"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="2_ryeoy"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)
+
+[sub_resource type="Shader" id="Shader_rdjo5"]
+code = "shader_type canvas_item;
+
+// Uniforms
+uniform vec3 replacement_color : source_color = vec3(1,1,1); 
+uniform float grayscale_factor : hint_range(0.0, 1.0) = 1; // 0 = no grayscale, 1 = full grayscale
+uniform float recolor_factor : hint_range(0.0, 2.0) = 1; // 0 = original color, 1 = midpoint, 2 = full recolor
+uniform float luminosity_factor : hint_range(0.0, 2.0) = 1; // 1 = default brightness, <1 = darker, >1 = brighter
+uniform sampler2D gradient_texture; // A gradient texture for dynamic mapping
+uniform bool use_gradient; // Whether to use gradient mapping (true = gradient, false = replacement_color)
+
+void fragment() {
+    // Sample the texture color
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    // Calculate grayscale intensity (perceptual)
+    float grayscale = 0.299 * tex_color.r + 0.587 * tex_color.g + 0.114 * tex_color.b;
+
+    // Blend the original color with its grayscale version based on grayscale_factor
+    vec3 grayscaled_color = mix(tex_color.rgb, vec3(grayscale), grayscale_factor);
+
+    // Decide whether to use gradient or replacement_color for recoloring
+    vec3 color_choice;
+    if (use_gradient) {
+        // Use the gradient texture to map the grayscale value
+        color_choice = texture(gradient_texture, vec2(grayscale, 0.5)).rgb;
+    } else {
+        // Directly use the replacement color
+        color_choice = replacement_color;
+    }
+
+    // Remap recolor_factor from [0.0, 2.0] to [0.0, 1.0] for blending
+    float recolor_ratio = clamp(recolor_factor * 0.5, 0.0, 1.0);
+
+    // Replace the grayscaled color proportionally with the recolored version
+    vec3 recolored = grayscaled_color * (1.0 - recolor_ratio) + color_choice * recolor_ratio;
+
+    // Adjust the brightness of the final color using luminosity_factor
+    vec3 final_color = recolored * luminosity_factor;
+
+    // Preserve transparency
+    COLOR = vec4(final_color, tex_color.a);
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_3bayt"]
+offsets = PackedFloat32Array(0, 0.589172, 0.732484, 0.923567)
+colors = PackedColorArray(0, 0, 0, 1, 0.548136, 0.230596, 0.427168, 1, 0.568627, 0.239216, 0.443137, 1, 0.905882, 0.498039, 0.482353, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_prafv"]
+gradient = SubResource("Gradient_3bayt")
+width = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w7c2i"]
+resource_local_to_scene = true
+shader = SubResource("Shader_rdjo5")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 2.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_prafv")
 
 [sub_resource type="Animation" id="Animation_ybdww"]
 length = 0.001
@@ -12,7 +75,7 @@ loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("..:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -29,7 +92,7 @@ loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("..:scale")
+tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -58,46 +121,18 @@ offset_right = 51.5
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.1, 1.1)
 pivot_offset = Vector2(50, 50)
 texture = SubResource("PlaceholderTexture2D_w1aip")
 expand_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="."]
-texture_filter = 6
+[node name="icon_fire_default" parent="." instance=ExtResource("1_pnpph")]
+material = SubResource("ShaderMaterial_w7c2i")
 layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-pivot_offset = Vector2(50, 50)
-size_flags_vertical = 8
-texture = ExtResource("1_pa1u4")
-expand_mode = 2
-
-[node name="TextureRect2" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
-
-[node name="TextureRect3" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
-
-[node name="TextureRect4" type="TextureRect" parent="."]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
+scale = Vector2(1, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../TextureRect")
+root_node = NodePath("../icon_fire_default")
 libraries = {
 "": SubResource("AnimationLibrary_f0afr")
 }

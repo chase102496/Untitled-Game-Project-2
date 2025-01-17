@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://gd2xs1mu1ksn" path="res://Scenes/particles/particle_burn.tscn" id="8_qi3dm"]
 [ext_resource type="ArrayMesh" uid="uid://bihfk8dmcfm5m" path="res://Art/models/Other/grass.tres" id="11_tliuh"]
 [ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://Scenes/environment/templates/grass.tscn" id="12_66bw3"]
-[ext_resource type="Shader" uid="uid://cjyredh1xk3x3" path="res://Art/shaders/stylized_grass.tres" id="12_vwvtr"]
+[ext_resource type="Shader" uid="uid://cjyredh1xk3x3" path="res://Resources/Shader/stylized_grass.tres" id="12_vwvtr"]
 
 [sub_resource type="Resource" id="Resource_j5gng"]
 script = ExtResource("6_qmx3w")
