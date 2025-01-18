@@ -195,7 +195,11 @@ func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, a
 			inst.process_material.initial_velocity_min = speed
 		if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
 			inst.draw_pass_1.material.albedo_color = color
+			
 		inst.one_shot = one_shot
+		
+		
+		
 		return inst
 	else:
 		push_error("Unknown particle anchor: ",anchor)

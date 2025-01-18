@@ -31,8 +31,6 @@ func _ready() -> void:
 		var parent = get_node(instance.alignment) #Side of the battlefield to spawn on
 		parent.add_child(instance) #Adds it as a child to the position marker for our side of battlefield
 		
-		Battle.update_positions.call_deferred()
-		
 		if i != 0:
 			instance.state_chart.send_event.call_deferred("on_waiting")
 		else:

@@ -17,6 +17,7 @@ rim_enabled = true
 [sub_resource type="BoxMesh" id="BoxMesh_bhq7n"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_37uaf")
+size = Vector3(0.25, 0.25, 0.25)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5hpbu"]
 resource_local_to_scene = true
@@ -36,7 +37,7 @@ skeleton = NodePath("")
 [node name="component_impulse_controller_switch" parent="Components" instance=ExtResource("1_x8mbl")]
 
 [node name="component_input_prompt" parent="Components/component_impulse_controller_switch/Components" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 
 [node name="component_interact_reciever" parent="Components/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("2_5ncva")]
 

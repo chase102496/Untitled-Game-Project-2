@@ -142,14 +142,14 @@ func _attack_combo_change(amt : int) -> int:
 	attack_combo += amt
 	match attack_combo:
 		1:
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Color.YELLOW)
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Color.YELLOW)
+			Glossary.create_text_particle_queue.call_deferred(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Global.palette["Apricot"])
+			Glossary.create_fx_particle_custom.call_deferred(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,100,-1,-1,-1,Global.palette["Apricot"])
 		2:
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Color.WEB_GREEN)
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Color.WEB_GREEN)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Global.palette["Light Coral"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Global.palette["Light Coral"])
 		_:
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Color.REBECCA_PURPLE)
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Color.REBECCA_PURPLE)
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Global.palette["Magenta Haze"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Global.palette["Magenta Haze"])
 	
 	return attack_combo
 

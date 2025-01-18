@@ -6,6 +6,18 @@ var camera_object : Node = null
 var player : Node3D = null
 var state_chart_already_exists : bool = false
 
+const palette : Dictionary = {
+	"Melon": Color("#e5a198"),
+	"Medium Slate Blue": Color("#7c74bf"),
+	"Icterine": Color("#ffff52"),
+	"Apricot": Color("#edb79f"),
+	"Moonstone": Color("#61b9c5"),
+	"Oxford Blue": Color("#15273f"),
+	"Light Coral": Color("#e77f7b"),
+	"Steel Blue": Color("#50789b"),
+	"Magenta Haze": Color("#913d71")
+}
+
 ## Pick a random result in a list based on weight
 # {
 # "weight" : 0.0 -> 1.0
