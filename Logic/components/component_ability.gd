@@ -101,6 +101,7 @@ class status_manager:
 					_:
 						push_error("ERROR, status behavior not found: ",effect.behavior,effect.title)
 		elif ignore_priorities or current_effect.priority < effect.priority: #if our new status effect has higher priority or ignores prio
+			
 			remove(current_effect)
 			set(effect_str,effect)
 			effect.fx_add(is_silent)
@@ -381,7 +382,7 @@ class status_heartsurge:
 		self.host = host #who is the initial target of the link
 		self.partners = partners #who is paired to the host
 		self.duration = duration
-		behavior = Battle.status_behavior.RESET
+		behavior = Battle.status_behavior.STACK
 		category = Battle.status_category.TETHER
 	
 	func _verify_partners() -> Array:
@@ -1033,20 +1034,23 @@ class ability_heartsurge:
 		self.damage = damage
 		self.vis_cost = vis_cost
 		id = "ability_heartsurge"
-		title = "Heartsurge"
+		title = "Soulstitch"
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		type = Battle.type.TETHER
-
+	
+	
 	
 	func cast_main():
 		super.cast_main()
 		
-		for i in old_targets.size(): #remove instances from old targets
-			if old_targets[i] not in targets and is_instance_valid(old_targets[i]) and old_targets[i]: #if old target is alive and not in current targets
-				var teth = old_targets[i].my_component_ability.my_status.TETHER
-				if teth and teth is status_heartsurge: #If we find they still have our old buff
-					old_targets[i].my_component_ability.my_status.remove(old_targets[i].my_component_ability.my_status.TETHER)
+		if old_targets != targets:
+			for inst in old_targets: #remove instances from old targets
+				if inst and is_instance_valid(inst): #if old target is alive and not in current targets
+					var teth = inst.my_component_ability.my_status.TETHER
+					if teth and teth is status_heartsurge: #If we find they still have our old buff
+						inst.my_component_ability.my_status.remove(inst.my_component_ability.my_status.TETHER)
+		
 		old_targets = targets
 	
 	func cast_pre_mitigation(caster : Node, target : Node):

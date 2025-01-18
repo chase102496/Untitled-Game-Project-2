@@ -42,7 +42,7 @@ func _ready() -> void:
 	
 	Battle.update_positions.call_deferred()
 	
-	Battle.camera_update()
+	Battle.camera_update.call_deferred()
 
 func _on_battle_entity_dying(entity : Node) -> void:
 	
@@ -149,8 +149,8 @@ func _next_turn() -> void:
 	
 	Debug.message(["Starting turn for ",Battle.active_character.name],Debug.msg_category.BATTLE)
 	
-	Battle.camera_update()
 	Battle.update_positions()
+	Battle.camera_update()
 	
 	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
 

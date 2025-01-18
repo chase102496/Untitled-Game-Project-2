@@ -1,7 +1,22 @@
-[gd_scene load_steps=5 format=4 uid="uid://ckd5iqcrqs0py"]
+[gd_scene load_steps=8 format=4 uid="uid://ckd5iqcrqs0py"]
 
 [ext_resource type="PackedScene" uid="uid://c6xbq7i6g6kex" path="res://Scenes/environment/templates/grass.tscn" id="1_d352l"]
-[ext_resource type="Material" uid="uid://b2lvrdogn25mg" path="res://Resources/ShaderMaterial/grass_plains.tres" id="2_8iftw"]
+[ext_resource type="Shader" uid="uid://bux81dx3h60xk" path="res://Resources/Shader/swaying_grass.tres" id="2_hfe72"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7wic1"]
+frequency = 0.008
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7gm5f"]
+seamless = true
+noise = SubResource("FastNoiseLite_7wic1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ibuu3"]
+render_priority = 0
+shader = ExtResource("2_hfe72")
+shader_parameter/BaseColor = Color(0, 0, 0, 1)
+shader_parameter/ColorParameter = Color(0.24013, 0.2257, 0.37, 1)
+shader_parameter/WindNoise = SubResource("NoiseTexture2D_7gm5f")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_yod04"]
 _surfaces = [{
@@ -24,7 +39,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 225,
 "index_data": PackedByteArray("AwACAAkAAAAHAAEAAAAFAAcABgAKAAgABgAEAAoADwANABUACwASAAwACwAQABIAEQAUABMAEQAOABQAGgAYACAAFgAeABcAFgAcAB4AGwAfAB0AGwAZAB8AJQAjACsAIQApACIAIQAnACkAJgAqACgAJgAkACoAMAAuADYALAA0AC0ALAAyADQAMQA1ADMAMQAvADUAOgA5AEAANwA+ADgANwA8AD4APQBBAD8APQA7AEEARgBEAEwAQgBKAEMAQgBIAEoARwBLAEkARwBFAEsAUABPAFYATQBUAE4ATQBSAFQAUwBXAFUAUwBRAFcAWwBaAGEAWABfAFkAWABdAF8AXgBiAGAAXgBcAGIAZwBlAG0AYwBrAGQAYwBpAGsAaABsAGoAaABmAGwAcQBwAHcAbgB1AG8AbgBzAHUAdAB4AHYAdAByAHgAfQB7AIMAeQCBAHoAeQB/AIEAfgCCAIAAfgB8AIIAhwCGAI0AhACLAIUAhACJAIsAigCOAIwAigCIAI4AkwCRAJkAjwCXAJAAjwCVAJcAlACYAJYAlACSAJgAngCcAKQAmgCiAJsAmgCgAKIAnwCjAKEAnwCdAKMA"),
-"material": ExtResource("2_8iftw"),
+"material": SubResource("ShaderMaterial_ibuu3"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 165,

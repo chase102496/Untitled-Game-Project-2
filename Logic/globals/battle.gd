@@ -266,12 +266,12 @@ func add_member(member : Node,pos : int):
 func update_positions(): #Updates all units positions to reflect a change (like death or swap)
 	var friends_offset := Vector3.ZERO
 	var foes_offset := Vector3.ZERO
-	for i in len(battle_list):
+	for unit in battle_list:
 		
-		var unit = battle_list[i]
-		var tween = get_tree().create_tween()
-		
-		if !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
+		if unit and !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
+			
+			var tween = get_tree().create_tween()
+			
 			if unit.alignment == Battle.alignment.FOES:
 				foes_offset -= unit.spacing
 				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.5)
@@ -389,12 +389,6 @@ func get_team(alignment : String):
 func camera_update():
 	Global.camera.follow_target = active_character
 	set_battle_spotlight_target(active_character)
-	
-	var validated_targets : Array[Node3D] = []
-	for unit in battle_list:
-		if unit is Node3D:
-			validated_targets.append(unit)
-	Global.camera.set_look_at_targets(validated_targets)
 
 func orphan_battle_spotlight() -> void:
 	battle_spotlight.remote_transform.remote_path = ""

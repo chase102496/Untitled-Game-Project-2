@@ -12,7 +12,8 @@ var msg_category : Dictionary = {
 	"BATTLE" : "<BATTLE>",
 	"SCENE" : "<SCENE>",
 	"WORLD" : "<WORLD>",
-	"PHYSICS" : "<PHYSICS>"
+	"PHYSICS" : "<PHYSICS>",
+	"SYSTEM" : "<SYSTEM>",
 }
 
 func toggle():

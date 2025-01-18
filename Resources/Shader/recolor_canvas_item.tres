@@ -4,7 +4,7 @@
 code = "shader_type canvas_item;
 
 // Uniforms
-uniform vec3 replacement_color : source_color = vec3(1,1,1); 
+uniform vec3 replacement_color : source_color = vec3(1,1,1);
 uniform float grayscale_factor : hint_range(0.0, 1.0) = 1; // 0 = no grayscale, 1 = full grayscale
 uniform float recolor_factor : hint_range(0.0, 1.0) = 1; // 0 = original color, 1 = midpoint, 2 = full recolor
 uniform float luminosity_factor : hint_range(0.0, 2.0) = 1; // 1 = default brightness, <1 = darker, >1 = brighter

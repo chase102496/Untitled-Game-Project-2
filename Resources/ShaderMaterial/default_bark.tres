@@ -1,0 +1,30 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bjvk4hxnnjnpx"]
+
+[ext_resource type="Shader" uid="uid://hewsqp0k7f2v" path="res://Resources/Shader/recolor_spatial.tres" id="1_j1t6r"]
+[ext_resource type="Texture2D" uid="uid://6uxdyj5dhpqu" path="res://Art/textures/oleekconder/T_Bark9_Color.png" id="2_fmqps"]
+
+[sub_resource type="Gradient" id="Gradient_junvo"]
+offsets = PackedFloat32Array(0, 0.483271, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.486275, 0.454902, 0.74902, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wow3k"]
+gradient = SubResource("Gradient_junvo")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_j1t6r")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/roughness = 1.0
+shader_parameter/metallic = 0.0
+shader_parameter/specular = 0.0
+shader_parameter/use_world_triplanar = false
+shader_parameter/uv1_blend_sharpness = null
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/replacement_color = Color(0.486275, 0.454902, 0.74902, 1)
+shader_parameter/grayscale_factor = 0.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/texture_albedo = ExtResource("2_fmqps")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_wow3k")

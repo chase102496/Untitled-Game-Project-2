@@ -313,7 +313,7 @@ class ability_heartsurge:
 	
 	func _init(caster : Node) -> void:
 		super._init(caster)
-		title = "Heartsurge"
+		title = "Soulstitch"
 		interact_groups.append("interact_ability_heartsurge")
 	
 	func _set_mark() -> void:

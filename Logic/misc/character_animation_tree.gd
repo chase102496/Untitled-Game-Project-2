@@ -27,7 +27,7 @@ func _ready() -> void:
 	
 	animation_finished.connect(_on_animation_finished)
 	animation_started.connect(_on_animation_started)
-	Events.battle_entity_damaged.connect(_on_battle_entity_damaged)
+	Events.battle_entity_dying.connect(_on_battle_entity_dying)
 	
 	active = true
 	
@@ -87,11 +87,10 @@ func start_skillcheck_window(time : float) -> void:
 	if is_attack_final:
 		_skillcheck_end()
 
-func _on_battle_entity_damaged(entity : Node, amount : int) -> void:
+func _on_battle_entity_dying(entity : Node) -> void:
 	var cast_queue : Node = owner.my_component_ability.cast_queue
 	if cast_queue and cast_queue.primary_target and entity == cast_queue.primary_target:
-		if entity.my_component_health.health <= 0:
-			_skillcheck_end()
+		_skillcheck_end()
 
 ## Called when an attack lands
 func _on_attack_contact() -> void:

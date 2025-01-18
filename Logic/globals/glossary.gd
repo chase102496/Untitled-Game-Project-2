@@ -99,15 +99,20 @@ func _run_particle_queue() -> void:
 	
 	## Main loop
 	while not text_particle_queue.is_empty():
-		var inst = text_particle_queue.pop_front()
+		var inst_callable = text_particle_queue.pop_front()
 		
 		## Checking for invalids
-		if !inst or inst is not Callable:
-			push_error("Wrong type added to text_particle_queue: ", inst)
+		if !inst_callable or inst_callable is not Callable:
+			push_error("Wrong type added to text_particle_queue: ", inst_callable)
 			continue
+		else:
+			if !inst_callable.get_bound_arguments()[0]:
+				Debug.message(["Found null anchor in argument for particle_queue: ", inst_callable," | ",inst_callable.get_bound_arguments()],Debug.msg_category.SYSTEM)
+				continue
 		
 		## Running the callable
-		inst.call()
+		
+		inst_callable.call()
 		
 		## Waiting
 		await get_tree().create_timer(text_particle_queue_buffer).timeout
@@ -511,7 +516,7 @@ func find_entity(glossary : String, set_prefix = null):
 
 # Packed Scenes
 
-const particle : Dictionary = {
+var particle : Dictionary = {
 	### Status effects TBD
 	#"status_fear" : preload("res://Scenes/particles/particle_fear.tscn"),
 	#"status_burn" : preload("res://Scenes/particles/particle_burn.tscn"),

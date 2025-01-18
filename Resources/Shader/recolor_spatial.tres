@@ -5,19 +5,19 @@ code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
 // Texture Settings
-uniform vec4 albedo : source_color;
+uniform vec4 albedo : source_color = vec4(1,1,1,1);
 
 
 // Material Properties
-uniform float roughness : hint_range(0.0, 1.0);
-uniform float metallic : hint_range(0.0, 1.0);
-uniform float specular : hint_range(0.0, 1.0);
+uniform float roughness : hint_range(0.0, 1.0) = 1;
+uniform float metallic : hint_range(0.0, 1.0) = 0;
+uniform float specular : hint_range(0.0, 1.0) = 0;
 
 // Triplanar Mapping Settings
 uniform bool use_world_triplanar = false;
 uniform float uv1_blend_sharpness : hint_range(0.0, 150.0, 0.001);
-uniform vec3 uv1_scale;
-uniform vec3 uv1_offset;
+uniform vec3 uv1_scale = vec3(1,1,1);
+uniform vec3 uv1_offset = vec3(0,0,0);
 
 // Grayscale and Recoloring Settings
 uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;

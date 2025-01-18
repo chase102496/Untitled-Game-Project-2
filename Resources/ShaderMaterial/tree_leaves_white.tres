@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://dvca5qxnb2753"]
 
-[ext_resource type="Shader" uid="uid://beqs1m0ttyy5k" path="res://Resources/Shader/shape_color_sway.tres" id="1_bfcm8"]
+[ext_resource type="Shader" uid="uid://beqs1m0ttyy5k" path="res://Resources/Shader/swaying_leaves.tres" id="1_bfcm8"]
 [ext_resource type="Texture2D" uid="uid://x7dqygeq3kbx" path="res://Art/textures/Ultimate Stylized Nature Textures/NormalTree_Leaves.png" id="2_nmjpo"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_11i1u"]

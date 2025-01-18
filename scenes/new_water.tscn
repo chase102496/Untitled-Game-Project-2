@@ -1,18 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://bjdpay16bp3so"]
 
-[ext_resource type="Shader" uid="uid://bu0ly82vmfubl" path="res://Resources/Shader/WaterShader.tres" id="1_6lf3q"]
+[ext_resource type="Shader" path="res://test_junk/test_water_Shade_plsgod.gdshader" id="1_ij5oo"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rwf6e"]
 render_priority = 0
-shader = ExtResource("1_6lf3q")
-shader_parameter/ColorParameter = Color(0, 0.266667, 0.533333, 1)
+shader = ExtResource("1_ij5oo")
+shader_parameter/ColorParameter = Color(0, 0.27, 0.54, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_y5cle"]
 material = SubResource("ShaderMaterial_rwf6e")
 size = Vector2(1, 1)
-subdivide_width = 20
-subdivide_depth = 20
+subdivide_width = 3
+subdivide_depth = 3
 
 [node name="new_water" type="MeshInstance3D"]
-transform = Transform3D(90, 0, 0, 0, 1, 0, 0, 0, 90, 0, 0, 0)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 mesh = SubResource("PlaneMesh_y5cle")

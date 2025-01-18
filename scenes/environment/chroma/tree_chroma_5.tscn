@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://ckbru18t5dula"]
 
-[ext_resource type="Material" uid="uid://c67631iuvadgg" path="res://Resources/ShaderMaterial/tree_bark_darkgrey.tres" id="1_bx00h"]
+[ext_resource type="Material" uid="uid://bjvk4hxnnjnpx" path="res://Resources/ShaderMaterial/default_bark.tres" id="1_bx00h"]
 [ext_resource type="Script" path="res://Logic/misc/tree.gd" id="1_mx2lt"]
 [ext_resource type="Material" uid="uid://dvca5qxnb2753" path="res://Resources/ShaderMaterial/tree_leaves_white.tres" id="2_i885e"]
 
