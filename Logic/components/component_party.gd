@@ -150,7 +150,7 @@ func summon(index : int, battle_or_world : String):
 	if index < my_party.size():
 		var party_inst = my_party[index] #Grab the right party member
 		if party_inst.select_validate():
-			var summon_inst = Glossary.find_entity(party_inst.glossary,battle_or_world).instantiate().party_summon(party_inst)
+			var summon_inst = Glossary.get_entity(party_inst.glossary,battle_or_world).instantiate().party_summon(party_inst)
 			##Add to my_summons, remove from my_party
 			my_summons.append(summon_inst)
 			my_party.pop_at(index)

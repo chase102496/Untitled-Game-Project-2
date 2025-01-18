@@ -29,7 +29,7 @@ func convert_info_character_gui(character) -> Dictionary:
 	var abil_list = ""
 	
 	for a in abil:
-		abil_list += str(Battle.type_color_dict(a.type),a.type.ICON,"[/color] ",a.title,
+		abil_list += str(Battle.get_type_color_dict(a.type),a.type.ICON,"[/color] ",a.title,
 		"\n")
 	
 	match Interface.evaluate_entity_type(character):
@@ -43,8 +43,8 @@ func convert_info_character_gui(character) -> Dictionary:
 	dict.sprite = null #TODO
 	
 	dict.description = str(
-		Battle.type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",hp.health,"/",hp.max_health,"  ",
-		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",vs.vis,"/",vs.max_vis,"\n",
+		Battle.get_type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",hp.health,"/",hp.max_health,"  ",
+		Battle.get_type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",vs.vis,"/",vs.max_vis,"\n",
 		abil_list
 	)
 
@@ -153,6 +153,33 @@ func _run_text_particle(anchor, text : String, type : String, color : Color, siz
 		inst.draw_pass_1.size = inst.draw_pass_1.size*Vector2(size,size)
 
 ## Create
+
+## This is the general interface that takes Input actions and maps them to the associated input device's icon lib
+## We need to create an interace that replaces the code for event in input_list with whatever we need for the other devices
+## Eventually we need to make an interface to hot swap the icons when our input comes from something else
+func create_input_prompt(anchor : Node3D, action : StringName, color : Color = Color.WHITE) -> Node3D:
+	
+	var human_keycode : String
+	var input_list = InputMap.action_get_events(action)
+	
+	for event in input_list:
+		if event is InputEventKey:
+			var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
+			human_keycode = OS.get_keycode_string(keycode)
+	
+	return _create_prompt_keyboard(anchor,human_keycode)
+	#match Global.current_input_device blah blah blah = callable to search lib
+
+## Later on, we will add an adapter that picks which create prompt to use
+## The only thing component_input_prompt should need is the Input version "ui_cancel" etc.
+## The component_input_prompt will then call a callable that is swapped based on the device used
+func _create_prompt_keyboard(anchor : Node3D, button_text : String, color : Color = Color.WHITE) -> Node3D:
+	var inst = Glossary.prompt_icon["keyboard"].instantiate()
+	var prompt_label = inst.get_node("%prompt_label")
+	prompt_label.text = button_text
+	prompt_label.label_settings.font_color = color
+	anchor.add_child(inst)
+	return inst
 
 ## Create custom parameters of a particle. Will modify the particle settings in the function
 func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : float = -1.0,color : Color = Color.WHEAT):
@@ -503,7 +530,7 @@ func evaluate_option_properties(properties : Dictionary, parent : Node, callable
 		return options_result.ERROR
 
 ## Used to find an entity in our glossary, with optional transform
-func find_entity(glossary : String, set_prefix = null):
+func get_entity(glossary : String, set_prefix = null):
 	var index = glossary
 	if !entity_scene[index]:
 		push_error("No entity found for query ",glossary)
@@ -511,6 +538,21 @@ func find_entity(glossary : String, set_prefix = null):
 	elif set_prefix:
 		index = convert_entity_glossary(glossary,set_prefix)
 	return entity_scene[index]
+
+func get_entity_list(character_name : String, character_list : Array, first_result : bool = true):
+	var character_result_list : Array = []
+	
+	for i in len(character_list):
+		if character_list[i].glossary == character_name: #find the name
+			if first_result: #if first result is enabled
+				return character_list[i] #return it
+			else:
+				character_result_list.append(character_list[i])
+	
+	if !first_result:
+		return character_result_list
+	else:
+		return null
 
 ## --- Dictionaries --- ##
 
@@ -523,9 +565,9 @@ var particle : Dictionary = {
 	#"status_freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
 	#"status_disable" : preload("res://Scenes/particles/particle_disabled.tscn"),
 	### World effects
-	"heartsurge_node_lumia" : preload("res://Scenes/particles/particle_heartsurge_node_lumia.tscn"),
-	"heartsurge_node_recall" : preload("res://Scenes/particles/particle_heartsurge_node_recall.tscn"),
-	"heartsurge_node_clear" : preload("res://Scenes/particles/particle_heartsurge_node_clear.tscn"),
+	"soulstitch_node_lumia" : preload("res://Scenes/particles/particle_soulstitch_node_lumia.tscn"),
+	"soulstitch_node_recall" : preload("res://Scenes/particles/particle_soulstitch_node_recall.tscn"),
+	"soulstitch_node_clear" : preload("res://Scenes/particles/particle_soulstitch_node_clear.tscn"),
 	"star_explosion" : preload("res://Scenes/particles/particle_star_explosion.tscn"),
 	### Text Effects
 	"text_float_away" : preload("res://Scenes/particles/particle_text_float_away.tscn"),
@@ -544,7 +586,7 @@ const status_icon : Dictionary = {
 	"status_ethereal" : preload("res://Scenes/ui/status_icon/status_icon_ethereal.tscn"),
 	"status_fear" : preload("res://Scenes/ui/status_icon/status_icon_fear.tscn"),
 	"status_freeze" : preload("res://Scenes/ui/status_icon/status_icon_freeze.tscn"),
-	"status_heartsurge" : preload("res://Scenes/ui/status_icon/status_icon_heartsurge.tscn"),
+	"status_soulstitch" : preload("res://Scenes/ui/status_icon/status_icon_soulstitch.tscn"),
 	"status_immunity" : preload("res://Scenes/ui/status_icon/status_icon_immunity.tscn"),
 	"status_regrowth" : preload("res://Scenes/ui/status_icon/status_icon_regrowth.tscn"),
 	"status_swarm" : preload("res://Scenes/ui/status_icon/status_icon_swarm.tscn"),
@@ -552,6 +594,10 @@ const status_icon : Dictionary = {
 	"status_weakness" : preload("res://Scenes/ui/status_icon/status_icon_weakness.tscn"),
 	"status_defense" : preload("res://Scenes/ui/status_icon/status_icon_block.tscn"),
 	}
+
+const prompt_icon : Dictionary = {
+	"keyboard" : preload("res://Scenes/ui/input_icon/icon_prompt_keyboard.tscn"),
+}
 
 var entity_scene : Dictionary = {
 	## DO NOT CHANGE TO PRELOAD
@@ -581,7 +627,7 @@ var ability_class : Dictionary = {
 	"ability_tackle" : component_ability.ability_tackle,
 	"ability_headbutt" : component_ability.ability_headbutt,
 	"ability_solar_flare" : component_ability.ability_solar_flare,
-	"ability_heartsurge" : component_ability.ability_heartsurge,
+	"ability_soulstitch" : component_ability.ability_soulstitch,
 	"ability_switchstitch" : component_ability.ability_switchstitch,
 	"ability_spook" : component_ability.ability_spook,
 	"ability_frigid_core" : component_ability.ability_frigid_core,
@@ -593,7 +639,7 @@ var status_class : Dictionary = {
 	"status_burn" : component_ability.status_burn,
 	"status_freeze" : component_ability.status_freeze,
 	##Tethers
-	"status_heartsurge" : component_ability.status_heartsurge,
+	"status_soulstitch" : component_ability.status_soulstitch,
 	##Passives
 	"status_immunity" : component_ability.status_immunity, #Immune to specific aspect
 	"status_weakness" : component_ability.status_weakness, #Weak to specific aspect

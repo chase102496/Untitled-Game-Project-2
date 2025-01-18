@@ -5,7 +5,7 @@ extends component_node_3d
 
 @export var active_interact_area : component_interact_controller
 
-@onready var dreamstitch : ability_dreamstitch = ability_heartsurge.new(owner)
+@onready var dreamstitch : ability_dreamstitch = ability_soulstitch.new(owner)
 @onready var loomlight : ability_loomlight = ability_loomlight.new(owner)
 @onready var active : ability = dreamstitch
 
@@ -285,7 +285,7 @@ class ability_purge: # TBD
 
 # Dreamstitch
 
-class ability_heartsurge:
+class ability_soulstitch:
 	extends ability_dreamstitch
 	
 	var is_mark_placed : bool = false
@@ -314,7 +314,7 @@ class ability_heartsurge:
 	func _init(caster : Node) -> void:
 		super._init(caster)
 		title = "Soulstitch"
-		interact_groups.append("interact_ability_heartsurge")
+		interact_groups.append("interact_ability_soulstitch")
 	
 	func _set_mark() -> void:
 		mark_location = caster.global_position
@@ -334,16 +334,16 @@ class ability_heartsurge:
 	
 	## Set Lumia's fx when returning to the mark
 	func _fx_return_to_mark() -> void:
-		particle_character = Glossary.create_fx_particle(caster,"heartsurge_node_lumia")
+		particle_character = Glossary.create_fx_particle(caster,"soulstitch_node_lumia")
 		caster.animations.sprite.visible = false
 	
 	## Set the mark somewhere
 	func _fx_set_mark() -> void:
-		particle_recall = Glossary.create_fx_particle(caster.owner,"heartsurge_node_recall")
+		particle_recall = Glossary.create_fx_particle(caster.owner,"soulstitch_node_recall")
 		particle_recall.global_position = caster.global_position
 	
 	func _fx_normal() -> void:
-		var particle_clear = Glossary.create_fx_particle(caster.owner,"heartsurge_node_clear",true)
+		var particle_clear = Glossary.create_fx_particle(caster.owner,"soulstitch_node_clear",true)
 		particle_clear.global_position = caster.global_position
 		particle_clear.amount = randi_range(40,60)
 		particle_clear.process_material.spread = 180
@@ -351,7 +351,7 @@ class ability_heartsurge:
 		particle_clear.process_material.initial_velocity_min = 7
 	
 	func _fx_slingshot() -> void:
-		var particle_clear = Glossary.create_fx_particle(caster.owner,"heartsurge_node_clear",true)
+		var particle_clear = Glossary.create_fx_particle(caster.owner,"soulstitch_node_clear",true)
 		particle_clear.global_position = caster.global_position
 		particle_clear.process_material.direction = recall_direction
 		particle_clear.amount = randi_range(40,60)
@@ -430,16 +430,16 @@ class ability_heartsurge:
 #class ability_heartstitch:
 	#extends ability_dreamstitch
 	#
-	#var heartsurge_max : int = 2
+	#var soulstitch_max : int = 2
 	#
 	#func _init(caster : Node) -> void:
 		#super._init(caster)
 		#title = "Dreamstitch"
-		#interact_groups.append("interact_ability_heartsurge")
+		#interact_groups.append("interact_ability_soulstitch")
 	#
 	#func verify_use() -> bool:
-		### If we can still add heartsurges
-		#if caster.get_tree().get_nodes_in_group("interact_ability_heartsurge_active").size() < heartsurge_max and current_interaction_areas.size() > 0:
+		### If we can still add soulstitchs
+		#if caster.get_tree().get_nodes_in_group("interact_ability_soulstitch_active").size() < soulstitch_max and current_interaction_areas.size() > 0:
 			#return true
 		#else:
 			#return false
@@ -447,16 +447,16 @@ class ability_heartsurge:
 	#func on_use() -> void:
 		### If we're trying to link a controller
 		#if verify_use():
-			#for area in current_interaction_areas: #Runs through all verified areas in "interact_ability_heartsurge"
-				### Add first one we find to our heartsurge active group
-				#if !area.my_component_impulse_controller.is_in_group("interact_ability_heartsurge_active"):
-					##emit heartsurge signal to add it
-					#area.my_component_impulse_controller.add_to_group("interact_ability_heartsurge_active")
+			#for area in current_interaction_areas: #Runs through all verified areas in "interact_ability_soulstitch"
+				### Add first one we find to our soulstitch active group
+				#if !area.my_component_impulse_controller.is_in_group("interact_ability_soulstitch_active"):
+					##emit soulstitch signal to add it
+					#area.my_component_impulse_controller.add_to_group("interact_ability_soulstitch_active")
 					#return
-		### If we are trying to clear our heartsurge actives
+		### If we are trying to clear our soulstitch actives
 		#else:
-			#for controller in caster.get_tree().get_nodes_in_group("interact_ability_heartsurge_active"):
-				#controller.remove_from_group("interact_ability_heartsurge_active")
+			#for controller in caster.get_tree().get_nodes_in_group("interact_ability_soulstitch_active"):
+				#controller.remove_from_group("interact_ability_soulstitch_active")
 
 class ability_gustbloom: #TBD
 	extends ability_dreamstitch

@@ -72,7 +72,7 @@ animation = &"default_idle_down"
 frame = 1
 
 [node name="character_sprite_position" parent="Components/component_animation" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.497132, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.488, 0)
 
 [node name="selector_anchor" parent="Components/component_animation/character_sprite_position" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)

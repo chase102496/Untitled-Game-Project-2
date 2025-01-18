@@ -78,6 +78,9 @@ func _ready() -> void:
 	%StateChart/Battle_GUI/Skillcheck.state_physics_processing.connect(_on_state_physics_processing_battle_gui_skillcheck) #long af
 	%StateChart/Battle_GUI/Skillcheck.state_exited.connect(_on_state_exited_battle_gui_skillcheck)
 	
+	## Status Effects Desc
+	
+	
 	## Misc
 	# When enabled
 	%StateChart/Battle_GUI.state_input.connect(_on_state_input_battle_gui)
@@ -360,12 +363,12 @@ func _on_button_enter_hover_battle_ability(properties : Dictionary):
 	
 	var ability = properties.ability
 	
-	ui_description_title.text = str(Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",ability.vis_cost," ",Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.type.TITLE)
+	ui_description_title.text = str(Battle.get_type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",ability.vis_cost," ",Battle.get_type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.type.TITLE)
 	
 	ui_description_label.text = str(
 		ability.description,"\n",
 		"\n",
-		Battle.type_color("DESCRIPTION"),ability.target_selector.DESCRIPTION,"[/color]","\n",
+		Battle.get_type_color("DESCRIPTION"),ability.target_selector.DESCRIPTION,"[/color]","\n",
 	)
 	ui_description_box.show()
 
@@ -426,13 +429,13 @@ func _on_button_enter_hover_party_dreamkin(properties : Dictionary):
 	var abil_list = ""
 	
 	for ability in dreamkin.my_abilities:
-		abil_list += str(Battle.type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.title,
+		abil_list += str(Battle.get_type_color_dict(ability.type),ability.type.ICON,"[/color] ",ability.title,
 		"\n")
 	
 	ui_description_title.text = str(
-		#Battle.type_color_dict(dreamkin.type),dreamkin.type.ICON,"[/color] ",dreamkin.name,"\n",
-		Battle.type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",dreamkin.health,"/",dreamkin.max_health,"  ",
-		Battle.type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",dreamkin.vis,"/",dreamkin.max_vis,"\n",
+		#Battle.get_type_color_dict(dreamkin.type),dreamkin.type.ICON,"[/color] ",dreamkin.name,"\n",
+		Battle.get_type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",dreamkin.health,"/",dreamkin.max_health,"  ",
+		Battle.get_type_color("VIS"),Battle.type.VIS.ICON,"[/color] ",dreamkin.vis,"/",dreamkin.max_vis,"\n",
 		abil_list
 	)
 	

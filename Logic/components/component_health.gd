@@ -110,7 +110,7 @@ func change(amt : int, from_tether : bool = false, display : bool = true):
 			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_star")
 			Glossary.create_fx_particle_custom(owner.animations.selector_anchor,"star_explosion",true,10,180,3,180,Color.YELLOW)
 			Camera.shake()
-		#To protect recursive when using heartsurge
+		#To protect recursive when using soulstitch
 		if !from_tether:
 			Events.battle_entity_damaged.emit(owner,amt_changed)
 

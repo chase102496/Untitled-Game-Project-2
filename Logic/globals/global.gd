@@ -41,6 +41,13 @@ func get_glossary_nickname(entity : Node):
 	var filepath = entity.get_scene_file_path()
 	return filepath.right(-filepath.rfind("/") - 1).left(-5)
 
+## Returns all the vars in an array that start with that string
+func array_contains_starts_with(strings: Array[String], prefix: String) -> bool:
+	for string in strings:
+		if string.begins_with(prefix):
+			return true
+	return false
+
 ## Compares two arrays and returns any matching values between the two
 func inner_join(array1: Array, array2: Array) -> Array:
 	var matches = []

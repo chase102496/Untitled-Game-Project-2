@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://bltyq4wqoagse"]
+[gd_scene load_steps=6 format=3 uid="uid://bltyq4wqoagse"]
 
 [ext_resource type="PackedScene" uid="uid://qw7lqdc5swse" path="res://Logic/components/component_impulse_controller.tscn" id="1_854y3"]
 [ext_resource type="Script" path="res://Logic/components/component_impulse_controller_switch.gd" id="2_p0xor"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="3_mu63i"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="4_5pn0t"]
+[ext_resource type="PackedScene" uid="uid://dm0vloworfuri" path="res://Logic/components/component_input_prompt.tscn" id="5_xg4aj"]
 
-[node name="component_impulse_controller_switch" instance=ExtResource("1_854y3")]
+[node name="component_impulse_controller_switch" node_paths=PackedStringArray("my_component_input_prompt") instance=ExtResource("1_854y3")]
 script = ExtResource("2_p0xor")
 one_way = false
+my_component_input_prompt = NodePath("Components/component_input_prompt")
 type_selection = 0
 
 [node name="Main" parent="StateChart" index="0"]
@@ -36,3 +38,7 @@ script = ExtResource("4_5pn0t")
 to = NodePath("../../Deactivated")
 event = &"on_deactivated"
 delay_in_seconds = "0.0"
+
+[node name="Components" type="Node3D" parent="." index="1"]
+
+[node name="component_input_prompt" parent="Components" index="0" instance=ExtResource("5_xg4aj")]

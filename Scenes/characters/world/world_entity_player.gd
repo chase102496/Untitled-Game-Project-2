@@ -14,10 +14,10 @@ extends world_entity
 @export var my_vignette : Control
 
 func _ready():
-
+	
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
-	my_component_ability.add_ability(component_ability.ability_heartsurge.new())
+	my_component_ability.add_ability(component_ability.ability_soulstitch.new())
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
@@ -84,6 +84,7 @@ func on_load(all_data):
 	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
 func _input(event: InputEvent) -> void:
+	
 	#if Input.is_action_just_pressed("move_forward"):
 		##if my_component_party.get_party():
 			##for i in my_component_party.get_party().size():
@@ -94,7 +95,7 @@ func _input(event: InputEvent) -> void:
 		#my_component_party.summon(0,"world")
 		#
 	#if Input.is_action_just_pressed("move_jump"):
-		#my_component_party.add_summon_dreamkin(Glossary.find_entity("world_entity_dreamkin_default").instantiate().init(
+		#my_component_party.add_summon_dreamkin(Glossary.get_entity("world_entity_dreamkin_default").instantiate().init(
 			#owner,global_position+Vector3(randf_range(0.5,1),0,randf_range(0.5,1)))
 			#)
 	

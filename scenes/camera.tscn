@@ -59,7 +59,7 @@ panorama = ExtResource("7_knix3")
 [sub_resource type="Sky" id="Sky_ncf8r"]
 sky_material = SubResource("PanoramaSkyMaterial_oa1ei")
 
-[sub_resource type="Environment" id="Environment_h8rk2"]
+[sub_resource type="Environment" id="Environment_ca6lj"]
 background_mode = 2
 background_color = Color(0.108, 0.2214, 0.27, 1)
 sky = SubResource("Sky_ncf8r")
@@ -70,18 +70,17 @@ glow_hdr_luminance_cap = 0.5
 fog_light_color = Color(0.1508, 0.25818, 0.26, 1)
 fog_light_energy = 5.0
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.0325
-volumetric_fog_albedo = Color(0.235503, 0.189935, 0.3064, 1)
-volumetric_fog_emission = Color(0.655212, 0.47399, 0.993068, 1)
-volumetric_fog_emission_energy = 0.2
+volumetric_fog_density = 0.02
+volumetric_fog_albedo = Color(0.0823529, 0.152941, 0.247059, 1)
+volumetric_fog_emission = Color(0.0823529, 0.152941, 0.247059, 1)
 volumetric_fog_length = 30.0
 adjustment_enabled = true
 adjustment_brightness = 1.03
 adjustment_contrast = 1.2
 adjustment_saturation = 1.12
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_gmwdk"]
-dof_blur_far_enabled = true
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_8uke8"]
+dof_blur_far_distance = 15.0
 dof_blur_near_enabled = true
 dof_blur_near_distance = 4.0
 dof_blur_near_transition = 6.0
@@ -115,8 +114,8 @@ camera_ray_cast_default = NodePath("../RayCast3D2")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, -7.10543e-15, 0, 1, 0, -7.10543e-15, 0, 1, 0, 0, 0)
-environment = SubResource("Environment_h8rk2")
-attributes = SubResource("CameraAttributesPractical_gmwdk")
+environment = SubResource("Environment_ca6lj")
+attributes = SubResource("CameraAttributesPractical_8uke8")
 
 [node name="PhantomCameraHost" type="Node" parent="Camera3D"]
 script = ExtResource("5_42dvy")

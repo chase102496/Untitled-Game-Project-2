@@ -87,6 +87,15 @@ project/assembly_name="Untitled-Game-Project-2"
 
 enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/notes_tab/plugin.cfg", "res://addons/shaker/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://Levels/": "gray",
+"res://Logic/": "orange",
+"res://Resources/": "red",
+"res://Scenes/": "yellow"
+}
+
 [filesystem]
 
 import/blender/enabled=false

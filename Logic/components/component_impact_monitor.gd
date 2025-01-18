@@ -24,5 +24,5 @@ func _on_body_entered(body : Node3D) -> void:
 				body.velocity = vel
 			body_impacted.emit(body,vel)
 			Debug.message(["Impact thereshold met: ",vel.length()],Debug.msg_category.PHYSICS)
-			Glossary.create_fx_particle(self,"heartsurge_node_clear",true)
+			Glossary.create_fx_particle(self,"soulstitch_node_clear",true)
 			break

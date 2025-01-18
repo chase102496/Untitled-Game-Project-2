@@ -166,7 +166,7 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 	#Instantiating all the battle characters
 	for i in len(final_entity_list):
 		var unit_name : String = final_entity_list[i]
-		var unit_scene : PackedScene  = Glossary.find_entity(unit_name)
+		var unit_scene : PackedScene  = Glossary.get_entity(unit_name)
 		var unit_instance = unit_scene.instantiate()
 		
 		#signal emit
@@ -174,6 +174,7 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 		
 	SceneManager.transition_to(scene_new)
 
+##
 func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://Levels/turn_arena.tscn") -> void:
 	
 	_battle_reset()
@@ -191,49 +192,38 @@ func battle_initialize_verbose(entity_list : Array, scene_new : String = "res://
 	
 	SceneManager.transition_to(scene_new)
 
+##
 func battle_finalize() -> void:
 	_battle_reset.call_deferred()
 	SaveManager.save_data_session()
 	SceneManager.transition_to_prev()
 
+##
 func _battle_reset() -> void:
 	Battle.battle_list.clear()
 
-# Turns and event handling
+### --- Utility Commands --- ###
 
-## Trigger the next death in death queue
-func run_death_queue() -> void:
-	for inst in death_queue:
-		inst.state_chart.send_event("on_death")
-		death_queue.erase(inst)
+## Updates all units positions to reflect a change (like death or swap)
+func update_positions():
+	var friends_offset := Vector3.ZERO
+	var foes_offset := Vector3.ZERO
+	for unit in battle_list:
+		
+		if unit and !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
+			
+			var tween = get_tree().create_tween()
+			
+			if unit.alignment == Battle.alignment.FOES:
+				foes_offset -= unit.spacing
+				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.5)
+				foes_offset -= unit.spacing
+			else:
+				friends_offset += unit.spacing
+				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.collider.shape.height/2,friends_offset.z),0.5)
+				friends_offset += unit.spacing
 
-## Add someone to die soon
-func add_death_queue(char : Node) -> void:
-	if char in death_queue:
-		Debug.message("Character already exists in death_queue. Cannot add",Debug.msg_category.BATTLE)
-	else:
-		death_queue.append(char)
-
-func check_ready() -> bool:
-	for char in battle_list:
-		if char and !char.my_component_state_controller_battle.is_character_ready:
-			return false
-	return true
-
-# Misc
-
-func type_color(type_string : String):
-	return str("[color=",Battle.type.get(type_string).COLOR.to_html(),"]")
-
-func type_color_dict(type_dict : Dictionary):
-	return str("[color=",type_dict.COLOR.to_html(),"]")
-
-func sort_screen(a,b): #Sorts based on screen X position (so left to right on screen)
-	if Global.camera_object.unproject_position(a.global_position).x < Global.camera_object.unproject_position(b.global_position).x:
-		return true
-	else:
-		return false
-
+##
 func mirror_section(start: int, end: int):
 	
 	## Fix out of bounds inputs
@@ -255,53 +245,38 @@ func mirror_section(start: int, end: int):
 		left += 1
 		right -= 1
 
+##
 func replace_member(new_member : Node,pos : int):
 	battle_list[pos] = new_member
 	update_positions()
 
+##
 func add_member(member : Node,pos : int):
 	battle_list.insert(pos,member)
 	update_positions()
 
-func update_positions(): #Updates all units positions to reflect a change (like death or swap)
-	var friends_offset := Vector3.ZERO
-	var foes_offset := Vector3.ZERO
-	for unit in battle_list:
-		
-		if unit and !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
-			
-			var tween = get_tree().create_tween()
-			
-			if unit.alignment == Battle.alignment.FOES:
-				foes_offset -= unit.spacing
-				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.5)
-				foes_offset -= unit.spacing
-			else:
-				friends_offset += unit.spacing
-				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.collider.shape.height/2,friends_offset.z),0.5)
-				friends_offset += unit.spacing
+#### --- Turn-related --- ###
 
-func search_glossary_name(character_name : String, character_list : Array, first_result : bool = true): #Search glossary names of all characters specified and return matches
-	var character_result_list : Array = []
-	
-	for i in len(character_list):
-		if character_list[i].glossary == character_name: #find the name
-			if first_result: #if first result is enabled
-				return character_list[i] #return it
-			else:
-				character_result_list.append(character_list[i])
-	
-	if !first_result:
-		return character_result_list
+## Trigger the next death in death queue
+func run_death_queue() -> void:
+	for inst in death_queue:
+		inst.state_chart.send_event("on_death")
+		death_queue.erase(inst)
+
+## Add someone to die soon
+func add_death_queue(char : Node) -> void:
+	if char in death_queue:
+		Debug.message("Character already exists in death_queue. Cannot add",Debug.msg_category.BATTLE)
 	else:
-		return null
+		death_queue.append(char)
 
-func search_classification(classification : String, alignment : String): #Returns a list of all the battle list units matching this classification
-	var result : Array = []
-	for i in get_team(alignment).size():
-		if battle_list[i].classification == classification:
-			result.append(battle_list[i])
-	return result
+func check_ready() -> bool:
+	for char in battle_list:
+		if char and !char.my_component_state_controller_battle.is_character_ready:
+			return false
+	return true
+
+### --- Grabbers --- ###
 
 func get_target_selector_list(target : Node, selector : Dictionary, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
@@ -351,7 +326,7 @@ func get_target_type_list(caster : Node,type : String,sorted : bool = false): #r
 		Battle.target_type.ALLIES:
 			result = my_team(caster)
 		Battle.target_type.OPPONENTS:
-			result = opposing_team(caster)
+			result = get_opposite_team(caster)
 		Battle.target_type.OTHER_ALLIES:
 			var team = my_team(caster)
 			team.pop_at(team.find(caster))
@@ -369,7 +344,7 @@ func get_target_type_list(caster : Node,type : String,sorted : bool = false): #r
 func my_team(character : Node):
 	return get_team(character.alignment)
 
-func opposing_team(character : Node):
+func get_opposite_team(character : Node):
 	if character.alignment == Battle.alignment.FRIENDS:
 		return get_team(Battle.alignment.FOES)
 	else:
@@ -384,7 +359,41 @@ func get_team(alignment : String):
 			team.append(entity)
 	return team
 
-##
+func get_type_color(type_string : String):
+	return str("[color=",Battle.type.get(type_string).COLOR.to_html(),"]")
+
+func get_type_color_dict(type_dict : Dictionary):
+	return str("[color=",type_dict.COLOR.to_html(),"]")
+
+func sort_screen(a,b): #Sorts based on screen X position (so left to right on screen)
+	if Global.camera_object.unproject_position(a.global_position).x < Global.camera_object.unproject_position(b.global_position).x:
+		return true
+	else:
+		return false
+
+func search_glossary_name(character_name : String, character_list : Array, first_result : bool = true): #Search glossary names of all characters specified and return matches
+	var character_result_list : Array = []
+	
+	for i in len(character_list):
+		if character_list[i].glossary == character_name: #find the name
+			if first_result: #if first result is enabled
+				return character_list[i] #return it
+			else:
+				character_result_list.append(character_list[i])
+	
+	if !first_result:
+		return character_result_list
+	else:
+		return null
+
+func search_classification(classification : String, alignment : String): #Returns a list of all the battle list units matching this classification
+	var result : Array = []
+	for i in get_team(alignment).size():
+		if battle_list[i].classification == classification:
+			result.append(battle_list[i])
+	return result
+
+### --- Battle Spotlight --- ###
 
 func camera_update():
 	Global.camera.follow_target = active_character

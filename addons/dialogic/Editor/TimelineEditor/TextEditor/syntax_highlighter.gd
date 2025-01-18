@@ -44,7 +44,7 @@ func update_colors() -> void:
 
 	code_flow_color = editor_settings.get("text_editor/theme/highlighting/control_flow_keyword_color")
 	boolean_operator_color = code_flow_color.lightened(0.5)
-	variable_color = editor_settings.get('text_editor/theme/highlighting/engine_type_color')
+	variable_color = editor_settings.get('text_editor/theme/highlighting/engine_get_type_color')
 	string_color = editor_settings.get('text_editor/theme/highlighting/string_color')
 	character_name_color = editor_settings.get('text_editor/theme/highlighting/symbol_color').lerp(normal_color, 0.3)
 	character_portrait_color = character_name_color.lerp(normal_color, 0.5)

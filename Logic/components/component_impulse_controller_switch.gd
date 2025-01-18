@@ -2,10 +2,10 @@
 class_name component_impulse_controller_switch
 extends component_impulse_controller
 
-var testing : bool = false
-
 ## Once activated, it stays in the activated state and ignores all further signals
 @export var one_way : bool = false
+
+@export var my_component_input_prompt : component_input_prompt
 
 enum type {
 	## Like a lever. Toggles between activated and deactivated on interaction
@@ -19,8 +19,6 @@ enum type {
 
 func _ready() -> void:
 	
-	testing = true
-	
 	#Import our parent ready func
 	super._ready()
 	
@@ -33,6 +31,22 @@ func _ready() -> void:
 	$StateChart/Main/Activated.state_entered.connect(on_state_entered_activated)
 	$StateChart/Main/Activated.state_exited.connect(on_state_exited_activated)
 
+## Checks a bunch of stuff to see what groups we're in so we can prompt the right button
+func _update_input_prompt(signal_name : Signal) -> void:
+	## Making sure we don't prompt for proximity, as it doesn't require input
+	if my_component_interact_reciever and type_selection != type.PROXIMITY:
+		var groups : Array = my_component_interact_reciever.get_groups()
+		var input_name : String
+		
+		## Interact button
+		if "interact_general" in groups:
+			input_name = "interact"
+			signal_name.emit(input_name)
+		## Ability button
+		elif Global.array_contains_starts_with(groups,"interact_ability"):
+			input_name = "interact_secondary"
+			signal_name.emit(input_name)
+
 ## --- Deactivated --- ###
 
 func on_state_entered_deactivated() -> void:
@@ -42,12 +56,14 @@ func on_state_entered_deactivated() -> void:
 
 func _on_target_entered_deactivated(source : Node) -> void:
 	Debug.message(["_on_target_entered_deactivated ",debug_name])
+	_update_input_prompt(my_component_input_prompt.input_open)
 	
 	if type_selection == type.PROXIMITY:
 		my_state_transition("deactivated","activated",true)
 
 func _on_target_exited_deactivated(source : Node) -> void:
 	Debug.message(["_on_target_exited_deactivated ",debug_name])
+	_update_input_prompt(my_component_input_prompt.input_closed)
 
 func _on_target_interact_deactivated(source : Node) -> void:
 	Debug.message(["_on_target_interact_deactivated ",debug_name])
@@ -75,9 +91,11 @@ func on_state_entered_activated() -> void:
 
 func _on_target_entered_activated(source : Node) -> void:
 	Debug.message(["_on_target_entered_activated ",debug_name])
+	_update_input_prompt(my_component_input_prompt.input_open)
 
 func _on_target_exited_activated(source : Node) -> void:
 	Debug.message(["_on_target_exited_activated ",debug_name])
+	_update_input_prompt(my_component_input_prompt.input_closed)
 	
 	if type_selection == type.PROXIMITY:
 		my_state_transition("activated","deactivated",true)

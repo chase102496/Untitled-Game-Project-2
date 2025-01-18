@@ -370,14 +370,14 @@ class status_disable:
 
 # TETHER
 
-class status_heartsurge:
+class status_soulstitch:
 	extends status_template_normal
 	
 	var partners : Array
 	
 	func _init(host : Node,partners : Array,duration : int) -> void:
-		id = "status_heartsurge"
-		title = "heartsurge"
+		id = "status_soulstitch"
+		title = "soulstitch"
 		description = "This target is sharing damage with another"
 		self.host = host #who is the initial target of the link
 		self.partners = partners #who is paired to the host
@@ -398,7 +398,7 @@ class status_heartsurge:
 			print("EE")
 			on_expire()
 	
-	func on_battle_entity_damaged(entity,amount): #the bread n butta of heartsurge
+	func on_battle_entity_damaged(entity,amount): #the bread n butta of soulstitch
 		if entity == host and partners.size() > 1: #if person hurt was our host, and partners aint all ded
 			for i in partners.size():
 				if partners[i] != host and partners[i] in Battle.battle_list: #if it's not me and it's alive
@@ -548,7 +548,7 @@ class status_regrowth:
 	
 	## We started the dying animation
 	func on_dying():
-		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
+		var paired_teammates = Glossary.get_entity_list(host.glossary,Battle.get_team(host.alignment),false) #pull all similar characters with our glossary name
 		for i in len(paired_teammates):
 			paired_teammates[i].my_component_ability.my_status.clear() #Clear status fx
 			paired_teammates[i].animations.tree.get("parameters/playback").travel("Death") #Begin their death anim
@@ -558,7 +558,7 @@ class status_regrowth:
 		
 		var living_teammates : Array = []
 		
-		for teammate in Battle.my_team(host):
+		for teammate in Battle.get_my_team(host):
 			## If we query this teammate and find anything
 			if teammate.my_component_ability.status_manager.find_all(id):
 				## If the teammate's health is above 0
@@ -592,14 +592,14 @@ class status_swarm: #Adds a percent to our damage based on how many of us are on
 		category = Battle.status_category.PASSIVE
 	
 	func on_start():
-		var paired_teammates = Battle.search_glossary_name(host.glossary,Battle.get_team(host.alignment),false)
+		var paired_teammates = Glossary.get_entity_list(host.glossary,Battle.get_team(host.alignment),false)
 		mult_total = (len(paired_teammates) - 1)*mult_percent #teammates + mult percent for one teammate
 		host.my_component_ability.my_stats.set_damage_multiplier_temp(mult_total)
 	
 	func on_end():
 		host.my_component_ability.my_stats.reset_damage_multiplier_temp()
 
-class status_stealth: #Cannot be targeted directly by attacks and echoes (needs AoE or heartsurge)
+class status_stealth: #Cannot be targeted directly by attacks and echoes (needs AoE or soulstitch)
 	extends status_template_passive
 
 ### --- Abilities --- ###
@@ -1021,7 +1021,7 @@ class ability_headbutt: #Scales with damage multiplier
 		Debug.message(["It did ", calc_damage, " damage!"],Debug.msg_category.BATTLE)
 		target.my_component_health.change(-calc_damage)
 
-class ability_heartsurge:
+class ability_soulstitch:
 	extends ability_template_standard
 	
 	func get_data():
@@ -1033,7 +1033,7 @@ class ability_heartsurge:
 		super._init()
 		self.damage = damage
 		self.vis_cost = vis_cost
-		id = "ability_heartsurge"
+		id = "ability_soulstitch"
 		title = "Soulstitch"
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		target_selector = Battle.target_selector.SINGLE_RIGHT
@@ -1048,7 +1048,7 @@ class ability_heartsurge:
 			for inst in old_targets: #remove instances from old targets
 				if inst and is_instance_valid(inst): #if old target is alive and not in current targets
 					var teth = inst.my_component_ability.my_status.TETHER
-					if teth and teth is status_heartsurge: #If we find they still have our old buff
+					if teth and teth is status_soulstitch: #If we find they still have our old buff
 						inst.my_component_ability.my_status.remove(inst.my_component_ability.my_status.TETHER)
 		
 		old_targets = targets
@@ -1061,7 +1061,7 @@ class ability_heartsurge:
 			
 			##Verification for needing actual stitch
 			if targets.size() >= 2:
-				target.my_component_ability.my_status.add(status_heartsurge.new(target,targets,skillcheck_modifier*2))
+				target.my_component_ability.my_status.add(status_soulstitch.new(target,targets,skillcheck_modifier*2))
 			else:
 				Debug.message(["No valid target to stitch to - ",targets],Debug.msg_category.BATTLE)
 	
