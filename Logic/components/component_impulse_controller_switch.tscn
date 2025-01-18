@@ -42,3 +42,4 @@ delay_in_seconds = "0.0"
 [node name="Components" type="Node3D" parent="." index="1"]
 
 [node name="component_input_prompt" parent="Components" index="0" instance=ExtResource("5_xg4aj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
