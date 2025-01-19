@@ -1088,9 +1088,10 @@ class ability_switchstitch:
 		if target == primary_target:
 			var index_start = Battle.battle_list.find(targets.front())
 			var index_end = Battle.battle_list.find(targets.back())
-			Battle.mirror_section(index_start,index_end)
+			
+			Battle.swap_position_list(index_start,index_end)
 			
 			for i in len(targets): #Only damages if the primary target tanks the damage
 				targets[i].my_component_health.change(-damage)
 			
-			Battle.update_positions()
+			Battle.update_focus()

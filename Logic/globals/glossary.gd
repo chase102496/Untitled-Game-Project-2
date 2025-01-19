@@ -81,25 +81,30 @@ func convert_entity_glossary(glossary_name : String, set_prefix : String):
 # Particle System
 
 ## So we can see everything that happened on screen instead of it bombarding us all at once
-var text_particle_queue : Array = []
+var particle_queue : Array = []
 ## Recursion protection and single-instance running. No parallels.
-var is_text_particle_queue_running : bool = false
+var is_particle_queue_running : bool = false
 ## Seconds in between queue items
-var text_particle_queue_buffer : float = 1.0
+var particle_queue_buffer : float = 0.5
+
+## Clears the current queue
+func reset_particle_queue() -> void:
+	particle_queue.clear()
+
 ## Creates a text-based particle
 ## For example, damage, or status effect changes
 func _run_particle_queue() -> void:
 
 	## Bail if already running
-	if is_text_particle_queue_running:
+	if is_particle_queue_running:
 		return
 	
 	## Start processing the queue
-	is_text_particle_queue_running = true
+	is_particle_queue_running = true
 	
 	## Main loop
-	while not text_particle_queue.is_empty():
-		var inst_callable = text_particle_queue.pop_front()
+	while not particle_queue.is_empty():
+		var inst_callable = particle_queue.pop_front()
 		
 		## Checking for invalids
 		if !inst_callable or inst_callable is not Callable:
@@ -115,14 +120,14 @@ func _run_particle_queue() -> void:
 		inst_callable.call()
 		
 		## Waiting
-		await get_tree().create_timer(text_particle_queue_buffer).timeout
+		await get_tree().create_timer(particle_queue_buffer).timeout
 
 	## Finished processing
-	is_text_particle_queue_running = false
+	is_particle_queue_running = false
 
 ## Internal adding
 func _add_particle_queue(part_callable : Callable) -> void:
-	text_particle_queue.append(part_callable)
+	particle_queue.append(part_callable)
 
 ## This is the internal function to actually instantiate the particle
 func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
@@ -167,14 +172,14 @@ func create_input_prompt(anchor : Node3D, action : StringName, color : Color = C
 			var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
 			human_keycode = OS.get_keycode_string(keycode)
 	
-	return _create_prompt_keyboard(anchor,human_keycode)
+	return _create_prompt_keyboard_3d(anchor,human_keycode)
 	#match Global.current_input_device blah blah blah = callable to search lib
 
 ## Later on, we will add an adapter that picks which create prompt to use
 ## The only thing component_input_prompt should need is the Input version "ui_cancel" etc.
 ## The component_input_prompt will then call a callable that is swapped based on the device used
-func _create_prompt_keyboard(anchor : Node3D, button_text : String, color : Color = Color.WHITE) -> Node3D:
-	var inst = Glossary.prompt_icon["keyboard"].instantiate()
+func _create_prompt_keyboard_3d(anchor : Node3D, button_text : String, color : Color = Color.WHITE) -> Node3D:
+	var inst = Glossary.prompt_icon["icon_3d_keyboard"].instantiate()
 	var prompt_label = inst.get_node("%prompt_label")
 	prompt_label.text = button_text
 	prompt_label.label_settings.font_color = color
@@ -195,7 +200,7 @@ func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, a
 			inst.process_material.initial_velocity_min = speed
 		if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
 			inst.draw_pass_1.material.albedo_color = color
-			
+		
 		inst.one_shot = one_shot
 		
 		
@@ -600,7 +605,8 @@ const status_icon : Dictionary = {
 	}
 
 const prompt_icon : Dictionary = {
-	"keyboard" : preload("res://Scenes/ui/input_icon/icon_prompt_keyboard.tscn"),
+	"icon_3d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
+	"icon_2d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
 }
 
 var entity_scene : Dictionary = {

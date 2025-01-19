@@ -204,31 +204,57 @@ func _battle_reset() -> void:
 
 ### --- Utility Commands --- ###
 
+## Updates position, camera, and spotlight in one wrapper
+func update_focus() -> void:
+	var tween_list = update_positions()
+	
+	for tween in tween_list:
+		if tween.is_running():
+			await tween.finished
+	
+	update_camera()
+	update_spotlight()
+	
+	if battle_spotlight_tween.is_running():
+		await battle_spotlight_tween.finished
+
 ## Updates all units positions to reflect a change (like death or swap)
-func update_positions():
+## Returns a list of all the tweens for each unit currently moving to its next position
+func update_positions() -> Array[Tween]:
 	var friends_offset := Vector3.ZERO
 	var foes_offset := Vector3.ZERO
+	var tween_list : Array[Tween] = []
 	for unit in battle_list:
 		
 		if unit and !unit.is_queued_for_deletion(): #Check end of cycle to see if anyone gettin deleted, then move
 			
 			var tween = get_tree().create_tween()
+			tween.set_ease(Tween.EASE_IN)
+			tween.set_trans(Tween.TRANS_BACK)
 			
 			if unit.alignment == Battle.alignment.FOES:
 				foes_offset -= unit.spacing
-				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.5)
+				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.3)
 				foes_offset -= unit.spacing
 			else:
 				friends_offset += unit.spacing
-				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.collider.shape.height/2,friends_offset.z),0.5)
+				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.collider.shape.height/2,friends_offset.z),0.3)
 				friends_offset += unit.spacing
+			
+			tween_list.append(tween)
+	
+	return tween_list
 
-##
-func mirror_section(start: int, end: int):
+## Will completely swap orders of a section of units (e.g. [1,2,3] -> [3,2,1]
+func swap_position_list(start: int, end: int, update_active_character : bool = false):
+	
+	var active_character_old_index = battle_list.find(active_character)
 	
 	## Fix out of bounds inputs
 	var result_start : int = clamp(start,0,battle_list.size() - 1)
-	var result_end : int = clamp(start,0,battle_list.size() - 1)
+	var result_end : int = clamp(end,0,battle_list.size() - 1)
+	## For comparison later
+	var swap_list = battle_list.slice(result_start,result_end+1)
 	
 	# Initialize pointers
 	var left = result_start
@@ -244,16 +270,26 @@ func mirror_section(start: int, end: int):
 		# Move pointers closer
 		left += 1
 		right -= 1
+	
+	### If active char was in our swap list, and we wanna update the active character to the old position of them
+	if update_active_character:
+		if active_character in swap_list:
+			Battle.active_character = Battle.battle_list[active_character_old_index]
+			Events.turn_start.emit()
+		else:
+			push_warning("No active character inside mirror section to reflect active_character update")
+	
+	update_focus()
 
 ##
 func replace_member(new_member : Node,pos : int):
 	battle_list[pos] = new_member
-	update_positions()
+	update_focus()
 
 ##
 func add_member(member : Node,pos : int):
 	battle_list.insert(pos,member)
-	update_positions()
+	update_focus()
 
 #### --- Turn-related --- ###
 
@@ -395,9 +431,11 @@ func search_classification(classification : String, alignment : String): #Return
 
 ### --- Battle Spotlight --- ###
 
-func camera_update():
-	Global.camera.follow_target = active_character
+func update_spotlight():
 	set_battle_spotlight_target(active_character)
+
+func update_camera() -> void:
+	Global.camera.follow_target = active_character
 
 func orphan_battle_spotlight() -> void:
 	battle_spotlight.remote_transform.remote_path = ""

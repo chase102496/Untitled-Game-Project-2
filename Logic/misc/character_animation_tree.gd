@@ -15,7 +15,7 @@ var attack_window_close_time : float
 ## Total time to play with
 var attack_window_total_time : float
 ## How much is given to open and taken from closed each combo
-var attack_window_modifier : float = 0.1
+var attack_window_modifier : float = 0.5
 ## Amount of attacks we've success'd
 var attack_combo : int = 0
 ## 
@@ -142,14 +142,17 @@ func _attack_combo_change(amt : int) -> int:
 	attack_combo += amt
 	match attack_combo:
 		1:
-			Glossary.create_text_particle_queue.call_deferred(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Global.palette["Apricot"])
-			Glossary.create_fx_particle_custom.call_deferred(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,100,-1,-1,-1,Global.palette["Apricot"])
+			Glossary.reset_particle_queue()
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Global.palette["Apricot"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,-1,-1,Global.palette["Apricot Saturated"])
 		2:
+			Glossary.reset_particle_queue()
 			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Global.palette["Light Coral"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Global.palette["Light Coral"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,-1,Global.palette["Light Coral Saturated"])
 		_:
+			Glossary.reset_particle_queue()
 			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Global.palette["Magenta Haze"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,20,-1,5,-1,Global.palette["Magenta Haze"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,-1,Global.palette["Magenta Haze Saturated"])
 	
 	return attack_combo
 

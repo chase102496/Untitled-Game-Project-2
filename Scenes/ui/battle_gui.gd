@@ -32,6 +32,11 @@ extends Control
 @onready var ui_description_title : RichTextLabel = %"Description/VBoxContainer/Description Title"
 @onready var ui_description_label : RichTextLabel = %"Description/VBoxContainer/Description Label"
 
+@onready var ui_input_prompt_Q : Control = $"Input Prompts/icon_2d_keyboard_Q"
+@onready var ui_input_prompt_SPACE : Control = $"Input Prompts/icon_2d_keyboard_SPACE"
+@onready var ui_input_prompt_SPACE_ATTACK : Control = $"Input Prompts/icon_2d_keyboard_SPACE/icon_sword_default"
+@onready var ui_input_prompt_SPACE_DEFEND : Control = $"Input Prompts/icon_2d_keyboard_SPACE/icon_shield_default"
+
 @onready var state_chart : StateChart = %StateChart
 
 func _ready() -> void:
@@ -39,6 +44,7 @@ func _ready() -> void:
 	## Main
 	ui_grid_main.hide()
 	%StateChart/Battle_GUI/Main.state_entered.connect(_on_state_entered_battle_gui_main)
+	%StateChart/Battle_GUI/Main.state_input.connect(_on_state_input_battle_gui_main)
 	%StateChart/Battle_GUI/Main.state_exited.connect(_on_state_exited_battle_gui_main)
 	
 	## Attack
@@ -78,10 +84,15 @@ func _ready() -> void:
 	%StateChart/Battle_GUI/Skillcheck.state_physics_processing.connect(_on_state_physics_processing_battle_gui_skillcheck) #long af
 	%StateChart/Battle_GUI/Skillcheck.state_exited.connect(_on_state_exited_battle_gui_skillcheck)
 	
-	## Status Effects Desc
+	## Global events of entity attack
+	Events.battle_entity_attack_start.connect(_on_battle_entity_attack_start)
+	Events.battle_entity_attack_end.connect(_on_battle_entity_attack_end)
 	
-	
-	## Misc
+	# Misc
+	ui_input_prompt_Q.hide()
+	ui_input_prompt_SPACE.hide()
+	ui_input_prompt_SPACE_ATTACK.hide()
+	ui_input_prompt_SPACE_DEFEND.hide()
 	# When enabled
 	%StateChart/Battle_GUI.state_input.connect(_on_state_input_battle_gui)
 	# 
@@ -130,11 +141,33 @@ func _on_state_entered_battle_gui_main() -> void:
 	active_portrait.modulate = Color("ffffff")
 	ui_panel_menu.show() #Show main panel
 	ui_grid_main.show() #Show main grid of buttons
+	ui_input_prompt_Q.show()
+	
+func _on_state_input_battle_gui_main(event : InputEvent) -> void:
+	if Input.is_action_just_pressed("interact_secondary"):
+			Battle.swap_position_list(0,1,true)
+			print("EE")
+
 func _on_state_exited_battle_gui_main() -> void:
 	ui_panel_menu.hide() #Hide main panel
 	ui_grid_main.hide() #Hide main grid of buttons
+	ui_input_prompt_Q.hide()
 
 ## Attack
+
+func _on_battle_entity_attack_start(entity : Node) -> void:
+	ui_input_prompt_SPACE.show()
+	if entity.alignment == Battle.alignment.FRIENDS:
+		ui_input_prompt_SPACE_ATTACK.show()
+	else:
+		ui_input_prompt_SPACE_DEFEND.show()
+
+func _on_battle_entity_attack_end(entity : Node) -> void:
+	ui_input_prompt_SPACE.hide()
+	if entity.alignment == Battle.alignment.FRIENDS:
+		ui_input_prompt_SPACE_ATTACK.hide()
+	else:
+		ui_input_prompt_SPACE_DEFEND.hide()
 
 func _on_button_pressed_attack() -> void:
 	
@@ -188,7 +221,8 @@ func _on_state_exited_battle_gui_echoes() -> void:
 func _on_state_entered_battle_gui_select() -> void:
 	selected_target = selector_list[0]
 	update_selector_position()
-	#selector_sprite.show()
+	
+	ui_input_prompt_SPACE.show()
 
 func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 
@@ -224,7 +258,8 @@ func _on_state_physics_processing_battle_gui_select(delta: float) -> void:
 func _on_state_exited_battle_gui_select() -> void:
 	selected_target = selector_list[0]
 	Battle.set_battle_spotlight_target(owner)
-	#selector_sprite.hide()
+	
+	ui_input_prompt_SPACE.hide()
 
 # Skillcheck
 ## TODO Consider re-adding after playtest? Find a new way to incorporate it

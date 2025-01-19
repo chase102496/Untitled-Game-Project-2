@@ -8,14 +8,31 @@ var state_chart_already_exists : bool = false
 
 const palette : Dictionary = {
 	"Melon": Color("#e5a198"),
+	"Melon Saturated": Color("#f08575"), # More saturated melon (reddish-pink)
+	
 	"Medium Slate Blue": Color("#7c74bf"),
+	"Medium Slate Blue Saturated": Color("#8468e3"), # More saturated violet-blue
+	
 	"Icterine": Color("#ffff52"),
+	"Icterine Saturated": Color("#fff000"), # More saturated yellow
+	
 	"Apricot": Color("#edb79f"),
+	"Apricot Saturated": Color("#f78a5c"), # More saturated orange-pink
+	
 	"Moonstone": Color("#61b9c5"),
+	"Moonstone Saturated": Color("#3cc9d8"), # More saturated cyan-blue
+	
 	"Oxford Blue": Color("#15273f"),
+	"Oxford Blue Saturated": Color("#1a3b5c"), # Richer, deeper blue
+	
 	"Light Coral": Color("#e77f7b"),
+	"Light Coral Saturated": Color("#f2635e"), # More saturated red-pink
+	
 	"Steel Blue": Color("#50789b"),
-	"Magenta Haze": Color("#913d71")
+	"Steel Blue Saturated": Color("#4682cc"), # More saturated blue-gray
+	
+	"Magenta Haze": Color("#913d71"),
+	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
 
 ## Pick a random result in a list based on weight

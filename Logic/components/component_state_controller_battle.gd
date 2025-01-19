@@ -27,9 +27,11 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
 	%StateChart/Main/Battle/Start.state_entered.connect(_on_state_entered_battle_start)
 	%StateChart/Main/Battle/Choose.state_entered.connect(_on_state_entered_battle_choose)
+	#%StateChart/Main/Battle/Choose.state_input.connect(_on_state_input_battle_choose)
 	%StateChart/Main/Battle/Skillcheck.state_entered.connect(_on_state_entered_battle_skillcheck)
 	%StateChart/Main/Battle/Skillcheck.state_exited.connect(_on_state_exited_battle_skillcheck)
 	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
+	%StateChart/Main/Battle/Execution.state_exited.connect(_on_state_exited_battle_execution)
 	%StateChart/Main/Battle/End.state_entered.connect(_on_state_entered_battle_end)
 	%StateChart/Main/Battle/End.state_physics_processing.connect(_on_state_physics_processing_battle_end)
 	%StateChart/Main/Battle/Dying.state_entered.connect(_on_state_entered_battle_dying)
@@ -122,6 +124,10 @@ func _on_battle_entity_death(entity : Node):
 func _on_state_entered_battle_waiting() -> void:
 	is_character_ready = true
 	state_chart_memory = "on_waiting"
+	
+	## Making sure our GUI is disabled in waiting
+	if owner.get("my_battle_gui"):
+		owner.my_battle_gui.state_chart.send_event("on_gui_disabled")
 
 func _on_state_entered_battle_start() -> void:
 	Debug.message("-----------------------",Debug.msg_category.BATTLE)
@@ -141,11 +147,9 @@ func _on_state_entered_battle_choose() -> void:
 	
 	if my_component_ability.get_abilities().size() == 0:
 		push_error("Abilities is empty for unit ", owner.name)
-		
+	
 	match owner.classification:
-		Battle.classification.PLAYER:
-			owner.my_battle_gui.state_chart.send_event("on_gui_main")
-		Battle.classification.DREAMKIN:
+		Battle.classification.PLAYER, Battle.classification.DREAMKIN:
 			owner.my_battle_gui.state_chart.send_event("on_gui_main")
 		Battle.classification.ENEMY:
 			await get_tree().create_timer(0.2).timeout
@@ -169,6 +173,9 @@ func _on_state_entered_battle_choose() -> void:
 		_:
 			push_error("Not a valid entity for battle: ",owner.name)
 
+#func _on_state_input_battle_choose(event : InputEvent) -> void:
+	#pass
+
 func _on_state_entered_battle_skillcheck() -> void:
 	match owner.classification:
 		Battle.classification.ENEMY: #weighted random skillcheck
@@ -186,13 +193,15 @@ func _on_state_entered_battle_skillcheck() -> void:
 
 func _on_state_exited_battle_skillcheck() -> void:
 	match owner.classification:
-		Battle.classification.PLAYER:
+		Battle.classification.PLAYER, Battle.classification.DREAMKIN:
 			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
-		Battle.classification.DREAMKIN:
-			my_component_ability.cast_queue.skillcheck(owner.my_battle_gui.ui_skillcheck_result) #Modifies our ability based on outcome of skillcheck from ui
-	
+
 func _on_state_entered_battle_execution() -> void:
+	Events.battle_entity_attack_start.emit(owner)
 	my_component_ability.cast_queue.animation()
+
+func _on_state_exited_battle_execution() -> void:
+	Events.battle_entity_attack_end.emit(owner)
 
 func _on_state_entered_battle_end() -> void:
 	state_chart_memory = "on_end" #For after applying shit we remember where we were

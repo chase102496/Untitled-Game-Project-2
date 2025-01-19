@@ -103,7 +103,7 @@ func _request_request_completed(result: int, response_code: int, headers: Packed
 		)
 		_set_scale()
 		editor_plugin.panel_button.add_theme_color_override("font_color", Color("#3AB99A"))
-		editor_plugin.panel_button.icon = load("res://addons/phantom_camera/icons/phantom_camera_updater_panel_icon.svg")
+		editor_plugin.panel_button.icon = load("res://addons/phantom_camera/icons/phantom_update_camerar_panel_icon.svg")
 		editor_plugin.panel_button.add_theme_color_override("icon_normal_color", Color("#3AB99A"))
 		show()
 

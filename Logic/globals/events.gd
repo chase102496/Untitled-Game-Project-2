@@ -25,8 +25,9 @@ signal state_chart_ready(character,state_chart_name) #Can use if something is be
 
 ## --- Battle Signals
 
-signal turn_end #a fresh turn has started (even before their state on_start)
 signal turn_start #a turn has completely ended (even after their state on_end)
+signal turn_repeat #play the same turn again, no changes to current character
+signal turn_end #a fresh turn has started (even before their state on_start)
 
 signal skillcheck_hit(area,ability_queued) #We just hit our skillcheck animation
 
@@ -36,6 +37,9 @@ signal battle_entity_disabled_expire(entity : Node) #When an entity came out of 
 
 ##
 signal battle_entity_turn_end(entity : Node)
+##
+signal battle_entity_attack_start(entity : Node)
+signal battle_entity_attack_end(entity : Node)
 ##
 signal battle_entity_missed(entity_caster : Node, entity_targets : Array, ability : Object)
 ## Someone was hit with an ability
