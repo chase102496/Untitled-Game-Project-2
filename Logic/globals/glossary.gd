@@ -180,7 +180,7 @@ func create_input_prompt(anchor : Node3D, action : StringName, color : Color = C
 ## The component_input_prompt will then call a callable that is swapped based on the device used
 func _create_prompt_keyboard_3d(anchor : Node3D, button_text : String, color : Color = Color.WHITE) -> Node3D:
 	var inst = Glossary.prompt_icon["icon_3d_keyboard"].instantiate()
-	var prompt_label = inst.get_node("%prompt_label")
+	var prompt_label = inst.prompt_label
 	prompt_label.text = button_text
 	prompt_label.label_settings.font_color = color
 	anchor.add_child(inst)

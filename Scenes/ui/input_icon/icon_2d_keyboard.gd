@@ -1,5 +1,7 @@
 extends Control
 
+@export var prompt_label : Label
+
 func _ready():
 	update_pivot()
 	%prompt_label.resized.connect(_on_resized)

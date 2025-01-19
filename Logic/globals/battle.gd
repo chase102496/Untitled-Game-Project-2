@@ -284,7 +284,6 @@ func swap_position_list(start: int, end: int, update_active_character : bool = f
 ##
 func replace_member(new_member : Node,pos : int):
 	battle_list[pos] = new_member
-	update_focus()
 
 ##
 func add_member(member : Node,pos : int):
@@ -313,6 +312,10 @@ func check_ready() -> bool:
 	return true
 
 ### --- Grabbers --- ###
+
+func get_relative_character(index_direction : int):
+	var result_index = Global.get_relative_index(battle_list,battle_list.find(active_character),index_direction)
+	return battle_list[result_index]
 
 func get_target_selector_list(target : Node, selector : Dictionary, target_type_list : Array): #Returns the other targets in addition to the main selected one, based off the list provided
 	var result : Array = []
@@ -441,7 +444,7 @@ func orphan_battle_spotlight() -> void:
 	battle_spotlight.remote_transform.remote_path = ""
 	battle_spotlight.hide()
 
-func set_battle_spotlight_target(target: Node3D) -> void:
+func set_battle_spotlight_target(target : Node3D) -> void:
 	
 	if !battle_spotlight.visible:
 		battle_spotlight.show()
@@ -455,6 +458,7 @@ func set_battle_spotlight_target(target: Node3D) -> void:
 		battle_spotlight_tween.set_trans(Tween.TRANS_BACK)
 		battle_spotlight_tween.tween_property(battle_spotlight,"global_position",Vector3(target.global_position.x,battle_spotlight.global_position.y,target.global_position.z),tween_time)
 		battle_spotlight.remote_transform.remote_path = get_path_to(target)
+
 
 func set_battle_spotlight_brightness(brightness : float,time : float = 0) -> void:
 	if battle_spotlight.light.light_energy != brightness:

@@ -118,7 +118,7 @@ _data = {
 "press": SubResource("Animation_ec7oi")
 }
 
-[node name="icon_2d_keyboard" type="Control"]
+[node name="icon_2d_keyboard" type="Control" node_paths=PackedStringArray("prompt_label")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -129,18 +129,13 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_ot1tq")
+prompt_label = NodePath("MarginContainer/MarginContainer/VBoxContainer/prompt_label")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -46.0
-offset_top = -46.0
-offset_right = 14.0
-offset_bottom = 29.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -177,7 +172,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-text = "E"
+text = "Input"
 label_settings = SubResource("LabelSettings_aufu3")
 horizontal_alignment = 1
 

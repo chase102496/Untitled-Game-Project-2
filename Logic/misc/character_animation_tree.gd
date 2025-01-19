@@ -16,6 +16,8 @@ var attack_window_close_time : float
 var attack_window_total_time : float
 ## How much is given to open and taken from closed each combo
 var attack_window_modifier : float = 0.5
+## How many seconds the window can cut down to. If 0, the player cannot land an attack
+var attack_window_minimum_window : float = 0.1
 ## Amount of attacks we've success'd
 var attack_combo : int = 0
 ## 
@@ -69,8 +71,8 @@ func start_skillcheck_window(time : float) -> void:
 	is_attack_final = true
 	
 	## Calculating timing window
-	attack_window_open_time = ((attack_combo*attack_window_modifier) * attack_window_total_time)/2
-	attack_window_close_time = attack_window_total_time - attack_window_open_time
+	attack_window_open_time = min(attack_window_total_time - (attack_window_total_time*attack_window_minimum_window), ((attack_combo*attack_window_modifier) * attack_window_total_time)/2)
+	attack_window_close_time = max(attack_window_total_time*attack_window_minimum_window, attack_window_total_time - attack_window_open_time)
 	
 	## Creates the start buffer, which starts at 0 and grows as the buffer does
 	if attack_window_open_time > 0:

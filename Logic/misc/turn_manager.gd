@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var turn_pause_amount : float = 0.5
+
 @export var spotlight : BattleSpotlight
 
 #DO NOT PUT ANYTHING BESIDES THE UNITS THAT WILL BE FIGHTING AND TAKING TURNS IN THE IMMEDIATE CHILD SECTION OF TURN_MANAGER
@@ -83,7 +85,7 @@ func _on_turn_end() -> void:
 	
 	Debug.message("Ending turn...",Debug.msg_category.BATTLE)
 	
-	await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(0.2).timeout
 	
 	## If someone is ready to DIE
 	if !Battle.death_queue.is_empty():
@@ -110,6 +112,9 @@ func _next_turn() -> void:
 	
 	Battle.update_focus()
 	
+	if Battle.get_relative_character(-1).alignment != Battle.active_character.alignment:
+		await get_tree().create_timer(turn_pause_amount).timeout
+	
 	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
 
 ### --- Utility --- ###
@@ -124,7 +129,6 @@ func _clear_null_characters() -> void:
 func _load_next_character() -> void:
 	
 	## Set new character as next in queue, and incrementing the index
-	var old_alignment = Battle.active_character_alignment
 	var new_index = _find_next_valid_character(Battle.active_character_index)
 	
 	## Updating active index and character
@@ -133,7 +137,7 @@ func _load_next_character() -> void:
 	Battle.active_character_alignment = Battle.active_character.alignment
 
 	## If we are now on the other team's turn sequence, let em know
-	if old_alignment != Battle.active_character_alignment:
+	if Battle.get_relative_character(-1).alignment != Battle.active_character.alignment:
 		Events.battle_team_start.emit(Battle.active_character_alignment)
 
 ### --- Getters --- ###

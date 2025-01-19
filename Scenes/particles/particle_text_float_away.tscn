@@ -32,7 +32,7 @@ viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hopef"]
 resource_local_to_scene = true
-render_priority = 101
+render_priority = 102
 transparency = 1
 shading_mode = 0
 albedo_texture = SubResource("ViewportTexture_8u5ee")

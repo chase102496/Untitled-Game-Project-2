@@ -65,6 +65,24 @@ func pick_weighted(dict_list: Array):
 	push_error("Could not find matching weight to randomly pick for pick_weighted(",dict_list,")")
 	return
 
+## Query an array and retrieve a value based on a wrapping index system. It takes three arguments
+func get_relative_index(array: Array, current_index: int, index_direction: int) -> int:
+
+	# If the current selection is not in the array, return an error value (-1 here)
+	if current_index == -1:
+		push_error("Could not find current index because input value was -1")
+		return -1
+
+	# Calculate the new index, wrapping around using modulo
+	var new_index = (current_index + index_direction) % array.size()
+
+	# Ensure the index is positive in case of negative wrapping
+	if new_index < 0:
+		new_index += array.size()
+
+	# Return the value at the new index
+	return new_index
+
 ## Grabs just the script name of the object
 func get_glossary_nickname(entity : Node):
 	var filepath = entity.get_scene_file_path()

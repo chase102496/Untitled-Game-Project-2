@@ -449,13 +449,11 @@ func _on_button_pressed_party_dreamkin(properties : Dictionary):
 				else: #We are the last one (somehow)
 					Battle.add_member(new_dreamkin_inst,0)
 			
-			print_debug("Swapping out Dreamkin...")
+			Debug.message("Swapping out Dreamkin...",Debug.msg_category.BATTLE)
 			
-			state_chart.send_event("on_gui_disabled") #Disable gui
+			state_chart.send_event("on_gui_disabled")
 			
-			#await new_dreamkin_inst.ready TBD don't need??
 			Events.turn_end.emit.call_deferred() #End turn without any phases
-			#owner.state_chart.send_event("on_end") #End our turn
 	else:
 		print(dreamkin.name," is unconscious!")
 

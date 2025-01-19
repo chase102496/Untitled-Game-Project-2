@@ -27,7 +27,6 @@ func _ready() -> void:
 	%StateChart/Main/Battle/Waiting.state_entered.connect(_on_state_entered_battle_waiting)
 	%StateChart/Main/Battle/Start.state_entered.connect(_on_state_entered_battle_start)
 	%StateChart/Main/Battle/Choose.state_entered.connect(_on_state_entered_battle_choose)
-	#%StateChart/Main/Battle/Choose.state_input.connect(_on_state_input_battle_choose)
 	%StateChart/Main/Battle/Skillcheck.state_entered.connect(_on_state_entered_battle_skillcheck)
 	%StateChart/Main/Battle/Skillcheck.state_exited.connect(_on_state_exited_battle_skillcheck)
 	%StateChart/Main/Battle/Execution.state_entered.connect(_on_state_entered_battle_execution)
@@ -172,9 +171,6 @@ func _on_state_entered_battle_choose() -> void:
 			#x is single-target, so we either randomly select 1 person from
 		_:
 			push_error("Not a valid entity for battle: ",owner.name)
-
-#func _on_state_input_battle_choose(event : InputEvent) -> void:
-	#pass
 
 func _on_state_entered_battle_skillcheck() -> void:
 	match owner.classification:

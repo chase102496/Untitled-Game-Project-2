@@ -1,7 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://eb2yki53do5p"]
+[gd_scene load_steps=20 format=3 uid="uid://eb2yki53do5p"]
 
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="1_a6t1f"]
+[ext_resource type="Script" path="res://Scenes/ui/input_icon/icon_3d_keyboard.gd" id="1_rotgv"]
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="2_cj42m"]
+[ext_resource type="PackedScene" uid="uid://k84bqw0hvoos" path="res://Scenes/ui/input_icon/icon_2d_keyboard.tscn" id="2_i1tp5"]
 [ext_resource type="Texture2D" uid="uid://dj44000nu2v7v" path="res://Resources/Textures/2D/UI/Input Prompts/ui_pack_controls/ui_pack_keyboard/key_up.standard/ui_pack_keyboard_empty_94.png" id="3_nq4ac"]
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="4_ecgsu"]
 
@@ -21,6 +23,7 @@ billboard_mode = 1
 [sub_resource type="QuadMesh" id="QuadMesh_d2smd"]
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_1b8qf")
+size = Vector2(2, 2)
 
 [sub_resource type="Animation" id="Animation_ayqi4"]
 length = 0.001
@@ -157,6 +160,13 @@ _data = {
 "new_animation": SubResource("Animation_u3gk8")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_6m3kd"]
+resource_local_to_scene = true
+font = ExtResource("4_ecgsu")
+font_size = 40
+outline_size = 20
+outline_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+
 [sub_resource type="Gradient" id="Gradient_02iun"]
 offsets = PackedFloat32Array(0, 0.126354, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.0495, 0.09305, 0.15, 1, 1, 1, 1, 1)
@@ -181,7 +191,9 @@ font_size = 68
 outline_size = 32
 outline_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
 
-[node name="icon_3d_keyboard" type="Node3D"]
+[node name="icon_3d_keyboard" type="Node3D" node_paths=PackedStringArray("prompt_label")]
+script = ExtResource("1_rotgv")
+prompt_label = NodePath("SubViewport/icon_2d_keyboard/MarginContainer/MarginContainer/VBoxContainer/prompt_label")
 
 [node name="Icon" type="MeshInstance3D" parent="."]
 mesh = SubResource("QuadMesh_d2smd")
@@ -198,7 +210,13 @@ transparent_bg = true
 canvas_item_default_texture_filter = 2
 render_target_update_mode = 4
 
+[node name="icon_2d_keyboard" parent="SubViewport" instance=ExtResource("2_i1tp5")]
+
+[node name="prompt_label" parent="SubViewport/icon_2d_keyboard/MarginContainer/MarginContainer/VBoxContainer" index="0"]
+label_settings = SubResource("LabelSettings_6m3kd")
+
 [node name="PanelContainer" type="Control" parent="SubViewport"]
+visible = false
 texture_filter = 6
 layout_mode = 3
 anchors_preset = 8
@@ -248,3 +266,5 @@ text = "E"
 label_settings = SubResource("LabelSettings_r2ura")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[editable path="SubViewport/icon_2d_keyboard"]
