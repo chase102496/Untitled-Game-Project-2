@@ -862,11 +862,13 @@ class ability_template_standard: #Standard ability with vis cost and skillcheck
 	
 	### --- Casting --- ###
 	
+	## Subtracting the Vis cost before cast begins
+	func cast_vis() -> void:
+		caster.my_component_vis.change(-vis_cost,false)
+	
 	## When on_contact is called, caster-side
 	func cast_main() -> void:
 		super.cast_main()
-		
-		caster.my_component_vis.change(-vis_cost,false)
 	
 	func cast_pre_mitigation_bonus(caster : Node, target : Node) -> void:
 		super.cast_pre_mitigation_bonus(caster,target)
@@ -965,10 +967,6 @@ class ability_frigid_core:
 		self.chance = chance
 		self.vis_cost = vis_cost
 		type = Battle.type.VOID
-		
-	func cast_main():
-		pass
-		#TODO add vis removal here
 	
 	func cast_pre_mitigation(caster : Node, target : Node):
 		Debug.message([caster.name, " froze ", target.name,"!"],Debug.msg_category.BATTLE)
@@ -1038,8 +1036,6 @@ class ability_soulstitch:
 		description = "Binds the life essence of two targets together, causing them to share all health changes for a limited time"
 		target_selector = Battle.target_selector.SINGLE_RIGHT
 		type = Battle.type.TETHER
-	
-	
 	
 	func cast_main():
 		super.cast_main()

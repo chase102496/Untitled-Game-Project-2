@@ -16,8 +16,10 @@ var block_armor : int = 0
 
 var health : int:
 	set(value):
+		var old_health = health
 		health = value
-		_update(value)
+		var new_health = health
+		_update(new_health - old_health)
 
 func _ready() -> void:
 	
@@ -154,6 +156,3 @@ func change(amt: int, from_tether: bool = false, display: bool = true):
 				Debug.message("Death Protection Activated!", Debug.msg_category.BATTLE)
 		else:
 			_on_hurt()
-	
-	# Update health change consequences
-	_update(calc["amt_changed"])

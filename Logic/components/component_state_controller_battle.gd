@@ -195,6 +195,7 @@ func _on_state_exited_battle_skillcheck() -> void:
 func _on_state_entered_battle_execution() -> void:
 	Events.battle_entity_attack_start.emit(owner)
 	my_component_ability.cast_queue.animation()
+	my_component_ability.cast_queue.cast_vis()
 
 func _on_state_exited_battle_execution() -> void:
 	Events.battle_entity_attack_end.emit(owner)

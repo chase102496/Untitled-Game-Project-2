@@ -8,8 +8,10 @@ signal vis_changed(amt : int)
 
 var vis : int:
 	set(value):
+		var old_vis = vis
 		vis = value
-		_update(value)
+		var new_vis = vis
+		_update(new_vis - old_vis)
 
 func _ready() -> void:
 	if !vis:
@@ -45,5 +47,3 @@ func change(amt : int, display : bool = true):
 			#owner.my_component_health.change(overflow)
 	
 	Debug.message([old_vis," MP -> ",vis," MP"],Debug.msg_category.BATTLE)
-	
-	_update(amt_changed)

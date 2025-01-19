@@ -205,7 +205,7 @@ func _battle_reset() -> void:
 ### --- Utility Commands --- ###
 
 ## Updates position, camera, and spotlight in one wrapper
-func update_focus() -> void:
+func update_focus():
 	var tween_list = update_positions()
 	
 	for tween in tween_list:
