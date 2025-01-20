@@ -12,15 +12,15 @@ func _ready():
 	%StateChart/Main/World.state_physics_processing.connect(_on_state_physics_processing_explore)
 	%StateChart/Main/World.state_exited.connect(_on_state_exited_explore)
 
-func _on_state_physics_processing_explore(_delta: float) -> void:
-	if owner.position.distance_to(Global.player.position) <= interact_distance:
-		interact_sprite.show()
-		if Input.is_action_just_pressed("interact"):
-			#This is where things change up
-			owner.on_interact.emit()
-			
-	else:
-		interact_sprite.hide()
+#func _on_state_physics_processing_explore(_delta: float) -> void:
+	#if owner.position.distance_to(Global.player.position) <= interact_distance:
+		#interact_sprite.show()
+		#if Input.is_action_just_pressed("interact_not_anymore!!!!"):
+			##This is where things change up
+			#owner.on_interact.emit()
+			#
+	#else:
+		#interact_sprite.hide()
 
 func _on_state_exited_explore() -> void:
 	interact_sprite.hide()

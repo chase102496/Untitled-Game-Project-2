@@ -148,7 +148,7 @@ func change(amt: int, from_tether: bool = false, display: bool = true):
 		if health == 0:
 			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection", [calc["amt_post_mitigation"], from_tether], true)
 			if death_protection_result.is_empty():
-				Glossary.create_text_particle_queue(owner.animations.selector_anchor, "KO!")
+				Glossary.create_icon_particle(owner.animations.selector_anchor,"status_death","icon_float_away",Color.WHEAT,1,true,0,3)
 				Glossary.create_fx_particle_custom(owner.animations.selector_anchor, "star_explosion", true, 10, 180, 5, 180, Global.palette["Icterine"])
 				_on_dying(death_protection_result)
 			else:

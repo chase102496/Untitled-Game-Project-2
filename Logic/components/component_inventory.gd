@@ -26,7 +26,7 @@ func set_data_inventory_all(host : Node, inventory_data_list : Array):
 		my_inventory.append(inst)
 
 ## Returns all items in the given category
-func get_items_from_category(category_title : String):
+func get_items_from_category(category_title : String) -> Array:
 	var result : Array = []
 	for item in my_inventory:
 		if item.category.TITLE == category_title:
@@ -64,13 +64,17 @@ class item:
 	var title : String
 	var flavor : String # No, not an ice cream flavor kind of flavor. Flavor text, just for fun.
 	var description : String
-	var sprite : PackedScene #Sprite to be instantiated when item is shown on screen via inventory
-	var stackable : bool = true #If we want it to have its own slot in our inventory
+	
+	var icon : PackedScene #icon to be instantiated when item is shown on screen via inventory
+	
+	## If we want it to have its own slot in our inventory
+	var stackable : bool = true 
 	var quantity : int = 1
 	var max_quantity : int = 99
 	var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
 	var options_battle : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
-
+	## This represents what it will look like when in the player's inventory
+	
 	enum target_type { # This is how we determine what the item can be used on, for various functions
 		PLAYER, SUMMONS, PARTY, ALL
 	}
@@ -108,7 +112,7 @@ class item:
 			"category" : category,
 			"title" : title,
 			"flavor" : category,
-			"sprite" : category,
+			"icon" : icon,
 			"description" : description,
 			"stackable" : stackable,
 			"quantity" : quantity,
@@ -198,6 +202,7 @@ class item_nectar:
 		title = "Nectar"
 		flavor = "You couldn't just call it a health potion?"
 		description = "A reddish-gold liquid that flows thicker than honey. Best enjoyed near a cozy fire."
+		icon = Glossary.icon_scene["heart"]
 		self.host = host
 		self.recovery_amount = recovery_amount
 		self.quantity = quantity
@@ -233,6 +238,7 @@ class item_dewdrop:
 		title = "Dewdrop"
 		flavor = "Warning: Staring too long may result in existential crises or sudden nap attacks."
 		description = "A silvery droplet that constantly shifts hues, peering inside shows a distant, shimmering painting of something."
+		icon = Glossary.icon_scene["vis"]
 		self.host = host
 		self.recovery_amount = recovery_amount
 		self.quantity = quantity

@@ -4,7 +4,10 @@ extends battle_entity
 @export_group("Modules")
 @export var my_battle_gui : Control
 
-var type = Battle.type.BALANCE
+## Placeholders until we fix this later
+var type
+##
+var icon
 
 func init(my_parent : Node, my_position : Vector3) -> battle_entity_dreamkin:
 	my_parent.add_child.call_deferred(self)
@@ -20,14 +23,15 @@ func select_validate():
 
 ##If we are being summoned, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):
-	Global.player.get_parent().add_child(self)
+	Global.player.add_sibling(self)
+	set_deferred("global_position",Global.player.global_position)
 	
 	set_deferred("unique_id",data.unique_id)
 	set_deferred("name",data.name)
 	set_deferred("classification",data.classification)
-	set_deferred("global_position",Global.player.global_position)
 	set_deferred("glossary",data.glossary)
 	set_deferred("type",data.type)
+	set_deferred("icon",data.icon)
 	my_component_health.set_deferred("health",data.health)
 	my_component_health.set_deferred("max_health",data.max_health)
 	my_component_vis.set_deferred("vis",data.vis)
@@ -45,6 +49,7 @@ func get_dreamkin_data_dictionary():
 	data.classification = classification
 	data.glossary = glossary
 	data.type = type
+	data.icon = icon
 	data.health = my_component_health.health
 	data.max_health = my_component_health.max_health
 	data.vis = my_component_vis.vis

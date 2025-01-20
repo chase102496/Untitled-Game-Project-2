@@ -156,35 +156,10 @@ offset_bottom = 100.0
 [node name="TextureRect" type="TextureRect" parent="TextureRect"]
 texture_filter = 2
 material = SubResource("ShaderMaterial_e21so")
-layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 size_flags_vertical = 8
 texture = ExtResource("1_f6x2h")
-expand_mode = 1
-
-[node name="TextureRect2" type="TextureRect" parent="TextureRect"]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
-
-[node name="TextureRect3" type="TextureRect" parent="TextureRect"]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
-expand_mode = 1
-
-[node name="TextureRect4" type="TextureRect" parent="TextureRect"]
-texture_filter = 6
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 100.0
-size_flags_vertical = 8
 expand_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -236,7 +236,7 @@ class status:
 			
 		if !fx_visual and Glossary.particle.get(id):
 			fx_visual = Glossary.create_fx_particle(host.animations.selector_anchor,id)
-		if !fx_icon and Glossary.status_icon.get(id):
+		if !fx_icon and Glossary.icon_scene.get(id):
 			fx_icon = Glossary.create_status_icon(host.animations.status_hud.grid,id)
 	
 	func fx_remove(is_silent : bool = false):

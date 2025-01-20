@@ -10,7 +10,7 @@ var coyote_time_queued : bool
 
 func _ready() -> void:
 	%StateChart/Main/Disabled.state_entered.connect(_on_state_entered_disabled)
-	%StateChart/Main/World.state_physics_processing.connect(_on_state_physics_processing_world)
+	%StateChart/Main/World.state_input.connect(_on_state_input_world)
 	%StateChart/Main/World/Grounded.state_entered.connect(_on_state_entered_world_grounded)
 	%StateChart/Main/World/Grounded.state_physics_processing.connect(_on_state_physics_processing_world_grounded)
 	%StateChart/Main/World/Airborne.state_physics_processing.connect(_on_state_physics_processing_world_airborne)
@@ -37,22 +37,23 @@ func _on_state_entered_disabled() -> void:
 	
 ## World
 
-func _on_state_physics_processing_world(_delta: float) -> void:
+func _on_state_input_world(event : InputEvent) -> void:
 	
 	## E
 	if Input.is_action_just_pressed("interact"):
 		my_component_interaction.interact()
 	
+	## Q
+	if Input.is_action_just_pressed("interact_secondary"):
+		my_component_equipment.toggle_active()
+	
 	## R
 	if Input.is_action_just_pressed("equipment_use"):
 		my_component_equipment.ability_use()
 	
-	if Input.is_action_just_pressed("cancel"):
+	## Esc
+	if Input.is_action_just_pressed("ui_cancel"):
 		my_component_equipment.ability_event(my_component_equipment.active,"on_cancel")
-	
-	## Q
-	if Input.is_action_just_pressed("equipment_switch"):
-		my_component_equipment.toggle_active()
 
 ## TODO ADD EQUIPMENT INTERACTION AND STUFF HERE
 
@@ -72,9 +73,9 @@ func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 		jump_queued = false
 		coyote_time_queued = false
 	
-	if Input.is_action_just_pressed("ui_cancel"):
+	if Input.is_action_just_pressed("inventory"):
 		owner.state_chart.send_event("on_disabled")
-		owner.my_inventory_gui.state_chart.send_event("on_gui_enabled")
+		owner.my_world_gui.state_chart.send_event("on_gui_enabled")
 
 # Airborne
 

@@ -1,25 +1,27 @@
 [gd_scene load_steps=6 format=3 uid="uid://bn0as1ks8kafy"]
 
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_ns3ut"]
-[ext_resource type="Texture2D" uid="uid://bjvpvbu5wpgqm" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_water_97.png" id="2_ufqfb"]
+[ext_resource type="Texture2D" uid="uid://dckovxk80ecm1" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/icon_bottle.png" id="2_sjgtb"]
 
 [sub_resource type="Gradient" id="Gradient_nnbkb"]
-offsets = PackedFloat32Array(0.111465, 0.388535, 0.694268, 1)
-colors = PackedColorArray(0.18172, 0.1708, 0.28, 1, 0.313726, 0.470588, 0.607843, 1, 0.380392, 0.72549, 0.772549, 1, 0.49, 0.9405, 1, 1)
+offsets = PackedFloat32Array(0.197708, 0.386819, 0.694268)
+colors = PackedColorArray(0.0823529, 0.152941, 0.247059, 1, 0.486275, 0.454902, 0.74902, 1, 0.649, 0.61, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a4loq"]
 gradient = SubResource("Gradient_nnbkb")
+width = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_arfmf"]
 shader = ExtResource("1_ns3ut")
 shader_parameter/replacement_color = Color(1, 1, 1, 1)
 shader_parameter/grayscale_factor = 1.0
-shader_parameter/recolor_factor = 2.0
+shader_parameter/recolor_factor = 1.0
 shader_parameter/luminosity_factor = 1.0
 shader_parameter/use_gradient = true
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_a4loq")
 
 [node name="icon_vis" type="TextureRect"]
+texture_filter = 4
 material = SubResource("ShaderMaterial_arfmf")
 anchors_preset = 8
 anchor_left = 0.5
@@ -27,11 +29,11 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -50.0
-offset_top = -54.0
+offset_top = -50.0
 offset_right = 50.0
-offset_bottom = 46.0
+offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(50, 50)
-texture = ExtResource("2_ufqfb")
+texture = ExtResource("2_sjgtb")
 expand_mode = 1

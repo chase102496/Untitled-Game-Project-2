@@ -12,6 +12,7 @@ var options_world := {
 	"Recall" : Callable(Global.player.my_component_party,"recall_inst").bind(self),
 	}
 var options_battle : Dictionary = {}
+var icon : PackedScene = Glossary.icon_scene[Glossary.icon_scene.keys().pick_random()]
 
 ##If we are being created, not from a party object but from nothing
 func init(my_parent : Node, my_position : Vector3) -> world_entity_dreamkin:
@@ -27,7 +28,9 @@ func _ready():
 
 ##If we are being summoned from a party object, load all stats from party_dreamkin object, which we get from get_dreamkin_data_dictionary()
 func party_summon(data : Object):
-	Global.player.get_parent().add_child(self)
+	Global.player.add_sibling(self)
+	
+	#TBD Serialize this better. Right now we have to add a new saved property in four places, party_summon battle/world, and get_dreamkin_data_dictionary in battle/world
 	
 	set_deferred("unique_id",data.unique_id)
 	set_deferred("name",data.name)
@@ -35,6 +38,7 @@ func party_summon(data : Object):
 	set_deferred("global_position",Global.player.global_position+Vector3(randf_range(0.2,0.8),0,randf_range(0.2,0.8)))
 	set_deferred("glossary",data.glossary)
 	set_deferred("type",data.type)
+	set_deferred("icon",data.icon)
 	my_component_health.set_deferred("health",data.health)
 	my_component_health.set_deferred("max_health",data.max_health)
 	my_component_vis.set_deferred("vis",data.vis)
@@ -54,6 +58,7 @@ func get_dreamkin_data_dictionary():
 	data.global_position = global_position
 	data.glossary = glossary
 	data.type = type
+	data.icon = icon
 	data.health = my_component_health.health
 	data.max_health = my_component_health.max_health
 	data.vis = my_component_vis.vis

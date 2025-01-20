@@ -130,9 +130,9 @@ func _add_particle_queue(part_callable : Callable) -> void:
 	particle_queue.append(part_callable)
 
 ## This is the internal function to actually instantiate the particle
-func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
+func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : float, time : float):
 	
-	var icon_ref = Glossary.status_icon.get(icon)
+	var icon_ref = Glossary.icon_scene.get(icon)
 	var inst = create_fx_particle_custom(anchor,type,one_shot,-1,-1,-1,direction)
 	var particle_icon = inst.get_node("%particle_icon")
 	
@@ -142,6 +142,8 @@ func _run_icon_particle(anchor, icon : String, type : String, color : Color, siz
 			particle_icon.add_child(icon_ref)
 			if size != -1:
 				inst.draw_pass_1.size = inst.draw_pass_1.size*Vector2(size,size)
+			if time != -1:
+				inst.lifetime = time
 		else:
 			push_error("Icon reference for icon_particle unknown: ",icon_ref)
 	else:
@@ -179,7 +181,7 @@ func create_input_prompt(anchor : Node3D, action : StringName, color : Color = C
 ## The only thing component_input_prompt should need is the Input version "ui_cancel" etc.
 ## The component_input_prompt will then call a callable that is swapped based on the device used
 func _create_prompt_keyboard_3d(anchor : Node3D, button_text : String, color : Color = Color.WHITE) -> Node3D:
-	var inst = Glossary.prompt_icon["icon_3d_keyboard"].instantiate()
+	var inst = Glossary.icon_scene["icon_3d_keyboard"].instantiate()
 	var prompt_label = inst.prompt_label
 	prompt_label.text = button_text
 	prompt_label.label_settings.font_color = color
@@ -231,16 +233,16 @@ func create_fx_particle(anchor, type : String, one_shot : bool = false):
 
 ## Creates an icon to be displayed in the status bar
 ## anchor in this case
-## type is the name of the key in the status_icon glossary
+## type is the name of the key in the icon_scene glossary
 ## category is the status category. NORMAL, TETHER, or PASSIVE
 func create_status_icon(anchor : Node, type : String) -> Control:
-	var inst = Glossary.status_icon.get(type).instantiate()
+	var inst = Glossary.icon_scene.get(type).instantiate()
 	if inst:
 		anchor.add_child(inst)
 		inst.global_position = anchor.global_position
 		return inst
 	else:
-		push_error("No status_icon type found when creating status_icon: ",type)
+		push_error("No icon_scene type found when creating status_icon: ",type)
 		return
 
 ## This is the external function used to create the particles
@@ -254,23 +256,22 @@ func create_text_particle_queue(anchor, text : String, type : String = "text_flo
 	_run_particle_queue()
 
 ##
-func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
-	_run_icon_particle(anchor,icon,type,color,size,one_shot,direction)
+func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0, time : float = -1) -> void:
+	_run_icon_particle(anchor,icon,type,color,size,one_shot,direction,time)
 
 ##
-func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0) -> void:
-	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction)
+func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0, time : float = -1) -> void:
+	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction,time)
 	_add_particle_queue(part_callable)
 	_run_particle_queue()
 
 ## Buttons
 
-func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
-	
+func _create_button(scene : PackedScene, item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
 	var result : Array = []
 
 	for item in item_list:
-		var new_button = ui.empty_properties_button.instantiate()
+		var new_button = scene.instantiate()
 		
 		## Assign
 		new_button.properties.item = item
@@ -291,6 +292,13 @@ func create_button_list(item_list : Array, parent : Node, callable_source : Node
 		result.append(new_button)
 	
 	return result
+
+func create_button_slots(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
+	return _create_button(ui["empty_properties_button_slot"],item_list,parent,callable_source,pressed_signal,enter_hover_signal,exit_hover_signal)
+
+func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
+	return _create_button(ui["empty_properties_button"],item_list,parent,callable_source,pressed_signal,enter_hover_signal,exit_hover_signal)
+
 
 func create_options_list(properties : Dictionary, parent : Node, callable_source : Node, pressed_signal : String, battle_or_world : String):
 	
@@ -336,7 +344,6 @@ func create_options_list(properties : Dictionary, parent : Node, callable_source
 
 # Misc
 
-##SUPER USEFUL
 ##Tween any value based on importing it from a dictionary and tweening the current object's value to the one specificed in the dict
 #For example dict : Dictionary = { "test.subvar" : 10 }
 # Object.test.subvar = 1
@@ -382,7 +389,6 @@ func apply_changes_with_tween(target : Object, changes : Dictionary, tween_durat
 		else:
 			print("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
 
-##SUPER USEFUL
 ## WIP but working so far. Sets vars found on imported_data dict onto the target
 ## Also works for functions. Use the reference to the function in the key, and an array of arguments for the value
 func deserialize_data(target : Object, imported_data : Dictionary) -> void:
@@ -589,7 +595,15 @@ var particle : Dictionary = {
 	"icon_pop_fly" : preload("res://Scenes/particles/particle_icon_pop_fly.tscn"),
 	}
 
-const status_icon : Dictionary = {
+const icon_scene : Dictionary = {
+	## General
+	
+	"vis" : preload("res://Scenes/ui/base_icon/icon_vis.tscn"),
+	"heart" : preload("res://Scenes/ui/base_icon/icon_heart.tscn"),
+	## Input Prompts
+	"icon_3d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
+	"icon_2d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
+	## Status
 	"status_burn" : preload("res://Scenes/ui/status_icon/status_icon_burn.tscn"),
 	"status_disable" : preload("res://Scenes/ui/status_icon/status_icon_disable.tscn"),
 	"status_ethereal" : preload("res://Scenes/ui/status_icon/status_icon_ethereal.tscn"),
@@ -602,11 +616,7 @@ const status_icon : Dictionary = {
 	"status_thorns" : preload("res://Scenes/ui/status_icon/status_icon_thorns.tscn"),
 	"status_weakness" : preload("res://Scenes/ui/status_icon/status_icon_weakness.tscn"),
 	"status_defense" : preload("res://Scenes/ui/status_icon/status_icon_block.tscn"),
-	}
-
-const prompt_icon : Dictionary = {
-	"icon_3d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
-	"icon_2d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
+	"status_death" : preload("res://Scenes/ui/status_icon/status_icon_death.tscn"),
 }
 
 var entity_scene : Dictionary = {
@@ -618,7 +628,7 @@ var entity_scene : Dictionary = {
 	"world_entity_player" : load("res://Scenes/characters/world/world_entity_player.tscn"),
 	}
 
-## Contains all stuff needed to change visuals of an entity
+## TBD Contains all stuff needed to change visuals of an entity
 const visual_set : Dictionary = {
 	#"axolotl_red" : { TBD NEEDS REWORK
 		#"SpriteFrames" : preload("res://Resources/SpriteFrames/dreamkin_red.tres"),
@@ -627,8 +637,10 @@ const visual_set : Dictionary = {
 	#}
 	}
 
+##
 const ui : Dictionary = {
-	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn")
+	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn"),
+	"empty_properties_button_slot" : preload("res://Scenes/ui/empty_properties_button_slot.tscn"),
 	}
 
 # Classes
@@ -740,7 +752,7 @@ var text_style : Dictionary = {
 	},
 	}
 
-var item_category : Dictionary = {
+const item_category : Dictionary = {
 	"GEAR" : {
 		"TITLE" : "Gear",
 		"ICON" : "⌘",
@@ -751,19 +763,19 @@ var item_category : Dictionary = {
 		"TITLE" : "Dreamkin",
 		"ICON" : "❖",
 		"COLOR" : Color("4acacf"),
-		"TAB" : 1
+		"TAB" : 2
 	},
 	"ITEMS" : {
 		"TITLE" : "Items",
 		"ICON" : "⍟",
 		"COLOR" : Color("4acacf"),
-		"TAB" : 2
+		"TAB" : 4
 	},
 	"KEYS" : {
 		"TITLE" : "Keys",
 		"ICON" : "🝰",
 		"COLOR" : Color("4acacf"),
-		"TAB" : 3
+		"TAB" : 6
 	}
 	}
 

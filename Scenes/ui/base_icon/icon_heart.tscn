@@ -4,8 +4,8 @@
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_wiym6"]
 
 [sub_resource type="Gradient" id="Gradient_h8iw8"]
-offsets = PackedFloat32Array(0.105096, 0.33121, 0.455414)
-colors = PackedColorArray(0.17, 0.0927633, 0.0901, 1, 0.568627, 0.239216, 0.443137, 1, 0.905882, 0.498039, 0.482353, 1)
+offsets = PackedFloat32Array(0.105096, 0.229226, 0.590258)
+colors = PackedColorArray(0.19, 0.19, 0.0608, 1, 0.568627, 0.239216, 0.443137, 1, 1, 0.42, 0.777667, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ekts3"]
 gradient = SubResource("Gradient_h8iw8")

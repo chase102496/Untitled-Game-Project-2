@@ -8,7 +8,7 @@ extends Node3D
 
 @export var encounter_rate : float = 10.0
 
-@export var encounter_pool : Array = [
+@export var encounter_pool : Array[Dictionary] = [
 	{
 		"weight" : 0.2,
 		"result" : Glossary.encounter["gloamling_trio"]

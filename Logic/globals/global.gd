@@ -35,6 +35,17 @@ const palette : Dictionary = {
 	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
 
+## Recursively sets a property on the node and all its children
+func set_recursive_property(node: Node, property_name: String, value) -> void:
+	set_property(node, property_name, value)
+	for child in node.get_children():
+		set_recursive_property(child, property_name, value)
+
+## Sets a property on a node if the property exists
+func set_property(node: Node, property_name: String, value) -> void:
+	if node.get(property_name):  # Checks if the property exists
+		node.set(property_name, value)
+
 ## Pick a random result in a list based on weight
 # {
 # "weight" : 0.0 -> 1.0

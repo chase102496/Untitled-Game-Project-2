@@ -9,7 +9,7 @@ extends world_entity
 @export var my_component_inventory : component_inventory
 @export var my_component_equipment : component_equipment
 @export var my_component_interaction : component_interaction
-@export var my_inventory_gui : Control
+@export var my_world_gui : Control
 @export var gloam_manager : component_gloam_manager
 @export var my_vignette : Control
 
@@ -19,9 +19,11 @@ func _ready():
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.add_ability(component_ability.ability_soulstitch.new())
 	
-	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
-	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
-	
+	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
+	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
+	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	
 	##Debug

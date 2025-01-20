@@ -3,7 +3,7 @@
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="1_iu7ec"]
 [ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://Interface/menu_style_box.tres" id="1_sehmd"]
 [ext_resource type="FontFile" uid="uid://catypkb2t6ewh" path="res://addons/dialogic/Example Assets/Fonts/Fancake.ttf" id="3_5ecrx"]
-[ext_resource type="Texture2D" uid="uid://pfg3nh13aku5" path="res://Art/ui/Casual Fantasy/Components/Frame/BasicFrame_SquareOutline01_Demo.png" id="3_kwoi4"]
+[ext_resource type="Texture2D" uid="uid://fcyokiwoiu8k" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_1_alt.png" id="3_xh7ce"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xust"]
 
@@ -18,11 +18,17 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8b4gc"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2ghpr"]
-texture = ExtResource("3_kwoi4")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
+texture = ExtResource("3_xh7ce")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 84, 84)
+modulate_color = Color(0.0823529, 0.152941, 0.247059, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qnrbo"]
 
@@ -34,16 +40,7 @@ texture_margin_bottom = 30.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_enxel"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgha6"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
-bg_color = Color(0.0901961, 0.0901961, 0.0901961, 1)
-border_width_left = 8
-border_width_right = 8
-border_color = Color(0.21, 0.21, 0.21, 1)
-corner_radius_top_left = 16
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_74y0d"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6rxw6"]
 
@@ -51,7 +48,7 @@ corner_radius_top_left = 16
 Button/colors/font_color = Color(0.73, 0.73, 0.73, 1)
 Button/colors/font_disabled_color = Color(0.62, 0.62, 0.62, 0.501961)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_outline_color = Color(0.04, 0.04, 0.04, 1)
 Button/colors/font_pressed_color = Color(0.84, 0.84, 0.84, 1)
 Button/colors/icon_disabled_color = Color(1, 1, 1, 0)
 Button/colors/icon_focus_color = Color(1, 1, 1, 0)
@@ -60,7 +57,7 @@ Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 0)
 Button/colors/icon_normal_color = Color(1, 1, 1, 0)
 Button/colors/icon_pressed_color = Color(1, 1, 1, 0)
 Button/constants/outline_size = 24
-Button/font_sizes/font_size = 42
+Button/font_sizes/font_size = 36
 Button/fonts/font = ExtResource("1_iu7ec")
 Button/styles/disabled = SubResource("StyleBoxEmpty_2xust")
 Button/styles/focus = SubResource("StyleBoxEmpty_k8pwc")
@@ -89,16 +86,16 @@ RichTextLabel/constants/outline_size = 8
 RichTextLabel/font_sizes/normal_font_size = 20
 RichTextLabel/fonts/normal_font = ExtResource("1_iu7ec")
 ScrollContainer/styles/panel = ExtResource("1_sehmd")
-TabBar/colors/font_outline_color = Color(0.21, 0.21, 0.21, 1)
-TabBar/constants/outline_size = 30
-TabBar/font_sizes/font_size = 40
+TabBar/colors/font_outline_color = Color(0.07, 0.07, 0.07, 1)
+TabBar/constants/outline_size = 56
+TabBar/font_sizes/font_size = 50
 TabBar/fonts/font = ExtResource("3_5ecrx")
 TabBar/styles/button_highlight = SubResource("StyleBoxEmpty_qnrbo")
 TabBar/styles/button_pressed = SubResource("StyleBoxEmpty_l1p32")
 TabBar/styles/tab_disabled = SubResource("StyleBoxEmpty_jsa0o")
 TabBar/styles/tab_focus = SubResource("StyleBoxEmpty_utumm")
 TabBar/styles/tab_hovered = SubResource("StyleBoxEmpty_enxel")
-TabBar/styles/tab_selected = SubResource("StyleBoxFlat_qgha6")
+TabBar/styles/tab_selected = SubResource("StyleBoxEmpty_74y0d")
 TabBar/styles/tab_unselected = SubResource("StyleBoxEmpty_6rxw6")
 TooltipPanel/styles/panel = ExtResource("1_sehmd")
 VBoxContainer/constants/separation = 10

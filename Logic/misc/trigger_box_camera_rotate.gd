@@ -1,6 +1,6 @@
 extends Area3D
 
-@export_enum("right","left","back","front") var camera_rotation : String
+@export_enum("west","east","south","north") var camera_rotation : String
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)

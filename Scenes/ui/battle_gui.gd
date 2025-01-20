@@ -146,7 +146,6 @@ func _on_state_entered_battle_gui_main() -> void:
 func _on_state_input_battle_gui_main(event : InputEvent) -> void:
 	if Input.is_action_just_pressed("interact_secondary"):
 			Battle.swap_position_list(0,1,true)
-			print("EE")
 
 func _on_state_exited_battle_gui_main() -> void:
 	ui_panel_menu.hide() #Hide main panel

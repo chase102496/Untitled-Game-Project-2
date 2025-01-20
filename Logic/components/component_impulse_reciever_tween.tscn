@@ -2,10 +2,8 @@
 
 [ext_resource type="Script" path="res://Logic/components/component_impulse_reciever_tween.gd" id="1_l88l3"]
 
-[node name="component_impulse_reciever_tween" type="Node" node_paths=PackedStringArray("my_impulse", "my_target")]
+[node name="component_impulse_reciever_tween" type="Node"]
 script = ExtResource("1_l88l3")
-my_impulse = NodePath("")
-my_target = NodePath("")
 dict_activated = {
 "mesh.material.albedo_color": Color(0.556667, 1, 0.3, 1)
 }

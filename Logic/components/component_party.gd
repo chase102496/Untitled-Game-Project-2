@@ -26,6 +26,7 @@ class party_dreamkin:
 	var max_vis : int
 	var my_abilities : Array
 	var my_status : Dictionary
+	var icon : PackedScene
 	var options_world : Dictionary = {}
 	var options_battle : Dictionary = {}
 	
@@ -45,7 +46,7 @@ class party_dreamkin:
 		Global.player.my_component_party.recall_all()
 		var my_index = Global.player.my_component_party.my_party.find(self)
 		Global.player.my_component_party.summon(my_index,"world")
-		Global.player.my_inventory_gui.refresh()
+		Global.player.my_world_gui.refresh()
 	
 	##Export just our variable as a single dictionary
 	func get_dreamkin_data_dictionary():

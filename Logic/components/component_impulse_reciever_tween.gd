@@ -8,7 +8,9 @@ extends component_impulse_reciever
 ## This is what we change the variables of when a signal is recieved
 @export var my_target : Node = self
 
-@export_range(0.0,10.0,0.5) var tween_duration : float = 1.0
+@export var tween_trans : Tween.TransitionType
+@export var tween_ease : Tween.EaseType
+@export_range(0.0,10.0,0.1) var tween_duration : float = 1.0
 @export var dict_activated : Dictionary
 @export var dict_deactivated : Dictionary
 
