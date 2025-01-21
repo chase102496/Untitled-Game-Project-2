@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0tuf2gupqc03"]
+
+[ext_resource type="PackedScene" uid="uid://dieb70la85glm" path="res://Scenes/ui/containers/icon.tscn" id="1_hov5k"]
+[ext_resource type="Material" uid="uid://d2cc7dtwhpebl" path="res://test_junk/status_icon_fear_copy.tres" id="2_1xjov"]
+[ext_resource type="Texture2D" uid="uid://fh0dndd7cddg" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_cursed_37.png" id="3_g6qb5"]
+
+[node name="status_icon_fear" instance=ExtResource("1_hov5k")]
+custom_minimum_size = Vector2(50, 50)
+pivot_offset = Vector2(25, 25)
+
+[node name="AnimationPlayer" parent="." index="0"]
+autoplay_animation = "shake"
+
+[node name="TextureRect1" parent="texture_container" index="0"]
+material = ExtResource("2_1xjov")
+texture = ExtResource("3_g6qb5")
+expand_mode = 1

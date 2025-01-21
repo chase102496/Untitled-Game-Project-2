@@ -35,6 +35,19 @@ const palette : Dictionary = {
 	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
 
+## Turns an action like "interact" into what it was bound to on keyboard "E"
+func input_action_to_keycode_string(action : String) -> String:
+	
+	var human_keycode : String
+	var input_list = InputMap.action_get_events(action)
+	
+	for event in input_list:
+		if event is InputEventKey:
+			var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
+			human_keycode = OS.get_keycode_string(keycode)
+	
+	return human_keycode
+
 ## Recursively sets a property on the node and all its children
 func set_recursive_property(node: Node, property_name: String, value) -> void:
 	set_property(node, property_name, value)

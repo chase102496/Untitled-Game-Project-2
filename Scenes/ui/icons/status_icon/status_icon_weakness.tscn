@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://by2tme3ye7wug"]
+
+[ext_resource type="PackedScene" uid="uid://dhysoyjqrdidw" path="res://Scenes/ui/icons/status_icon/status_icon_immunity.tscn" id="1_svko7"]
+[ext_resource type="PackedScene" uid="uid://d61li153i7pl" path="res://Scenes/ui/icons/base_icon/icon_down.tscn" id="4_a1ksn"]
+
+[node name="TextureRect" type="Control"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchor_right = 0.052
+anchor_bottom = 0.093
+offset_right = 0.159996
+offset_bottom = -0.440002
+pivot_offset = Vector2(50, 50)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" parent="." instance=ExtResource("1_svko7")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="TextureRect3" parent="." instance=ExtResource("4_a1ksn")]
+layout_mode = 1
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = -60.0

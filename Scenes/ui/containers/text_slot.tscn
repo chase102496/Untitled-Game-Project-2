@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxats2bjbdrse"]
+
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://Interface/menu_theme.tres" id="1_hdm22"]
+[ext_resource type="Script" path="res://Scenes/ui/containers/empty_properties_button.gd" id="2_8ouf0"]
+[ext_resource type="PackedScene" uid="uid://4xy38mf8rdnk" path="res://Scenes/ui/animation_component.tscn" id="3_1oj8n"]
+
+[node name="empty_properties_button" type="Button"]
+texture_filter = 2
+theme = ExtResource("1_hdm22")
+action_mode = 0
+text = "Empty Ability"
+alignment = 0
+script = ExtResource("2_8ouf0")
+
+[node name="AnimationComponent" parent="." instance=ExtResource("3_1oj8n")]

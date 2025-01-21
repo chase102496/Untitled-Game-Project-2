@@ -18,6 +18,10 @@ func _ready():
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.add_ability(component_ability.ability_soulstitch.new())
+	my_component_ability.add_ability(component_ability.ability_switchstitch.new())
+	my_component_ability.add_ability(component_ability.ability_spook.new())
+	my_component_ability.add_ability(component_ability.ability_frigid_core.new())
+
 	
 	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))

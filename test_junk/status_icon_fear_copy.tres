@@ -1,0 +1,21 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://d2cc7dtwhpebl"]
+
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_fmyp3"]
+
+[sub_resource type="Gradient" id="Gradient_msblt"]
+offsets = PackedFloat32Array(0.0939457, 0.33121)
+colors = PackedColorArray(0.0823529, 0.152941, 0.247059, 1, 0.568627, 0.239216, 0.443137, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_prafv"]
+gradient = SubResource("Gradient_msblt")
+width = 16
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_fmyp3")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 2.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_prafv")

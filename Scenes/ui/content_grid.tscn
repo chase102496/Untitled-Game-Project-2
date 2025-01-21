@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://ba6j14rlttcmi"]
-
-[node name="ContentGrid" type="GridContainer"]
-columns = 7
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2

@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://8fp4tfr6x4no"]
+[gd_scene load_steps=9 format=3 uid="uid://8fp4tfr6x4no"]
 
 [ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_q1ebx"]
+[ext_resource type="PackedScene" uid="uid://dlmihg4ycryal" path="res://Scenes/ui/containers/particle_slot.tscn" id="2_yaq87"]
 
 [sub_resource type="Curve" id="Curve_kp78f"]
 resource_local_to_scene = true
@@ -60,15 +61,5 @@ disable_3d = true
 transparent_bg = true
 size = Vector2i(2048, 2048)
 
-[node name="particle_icon" type="Control" parent="SubViewport"]
+[node name="particle_icon" parent="SubViewport" instance=ExtResource("2_yaq87")]
 unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4

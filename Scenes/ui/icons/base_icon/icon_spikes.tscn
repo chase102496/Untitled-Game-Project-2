@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=3 uid="uid://5jfawr4a0x6c"]
+
+[ext_resource type="Texture2D" uid="uid://crm8n3jklf2n" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_disappearing_54_line.png" id="1_lkemv"]
+
+[sub_resource type="Shader" id="Shader_rdjo5"]
+code = "shader_type canvas_item;
+
+// Uniforms
+uniform vec3 replacement_color : source_color = vec3(1,1,1); 
+uniform float grayscale_factor : hint_range(0.0, 1.0) = 1; // 0 = no grayscale, 1 = full grayscale
+uniform float recolor_factor : hint_range(0.0, 2.0) = 1; // 0 = original color, 1 = midpoint, 2 = full recolor
+uniform float luminosity_factor : hint_range(0.0, 2.0) = 1; // 1 = default brightness, <1 = darker, >1 = brighter
+uniform sampler2D gradient_texture; // A gradient texture for dynamic mapping
+uniform bool use_gradient; // Whether to use gradient mapping (true = gradient, false = replacement_color)
+
+void fragment() {
+    // Sample the texture color
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    // Calculate grayscale intensity (perceptual)
+    float grayscale = 0.299 * tex_color.r + 0.587 * tex_color.g + 0.114 * tex_color.b;
+
+    // Blend the original color with its grayscale version based on grayscale_factor
+    vec3 grayscaled_color = mix(tex_color.rgb, vec3(grayscale), grayscale_factor);
+
+    // Decide whether to use gradient or replacement_color for recoloring
+    vec3 color_choice;
+    if (use_gradient) {
+        // Use the gradient texture to map the grayscale value
+        color_choice = texture(gradient_texture, vec2(grayscale, 0.5)).rgb;
+    } else {
+        // Directly use the replacement color
+        color_choice = replacement_color;
+    }
+
+    // Remap recolor_factor from [0.0, 2.0] to [0.0, 1.0] for blending
+    float recolor_ratio = clamp(recolor_factor * 0.5, 0.0, 1.0);
+
+    // Replace the grayscaled color proportionally with the recolored version
+    vec3 recolored = grayscaled_color * (1.0 - recolor_ratio) + color_choice * recolor_ratio;
+
+    // Adjust the brightness of the final color using luminosity_factor
+    vec3 final_color = recolored * luminosity_factor;
+
+    // Preserve transparency
+    COLOR = vec4(final_color, tex_color.a);
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_3bayt"]
+colors = PackedColorArray(0.0823529, 0.152941, 0.247059, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_prafv"]
+gradient = SubResource("Gradient_3bayt")
+width = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_na61u"]
+resource_local_to_scene = true
+shader = SubResource("Shader_rdjo5")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 2.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_prafv")
+
+[node name="icon_spikes" type="TextureRect"]
+texture_filter = 6
+material = SubResource("ShaderMaterial_na61u")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+texture = ExtResource("1_lkemv")
+expand_mode = 1

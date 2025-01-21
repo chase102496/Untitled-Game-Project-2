@@ -1,0 +1,362 @@
+[gd_scene load_steps=15 format=3 uid="uid://b1s71hosugqju"]
+
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://Interface/menu_theme.tres" id="1_maa2b"]
+[ext_resource type="Script" path="res://Scenes/ui/guis/world_gui.gd" id="2_o6b2p"]
+[ext_resource type="Texture2D" uid="uid://dh6ybnj7sbiew" path="res://icon.svg" id="3_cger8"]
+[ext_resource type="Texture2D" uid="uid://fcyokiwoiu8k" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_1_alt.png" id="3_sb35y"]
+[ext_resource type="PackedScene" uid="uid://k84bqw0hvoos" path="res://Scenes/ui/icons/input_icon/icon_2d_keyboard.tscn" id="3_ycfr3"]
+[ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="4_1etx2"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_wh20c"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_wrf28"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_fi7i2"]
+[ext_resource type="PackedScene" uid="uid://dwhv3ry5jg0lk" path="res://Scenes/ui/containers/button_slot.tscn" id="6_jefqr"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_q80aw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_r2n7q"]
+resource_local_to_scene = true
+font = ExtResource("4_1etx2")
+font_size = 40
+outline_size = 20
+outline_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_g02vi"]
+resource_local_to_scene = true
+font = ExtResource("4_1etx2")
+font_size = 40
+outline_size = 20
+outline_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ole5m"]
+
+[node name="World_GUI" type="Control"]
+texture_filter = 4
+layout_direction = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_maa2b")
+script = ExtResource("2_o6b2p")
+
+[node name="Inventory" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+
+[node name="Content" type="PanelContainer" parent="Inventory"]
+layout_mode = 0
+offset_left = -918.0
+offset_top = 41.0
+offset_right = 57.0
+offset_bottom = 997.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inventory/Content"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="MarginContainer" type="MarginContainer" parent="Inventory/Content/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Inventory/Content/VBoxContainer/MarginContainer"]
+self_modulate = Color(0.313726, 0.470588, 0.607843, 1)
+layout_mode = 2
+texture = ExtResource("3_sb35y")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Inventory/Content/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_constants/separation = 36
+
+[node name="icon_2d_keyboard_Q" parent="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("3_ycfr3")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+input_action = "interact_secondary"
+
+[node name="prompt_label" parent="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_Q/icon_2d_keyboard/MarginContainer/MarginContainer/CenterContainer/VBoxContainer" index="0"]
+text = "Q"
+label_settings = SubResource("LabelSettings_r2n7q")
+
+[node name="component_input_animation_gizmo" parent="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_Q/icon_2d_keyboard/Components" index="0"]
+input_action = "interact_secondary"
+
+[node name="Tabs" type="TabBar" parent="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+tab_alignment = 1
+clip_tabs = false
+scrolling_enabled = false
+tab_count = 7
+tab_0/title = "Echoes"
+tab_1/title = "   "
+tab_1/disabled = true
+tab_2/title = "Dreamkin"
+tab_3/title = "   "
+tab_3/disabled = true
+tab_4/title = "Items"
+tab_5/title = "   "
+tab_5/disabled = true
+tab_6/title = "Keys"
+
+[node name="icon_2d_keyboard_E" parent="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("3_ycfr3")]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+
+[node name="prompt_label" parent="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_E/icon_2d_keyboard/MarginContainer/MarginContainer/CenterContainer/VBoxContainer" index="0"]
+text = "E"
+label_settings = SubResource("LabelSettings_g02vi")
+
+[node name="Panel" type="PanelContainer" parent="Inventory/Content/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ole5m")
+
+[node name="ContentGrid" type="GridContainer" parent="Inventory/Content/VBoxContainer/Panel"]
+unique_name_in_owner = true
+layout_direction = 2
+layout_mode = 2
+columns = 6
+
+[node name="empty_properties_button_slot" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot2" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot3" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot4" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot5" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot6" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot7" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot8" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot9" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot10" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot11" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="empty_properties_button_slot12" parent="Inventory/Content/VBoxContainer/Panel/ContentGrid" instance=ExtResource("6_jefqr")]
+layout_mode = 2
+
+[node name="Info" type="PanelContainer" parent="Inventory"]
+layout_mode = 2
+offset_left = 83.0
+offset_top = 41.0
+offset_right = 543.0
+offset_bottom = 589.0
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inventory/Info"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Inventory/Info/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_cger8")
+stretch_mode = 4
+
+[node name="Details" type="VBoxContainer" parent="Inventory/Info/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Inventory/Info/VBoxContainer/Details"]
+layout_mode = 2
+text = "Item name"
+
+[node name="Description" type="RichTextLabel" parent="Inventory/Info/VBoxContainer/Details"]
+clip_contents = false
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_maa2b")
+bbcode_enabled = true
+text = "[color=078ef5]◆[/color] 5  [color=364196]✫[/color] Void
+[color=9e9e9e80]Flavor Text[/color]
+Test description. This does something cool."
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+
+[node name="Options" type="Control" parent="Inventory"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -960.0
+offset_right = 960.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+
+[node name="Submenu" type="PanelContainer" parent="Inventory/Options"]
+layout_direction = 2
+layout_mode = 1
+offset_left = 1043.0
+offset_top = 612.0
+offset_right = 1103.0
+offset_bottom = 672.0
+
+[node name="List" type="VBoxContainer" parent="Inventory/Options/Submenu"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="HUD" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="icon_2d_keyboard_R" parent="HUD" instance=ExtResource("3_ycfr3")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -83.0
+offset_top = -55.0
+offset_right = -83.0
+offset_bottom = -55.0
+grow_horizontal = 0
+grow_vertical = 0
+input_action = "equipment_use"
+
+[node name="icon_2d_keyboard_Q" parent="HUD" instance=ExtResource("3_ycfr3")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -84.0
+offset_top = -147.0
+offset_right = -84.0
+offset_bottom = -147.0
+grow_horizontal = 0
+grow_vertical = 0
+input_action = "interact_secondary"
+
+[node name="icon_2d_keyboard_I" parent="HUD" instance=ExtResource("3_ycfr3")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -86.0
+offset_top = -236.0
+offset_right = -86.0
+offset_bottom = -236.0
+grow_horizontal = 0
+grow_vertical = 0
+input_action = "inventory"
+
+[node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_wh20c")
+
+[node name="Main" type="Node" parent="StateChart"]
+script = ExtResource("5_wrf28")
+initial_state = NodePath("Inventory")
+
+[node name="Inventory" type="Node" parent="StateChart/Main"]
+script = ExtResource("5_wrf28")
+initial_state = NodePath("Disabled")
+
+[node name="Disabled" type="Node" parent="StateChart/Main/Inventory"]
+script = ExtResource("6_fi7i2")
+
+[node name="on_gui_enabled" type="Node" parent="StateChart/Main/Inventory/Disabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../../Enabled")
+event = &"on_gui_enabled"
+delay_in_seconds = "0.0"
+
+[node name="Enabled" type="Node" parent="StateChart/Main/Inventory"]
+script = ExtResource("5_wrf28")
+initial_state = NodePath("Gear")
+
+[node name="on_gui_disabled" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../../Disabled")
+event = &"on_gui_disabled"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_toggle" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../../Disabled")
+event = &"on_gui_toggle"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_gear" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../Gear")
+event = &"on_gui_gear"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_dreamkin" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../Dreamkin")
+event = &"on_gui_dreamkin"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_items" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../Items")
+event = &"on_gui_items"
+delay_in_seconds = "0.0"
+
+[node name="on_gui_keys" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("7_q80aw")
+to = NodePath("../Keys")
+event = &"on_gui_keys"
+delay_in_seconds = "0.0"
+
+[node name="Gear" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("6_fi7i2")
+
+[node name="Dreamkin" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("6_fi7i2")
+
+[node name="Items" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("6_fi7i2")
+
+[node name="Keys" type="Node" parent="StateChart/Main/Inventory/Enabled"]
+script = ExtResource("6_fi7i2")
+
+[editable path="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_Q"]
+[editable path="Inventory/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_E"]
+[editable path="Inventory/Content/VBoxContainer/Panel/ContentGrid/empty_properties_button_slot"]

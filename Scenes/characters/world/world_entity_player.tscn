@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_w8yip"]
 [ext_resource type="Script" path="res://Scenes/characters/world/world_entity_player.gd" id="2_q04t1"]
 [ext_resource type="PackedScene" uid="uid://baowwbhogqe0c" path="res://test_junk/vignette.tscn" id="3_6833w"]
-[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://Scenes/ui/world_gui.tscn" id="3_sq4rn"]
+[ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://Scenes/ui/guis/world_gui.tscn" id="3_sq4rn"]
 [ext_resource type="PackedScene" uid="uid://r6lxipom563d" path="res://Logic/components/component_interaction.tscn" id="4_l3hcv"]
 [ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="5_ke17l"]
 [ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="6_smvuq"]

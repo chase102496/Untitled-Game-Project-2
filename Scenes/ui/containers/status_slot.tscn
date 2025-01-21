@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dufrr558odxyv"]
+
+[node name="status_slot" type="MarginContainer"]
+texture_filter = 2
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = -1
+anchor_right = 0.052
+anchor_bottom = 0.093
+offset_right = 0.159996
+offset_bottom = -0.440002
+pivot_offset = Vector2(50, 50)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2

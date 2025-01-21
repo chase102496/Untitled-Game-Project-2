@@ -164,18 +164,12 @@ func _run_text_particle(anchor, text : String, type : String, color : Color, siz
 ## This is the general interface that takes Input actions and maps them to the associated input device's icon lib
 ## We need to create an interace that replaces the code for event in input_list with whatever we need for the other devices
 ## Eventually we need to make an interface to hot swap the icons when our input comes from something else
-func create_input_prompt(anchor : Node3D, action : StringName, color : Color = Color.WHITE) -> Node3D:
+func create_input_prompt_keyboard(anchor : Node3D, action : StringName, color : Color = Color.WHITE) -> Node3D:
 	
-	var human_keycode : String
-	var input_list = InputMap.action_get_events(action)
-	
-	for event in input_list:
-		if event is InputEventKey:
-			var keycode = DisplayServer.keyboard_get_keycode_from_physical(event.physical_keycode)
-			human_keycode = OS.get_keycode_string(keycode)
+	## Grab the actual text readable keycode
+	var human_keycode : String = Global.input_action_to_keycode_string(action)
 	
 	return _create_prompt_keyboard_3d(anchor,human_keycode)
-	#match Global.current_input_device blah blah blah = callable to search lib
 
 ## Later on, we will add an adapter that picks which create prompt to use
 ## The only thing component_input_prompt should need is the Input version "ui_cancel" etc.
@@ -231,20 +225,6 @@ func create_fx_particle(anchor, type : String, one_shot : bool = false):
 		push_error("No particle type found when creating fx particle: ",type)
 		return null
 
-## Creates an icon to be displayed in the status bar
-## anchor in this case
-## type is the name of the key in the icon_scene glossary
-## category is the status category. NORMAL, TETHER, or PASSIVE
-func create_status_icon(anchor : Node, type : String) -> Control:
-	var inst = Glossary.icon_scene.get(type).instantiate()
-	if inst:
-		anchor.add_child(inst)
-		inst.global_position = anchor.global_position
-		return inst
-	else:
-		push_error("No icon_scene type found when creating status_icon: ",type)
-		return
-
 ## This is the external function used to create the particles
 func create_text_particle(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction : float = 0) -> void:
 	_run_text_particle(anchor,text,type,color,size,one_shot,direction)
@@ -264,6 +244,23 @@ func create_icon_particle_queue(anchor, icon : String, type : String = "icon_flo
 	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction,time)
 	_add_particle_queue(part_callable)
 	_run_particle_queue()
+
+## Creates an icon to be displayed in the status bar
+## anchor in this case
+## type is the name of the key in the icon_scene glossary
+## category is the status category. NORMAL, TETHER, or PASSIVE
+func create_status_icon(anchor : Node, type : String) -> Control:
+	var inst = Glossary.icon_scene.get(type).instantiate()
+	if inst:
+		var container = Glossary.ui_scene["status_slot"].instantiate()
+		## Insert an icon inside this node's child
+		container.add_child(inst)
+		## Insert the icon and container into our hud
+		anchor.add_child(container)
+		return container
+	else:
+		push_error("No icon_scene type found when creating status_icon: ",type)
+		return
 
 ## Buttons
 
@@ -294,10 +291,10 @@ func _create_button(scene : PackedScene, item_list : Array, parent : Node, calla
 	return result
 
 func create_button_slots(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
-	return _create_button(ui["empty_properties_button_slot"],item_list,parent,callable_source,pressed_signal,enter_hover_signal,exit_hover_signal)
+	return _create_button(Glossary.ui_scene["button_slot"],item_list,parent,callable_source,pressed_signal,enter_hover_signal,exit_hover_signal)
 
 func create_button_list(item_list : Array, parent : Node, callable_source : Node, pressed_signal : String, enter_hover_signal : String = "", exit_hover_signal : String = ""):
-	return _create_button(ui["empty_properties_button"],item_list,parent,callable_source,pressed_signal,enter_hover_signal,exit_hover_signal)
+	return _create_button(Glossary.ui_scene["text_slot"],item_list,parent,callable_source,pressed_signal,enter_hover_signal,exit_hover_signal)
 
 
 func create_options_list(properties : Dictionary, parent : Node, callable_source : Node, pressed_signal : String, battle_or_world : String):
@@ -319,7 +316,7 @@ func create_options_list(properties : Dictionary, parent : Node, callable_source
 	
 	## Make button for each option
 	for option in battle_or_world_options: #How do we handle modifying this?
-		new_button = Glossary.ui.empty_properties_button.instantiate()
+		new_button = Glossary.ui_scene["text_slot"].instantiate()
 		
 		## Assign
 		new_button.properties.option_path = [option]
@@ -505,7 +502,7 @@ func evaluate_option_properties(properties : Dictionary, parent : Node, callable
 		
 		## Run through all choices displayed, which is an array
 		for i in returned_choices.size(): 
-			var new_button = Glossary.ui.empty_properties_button.instantiate() #Create new button
+			var new_button = Glossary.ui_scene["text_slot"].instantiate() #Create new button
 			new_button.text = returned_choices[i]
 			
 			if returned_choices_info:
@@ -597,27 +594,33 @@ var particle : Dictionary = {
 
 const icon_scene : Dictionary = {
 	## General
-	
-	"vis" : preload("res://Scenes/ui/base_icon/icon_vis.tscn"),
-	"heart" : preload("res://Scenes/ui/base_icon/icon_heart.tscn"),
+	"vis" : preload("res://Scenes/ui/icons/base_icon/icon_vis.tscn"),
+	"heart" : preload("res://Scenes/ui/icons/base_icon/icon_heart.tscn"),
 	## Input Prompts
-	"icon_3d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
-	"icon_2d_keyboard" : preload("res://Scenes/ui/input_icon/icon_3d_keyboard.tscn"),
+	"icon_3d_keyboard" : preload("res://Scenes/ui/icons/input_icon/icon_3d_keyboard.tscn"),
+	"icon_2d_keyboard" : preload("res://Scenes/ui/icons/input_icon/icon_3d_keyboard.tscn"),
 	## Status
-	"status_burn" : preload("res://Scenes/ui/status_icon/status_icon_burn.tscn"),
-	"status_disable" : preload("res://Scenes/ui/status_icon/status_icon_disable.tscn"),
-	"status_ethereal" : preload("res://Scenes/ui/status_icon/status_icon_ethereal.tscn"),
-	"status_fear" : preload("res://Scenes/ui/status_icon/status_icon_fear.tscn"),
-	"status_freeze" : preload("res://Scenes/ui/status_icon/status_icon_freeze.tscn"),
-	"status_soulstitch" : preload("res://Scenes/ui/status_icon/status_icon_soulstitch.tscn"),
-	"status_immunity" : preload("res://Scenes/ui/status_icon/status_icon_immunity.tscn"),
-	"status_regrowth" : preload("res://Scenes/ui/status_icon/status_icon_regrowth.tscn"),
-	"status_swarm" : preload("res://Scenes/ui/status_icon/status_icon_swarm.tscn"),
-	"status_thorns" : preload("res://Scenes/ui/status_icon/status_icon_thorns.tscn"),
-	"status_weakness" : preload("res://Scenes/ui/status_icon/status_icon_weakness.tscn"),
-	"status_defense" : preload("res://Scenes/ui/status_icon/status_icon_block.tscn"),
-	"status_death" : preload("res://Scenes/ui/status_icon/status_icon_death.tscn"),
+	"status_burn" : preload("res://Scenes/ui/icons/status_icon/status_icon_burn.tscn"),
+	"status_disable" : preload("res://Scenes/ui/icons/status_icon/status_icon_disable.tscn"),
+	"status_ethereal" : preload("res://Scenes/ui/icons/status_icon/status_icon_ethereal.tscn"),
+	"status_fear" : preload("res://Scenes/ui/icons/status_icon/status_icon_fear.tscn"),
+	"status_freeze" : preload("res://Scenes/ui/icons/status_icon/status_icon_freeze.tscn"),
+	"status_soulstitch" : preload("res://Scenes/ui/icons/status_icon/status_icon_soulstitch.tscn"),
+	"status_immunity" : preload("res://Scenes/ui/icons/status_icon/status_icon_immunity.tscn"),
+	"status_regrowth" : preload("res://Scenes/ui/icons/status_icon/status_icon_regrowth.tscn"),
+	"status_swarm" : preload("res://Scenes/ui/icons/status_icon/status_icon_swarm.tscn"),
+	"status_thorns" : preload("res://Scenes/ui/icons/status_icon/status_icon_thorns.tscn"),
+	"status_weakness" : preload("res://Scenes/ui/icons/status_icon/status_icon_weakness.tscn"),
+	"status_defense" : preload("res://Scenes/ui/icons/status_icon/status_icon_block.tscn"),
+	"status_death" : preload("res://Scenes/ui/icons/status_icon/status_icon_death.tscn"),
 }
+
+const ui_scene : Dictionary = {
+	## Containers
+	"text_slot" : preload("res://Scenes/ui/containers/text_slot.tscn"),
+	"button_slot" : preload("res://Scenes/ui/containers/button_slot.tscn"),
+	"status_slot" : preload("res://Scenes/ui/containers/status_slot.tscn"),
+	}
 
 var entity_scene : Dictionary = {
 	## DO NOT CHANGE TO PRELOAD
@@ -637,11 +640,7 @@ const visual_set : Dictionary = {
 	#}
 	}
 
-##
-const ui : Dictionary = {
-	"empty_properties_button" : preload("res://Scenes/ui/empty_properties_button.tscn"),
-	"empty_properties_button_slot" : preload("res://Scenes/ui/empty_properties_button_slot.tscn"),
-	}
+
 
 # Classes
 
