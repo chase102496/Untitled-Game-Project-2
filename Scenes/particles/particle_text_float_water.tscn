@@ -1,9 +1,9 @@
 [gd_scene load_steps=16 format=3 uid="uid://bks7bb5d10wsu"]
 
 [ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_pjyi1"]
-[ext_resource type="Texture2D" uid="uid://bjvpvbu5wpgqm" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_water_97.png" id="2_8mq5e"]
+[ext_resource type="Texture2D" uid="uid://bjvpvbu5wpgqm" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_water_97.png" id="2_8mq5e"]
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="3_pck2u"]
-[ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="3_rivcy"]
+[ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="3_rivcy"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="4_vomo7"]
 
 [sub_resource type="Curve" id="Curve_kp78f"]

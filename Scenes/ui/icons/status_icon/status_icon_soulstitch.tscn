@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://b2kyn65lyuo5x"]
 
 [ext_resource type="PackedScene" uid="uid://c7bykxg4g7d81" path="res://Scenes/ui/icons/base_icon/icon_heart.tscn" id="1_pdcl3"]
-[ext_resource type="Texture2D" uid="uid://db07b4pw3dj13" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_restrained_58.png" id="2_8r8iw"]
+[ext_resource type="Texture2D" uid="uid://db07b4pw3dj13" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_restrained_58.png" id="2_8r8iw"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="2_lnbts"]
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="2_pyc51"]
 

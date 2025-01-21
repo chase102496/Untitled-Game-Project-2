@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c7bykxg4g7d81"]
 
-[ext_resource type="Texture2D" uid="uid://ck32gj8yp20ti" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_health_6.png" id="1_bwhd8"]
+[ext_resource type="Texture2D" uid="uid://ck32gj8yp20ti" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_health_6.png" id="1_bwhd8"]
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_wiym6"]
 
 [sub_resource type="Gradient" id="Gradient_h8iw8"]

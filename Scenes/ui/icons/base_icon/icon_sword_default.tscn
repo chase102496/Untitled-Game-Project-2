@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_w7oae"]
 [ext_resource type="Script" path="res://test_junk/aokwdb.gd" id="2_ogfbj"]
-[ext_resource type="Texture2D" uid="uid://c2mn6w7w4d160" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_attack_72.png" id="2_x0y17"]
+[ext_resource type="Texture2D" uid="uid://c2mn6w7w4d160" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_attack_72.png" id="2_x0y17"]
 
 [sub_resource type="Gradient" id="Gradient_03jhv"]
 offsets = PackedFloat32Array(0, 0.180516, 1)

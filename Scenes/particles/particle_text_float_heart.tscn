@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://bmeth4rtcprpg"]
 
 [ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_4xhx5"]
-[ext_resource type="Texture2D" uid="uid://ck32gj8yp20ti" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_health_6.png" id="2_sakdq"]
+[ext_resource type="Texture2D" uid="uid://ck32gj8yp20ti" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_health_6.png" id="2_sakdq"]
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="3_3vvg7"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="4_0vs28"]
 

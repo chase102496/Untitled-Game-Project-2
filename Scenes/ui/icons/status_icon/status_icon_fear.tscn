@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dieb70la85glm" path="res://Scenes/ui/containers/icon.tscn" id="1_hov5k"]
 [ext_resource type="Material" uid="uid://d2cc7dtwhpebl" path="res://test_junk/status_icon_fear_copy.tres" id="2_1xjov"]
-[ext_resource type="Texture2D" uid="uid://fh0dndd7cddg" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_cursed_37.png" id="3_g6qb5"]
+[ext_resource type="Texture2D" uid="uid://fh0dndd7cddg" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_cursed_37.png" id="3_g6qb5"]
 
 [node name="status_icon_fear" instance=ExtResource("1_hov5k")]
 custom_minimum_size = Vector2(50, 50)

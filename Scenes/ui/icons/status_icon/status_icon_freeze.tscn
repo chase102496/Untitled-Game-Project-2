@@ -1,11 +1,11 @@
 [gd_scene load_steps=14 format=3 uid="uid://blhfhgbpfieiw"]
 
-[ext_resource type="Texture2D" uid="uid://bs77ca3bsn525" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_white.png" id="1_1fo7h"]
+[ext_resource type="Texture2D" uid="uid://bs77ca3bsn525" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_white.png" id="1_1fo7h"]
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_aig44"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="2_ffov6"]
-[ext_resource type="Texture2D" uid="uid://cwommobyspk2q" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_skyblue_medium.png" id="2_le5cm"]
-[ext_resource type="Texture2D" uid="uid://c2y0p5bqxwray" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_skyblue_light.png" id="3_vjh2b"]
-[ext_resource type="Texture2D" uid="uid://b8ljoa1ymwcej" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_line_no_human.png" id="4_io8dg"]
+[ext_resource type="Texture2D" uid="uid://cwommobyspk2q" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_skyblue_medium.png" id="2_le5cm"]
+[ext_resource type="Texture2D" uid="uid://c2y0p5bqxwray" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_skyblue_light.png" id="3_vjh2b"]
+[ext_resource type="Texture2D" uid="uid://b8ljoa1ymwcej" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/input/status_icons/status_icon_freezing_106_line_no_human.png" id="4_io8dg"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)

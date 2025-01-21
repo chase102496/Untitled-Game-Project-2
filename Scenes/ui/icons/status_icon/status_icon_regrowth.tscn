@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cg8nrchuktpgg"]
 
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_bwe5b"]
-[ext_resource type="Texture2D" uid="uid://begq480hsmshe" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_growing_15.png" id="1_tsp80"]
+[ext_resource type="Texture2D" uid="uid://begq480hsmshe" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_growing_15.png" id="1_tsp80"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w1aip"]
 size = Vector2(100, 100)

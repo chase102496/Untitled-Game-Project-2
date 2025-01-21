@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://5mp38mw6jfv5"]
 
-[ext_resource type="Texture2D" uid="uid://bx6h1huj5k332" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_ghost_12.png" id="1_vtfgl"]
+[ext_resource type="Texture2D" uid="uid://bx6h1huj5k332" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_ghost_12.png" id="1_vtfgl"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="2_hqvwu"]
 
 [sub_resource type="Animation" id="Animation_ybdww"]

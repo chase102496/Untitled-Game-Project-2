@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cq2mllyapg4d8"]
 
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_f6xch"]
-[ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="2_avsn4"]
+[ext_resource type="Texture2D" uid="uid://huvyr6p3udvx" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_buffed_32.png" id="2_avsn4"]
 
 [sub_resource type="Gradient" id="Gradient_ojtoj"]
 offsets = PackedFloat32Array(0, 0.993631, 1)

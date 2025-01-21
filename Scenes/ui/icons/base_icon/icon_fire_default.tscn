@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://buoxwsjrunb0y"]
 
-[ext_resource type="Texture2D" uid="uid://ng5ok3ckrbuu" path="res://Art/ui/Icons/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_fire_96.png" id="1_2kbnl"]
+[ext_resource type="Texture2D" uid="uid://ng5ok3ckrbuu" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_fire_96.png" id="1_2kbnl"]
 
 [sub_resource type="Shader" id="Shader_rdjo5"]
 code = "shader_type canvas_item;

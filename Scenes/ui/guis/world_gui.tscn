@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1s71hosugqju"]
+[gd_scene load_steps=20 format=3 uid="uid://b1s71hosugqju"]
 
 [ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://Interface/menu_theme.tres" id="1_maa2b"]
 [ext_resource type="Script" path="res://Scenes/ui/guis/world_gui.gd" id="2_o6b2p"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_fi7i2"]
 [ext_resource type="PackedScene" uid="uid://dwhv3ry5jg0lk" path="res://Scenes/ui/containers/button_slot.tscn" id="6_jefqr"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_q80aw"]
+[ext_resource type="Texture2D" uid="uid://dmctpdf8netf7" path="res://Art/sprites/hand_small_point.svg" id="12_oor66"]
+[ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="13_twldw"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_r2n7q"]
 resource_local_to_scene = true
@@ -27,6 +29,93 @@ outline_size = 20
 outline_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ole5m"]
+
+[sub_resource type="Animation" id="Animation_nc7bj"]
+resource_name = "idle"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1.68179, 0.63728, 1.36604, 0.757858, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 0.85), Vector2(1, 1), Vector2(0.9, 1.1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1.41421, 0.757858, 1.27456, 0.68302, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1), Vector2(0, 0), Vector2(-2, -2), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(2.07053, 0.535887, 1.31951, 0.574349, 1),
+"update": 0,
+"values": [0.0, -0.139626, 0.0, 0.139626, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_prtih"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jh0lw"]
+_data = {
+"RESET": SubResource("Animation_prtih"),
+"new_animation": SubResource("Animation_nc7bj")
+}
 
 [node name="World_GUI" type="Control"]
 texture_filter = 4
@@ -228,6 +317,38 @@ offset_bottom = 672.0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+
+[node name="Pointer" type="Control" parent="Inventory"]
+anchors_preset = 0
+offset_left = -832.0
+offset_top = 325.0
+offset_right = -812.0
+offset_bottom = 345.0
+
+[node name="TextureRect" type="TextureRect" parent="Inventory/Pointer"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(50, 50)
+texture = ExtResource("12_oor66")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Inventory/Pointer/TextureRect"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_jh0lw")
+}
+script = ExtResource("13_twldw")
+autoplay_animation = "new_animation"
 
 [node name="HUD" type="Control" parent="."]
 unique_name_in_owner = true
