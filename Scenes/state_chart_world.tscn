@@ -17,6 +17,7 @@ initial_state = NodePath("World")
 
 [node name="on_idle" type="Node" parent="Main"]
 script = ExtResource("5_2iali")
+to = NodePath("../World/Grounded/Idle")
 event = &"on_idle"
 delay_in_seconds = "0.0"
 
@@ -121,6 +122,3 @@ script = ExtResource("5_2iali")
 to = NodePath("../../Rising")
 event = &"on_rising"
 delay_in_seconds = "0.0"
-
-[node name="AtomicState" type="Node" parent="Main/World/Airborne"]
-script = ExtResource("3_l3k1k")

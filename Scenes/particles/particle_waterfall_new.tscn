@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://b60if22kbe70a"]
+
+[sub_resource type="Curve" id="Curve_k1twi"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 5.5631e-07, 5.5631e-07, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_cccmc"]
+curve = SubResource("Curve_k1twi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3ylch"]
+emission_shape_scale = Vector3(1.315, 0, 0.1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 1, 0)
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_cccmc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_op2xk"]
+shading_mode = 0
+diffuse_mode = 3
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="SphereMesh" id="SphereMesh_fuq00"]
+material = SubResource("StandardMaterial3D_op2xk")
+
+[node name="GPUParticles3D3" type="GPUParticles3D"]
+transform = Transform3D(-0.302727, -4.09273e-11, 0.0135456, -3.74177e-09, 0.434783, 7.27596e-12, -0.0447005, 0, -0.999, -0.00259399, -0.122113, 0.669924)
+amount = 40
+lifetime = 0.7
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_3ylch")
+draw_pass_1 = SubResource("SphereMesh_fuq00")

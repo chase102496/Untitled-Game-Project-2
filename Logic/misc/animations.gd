@@ -10,6 +10,7 @@ extends Node3D
 @export var fx_anchor : Marker3D #Not in use, but will be later
 @export var status_hud : Node3D
 @export var sprite_position : Node3D
+@export var transformer : Node3D
 
 #func import_visual_set(dict : Dictionary) -> void:
 	#for key in dict:

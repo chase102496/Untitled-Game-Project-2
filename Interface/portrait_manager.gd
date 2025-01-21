@@ -32,7 +32,6 @@ func _update_label(input : Variant, target : Label, amt_changed : int) -> void:
 		tween.set_ease(Tween.EASE_IN)
 		
 		tween.tween_property(target,"scale",Vector2(3,3),0.05)
-		tween.tween_property(target.label_settings,"font_color",Color(255,255,0),0.05)
 		tween.tween_property(target,"rotation_degrees",[-45,-30,-15,15,30,45].pick_random(),0.05)
 		
 		match target.name:

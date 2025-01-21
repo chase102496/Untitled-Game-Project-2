@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://Scenes/ui/guis/status_hud.tscn" id="11_s71nu"]
 [ext_resource type="Script" path="res://Logic/misc/character_animation_tree.gd" id="13_arqnv"]
 
-[node name="component_animation" type="Node3D" node_paths=PackedStringArray("tree", "player", "sprite", "selector_anchor", "fx_anchor", "status_hud", "sprite_position")]
+[node name="component_animation" type="Node3D" node_paths=PackedStringArray("tree", "player", "sprite", "selector_anchor", "fx_anchor", "status_hud", "sprite_position", "transformer")]
 script = ExtResource("1_t62b6")
 tree = NodePath("character_animation_tree")
 player = NodePath("character_animation_player")
@@ -13,6 +13,7 @@ selector_anchor = NodePath("character_sprite_position/selector_anchor")
 fx_anchor = NodePath("character_sprite_position/fx_anchor")
 status_hud = NodePath("character_sprite_position/status_hud")
 sprite_position = NodePath("character_sprite_position")
+transformer = NodePath("AnimationTransform")
 
 [node name="AnimationTransform" type="Node3D" parent="."]
 

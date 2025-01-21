@@ -130,7 +130,7 @@ func _add_particle_queue(part_callable : Callable) -> void:
 	particle_queue.append(part_callable)
 
 ## This is the internal function to actually instantiate the particle
-func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : float, time : float):
+func _run_icon_particle(anchor, icon : String, type : String, color : Color, size : float, one_shot : bool, direction : Vector3, time : float):
 	
 	var icon_ref = Glossary.icon_scene.get(icon)
 	var inst = create_fx_particle_custom(anchor,type,one_shot,-1,-1,-1,direction)
@@ -150,7 +150,7 @@ func _run_icon_particle(anchor, icon : String, type : String, color : Color, siz
 		push_error("Node reference for icon_particle unknown: ",icon_ref)
 
 ## This is the internal function to actually instantiate the particle
-func _run_text_particle(anchor, text : String, type : String, color : Color, size : float, one_shot : bool, direction : float):
+func _run_text_particle(anchor, text : String, type : String, color : Color, size : float, one_shot : bool, direction : Vector3):
 	##Creation stuff
 	var inst = create_fx_particle_custom(anchor,type,one_shot,-1,-1,-1,direction)
 	var particle_label = inst.get_node("%particle_label")
@@ -183,10 +183,13 @@ func _create_prompt_keyboard_3d(anchor : Node3D, button_text : String, color : C
 	return inst
 
 ## Create custom parameters of a particle. Will modify the particle settings in the function
-func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : float = -1.0,color : Color = Color.WHEAT):
+func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, amt : int = -1, spread : float = -1.0, speed : float = -1.0, direction : Vector3 = Vector3.ZERO, color : Color = Color.WHEAT):
 	var result = create_fx_particle(anchor,type,one_shot)
 	if result is Node:
 		var inst = result
+		
+		inst.one_shot = one_shot
+		
 		if amt != -1:
 			inst.amount = amt
 		if spread != -1:
@@ -196,10 +199,8 @@ func create_fx_particle_custom(anchor, type : String, one_shot : bool = false, a
 			inst.process_material.initial_velocity_min = speed
 		if color != Color.WHEAT: #Because I wanted to static type it but there's no empty color, so fuck wheat
 			inst.draw_pass_1.material.albedo_color = color
-		
-		inst.one_shot = one_shot
-		
-		
+		if direction != Vector3.ZERO:
+			inst.process_material.direction = direction
 		
 		return inst
 	else:
@@ -226,21 +227,21 @@ func create_fx_particle(anchor, type : String, one_shot : bool = false):
 		return null
 
 ## This is the external function used to create the particles
-func create_text_particle(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction : float = 0) -> void:
+func create_text_particle(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction = Vector3.ZERO) -> void:
 	_run_text_particle(anchor,text,type,color,size,one_shot,direction)
 
 ## This is for them to obey the queue
-func create_text_particle_queue(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction : float = 0) -> void:
+func create_text_particle_queue(anchor, text : String, type : String = "text_float_away", color : Color = Color.WHITE,size : float = 0.5, one_shot : bool = true, direction = Vector3.ZERO) -> void:
 	var part_callable = _run_text_particle.bind(anchor,text,type,color,size,one_shot,direction)
 	_add_particle_queue(part_callable)
 	_run_particle_queue()
 
 ##
-func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0, time : float = -1) -> void:
+func create_icon_particle(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction = Vector3.ZERO, time : float = -1) -> void:
 	_run_icon_particle(anchor,icon,type,color,size,one_shot,direction,time)
 
 ##
-func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction : float = 0, time : float = -1) -> void:
+func create_icon_particle_queue(anchor, icon : String, type : String = "icon_float_away", color : Color = Color.WHITE, size : float = 0.8, one_shot : bool = true, direction = Vector3.ZERO, time : float = -1) -> void:
 	var part_callable = _run_icon_particle.bind(anchor,icon,type,color,size,one_shot,direction,time)
 	_add_particle_queue(part_callable)
 	_run_particle_queue()
@@ -577,6 +578,7 @@ var particle : Dictionary = {
 	#"status_freeze" : preload("res://Scenes/particles/particle_freeze.tscn"),
 	#"status_disable" : preload("res://Scenes/particles/particle_disabled.tscn"),
 	### World effects
+	"dust" : preload("res://Scenes/particles/particle_dust.tscn"),
 	"soulstitch_node_lumia" : preload("res://Scenes/particles/particle_soulstitch_node_lumia.tscn"),
 	"soulstitch_node_recall" : preload("res://Scenes/particles/particle_soulstitch_node_recall.tscn"),
 	"soulstitch_node_clear" : preload("res://Scenes/particles/particle_soulstitch_node_clear.tscn"),

@@ -38,6 +38,7 @@ func _store_velocity_history() -> void:
 	_clean_velocity_history()
 
 func get_velocity_history(depth : int = 60) -> Array:
+	
 	if depth > 60:
 		push_error("Velocity History is not stored for more than 60 previous frames : ",depth)
 		return velocity_history

@@ -131,13 +131,13 @@ func change(amt: int, from_tether: bool = false, display: bool = true):
 	# No damage (e.g. fully blocked)
 	elif calc["amt_changed"] == 0:
 		if display:
-			Glossary.create_fx_particle_custom(owner, "star_explosion", true, 10, 180, 4, 180, Color.WHITE)
+			Glossary.create_fx_particle_custom(owner, "star_explosion", true, 10, 180, 4, Vector3.ZERO, Color.WHITE)
 	
 	# Taking damage
 	elif calc["amt_changed"] < 0:
 		if display:
 			Glossary.create_text_particle(owner.animations.selector_anchor, str(abs(calc["amt_changed"])), "text_float_star")
-			Glossary.create_fx_particle_custom(owner.animations.selector_anchor, "star_explosion", true, 10, 180, 3, 180, Global.palette["Icterine"])
+			Glossary.create_fx_particle_custom(owner.animations.selector_anchor, "star_explosion", true, 10, 180, 3, Vector3.ZERO, Global.palette["Icterine"])
 			Camera.shake()
 		
 		# Avoid recursion
@@ -149,7 +149,7 @@ func change(amt: int, from_tether: bool = false, display: bool = true):
 			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection", [calc["amt_post_mitigation"], from_tether], true)
 			if death_protection_result.is_empty():
 				Glossary.create_icon_particle(owner.animations.selector_anchor,"status_death","icon_float_away",Color.WHEAT,1,true,0,3)
-				Glossary.create_fx_particle_custom(owner.animations.selector_anchor, "star_explosion", true, 10, 180, 5, 180, Global.palette["Icterine"])
+				Glossary.create_fx_particle_custom(owner.animations.selector_anchor, "star_explosion", true, 10, 180, 5, Vector3.ZERO, Global.palette["Icterine"])
 				_on_dying(death_protection_result)
 			else:
 				Glossary.create_text_particle_queue(owner.animations.selector_anchor, "Death Protection!")

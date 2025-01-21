@@ -36,6 +36,8 @@ func _ready() -> void:
 	##Override for owner
 	if my_owner:
 		owner = my_owner
+	else:
+		my_owner = owner
 
 ### --- Signals --- ###
 
@@ -116,6 +118,9 @@ func _on_attack_contact() -> void:
 	## Reset attack blocked status
 	is_attack_blocked = false
 
+func _on_footstep() -> void:
+	Glossary.create_fx_particle_custom(owner.animations.fx_anchor,"dust",true,-1,-1,-1,Vector3(-1,0,0),Global.palette["Oxford Blue"])
+
 ### --- Skillcheck Calc --- ###
 
 ## Skillcheck callable when landing offense window
@@ -146,15 +151,15 @@ func _attack_combo_change(amt : int) -> int:
 		1:
 			Glossary.reset_particle_queue()
 			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Global.palette["Apricot"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,-1,-1,Global.palette["Apricot Saturated"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,-1,Vector3.ZERO,Global.palette["Apricot Saturated"])
 		2:
 			Glossary.reset_particle_queue()
 			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Global.palette["Light Coral"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,-1,Global.palette["Light Coral Saturated"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,Vector3.ZERO,Global.palette["Light Coral Saturated"])
 		_:
 			Glossary.reset_particle_queue()
 			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Global.palette["Magenta Haze"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,-1,Global.palette["Magenta Haze Saturated"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,Vector3.ZERO,Global.palette["Magenta Haze Saturated"])
 	
 	return attack_combo
 

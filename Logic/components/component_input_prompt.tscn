@@ -3,5 +3,4 @@
 [ext_resource type="Script" path="res://Logic/components/component_input_prompt.gd" id="1_skjki"]
 
 [node name="component_input_prompt" type="Marker3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 script = ExtResource("1_skjki")

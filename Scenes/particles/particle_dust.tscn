@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://cn434bdqwwryj"]
+
+[ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_04ul6"]
+
+[sub_resource type="Curve" id="Curve_k1twi"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.67033), 5.5631e-07, 5.5631e-07, 0, 0, Vector2(0.443965, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_cccmc"]
+curve = SubResource("Curve_k1twi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3ylch"]
+emission_shape = 1
+emission_sphere_radius = 0.2
+spread = 20.0
+initial_velocity_min = 0.5
+initial_velocity_max = 0.5
+gravity = Vector3(0, 0.15, 0)
+damping_max = 0.3
+scale_min = 0.2
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_cccmc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_op2xk"]
+transparency = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="SphereMesh" id="SphereMesh_fuq00"]
+material = SubResource("StandardMaterial3D_op2xk")
+radial_segments = 16
+
+[node name="particle_dust" type="GPUParticles3D"]
+emitting = false
+amount = 16
+amount_ratio = 0.5
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_3ylch")
+draw_pass_1 = SubResource("SphereMesh_fuq00")
+script = ExtResource("1_04ul6")

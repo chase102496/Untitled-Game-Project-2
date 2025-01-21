@@ -37,7 +37,7 @@ skeleton = NodePath("")
 [node name="component_impulse_controller_switch" parent="Components" instance=ExtResource("1_x8mbl")]
 
 [node name="component_input_prompt" parent="Components/component_impulse_controller_switch/Components" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 
 [node name="component_interact_reciever" parent="Components/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("2_5ncva")]
 

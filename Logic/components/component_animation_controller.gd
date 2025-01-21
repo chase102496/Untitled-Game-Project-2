@@ -9,20 +9,26 @@ extends component_node
 func camera_billboard() -> void:
 	owner.rotation.y = Global.camera.rotation.y
 
-func animation_update(dir : Vector2 = Vector2(0,0)) -> void:
+var result_dir : Vector3 = Vector3.ZERO
+
+func animation_update(vel : Vector3 = owner.velocity) -> void:
 	
-	if dir.x > 0:
+	## X Movement (Left/Right)
+	if vel.x > 0:
 		animations.rotation.y = PI
-	elif dir.x < 0:
+		result_dir.x = vel.x
+	elif vel.x < 0:
 		animations.rotation.y = 0
+		result_dir.x = vel.x
 	else:
 		pass #Keep current direction if we didn't change it
 	
-	if dir.y != 0:
-		animations.tree.set_blend_group(dir,["Idle","Walk"])
-		#animations.tree.set_blend(dir) TODO CHANGE THIS WHEN WE GET BACK SIDE OF WALK
+	## Y Movement (Up/Down)
+	if vel.y != 0:
+		result_dir.y = vel.y
 	
-	#animations.tree.set_blend(dir)
+	## Z Movement (Front facing/Back facing)
+	if vel.z != 0:
+		result_dir.z = vel.z
 	
-	#animations.tree.set_blend_2d(dir,"Idle")
-	#animations.tree.set_blend_2d(dir,"Walk")
+	animations.tree.set_blend_group(Vector2(result_dir.y,result_dir.z),["Idle","Walk","Walk 2","Air"])

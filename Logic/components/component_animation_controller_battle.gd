@@ -29,9 +29,9 @@ func _on_state_entered_battle_waiting() -> void:
 	animations.tree.set_state("Idle")
 	
 	if owner.alignment == Battle.alignment.FRIENDS:
-		animation_update(Vector2(1,1))
+		animation_update(Vector3(1,0,1))
 	else:
-		animation_update(Vector2(-1,-1))
+		animation_update(Vector3(-1,0,-1))
 
 func _on_state_exited_battle() -> void:
 	pass

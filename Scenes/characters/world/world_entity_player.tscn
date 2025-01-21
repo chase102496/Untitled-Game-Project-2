@@ -64,15 +64,18 @@ gloam_manager = NodePath("../component_gloam_manager")
 [node name="component_gloam_manager" parent="Components" index="2" node_paths=PackedStringArray("equipment") instance=ExtResource("6_smvuq")]
 equipment = NodePath("../component_equipment")
 
+[node name="AnimationTransform" parent="Components/component_animation" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
 [node name="character_animation_sprite" parent="Components/component_animation/AnimationTransform" index="0"]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, -0.488, 0)
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
 offset = Vector2(0, 500)
 sprite_frames = ExtResource("8_vijqw")
 animation = &"default_idle_down"
 frame = 1
 
 [node name="character_sprite_position" parent="Components/component_animation" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.488, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="selector_anchor" parent="Components/component_animation/character_sprite_position" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
@@ -86,6 +89,8 @@ libraries = {
 }
 
 [node name="character_animation_tree" parent="Components/component_animation" index="3"]
+parameters/Air/BlendSpace2D/blend_position = Vector2(0.00101209, 0.00429177)
+parameters/Air/TimeScale/scale = 1.0
 parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.00215471, 0.0394872)
 parameters/Walk/TimeScale/scale = 4.0
 "parameters/Walk 2/TimeScale/scale" = 0.5
