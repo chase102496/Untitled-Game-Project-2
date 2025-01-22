@@ -119,7 +119,7 @@ func _on_attack_contact() -> void:
 	is_attack_blocked = false
 
 func _on_footstep() -> void:
-	Glossary.create_fx_particle_custom(owner.animations.fx_anchor,"dust",true,-1,-1,-1,Vector3(-1,0,0),Global.palette["Oxford Blue"])
+	Glossary.create_fx_particle_custom(owner.animations.selector_feet,"dust",true,8,-1,-1,-my_owner.velocity.normalized(),Global.palette["Oxford Blue"])
 
 ### --- Skillcheck Calc --- ###
 
@@ -134,7 +134,7 @@ func _skillcheck_success_offense() -> void:
 func _skillcheck_success_defense() -> void:
 	for tgt in owner.my_component_ability.cast_queue.targets:
 		
-		Glossary.create_icon_particle(tgt.animations.selector_anchor,"status_defense","icon_pop_fly")
+		Glossary.create_icon_particle(tgt.animations.selector_center,"status_defense","icon_pop_fly")
 		tgt.my_component_health.change_armor_block(tgt.my_component_health.block_power)
 		Events.battle_entity_blocked.emit(tgt)
 
@@ -150,16 +150,16 @@ func _attack_combo_change(amt : int) -> int:
 	match attack_combo:
 		1:
 			Glossary.reset_particle_queue()
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Nice!","text_float_away",Global.palette["Apricot"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,-1,Vector3.ZERO,Global.palette["Apricot Saturated"])
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target.animations.selector_center,"Nice!","text_float_away",Global.palette["Apricot"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target.animations.selector_center,"star_explosion",true,10,-1,-1,Vector3.ZERO,Global.palette["Apricot Saturated"])
 		2:
 			Glossary.reset_particle_queue()
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Great!","text_float_away",Global.palette["Light Coral"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,Vector3.ZERO,Global.palette["Light Coral Saturated"])
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target.animations.selector_center,"Great!","text_float_away",Global.palette["Light Coral"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target.animations.selector_center,"star_explosion",true,10,-1,5,Vector3.ZERO,Global.palette["Light Coral Saturated"])
 		_:
 			Glossary.reset_particle_queue()
-			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target,"Excellent!","text_float_away",Global.palette["Magenta Haze"])
-			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target,"star_explosion",true,10,-1,5,Vector3.ZERO,Global.palette["Magenta Haze Saturated"])
+			Glossary.create_text_particle_queue(owner.my_component_ability.cast_queue.primary_target.animations.selector_center,"Excellent!","text_float_away",Global.palette["Magenta Haze"])
+			Glossary.create_fx_particle_custom(owner.my_component_ability.cast_queue.primary_target.animations.selector_center,"star_explosion",true,10,-1,5,Vector3.ZERO,Global.palette["Magenta Haze Saturated"])
 	
 	return attack_combo
 

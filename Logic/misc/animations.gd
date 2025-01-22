@@ -3,11 +3,13 @@
 class_name component_animation
 extends Node3D
 
+@export var selector_center : Marker3D
+@export var selector_feet : Marker3D
+@export var selector_ankles : Marker3D
+
 @export var tree : AnimationTree
 @export var player : AnimationPlayer
 @export var sprite : AnimatedSprite3D
-@export var selector_anchor : Marker3D
-@export var fx_anchor : Marker3D #Not in use, but will be later
 @export var status_hud : Node3D
 @export var sprite_position : Node3D
 @export var transformer : Node3D

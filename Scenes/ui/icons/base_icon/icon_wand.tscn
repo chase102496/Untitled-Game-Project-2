@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bx7t0ma4uubf"]
+
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_noa51"]
+[ext_resource type="Texture2D" uid="uid://qpo5t3txe304" path="res://Art/sprites/Cursor/Outline/tool_wand.svg" id="1_oph0e"]
+
+[sub_resource type="Gradient" id="Gradient_vyg6y"]
+offsets = PackedFloat32Array(0, 0.642857, 1)
+colors = PackedColorArray(0.27, 0.1134, 0.20997, 1, 0.568627, 0.239216, 0.443137, 1, 0.8, 0.336, 0.622133, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2acqj"]
+gradient = SubResource("Gradient_vyg6y")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3h6da"]
+shader = ExtResource("1_noa51")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_2acqj")
+
+[node name="icon_wand" type="Control"]
+texture_filter = 4
+layout_mode = 3
+anchor_right = 0.052
+anchor_bottom = 0.093
+offset_right = 0.159996
+offset_bottom = -0.440002
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_3h6da")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_oph0e")
+expand_mode = 1

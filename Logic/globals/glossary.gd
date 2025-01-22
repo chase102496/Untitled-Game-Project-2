@@ -595,6 +595,9 @@ var particle : Dictionary = {
 	}
 
 const icon_scene : Dictionary = {
+	## Abilities
+	"wand" : preload("res://Scenes/ui/icons/base_icon/icon_wand.tscn"),
+	"return" : preload("res://Scenes/ui/icons/base_icon/icon_return.tscn"),
 	## General
 	"vis" : preload("res://Scenes/ui/icons/base_icon/icon_vis.tscn"),
 	"heart" : preload("res://Scenes/ui/icons/base_icon/icon_heart.tscn"),

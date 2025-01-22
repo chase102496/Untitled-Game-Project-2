@@ -234,11 +234,11 @@ func update_positions() -> Array[Tween]:
 			
 			if unit.alignment == Battle.alignment.FOES:
 				foes_offset -= unit.spacing
-				tween.tween_property(unit,"position",Vector3(foes_offset.x,unit.collider.shape.height/2,foes_offset.z),0.3)
+				tween.tween_property(unit,"position",Vector3(foes_offset.x,0,foes_offset.z),0.3)
 				foes_offset -= unit.spacing
 			else:
 				friends_offset += unit.spacing
-				tween.tween_property(unit,"position",Vector3(friends_offset.x,unit.collider.shape.height/2,friends_offset.z),0.3)
+				tween.tween_property(unit,"position",Vector3(friends_offset.x,0,friends_offset.z),0.3)
 				friends_offset += unit.spacing
 			
 			tween_list.append(tween)
@@ -458,7 +458,6 @@ func set_battle_spotlight_target(target : Node3D) -> void:
 		battle_spotlight_tween.set_trans(Tween.TRANS_BACK)
 		battle_spotlight_tween.tween_property(battle_spotlight,"global_position",Vector3(target.global_position.x,battle_spotlight.global_position.y,target.global_position.z),tween_time)
 		battle_spotlight.remote_transform.remote_path = get_path_to(target)
-
 
 func set_battle_spotlight_brightness(brightness : float,time : float = 0) -> void:
 	if battle_spotlight.light.light_energy != brightness:

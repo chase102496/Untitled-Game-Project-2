@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://baowwbhogqe0c" path="res://test_junk/vignette.tscn" id="3_6833w"]
 [ext_resource type="PackedScene" uid="uid://b1s71hosugqju" path="res://Scenes/ui/guis/world_gui.tscn" id="3_sq4rn"]
 [ext_resource type="PackedScene" uid="uid://r6lxipom563d" path="res://Logic/components/component_interaction.tscn" id="4_l3hcv"]
-[ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_equipment.tscn" id="5_ke17l"]
+[ext_resource type="PackedScene" uid="uid://c20wjgqsafufi" path="res://Logic/components/component_world_ability.tscn" id="5_ke17l"]
 [ext_resource type="PackedScene" uid="uid://cjip6juyime05" path="res://Logic/components/component_gloam_manager.tscn" id="6_smvuq"]
 [ext_resource type="SpriteFrames" uid="uid://cy4mmdcs8cwrj" path="res://Resources/SpriteFrames/player/default_player.tres" id="8_vijqw"]
 [ext_resource type="AnimationLibrary" uid="uid://sqc4n6qes1ts" path="res://Resources/AnimationLibrary/player/default_player.res" id="9_d7rs2"]
@@ -14,11 +14,11 @@
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_u5omi"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="14_luuhe"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pa3yv"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t1115"]
 radius = 0.25
-height = 1.0
+height = 1.4
 
-[node name="world_entity_player" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_component_equipment", "my_component_interaction", "my_world_gui", "gloam_manager", "my_vignette") groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("1_w8yip")]
+[node name="world_entity_player" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_party", "my_component_ability", "my_component_inventory", "my_component_world_ability", "my_component_interaction", "my_world_gui", "gloam_manager", "my_vignette") groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("1_w8yip")]
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("2_q04t1")
@@ -27,7 +27,7 @@ my_component_input_controller = NodePath("Components/component_input_controller_
 my_component_party = NodePath("Components/component_party")
 my_component_ability = NodePath("Components/component_ability")
 my_component_inventory = NodePath("Components/component_inventory")
-my_component_equipment = NodePath("Components/component_equipment")
+my_component_world_ability = NodePath("Components/component_world_ability")
 my_component_interaction = NodePath("Components/component_interaction")
 my_world_gui = NodePath("World_GUI")
 gloam_manager = NodePath("Components/component_gloam_manager")
@@ -40,13 +40,14 @@ offset_bottom = 438.0
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
 
-[node name="World_GUI" parent="." index="1" node_paths=PackedStringArray("my_component_party", "my_component_inventory") instance=ExtResource("3_sq4rn")]
+[node name="World_GUI" parent="." index="1" node_paths=PackedStringArray("my_component_party", "my_component_inventory", "my_component_world_ability") instance=ExtResource("3_sq4rn")]
 my_component_party = NodePath("../Components/component_party")
 my_component_inventory = NodePath("../Components/component_inventory")
+my_component_world_ability = NodePath("../Components/component_world_ability")
 
 [node name="FaceLight" type="OmniLight3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
-light_energy = 0.3
+light_energy = 0.2
 light_indirect_energy = 0.0
 light_volumetric_fog_energy = 0.0
 light_specular = 0.0
@@ -54,34 +55,35 @@ omni_range = 0.513
 omni_attenuation = 0.2
 
 [node name="CollisionShape3D" parent="." index="4"]
-shape = SubResource("CapsuleShape3D_pa3yv")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_t1115")
 
 [node name="component_interaction" parent="Components" index="0" instance=ExtResource("4_l3hcv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
-[node name="component_equipment" parent="Components" index="1" node_paths=PackedStringArray("gloam_manager") instance=ExtResource("5_ke17l")]
+[node name="component_world_ability" parent="Components" index="1" node_paths=PackedStringArray("gloam_manager") instance=ExtResource("5_ke17l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 gloam_manager = NodePath("../component_gloam_manager")
 
 [node name="component_gloam_manager" parent="Components" index="2" node_paths=PackedStringArray("equipment") instance=ExtResource("6_smvuq")]
-equipment = NodePath("../component_equipment")
-
-[node name="AnimationTransform" parent="Components/component_animation" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+equipment = NodePath("../component_world_ability")
 
 [node name="character_animation_sprite" parent="Components/component_animation/AnimationTransform" index="0"]
 transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
-offset = Vector2(0, 500)
+offset = Vector2(0, 480)
 sprite_frames = ExtResource("8_vijqw")
 animation = &"default_idle_down"
 frame = 1
 
-[node name="character_sprite_position" parent="Components/component_animation" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+[node name="selector_center" parent="Components/component_animation/character_sprite_position/relative" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
-[node name="selector_anchor" parent="Components/component_animation/character_sprite_position" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-
-[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+[node name="status_hud" parent="Components/component_animation/character_sprite_position/relative" index="3" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+my_component_health = NodePath("../../../../component_health")
+my_component_vis = NodePath("../../../../component_vis")
+collider = NodePath("../../../../../CollisionShape3D")
 
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {
@@ -90,7 +92,6 @@ libraries = {
 
 [node name="character_animation_tree" parent="Components/component_animation" index="3"]
 parameters/Air/BlendSpace2D/blend_position = Vector2(0.00101209, 0.00429177)
-parameters/Air/TimeScale/scale = 1.0
 parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.00215471, 0.0394872)
 parameters/Walk/TimeScale/scale = 4.0
 "parameters/Walk 2/TimeScale/scale" = 0.5
@@ -109,10 +110,10 @@ script = ExtResource("13_u5omi")
 my_component_input_controller = NodePath("../component_input_controller_manual")
 my_component_physics = NodePath("../component_physics")
 
-[node name="component_input_controller_manual" type="Node" parent="Components" index="11" node_paths=PackedStringArray("my_component_interaction", "my_component_equipment", "my_component_movement_controller")]
+[node name="component_input_controller_manual" type="Node" parent="Components" index="11" node_paths=PackedStringArray("my_component_interaction", "my_component_world_ability", "my_component_movement_controller")]
 script = ExtResource("14_luuhe")
 my_component_interaction = NodePath("../component_interaction")
-my_component_equipment = NodePath("../component_equipment")
+my_component_world_ability = NodePath("../component_world_ability")
 my_component_movement_controller = NodePath("../component_movement_controller")
 
 [node name="component_animation_controller_world" parent="Components" index="12" node_paths=PackedStringArray("my_component_input_controller")]

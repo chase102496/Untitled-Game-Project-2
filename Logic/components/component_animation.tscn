@@ -4,14 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://b3707fwdhap4h" path="res://Scenes/ui/guis/status_hud.tscn" id="11_s71nu"]
 [ext_resource type="Script" path="res://Logic/misc/character_animation_tree.gd" id="13_arqnv"]
 
-[node name="component_animation" type="Node3D" node_paths=PackedStringArray("tree", "player", "sprite", "selector_anchor", "fx_anchor", "status_hud", "sprite_position", "transformer")]
+[node name="component_animation" type="Node3D" node_paths=PackedStringArray("selector_center", "selector_feet", "selector_ankles", "tree", "player", "sprite", "status_hud", "sprite_position", "transformer")]
 script = ExtResource("1_t62b6")
+selector_center = NodePath("character_sprite_position/relative/selector_center")
+selector_feet = NodePath("character_sprite_position/relative/selector_feet")
+selector_ankles = NodePath("character_sprite_position/relative/selector_ankles")
 tree = NodePath("character_animation_tree")
 player = NodePath("character_animation_player")
 sprite = NodePath("AnimationTransform/character_animation_sprite")
-selector_anchor = NodePath("character_sprite_position/selector_anchor")
-fx_anchor = NodePath("character_sprite_position/fx_anchor")
-status_hud = NodePath("character_sprite_position/status_hud")
+status_hud = NodePath("character_sprite_position/relative/status_hud")
 sprite_position = NodePath("character_sprite_position")
 transformer = NodePath("AnimationTransform")
 
@@ -28,12 +29,17 @@ update_rotation = false
 update_scale = false
 
 [node name="character_sprite_position" type="Node3D" parent="."]
+top_level = true
 
-[node name="selector_anchor" type="Marker3D" parent="character_sprite_position"]
+[node name="relative" type="Node3D" parent="character_sprite_position"]
 
-[node name="fx_anchor" type="Marker3D" parent="character_sprite_position"]
+[node name="selector_center" type="Marker3D" parent="character_sprite_position/relative"]
 
-[node name="status_hud" parent="character_sprite_position" instance=ExtResource("11_s71nu")]
+[node name="selector_ankles" type="Marker3D" parent="character_sprite_position/relative"]
+
+[node name="selector_feet" type="Marker3D" parent="character_sprite_position/relative"]
+
+[node name="status_hud" parent="character_sprite_position/relative" instance=ExtResource("11_s71nu")]
 
 [node name="character_animation_player" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTransform/character_animation_sprite")

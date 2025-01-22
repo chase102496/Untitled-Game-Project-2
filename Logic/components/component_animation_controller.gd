@@ -10,25 +10,27 @@ func camera_billboard() -> void:
 	owner.rotation.y = Global.camera.rotation.y
 
 var result_dir : Vector3 = Vector3.ZERO
+var result_rotation : float = 0
 
 func animation_update(vel : Vector3 = owner.velocity) -> void:
 	
 	## X Movement (Left/Right)
-	if vel.x > 0:
-		animations.rotation.y = PI
+	if vel.x > 0.1:
+		result_rotation = PI
 		result_dir.x = vel.x
-	elif vel.x < 0:
-		animations.rotation.y = 0
+	elif vel.x < -0.1:
+		result_rotation = 0
 		result_dir.x = vel.x
-	else:
-		pass #Keep current direction if we didn't change it
 	
 	## Y Movement (Up/Down)
 	if vel.y != 0:
 		result_dir.y = vel.y
 	
 	## Z Movement (Front facing/Back facing)
-	if vel.z != 0:
+	if vel.z > 0:
+		result_dir.z = vel.z
+	elif vel.z < 0:
 		result_dir.z = vel.z
 	
+	animations.rotation.y = result_rotation
 	animations.tree.set_blend_group(Vector2(result_dir.y,result_dir.z),["Idle","Walk","Walk 2","Air"])

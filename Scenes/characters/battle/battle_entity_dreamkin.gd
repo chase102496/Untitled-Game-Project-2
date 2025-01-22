@@ -7,7 +7,7 @@ extends battle_entity
 ## Placeholders until we fix this later
 var type
 ##
-var icon
+var icon : PackedScene
 
 func init(my_parent : Node, my_position : Vector3) -> battle_entity_dreamkin:
 	my_parent.add_child.call_deferred(self)

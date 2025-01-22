@@ -28,6 +28,9 @@ tracks/1/keys = {
 "values": [Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_elvol"]
+resource_name = "fade"
+
 [sub_resource type="Animation" id="Animation_u8t4y"]
 resource_name = "shaking"
 length = 0.2
@@ -44,9 +47,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(0, 0), Vector2(5, 0), Vector2(-5, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_elvol"]
-resource_name = "fade"
 
 [sub_resource type="Animation" id="Animation_3cs45"]
 resource_name = "shiver"

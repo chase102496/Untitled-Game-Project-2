@@ -2,11 +2,11 @@ class_name particle_manager
 extends GPUParticles3D
 
 var queue_buffer : float
-
-func _enter_tree() -> void:
+	
+func _ready() -> void:
 	emitting = true
-	finished.connect(_on_finished)
+	restart() #Necessary to update one_shot and stuff
+	finished.connect.call_deferred(_on_finished)
 
 func _on_finished():
-	if one_shot:
-		queue_free()
+	queue_free()

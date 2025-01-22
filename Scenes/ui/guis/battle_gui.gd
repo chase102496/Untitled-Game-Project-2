@@ -115,9 +115,9 @@ func update_selector_position() -> void:
 	
 	Battle.set_battle_spotlight_target(selected_target)
 	
-	#selector_sprite.global_position.x = selected_target.animations.selector_anchor.global_position.x
-	#selector_sprite.global_position.y = selected_target.animations.selector_anchor.global_position.y
-	#selector_sprite.global_position.z = selected_target.animations.selector_anchor.global_position.z
+	#selector_sprite.global_position.x = selected_target.animations.selector_center.global_position.x
+	#selector_sprite.global_position.y = selected_target.animations.selector_center.global_position.y
+	#selector_sprite.global_position.z = selected_target.animations.selector_center.global_position.z
 
 ## --- States ----
 
@@ -283,10 +283,10 @@ func _on_state_physics_processing_battle_gui_skillcheck(delta: float) -> void:
 			ui_skillcheck_result = "Miss"
 		
 		match ui_skillcheck_result:
-			"Miss" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Whoops..."),"text_float_away",Color.SLATE_GRAY)
-			"Good" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Nice!"),"text_float_away",Color.SKY_BLUE)
-			"Great" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Great!"),"text_float_away",Color.MEDIUM_SLATE_BLUE)
-			"Excellent" : Glossary.create_text_particle_queue(owner.animations.selector_anchor,str("Excellent!"),"text_float_away",Color.PURPLE)
+			"Miss" : Glossary.create_text_particle_queue(owner.animations.selector_center,str("Whoops..."),"text_float_away",Color.SLATE_GRAY)
+			"Good" : Glossary.create_text_particle_queue(owner.animations.selector_center,str("Nice!"),"text_float_away",Color.SKY_BLUE)
+			"Great" : Glossary.create_text_particle_queue(owner.animations.selector_center,str("Great!"),"text_float_away",Color.MEDIUM_SLATE_BLUE)
+			"Excellent" : Glossary.create_text_particle_queue(owner.animations.selector_center,str("Excellent!"),"text_float_away",Color.PURPLE)
 		
 		await get_tree().create_timer(1.0).timeout
 

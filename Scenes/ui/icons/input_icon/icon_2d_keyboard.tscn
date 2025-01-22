@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://Scenes/ui/icons/input_icon/component_input_animation_gizmo.gd" id="7_cek5k"]
 
 [sub_resource type="Gradient" id="Gradient_02iun"]
-offsets = PackedFloat32Array(0, 0.126354, 1)
+offsets = PackedFloat32Array(0, 0.125, 0.583333)
 colors = PackedColorArray(0, 0, 0, 1, 0.0495, 0.09305, 0.15, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_doada"]
@@ -20,7 +20,7 @@ width = 8
 shader = ExtResource("2_7d61e")
 shader_parameter/replacement_color = Color(1, 1, 1, 1)
 shader_parameter/grayscale_factor = 1.0
-shader_parameter/recolor_factor = 0.0
+shader_parameter/recolor_factor = 1.0
 shader_parameter/luminosity_factor = 1.0
 shader_parameter/use_gradient = true
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_doada")

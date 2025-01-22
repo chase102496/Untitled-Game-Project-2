@@ -5,7 +5,7 @@ var enabled : bool = false
 signal debug_enabled
 signal debug_disabled
 
-var msg_category : Dictionary = {
+const msg_category : Dictionary = {
 	"DEFAULT" : "",
 	"INTERACT" : "<INTERACT>",
 	"SAVE" : "<SAVE>",

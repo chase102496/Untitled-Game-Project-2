@@ -35,6 +35,20 @@ const palette : Dictionary = {
 	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
 
+func get_max_vector3_by_length(vectors: Array) -> Vector3:
+	var max_vec : Vector3 = Vector3()
+	var max_length : float = -INF
+	for vec in vectors:
+		var length = vec.length()
+		if length > max_length:
+			max_length = length
+			max_vec = vec
+	return max_vec
+
+func clear_children(parent_node : Node) -> void:
+	for child in parent_node.get_children():
+		child.queue_free()
+
 ## Turns an action like "interact" into what it was bound to on keyboard "E"
 func input_action_to_keycode_string(action : String) -> String:
 	

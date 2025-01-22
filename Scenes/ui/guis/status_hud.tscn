@@ -1,8 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://b3707fwdhap4h"]
+[gd_scene load_steps=21 format=3 uid="uid://b3707fwdhap4h"]
 
 [ext_resource type="Script" path="res://Logic/misc/status_hud.gd" id="1_ked1w"]
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="2_5t26x"]
 [ext_resource type="Texture2D" uid="uid://byww4f6mw08uo" path="res://test_junk/status_hud_stats_viewport.tres" id="3_v6wk8"]
+[ext_resource type="PackedScene" uid="uid://dufrr558odxyv" path="res://Scenes/ui/containers/status_slot.tscn" id="4_vfudr"]
+[ext_resource type="PackedScene" uid="uid://k84bqw0hvoos" path="res://Scenes/ui/icons/input_icon/icon_2d_keyboard.tscn" id="5_jjiaj"]
+[ext_resource type="PackedScene" uid="uid://bmltbauhegb4m" path="res://Scenes/ui/icons/base_icon/icon_shield_default.tscn" id="6_tbmjc"]
+[ext_resource type="PackedScene" uid="uid://c0tuf2gupqc03" path="res://Scenes/ui/icons/status_icon/status_icon_fear.tscn" id="7_fo8md"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vcokd"]
 viewport_path = NodePath("SubViewport_Stats")
@@ -64,6 +68,76 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_56gbf")
 size = Vector2(2, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_cchef"]
+resource_local_to_scene = true
+font = ExtResource("2_5t26x")
+font_size = 40
+outline_size = 20
+outline_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+
+[sub_resource type="Shader" id="Shader_rdjo5"]
+code = "shader_type canvas_item;
+
+// Uniforms
+uniform vec3 replacement_color : source_color = vec3(1,1,1); 
+uniform float grayscale_factor : hint_range(0.0, 1.0) = 1; // 0 = no grayscale, 1 = full grayscale
+uniform float recolor_factor : hint_range(0.0, 2.0) = 1; // 0 = original color, 1 = midpoint, 2 = full recolor
+uniform float luminosity_factor : hint_range(0.0, 2.0) = 1; // 1 = default brightness, <1 = darker, >1 = brighter
+uniform sampler2D gradient_texture; // A gradient texture for dynamic mapping
+uniform bool use_gradient; // Whether to use gradient mapping (true = gradient, false = replacement_color)
+
+void fragment() {
+    // Sample the texture color
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    // Calculate grayscale intensity (perceptual)
+    float grayscale = 0.299 * tex_color.r + 0.587 * tex_color.g + 0.114 * tex_color.b;
+
+    // Blend the original color with its grayscale version based on grayscale_factor
+    vec3 grayscaled_color = mix(tex_color.rgb, vec3(grayscale), grayscale_factor);
+
+    // Decide whether to use gradient or replacement_color for recoloring
+    vec3 color_choice;
+    if (use_gradient) {
+        // Use the gradient texture to map the grayscale value
+        color_choice = texture(gradient_texture, vec2(grayscale, 0.5)).rgb;
+    } else {
+        // Directly use the replacement color
+        color_choice = replacement_color;
+    }
+
+    // Remap recolor_factor from [0.0, 2.0] to [0.0, 1.0] for blending
+    float recolor_ratio = clamp(recolor_factor * 0.5, 0.0, 1.0);
+
+    // Replace the grayscaled color proportionally with the recolored version
+    vec3 recolored = grayscaled_color * (1.0 - recolor_ratio) + color_choice * recolor_ratio;
+
+    // Adjust the brightness of the final color using luminosity_factor
+    vec3 final_color = recolored * luminosity_factor;
+
+    // Preserve transparency
+    COLOR = vec4(final_color, tex_color.a);
+}
+"
+
+[sub_resource type="Gradient" id="Gradient_3bayt"]
+offsets = PackedFloat32Array(0.0636943, 1)
+colors = PackedColorArray(0.0823529, 0.152941, 0.247059, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_prafv"]
+gradient = SubResource("Gradient_3bayt")
+width = 16
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sj720"]
+resource_local_to_scene = true
+shader = SubResource("Shader_rdjo5")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 2.0
+shader_parameter/luminosity_factor = 1.389
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_prafv")
+
 [node name="Status_HUD" type="Node3D" node_paths=PackedStringArray("stats", "status", "grid", "health", "vis")]
 script = ExtResource("1_ked1w")
 stats = NodePath("Stats")
@@ -73,8 +147,7 @@ health = NodePath("SubViewport_Stats/PanelContainer/Stats/Health")
 vis = NodePath("SubViewport_Stats/PanelContainer/Stats/Vis")
 
 [node name="Stats" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 mesh = SubResource("QuadMesh_68cot")
 
 [node name="SubViewport_Stats" type="SubViewport" parent="."]
@@ -116,7 +189,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Status" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 mesh = SubResource("QuadMesh_cyywm")
 
 [node name="SubViewport_Status" type="SubViewport" parent="."]
@@ -154,3 +227,28 @@ size_flags_horizontal = 4
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 columns = 3
+
+[node name="status_slot" parent="SubViewport_Status/PanelContainer/GridContainer" instance=ExtResource("4_vfudr")]
+layout_mode = 2
+
+[node name="icon_2d_keyboard" parent="SubViewport_Status/PanelContainer/GridContainer/status_slot" instance=ExtResource("5_jjiaj")]
+layout_mode = 2
+
+[node name="prompt_label" parent="SubViewport_Status/PanelContainer/GridContainer/status_slot/icon_2d_keyboard/icon_2d_keyboard/MarginContainer/MarginContainer/CenterContainer/VBoxContainer" index="0"]
+text = "E"
+label_settings = SubResource("LabelSettings_cchef")
+
+[node name="status_slot2" parent="SubViewport_Status/PanelContainer/GridContainer" instance=ExtResource("4_vfudr")]
+layout_mode = 2
+
+[node name="icon_shield_default" parent="SubViewport_Status/PanelContainer/GridContainer/status_slot2" instance=ExtResource("6_tbmjc")]
+material = SubResource("ShaderMaterial_sj720")
+layout_mode = 2
+
+[node name="status_slot3" parent="SubViewport_Status/PanelContainer/GridContainer" instance=ExtResource("4_vfudr")]
+layout_mode = 2
+
+[node name="status_icon_fear" parent="SubViewport_Status/PanelContainer/GridContainer/status_slot3" instance=ExtResource("7_fo8md")]
+layout_mode = 2
+
+[editable path="SubViewport_Status/PanelContainer/GridContainer/status_slot/icon_2d_keyboard"]

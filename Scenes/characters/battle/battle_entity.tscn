@@ -13,8 +13,6 @@
 [ext_resource type="Script" path="res://Logic/components/component_physics.gd" id="18_t1psr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qdplk"]
-radius = 0.229798
-height = 1.02907
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_j6r5n"]
 
@@ -34,6 +32,7 @@ spacing = Vector3(0.35, 0, -0.1)
 [node name="DEBUG_3D_TEXT" parent="." instance=ExtResource("4_0krx5")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_qdplk")
 
 [node name="StateChart" parent="." instance=ExtResource("3_n46cr")]
@@ -62,6 +61,7 @@ parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Walk/TimeScale/scale = 1.0
 "parameters/Walk 2/BlendSpace2D/blend_position" = Vector2(0, 0)
 "parameters/Walk 2/TimeScale/scale" = 1.0
+parameters/default_attack/TimeScale/scale = 1.0
 my_owner = NodePath("../../..")
 
 [node name="component_ability" parent="Components" instance=ExtResource("13_b0o3b")]

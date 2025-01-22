@@ -9,7 +9,7 @@ var current_gloam_cloud : Node
 @onready var fog_strength : float = $FogVolume.material.density
 @onready var state_chart : StateChart = $StateChart
 
-@export var equipment : component_equipment
+@export var equipment : component_world_ability
 
 ## How much by default our loomlight clears, 0 for as much as necessary
 var clearing_strength : float = 0
@@ -65,7 +65,8 @@ func on_state_entered_inside() -> void:
 	
 	# Verify we have a loomlight and it can be equipped
 	if equipment.ability_event(equipment.loomlight,"verify_equip"):
-		equipment.switch_active(equipment.loomlight)
+		
+		equipment.set_active(equipment.loomlight)
 
 var encounter_rate : float = 0.0
 var max_encounter_rate : float = 100.0 #Point at which encounter is triggered

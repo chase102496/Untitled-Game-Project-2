@@ -11,6 +11,10 @@ extends Node3D
 @export var health : Label
 @export var vis : Label
 
+func _enter_tree() -> void:
+	## Removing test sprites
+	Global.clear_children(grid)
+
 func _ready() -> void:
 	display_stats(false)
 

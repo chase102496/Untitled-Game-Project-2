@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://rojlf86btf4n"]
+[gd_scene load_steps=8 format=3 uid="uid://rojlf86btf4n"]
 
 [ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_3q56m"]
 [ext_resource type="Script" path="res://Scenes/characters/world/world_entity_dreamkin.gd" id="2_xrtc0"]
@@ -6,6 +6,10 @@
 [ext_resource type="AnimationLibrary" uid="uid://do5csrjeemg0i" path="res://Resources/AnimationLibrary/dreamkin/default_dreamkin.res" id="4_v0udc"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_follow.gd" id="7_b8adj"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_ftktx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wmilg"]
+radius = 0.2
+height = 0.8
 
 [node name="world_entity_dreamkin" node_paths=PackedStringArray("my_component_movement_controller", "my_component_input_controller", "my_component_ability") groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("1_3q56m")]
 collision_layer = 2
@@ -26,12 +30,26 @@ light_specular = 0.0
 omni_range = 0.513
 omni_attenuation = 0.2
 
+[node name="CollisionShape3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("CapsuleShape3D_wmilg")
+
 [node name="character_animation_sprite" parent="Components/component_animation/AnimationTransform" index="0"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+offset = Vector2(0, 16)
 flip_h = true
 sprite_frames = ExtResource("3_b5vqf")
 animation = &"default_idle_down"
 frame = 1
+
+[node name="selector_center" parent="Components/component_animation/character_sprite_position/relative" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+
+[node name="status_hud" parent="Components/component_animation/character_sprite_position/relative" index="3" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+my_component_health = NodePath("../../../../component_health")
+my_component_vis = NodePath("../../../../component_vis")
+collider = NodePath("../../../../../CollisionShape3D")
 
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {

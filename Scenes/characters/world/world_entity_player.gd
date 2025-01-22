@@ -7,7 +7,7 @@ extends world_entity
 @export var my_component_party : component_party
 @export var my_component_ability : component_ability
 @export var my_component_inventory : component_inventory
-@export var my_component_equipment : component_equipment
+@export var my_component_world_ability : component_world_ability
 @export var my_component_interaction : component_interaction
 @export var my_world_gui : Control
 @export var gloam_manager : component_gloam_manager
@@ -21,7 +21,9 @@ func _ready():
 	my_component_ability.add_ability(component_ability.ability_switchstitch.new())
 	my_component_ability.add_ability(component_ability.ability_spook.new())
 	my_component_ability.add_ability(component_ability.ability_frigid_core.new())
-
+	
+	my_component_world_ability.set_equipment(component_world_ability.world_ability_soulstitch)
+	my_component_world_ability.set_equipment(component_world_ability.world_ability_loomlight)
 	
 	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))

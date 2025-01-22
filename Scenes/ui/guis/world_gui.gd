@@ -2,10 +2,12 @@ extends Control
 
 @export var my_component_party : component_party
 @export var my_component_inventory : component_inventory
+@export var my_component_world_ability : component_world_ability
 
 ### --- HUD --- ###
 
 @onready var hud_gui = %HUD
+@onready var hud_gui_ability_slot = $HUD/VBoxContainer/icon_2d_keyboard_R/Ability
 
 ### --- Inventory --- ###
 
@@ -28,7 +30,13 @@ extends Control
 @onready var state_chart : StateChart = %StateChart
 
 func _ready() -> void:
-	#Events.button_pressed_inventory_item_option.connect(_on_button_pressed_inventory_item_option)
+	
+	### --- HUD --- ###
+	if my_component_world_ability:
+		my_component_world_ability.used_ability.connect(_on_hud_used_ability)
+		my_component_world_ability.equipped.connect(_on_hud_equipped)
+	
+	### --- Inventory --- ###
 	
 	inventory_gui_tabs.tab_selected.connect(_on_inventory_gui_tab_selected)
 	
@@ -131,6 +139,21 @@ func options_create_list(properties : Dictionary):
 		
 	inventory_gui_options_panel.show()
 	inventory_gui_options_barrier.show()
+
+### --- HUD --- ###
+
+func _on_hud_used_ability(ability : component_world_ability.world_ability) -> void:
+	pass
+
+func _on_hud_equipped(ability : component_world_ability.world_ability) -> void:
+	## This will either be an ability or null
+	if ability and ability.icon:
+		Global.clear_children(hud_gui_ability_slot)
+		hud_gui_ability_slot.add_child(ability.icon.instantiate())
+	else:
+		Global.clear_children(hud_gui_ability_slot)
+
+### --- Inventory --- ###
 
 ## --- Buttons ---
 

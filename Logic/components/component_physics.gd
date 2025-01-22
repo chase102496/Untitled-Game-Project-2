@@ -6,7 +6,12 @@ extends component_node
 #Use "owner" to call our owner
 
 var grav : float # Realtime gravity adding
+
 var _enabled : bool = true
+var _collision : bool = true
+var _friction : bool = true
+#var _gravity : bool = true
+
 var velocity_history : Array = []
 
 @export var base_grav : float = 35 # To revert to our default
@@ -16,16 +21,38 @@ var velocity_history : Array = []
 func _ready() -> void:
 	grav_reset()
 
-func enable():
-	owner.set_collision_layer_value(1,true)
+### --- Public --- ###
+
+func enable() -> void:
+	enable_collision()
+	enable_friction()
 	_enabled = true
 
-func disable():
-	owner.set_collision_layer_value(1,false)
+func disable() -> void:
+	disable_collision()
+	disable_friction()
 	_enabled = false
+
+func enable_collision():
+	owner.set_collision_layer_value(1,true)
+	owner.set_collision_layer_value(3,true)
+	_collision = true
+
+func disable_collision():
+	owner.set_collision_layer_value(1,false)
+	owner.set_collision_layer_value(3,false)
+	_collision = false
+
+func enable_friction():
+	_friction = true
+
+func disable_friction():
+	_friction = false
 
 func grav_reset() -> void:
 	grav = base_grav
+
+### --- Velocity History --- ###
 
 func _clean_velocity_history() -> void:
 	## Limit to 60 units
@@ -45,9 +72,14 @@ func get_velocity_history(depth : int = 60) -> Array:
 	else:
 		return velocity_history.slice(velocity_history.size() - depth)
 
+### --- Physics Runtime --- ###
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	
 	if _enabled:
 		_store_velocity_history()
-		owner.move_and_slide()
-		owner.velocity.y = move_toward(owner.velocity.y, max_grav, grav * delta)
+		
+		if _friction:
+			owner.move_and_slide()
+			owner.velocity.y = move_toward(owner.velocity.y, max_grav, grav * delta)

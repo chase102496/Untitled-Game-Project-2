@@ -2,7 +2,7 @@ class_name component_input_controller_manual
 extends component_input_controller_default
 
 @export var my_component_interaction : component_interaction
-@export var my_component_equipment : component_equipment
+@export var my_component_world_ability : component_world_ability
 
 var jump_damper_cooldown : bool = false
 var jump_queued : bool = false
@@ -45,15 +45,15 @@ func _on_state_input_world(event : InputEvent) -> void:
 	
 	## Q
 	if Input.is_action_just_pressed("interact_secondary"):
-		my_component_equipment.toggle_active()
+		my_component_world_ability.toggle_active()
 	
 	## R
 	if Input.is_action_just_pressed("equipment_use"):
-		my_component_equipment.ability_use()
+		my_component_world_ability.ability_use()
 	
 	## Esc
 	if Input.is_action_just_pressed("ui_cancel"):
-		my_component_equipment.ability_event(my_component_equipment.active,"on_cancel")
+		my_component_world_ability.ability_event(my_component_world_ability.active,"on_cancel")
 
 ## TODO ADD EQUIPMENT INTERACTION AND STUFF HERE
 

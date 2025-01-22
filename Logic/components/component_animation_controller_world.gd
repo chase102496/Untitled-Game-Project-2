@@ -62,7 +62,7 @@ func _on_state_entered_world_grounded() -> void:
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_property(owner.animations.transformer,"scale",Vector3(1,1,1),0.15)
 	
-	Glossary.create_fx_particle_custom(owner.animations.fx_anchor,"dust",true,-1,180,-1,Vector3(0,0,0),Global.palette["Oxford Blue"])
+	Glossary.create_fx_particle_custom(owner.animations.selector_feet,"dust",true,-1,180,1,Vector3(0,0,0),Global.palette["Oxford Blue"])
 
 func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 	animation_update()

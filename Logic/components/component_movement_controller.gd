@@ -4,12 +4,12 @@ extends component_node
 @export var my_component_input_controller : Node
 @export var my_component_physics : component_physics
 
-var movement_direction = Vector2.ZERO
-@export var movespeed := 50
-@export var max_movespeed := 4
-@export var jump_strength = 9
-@export var jump_damper_coeff = 0.5
-@export var jump_grav_coeff = 0.8
+var movement_direction : Vector2 = Vector2.ZERO
+@export var movespeed : float = 50
+@export var max_movespeed : float = 4
+@export var jump_strength : float = 9
+@export var jump_damper_coeff : float = 0.5
+@export var jump_grav_coeff : float = 0.8
 
 func _ready() -> void:
 	if my_component_input_controller:
@@ -50,6 +50,15 @@ func _physics_process(_delta: float) -> void:
 	if my_component_input_controller:
 		#Direction
 		movement_direction = my_component_input_controller.direction
-
-	owner.velocity.x = move_toward(owner.velocity.x, max_movespeed * movement_direction.x, movespeed * _delta)
-	owner.velocity.z = move_toward(owner.velocity.z, max_movespeed * movement_direction.y, movespeed * _delta)
+		
+		if movement_direction.length() == 0:
+			## Decelerates us at half the speed
+			owner.velocity.x = move_toward(owner.velocity.x, 0, movespeed/2 * _delta)
+			owner.velocity.z = move_toward(owner.velocity.z, 0, movespeed/2 * _delta)
+		else:
+			owner.velocity.x = move_toward(owner.velocity.x, max_movespeed * movement_direction.x, movespeed * _delta)
+			owner.velocity.z = move_toward(owner.velocity.z, max_movespeed * movement_direction.y, movespeed * _delta)
+		
+	else:	
+		owner.velocity.x = move_toward(owner.velocity.x, max_movespeed * movement_direction.x, movespeed * _delta)
+		owner.velocity.z = move_toward(owner.velocity.z, max_movespeed * movement_direction.y, movespeed * _delta)

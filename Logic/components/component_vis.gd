@@ -4,7 +4,6 @@ extends component_node
 signal vis_changed(amt : int)
 
 @export var max_vis : int = 6
-@export var status_hud : Node3D
 
 var vis : int:
 	set(value):
@@ -34,12 +33,12 @@ func change(amt : int, display : bool = true):
 	## Adding to Vis
 	if amt > 0:
 		if display:
-			Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_float_water",Color.WHITE,0.3)
+			Glossary.create_text_particle(owner.animations.selector_center,str(abs(amt_changed)),"text_float_water",Color.WHITE,0.3)
 	
 	## Removing from Vis
 	elif amt < 0:
 		if display:
-			#Glossary.create_text_particle(owner.animations.selector_anchor,str(abs(amt_changed)),"text_fall_water",Color.WHITE,0.3)
+			#Glossary.create_text_particle(owner.animations.selector_center,str(abs(amt_changed)),"text_fall_water",Color.WHITE,0.3)
 			pass
 		### Checking for overflow damage WIP
 		#var overflow = amt + vis

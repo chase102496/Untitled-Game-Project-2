@@ -58,6 +58,8 @@ libraries = {
 
 [node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("my_owner")]
 tree_root = ExtResource("5_wx4di")
+parameters/Air/BlendSpace2D/blend_position = Vector2(0, 0)
+parameters/Air/TimeScale/scale = 1.0
 parameters/Death/TimeScale/scale = 1.0
 parameters/Hurt/TimeScale/scale = 1.0
 parameters/Idle/BlendSpace2D/blend_position = Vector2(0, 0)

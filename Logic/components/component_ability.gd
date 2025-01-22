@@ -232,10 +232,10 @@ class status:
 	func fx_add(is_silent : bool = false):
 		
 		if !is_silent:
-			Glossary.create_icon_particle_queue(host.animations.selector_anchor,id)
+			Glossary.create_icon_particle_queue(host.animations.selector_center,id)
 			
 		if !fx_visual and Glossary.particle.get(id):
-			fx_visual = Glossary.create_fx_particle(host.animations.selector_anchor,id)
+			fx_visual = Glossary.create_fx_particle(host.animations.selector_center,id)
 		if !fx_icon and Glossary.icon_scene.get(id):
 			fx_icon = Glossary.create_status_icon(host.animations.status_hud.grid,id)
 	
@@ -360,7 +360,7 @@ class status_disable:
 	
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-		Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Immune!"),"text_float_away")
+		Glossary.create_text_particle_queue(entity_target.animations.selector_center,str("Immune!"),"text_float_away")
 		return Battle.mitigation_type.IMMUNE
 	
 	func on_expire():
@@ -432,7 +432,7 @@ class status_weakness:
 		if ability.type == weakness:
 			Debug.message([entity_target.name," is weak to ",ability.title,"!"],Debug.msg_category.BATTLE)
 			entity_caster.my_component_ability.cast_queue.cast_pre_mitigation_bonus(entity_caster,host)
-			Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Weakness!"),"text_float_away",Color.PURPLE)
+			Glossary.create_text_particle_queue(entity_target.animations.selector_center,str("Weakness!"),"text_float_away",Color.PURPLE)
 			return Battle.mitigation_type.WEAK
 		else:
 			return Battle.mitigation_type.PASS
@@ -459,7 +459,7 @@ class status_immunity: #Creates a specific immunity where if it's matching the t
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type == immunity:
 			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-			Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Immune!"),"text_float_away")
+			Glossary.create_text_particle_queue(entity_target.animations.selector_center,str("Immune!"),"text_float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
@@ -487,7 +487,7 @@ class status_ethereal: #Immune to everything but one type
 	func on_ability_mitigation(entity_caster : Node, entity_target : Node, ability : Object):
 		if ability.type != weakness:
 			Debug.message([entity_target.name," is immune to ",ability.title,"!"],Debug.msg_category.BATTLE)
-			Glossary.create_text_particle_queue(entity_target.animations.selector_anchor,str("Immune!"),"text_float_away")
+			Glossary.create_text_particle_queue(entity_target.animations.selector_center,str("Immune!"),"text_float_away")
 			return Battle.mitigation_type.IMMUNE #here we add a message saying we mitigated everything
 		else: #battle mitigation ALWAYS needs an else statement to handle the ability normally
 			return Battle.mitigation_type.PASS #here we add a message saying we didn't mitigate anything
@@ -713,6 +713,8 @@ class ability:
 	var title : String = "---"
 	var type : Dictionary = Battle.type.EMPTY
 	
+	var icon : PackedScene
+	
 	## Base Damage
 	var damage : int = 0
 	## Cost for ability
@@ -840,7 +842,7 @@ class ability_template_standard: #Standard ability with vis cost and skillcheck
 		super.cast_validate_failed()
 		
 		Debug.message("Missed!",Debug.msg_category.BATTLE)
-		Glossary.create_text_particle_queue(caster.animations.selector_anchor,str("Missed!"),"text_float_away",Color.WHITE)
+		Glossary.create_text_particle_queue(caster.animations.selector_center,str("Missed!"),"text_float_away",Color.WHITE)
 	
 	### --- Skillcheck --- ###
 	
@@ -960,7 +962,7 @@ class ability_frigid_core:
 	
 	func _init(damage : int = 1, chance : float = 0.3, vis_cost : int = 1) -> void:
 		super._init()
-		id = "ability_solar_flare"
+		id = "ability_frigid_core"
 		title = "Frigid Core"
 		description = "Summons a chilling pulse of frozen energy inside the target.\nHas a chance to freeze."
 		self.damage = damage
