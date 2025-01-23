@@ -1,7 +1,21 @@
 class_name component_world_ability
 extends component_node_3d
 
-signal equipped(equipment : world_ability)
+## If something new was set to our active equipment
+signal equip_active(equipment : world_ability)
+## If our current active equipment was taken out of active
+signal equip_inactive(equipment: world_ability)
+## If something changed in our equipment that needs to be looked at again
+## For example, updating icons in HUD, or updating values stored elsewhere
+signal equip_update(equipment : world_ability)
+
+## If we brought something new into our equipment roster
+signal equip_set(equipment : world_ability)
+## If we took something out of our equipment roster
+signal equip_unset(equipment : world_ability)
+
+
+## If we used an ability
 signal used_ability(equipment : world_ability)
 
 @export var gloam_manager : Node3D
@@ -44,7 +58,7 @@ func _refresh_equipment_interact_areas(old_ability : world_ability, new_ability 
 
 ## We ran all external checks and now we just need to see if we can change our active
 func _verify_equip(ability : world_ability) -> bool:
-	if _verify_unequip():
+	if _verify_unequip_active():
 		if !ability or ability.verify_equip():
 			return true
 		else:
@@ -54,7 +68,8 @@ func _verify_equip(ability : world_ability) -> bool:
 		Debug.message(["Unable to equip because we could not unequip an ability ",ability],Debug.msg_category.WORLD)
 		return false
 
-func _verify_unequip() -> bool:
+## Checks if we can unequip our active equipment
+func _verify_unequip_active() -> bool:
 	if !active or active.verify_unequip():
 		return true
 	else:
@@ -62,22 +77,22 @@ func _verify_unequip() -> bool:
 		return false
 
 ## We ran all our checks, equip new ability
-func _equip(new_ability : world_ability) -> void:
+func _equip_active(new_ability : world_ability) -> void:
 	ability_event(new_ability,"on_equip")
 	## If we overlap an interact area, refresh our old and new equipment to run exit on old and enter on new
 	_refresh_equipment_interact_areas(active,new_ability)
 	## Set new var
 	active = new_ability
 	## Emit our signal
-	equipped.emit(new_ability)
+	equip_active.emit(new_ability)
 	## Send event to new ability
 
 ## We ran all our checks, unequip current ability
-func _unequip() -> void:
+func _unequip_active() -> void:
 	ability_event(active,"on_unequip")
 	_refresh_equipment_interact_areas(active,null)
 	active = null
-	equipped.emit(null)
+	equip_inactive.emit(null)
 
 ## We ran all our checks, and we're setting a new piece of equipment
 func _set_equipment(new_ability : world_ability) -> world_ability:
@@ -91,13 +106,33 @@ func _set_equipment(new_ability : world_ability) -> world_ability:
 		push_error("Unknown ability for set_equipment: ",new_ability)
 		return
 
-func _set_dreamstitch(new_ability : world_ability_dreamstitch) -> void:
-	dreamstitch = new_ability
+func _unset_equipment(ability : world_ability) -> void:
+	if ability is world_ability_dreamstitch:
+		_set_dreamstitch(null)
+		equip_unset.emit(ability)
+	elif ability is world_ability_loomlight:
+		_set_loomlight(null)
+		equip_unset.emit(ability)
+	else:
+		push_error("Unknown equipment to unset: ",ability)
 
-func _set_loomlight(new_ability : world_ability_loomlight) -> void:
-	loomlight = new_ability
+func _set_dreamstitch(ability : world_ability_dreamstitch) -> void:
+	dreamstitch = ability
+
+func _set_loomlight(ability : world_ability_loomlight) -> void:
+	loomlight = ability
 
 ### --- Public --- ###
+
+## Get
+
+## Returns only valid equipment
+func get_equipment() -> Array:
+	var result : Array = []
+	for equip in [dreamstitch,loomlight]:
+		if equip:
+			result.append(equip)
+	return result
 
 ## Use
 
@@ -116,23 +151,16 @@ func ability_event(new_ability : world_ability, method : String, args : Array = 
 		#print_debug("Ability is null, no event triggered : ",new_ability," ",method) #This happens if we have no equipment to use, also not an error
 		return false
 
-## Creation
+## Set
 
-## Simply unequip to nothing.
-func unequip_active() -> void:
-	if _verify_unequip():
-		_unequip()
-
-## Set some new equipment
-func set_equipment(ability : RefCounted) -> world_ability:
-	
-	var new_ability : world_ability = ability.new(owner)
+## Set up some new equipment that was not in our equipment before
+func set_equipment(new_ability : world_ability) -> world_ability:
 	
 	## If the type is currently being used we have to unequip
 	if !active or new_ability.type == active.type:
 		if _verify_equip(new_ability):
-			_unequip()
-			_equip(new_ability)
+			_unequip_active()
+			_equip_active(new_ability)
 			return _set_equipment(new_ability)
 		else:
 			return
@@ -140,16 +168,42 @@ func set_equipment(ability : RefCounted) -> world_ability:
 	else:
 		return _set_equipment(new_ability)
 
-## Sets an ability as our active. Can be new or existing
+## Checks if the piece of equipment is equipped, and if it is, it 
+func unset_equipment(ability : world_ability) -> void:
+	## If it's currently equipped
+	if ability in [loomlight, dreamstitch]:
+		## If it's the active ability, we have to unequip it first
+		if ability == active:
+			## Verify we can unequip it
+			if _verify_unequip_active():
+				_unequip_active()
+				_unset_equipment(ability)
+		## If it's not the active, just clear it
+		else:
+			_unset_equipment(ability)
+	else:
+		push_error("Attempting to unequip something we don't have equipped: ",ability)
+
+## Creation/Manipulation
+
+## Sets an ability as our active. Can be new or existing, or even null
 func set_active(new_ability : world_ability) -> void:
 	## If it's already in our equipment
-	if new_ability in [loomlight,dreamstitch]:
-		if _verify_equip(new_ability):
-			_unequip()
-			_equip(new_ability)
+	if !new_ability:
+		if _verify_unequip_active():
+			_unequip_active()
+	elif new_ability in [loomlight,dreamstitch]:
+		if _verify_equip(new_ability) and _verify_unequip_active():
+			_unequip_active()
+			_equip_active(new_ability)
 	## If it's totally new
 	else:
 		set_equipment(new_ability)
+
+## Simply unequip to nothing.
+func unset_active() -> void:
+	if _verify_unequip_active():
+		_unequip_active()
 
 ## Swaps from dreamstitch to loomlight, or vice versa
 func toggle_active() -> void:
@@ -180,7 +234,7 @@ class world_ability:
 	## This will either be world_ability_dreamstitch or world_ability_loomlight
 	var type : RefCounted
 	
-	var icon : PackedScene
+	var icon : PackedScene = Glossary.icon_random.pick_random()
 	
 	var fx_instance : GPUParticles3D
 	
@@ -188,8 +242,6 @@ class world_ability:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
-		my_interact_area = caster.my_component_world_ability.active_interact_area
-		my_interact_area_shape = caster.my_component_world_ability.active_interact_area.shape
 	
 	## --- FX --- ##
 	
@@ -247,8 +299,14 @@ class world_ability:
 	
 	## --- Equip --- ##
 	
-	func is_equipped() -> bool:
+	func is_equip_active() -> bool:
 		if caster.my_component_world_ability.active == self:
+			return true
+		else:
+			return false
+	
+	func is_in_equipment() -> bool:
+		if self in caster.my_component_world_ability.get_equipment():
 			return true
 		else:
 			return false
@@ -261,10 +319,19 @@ class world_ability:
 		#conditions when checking if we can unequip this (as in swapped to being out of our hand)
 		return true
 	
-	func on_equip():
-		pass
+	func on_equip() -> void:
+		my_interact_area = caster.my_component_world_ability.active_interact_area
+		my_interact_area_shape = caster.my_component_world_ability.active_interact_area.shape
 		
-	func on_unequip():
+	func on_unequip() -> void:
+		pass
+	
+	## When we are put into equipment
+	func on_set() -> void:
+		pass
+	
+	## When we are taken out of equipment
+	func on_unset() -> void:
 		pass
 
 ## Template super for all dreamstitch abilities
@@ -278,7 +345,8 @@ class world_ability_dreamstitch:
 		interact_groups.append("interact_ability_dreamstitch")
 	
 	func on_equip() -> void:
-		caster.my_component_world_ability.equipped.emit(self)
+		super.on_equip()
+		caster.my_component_world_ability.equip_update.emit(self)
 
 ## Template super for all loomlight abilities
 class world_ability_loomlight:
@@ -296,6 +364,7 @@ class world_ability_loomlight:
 	
 	func _init(caster : Node) -> void:
 		super._init(caster)
+		icon = Glossary.icon_scene["lantern"]
 		type = world_ability_loomlight
 		title = "Empty Loomlight Ability"
 		interact_groups.append("interact_ability_loomlight")
@@ -318,6 +387,7 @@ class world_ability_loomlight:
 	
 	## When we request to equip
 	func on_equip():
+		super.on_equip()
 		caster.gloam_manager.light.light_color = color #Update color
 		caster.gloam_manager.light.omni_range = size*2 #Update range
 		
@@ -340,30 +410,6 @@ class world_ability_loomlight:
 ## --- Equipment Abilties --- ##
 
 # Loomlight
-
-class world_ability_purge: # TBD
-	extends world_ability_loomlight
-	
-	func _init(caster : Node) -> void:
-		super._init(caster)
-		interact_groups.append("interact_ability_purge")
-		#color = Color("ff0004")
-		title = "Purge"
-		
-	## - Equip events - ##
-	
-	## - Active events - ##
-	
-	#Used for abilities that require a specific condition
-	#Check here to see if we're in range to affect something with purge, if we are, return true
-	#We can also show an effect or prompt here to indicate you can use this ability
-	
-	func on_usable_fx(target : Node = null) -> void:
-		pass
-	
-	#Just fx for when we use the ability
-	func on_use_fx(target : Node) -> void:
-		pass
 
 # Dreamstitch
 
@@ -395,7 +441,7 @@ class world_ability_soulstitch:
 	
 	func _init(caster : Node) -> void:
 		super._init(caster)
-		icon = Glossary.icon_scene["wand"]
+		icon = Glossary.icon_scene["soulstitch_mark"]
 		title = "Soulstitch"
 		interact_groups.append("interact_ability_soulstitch")
 	
@@ -472,15 +518,15 @@ class world_ability_soulstitch:
 		particle_recall = Glossary.create_fx_particle(caster.owner,"soulstitch_node_recall")
 		particle_recall.global_position = caster.animations.selector_center.global_position
 		
-		icon = Glossary.icon_scene["return"]
-		caster.my_component_world_ability.equipped.emit(self)
+		icon = Glossary.icon_scene["soulstitch_return"]
+		caster.my_component_world_ability.equip_update.emit(self)
 	
 	## We RETURN normally to the mark
 	func _fx_normal() -> void:
 		var particle_clear = Glossary.create_fx_particle(caster.owner,"soulstitch_node_clear",true)
 		
-		icon = Glossary.icon_scene["wand"]
-		caster.my_component_world_ability.equipped.emit(self)
+		icon = Glossary.icon_scene["soulstitch_mark"]
+		caster.my_component_world_ability.equip_update.emit(self)
 		
 		##anim
 		particle_clear.global_position = caster.global_position
@@ -510,8 +556,8 @@ class world_ability_soulstitch:
 			particle_recall.queue_free()
 			particle_recall = null
 		
-		icon = Glossary.icon_scene["wand"]
-		caster.my_component_world_ability.equipped.emit(self)
+		icon = Glossary.icon_scene["soulstitch_mark"]
+		caster.my_component_world_ability.equip_update.emit(self)
 	
 	### --- Events --- ###
 	

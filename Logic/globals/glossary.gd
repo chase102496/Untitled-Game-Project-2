@@ -3,22 +3,22 @@ extends Node
 ## --- Functions --- ##
 
 # Convert
+
 ## Grabs relevant info for displaying in a gui, and formats it into a Dictionary
 ## Can be a player, Dreamkin, Item, anything. It will tell us the type and forward a dict
-
 func convert_info_universal_gui(entity):
 	var result = Interface.evaluate_entity_type(entity)
 	match result:
 		Interface.entity_type.PLAYER, Interface.entity_type.SUMMONED_DREAMKIN, Interface.entity_type.PARTY_DREAMKIN:
-			return convert_info_character_gui(entity)
+			return _convert_info_character_gui(entity)
 		Interface.entity_type.PARTY_DREAMKIN:
-			return convert_info_character_gui(entity)
+			return _convert_info_character_gui(entity)
 		Interface.entity_type.INVENTORY_ITEM:
-			return convert_info_item_gui(entity)
+			return _convert_info_item_gui(entity)
 		Interface.entity_type.NOT_FOUND:
 			pass
-
-func convert_info_character_gui(character) -> Dictionary:
+#
+func _convert_info_character_gui(character) -> Dictionary:
 	
 	var dict : Dictionary = {}
 	
@@ -40,7 +40,7 @@ func convert_info_character_gui(character) -> Dictionary:
 		_:
 			dict.header = character.name
 	
-	dict.sprite = null #TODO
+	dict.icon = character.icon
 	
 	dict.description = str(
 		Battle.get_type_color("HEALTH"),Battle.type.HEALTH.ICON,"[/color] ",hp.health,"/",hp.max_health,"  ",
@@ -49,15 +49,13 @@ func convert_info_character_gui(character) -> Dictionary:
 	)
 
 	return dict
-
-func convert_info_item_gui(item : Object) -> Dictionary:
+#
+func _convert_info_item_gui(item : Object) -> Dictionary:
 	
 	var dict : Dictionary = {}
 	
 	dict.header = item.title
-	
-	dict.sprite = null #TODO
-	
+	dict.icon = item.icon
 	dict.description = str(
 		Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color] \n",
 		"\n",
@@ -594,13 +592,19 @@ var particle : Dictionary = {
 	"icon_pop_fly" : preload("res://Scenes/particles/particle_icon_pop_fly.tscn"),
 	}
 
+const icon_random : Array[PackedScene] = [icon_scene["status_burn"],icon_scene["status_freeze"],
+icon_scene["status_swarm"],icon_scene["status_soulstitch"],icon_scene["lumia"],icon_scene["status_disable"],icon_scene["status_ethereal"]]
 const icon_scene : Dictionary = {
-	## Abilities
-	"wand" : preload("res://Scenes/ui/icons/base_icon/icon_wand.tscn"),
-	"return" : preload("res://Scenes/ui/icons/base_icon/icon_return.tscn"),
+	## Dreamstitch
+	"soulstitch_mark" : preload("res://Scenes/ui/icons/base_icon/icon_soulstitch_mark.tscn"),
+	"soulstitch_return" : preload("res://Scenes/ui/icons/base_icon/icon_soulstitch_return.tscn"),
+	## Loomlight
+	"lantern" : preload("res://Scenes/ui/icons/anim_icon/icon_lantern_on.tscn"), #anim_icon
 	## General
 	"vis" : preload("res://Scenes/ui/icons/base_icon/icon_vis.tscn"),
 	"heart" : preload("res://Scenes/ui/icons/base_icon/icon_heart.tscn"),
+	## Characters, Enemies, and Dreamkin
+	"lumia" : preload("res://Scenes/ui/icons/base_icon/icon_lumia.tscn"),
 	## Input Prompts
 	"icon_3d_keyboard" : preload("res://Scenes/ui/icons/input_icon/icon_3d_keyboard.tscn"),
 	"icon_2d_keyboard" : preload("res://Scenes/ui/icons/input_icon/icon_3d_keyboard.tscn"),
@@ -645,11 +649,9 @@ const visual_set : Dictionary = {
 	#}
 	}
 
-
-
 # Classes
 
-var ability_class : Dictionary = {
+const ability_class : Dictionary = {
 	"ability_tackle" : component_ability.ability_tackle,
 	"ability_headbutt" : component_ability.ability_headbutt,
 	"ability_solar_flare" : component_ability.ability_solar_flare,
@@ -659,7 +661,7 @@ var ability_class : Dictionary = {
 	"ability_frigid_core" : component_ability.ability_frigid_core,
 	}
 
-var status_class : Dictionary = {
+const status_class : Dictionary = {
 	##Normal
 	"status_fear" : component_ability.status_fear,
 	"status_burn" : component_ability.status_burn,
@@ -676,10 +678,16 @@ var status_class : Dictionary = {
 	"status_thorns" : component_ability.status_thorns, #Reflects damage on direct hit
 	}
 
-var item_class : Dictionary = {
+const item_class : Dictionary = {
 	"item_nectar" : component_inventory.item_nectar,
-	"item_dewdrop" : component_inventory.item_dewdrop
+	"item_dewdrop" : component_inventory.item_dewdrop,
+	"item_echo" : component_inventory.item_echo,
 	}
+
+const world_ability_class : Dictionary = {
+	"world_ability_soulstitch" : component_world_ability.world_ability_soulstitch,
+	"world_ability_loomlight" : component_world_ability.world_ability_loomlight
+}
 
 # Encounters
 

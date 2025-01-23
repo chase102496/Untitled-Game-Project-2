@@ -21,7 +21,17 @@ func get_data_inventory_all():
 func set_data_inventory_all(host : Node, inventory_data_list : Array):
 	my_inventory = [] #Reset our abilities
 	for item in inventory_data_list: #iterate thru list
-		var inst = Glossary.item_class[item["id"]].new(host) #search glossary for the name we found in metadata
+		
+		#somehow grab the args and set them in .new(
+		
+		#var inst = Glossary.item_class[item["id"]].new(host) #search glossary for the name we found in metadata
+		
+		print(item.args)
+		
+		var inst = Glossary.item_class[item["id"]].new.callv([host]+item.args)
+		if inst.get("world_ability"):
+			print(inst.world_ability)
+		
 		inst.set_data(item)
 		my_inventory.append(inst)
 
@@ -65,10 +75,11 @@ class item:
 	var flavor : String # No, not an ice cream flavor kind of flavor. Flavor text, just for fun.
 	var description : String
 	
-	var icon : PackedScene #icon to be instantiated when item is shown on screen via inventory
+	## Icon to be instantiated when item is shown on screen via inventory
+	var icon : PackedScene = Glossary.icon_random.pick_random() 
 	
 	## If we want it to have its own slot in our inventory
-	var stackable : bool = true 
+	var stackable : bool
 	var quantity : int = 1
 	var max_quantity : int = 99
 	var options_world : Dictionary = {} # We need this to get our list of options that we can select for doing something with the item, should be a list of scripts in us
@@ -82,6 +93,30 @@ class item:
 	func _init(host : Node) -> void:
 		self.host = host
 	
+	func set_data(new_metadata : Dictionary):
+		for key in new_metadata:
+			var value = new_metadata[key]
+			set(key,value)
+	
+	func get_data() -> Dictionary:
+		return {}
+	
+	func get_data_default() -> Dictionary:
+		return {
+			"id" : id,
+			"category" : category,
+			"title" : title,
+			"flavor" : category,
+			"icon" : icon,
+			"description" : description,
+			"stackable" : stackable,
+			"quantity" : quantity,
+			"max_quantity" : max_quantity,
+			"args" : [],
+			#"options_world" : options_world, TODO if we want this to be per-object not per-class
+			#"options_battle" : options_battle,
+		}
+
 	##Return the string names of whatever selections we want, in an array
 	func get_choices_display(type : target_type) -> Array:
 		match type:
@@ -99,30 +134,6 @@ class item:
 			_:
 				push_error("Unknown type for get_choices - ",type)
 				return []
-		
-	
-	func set_data(new_metadata : Dictionary):
-		for key in new_metadata:
-			var value = new_metadata[key]
-			set(key,value)
-	
-	func get_data_default():
-		return {
-			"id" : id,
-			"category" : category,
-			"title" : title,
-			"flavor" : category,
-			"icon" : icon,
-			"description" : description,
-			"stackable" : stackable,
-			"quantity" : quantity,
-			"max_quantity" : max_quantity,
-			#"options_world" : options_world, TODO
-			#"options_battle" : options_battle,
-		}
-	
-	func get_data():
-		return {}
 	
 	## On increase, usually when we add an item that matches us in the inv
 	## Need this to keep track of items internally and avoid overhead on inv manager
@@ -145,6 +156,43 @@ class item:
 	## Need this to keep track of items internally and avoid overhead on inv manager
 	func on_remove() -> void:
 		host.my_component_inventory.remove_item(self)
+
+class item_echo:
+	extends item
+	
+	var my_world_ability : RefCounted
+	var my_world_ability_id : String
+	
+	func get_data():
+		return {
+			## Args that come after host and are mandatory
+			"args" : [my_world_ability_id]
+		}
+	
+	## This is some fucking black magic head fuckery
+	func _init(host : Node, my_world_ability_id : String) -> void:
+		super._init(host)
+		self.my_world_ability_id = my_world_ability_id
+		my_world_ability = Glossary.world_ability_class[my_world_ability_id].new(host)
+		id = "item_echo"
+		icon = my_world_ability.icon
+		title = my_world_ability.title
+		flavor = "No flavor. Like your step-mom makes"
+		description = "No description. Like that criminal that got away"
+		stackable = false
+		category = Glossary.item_category.GEAR
+		
+		options_world = {
+			"Equip" : Callable(self,"on_equip_change"),
+		}
+	
+	func on_equip_change() -> void:
+		if my_world_ability.is_in_equipment():
+			host.my_component_world_ability.unset_equipment(my_world_ability)
+		else:
+			host.my_component_world_ability.set_equipment(my_world_ability)
+
+## --- Items ---
 
 class item_consumable:
 	extends item
@@ -183,8 +231,6 @@ class item_consumable:
 						"Cancel" : null
 				}
 		}
-
-## --- Items ---
 
 class item_nectar:
 	extends item_consumable

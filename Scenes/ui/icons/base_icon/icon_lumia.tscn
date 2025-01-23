@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmch4kn8uvstq"]
+
+[ext_resource type="Texture2D" uid="uid://bj2aqmiu7j33y" path="res://Resources/Textures/2D/UI/Edited/Lumia_cropped.png" id="1_my0q4"]
+
+[node name="icon_lumia" type="TextureRect"]
+texture_filter = 4
+anchors_preset = -1
+anchor_right = 0.104
+anchor_bottom = 0.185
+offset_right = 0.319992
+offset_bottom = 0.199997
+pivot_offset = Vector2(25, 25)
+texture = ExtResource("1_my0q4")
+expand_mode = 1
+flip_h = true

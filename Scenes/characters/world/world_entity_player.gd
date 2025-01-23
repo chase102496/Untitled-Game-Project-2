@@ -14,7 +14,7 @@ extends world_entity
 @export var my_vignette : Control
 
 func _ready():
-	
+	icon = Glossary.icon_scene["lumia"]
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	my_component_ability.add_ability(component_ability.ability_soulstitch.new())
@@ -22,11 +22,15 @@ func _ready():
 	my_component_ability.add_ability(component_ability.ability_spook.new())
 	my_component_ability.add_ability(component_ability.ability_frigid_core.new())
 	
-	my_component_world_ability.set_equipment(component_world_ability.world_ability_soulstitch)
-	my_component_world_ability.set_equipment(component_world_ability.world_ability_loomlight)
+	#my_component_world_ability.set_equipment(component_world_ability.world_ability_soulstitch.new(self))
+	#my_component_world_ability.set_equipment(component_world_ability.world_ability_loomlight.new(self))
 	
-	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
-	#my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
+	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
+	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
+	
+	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_loomlight"))
+	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_soulstitch"))
+	
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))

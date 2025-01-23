@@ -15,14 +15,16 @@ var result_rotation : float = 0
 
 ## Updates our animations, meant to be ran every frame/tick
 ## Defaults to our velocity, but rotated to adjust for its position relative to the camera
-func animation_update(vel : Vector3 = owner.velocity) -> void:
+func animation_update(vel : Vector3 = owner.velocity.rotated(Vector3.UP,-owner.global_rotation.y)) -> void:
 	
 	## X Movement (Left/Right)
-	if vel.x > 0.1:
-		result_rotation = PI
-		result_dir.x = vel.x
-	elif vel.x < -0.1:
+	## Right Default
+	if vel.x > 0.01:
 		result_rotation = 0
+		result_dir.x = vel.x
+	## Left Default
+	elif vel.x < -0.01:
+		result_rotation = PI
 		result_dir.x = vel.x
 	
 	## Y Movement (Up/Down)
@@ -30,9 +32,7 @@ func animation_update(vel : Vector3 = owner.velocity) -> void:
 		result_dir.y = vel.y
 	
 	## Z Movement (Front facing/Back facing)
-	if vel.z > 0:
-		result_dir.z = vel.z
-	elif vel.z < 0:
+	if vel.z != 0:
 		result_dir.z = vel.z
 	
 	animations.rotation.y = result_rotation

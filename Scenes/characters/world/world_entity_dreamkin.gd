@@ -12,7 +12,6 @@ var options_world := {
 	"Recall" : Callable(Global.player.my_component_party,"recall_inst").bind(self),
 	}
 var options_battle : Dictionary = {}
-var icon : PackedScene
 
 ##If we are being created, not from a party object but from nothing
 func init(my_parent : Node, my_position : Vector3) -> world_entity_dreamkin:
@@ -22,7 +21,7 @@ func init(my_parent : Node, my_position : Vector3) -> world_entity_dreamkin:
 
 func _ready():
 	var abil = my_component_ability
-	icon = Glossary.icon_scene[ Glossary.icon_scene.keys().pick_random() ]
+	icon = Glossary.icon_random.pick_random()
 	abil.add_ability(abil.ability_solar_flare.new(1,1.0))
 	my_component_ability.my_status.add_passive(abil.status_immunity.new(self,Battle.type.CHAOS))
 	

@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://3jlvu5y2466j"]
+
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_excxk"]
+[ext_resource type="Texture2D" uid="uid://du0hsd8hlwftf" path="res://Resources/Textures/2D/UI/Edited/icon_lantern.png" id="2_a03fh"]
+
+[sub_resource type="Gradient" id="Gradient_6wera"]
+offsets = PackedFloat32Array(0.0128755, 0.523605, 1)
+colors = PackedColorArray(0.07, 0.07, 0.0224, 1, 1, 1, 0.32, 1, 1, 1, 0.32, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6gxf6"]
+gradient = SubResource("Gradient_6wera")
+width = 64
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o0okj"]
+shader = ExtResource("1_excxk")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_6gxf6")
+
+[node name="icon_lantern_on" type="Control"]
+layout_mode = 3
+anchor_right = 0.104
+anchor_bottom = 0.185
+offset_right = 0.319992
+offset_bottom = 0.199997
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_o0okj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_a03fh")
+expand_mode = 1

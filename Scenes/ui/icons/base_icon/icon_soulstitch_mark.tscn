@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://brtmimdyponup"]
+
+[ext_resource type="Texture2D" uid="uid://dknaxw4j78r4h" path="res://Resources/Textures/2D/UI/Edited/soulstitch_mark.png" id="1_ek0r3"]
+
+[node name="icon_soulstitch_mark" type="Control"]
+layout_mode = 3
+anchor_right = 0.104
+anchor_bottom = 0.185
+offset_right = 0.319992
+offset_bottom = 0.199997
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 4
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_ek0r3")
+expand_mode = 1

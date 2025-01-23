@@ -1,4 +1,10 @@
-extends Control
+class_name world_gui
+extends GUI
+
+signal inventory_opened
+signal equipment_changed
+var previous_equipment : component_world_ability.world_ability
+#listen externally for usability of keys and animations
 
 @export var my_component_party : component_party
 @export var my_component_inventory : component_inventory
@@ -7,6 +13,9 @@ extends Control
 ### --- HUD --- ###
 
 @onready var hud_gui = %HUD
+@onready var hud_gui_keyboard_R = $HUD/VBoxContainer/icon_2d_keyboard_R
+@onready var hud_gui_keyboard_Q = $HUD/VBoxContainer/icon_2d_keyboard_Q
+@onready var hud_gui_keyboard_I = $HUD/VBoxContainer/icon_2d_keyboard_I
 @onready var hud_gui_ability_slot = $HUD/VBoxContainer/icon_2d_keyboard_R/Ability
 
 ### --- Inventory --- ###
@@ -18,14 +27,15 @@ extends Control
 @onready var inventory_gui_item_grid = %ContentGrid
 
 ## Info
-@onready var inventory_gui_item_grid_info = %Inventory/Info
-@onready var inventory_gui_item_grid_info_label = %Inventory/Info/VBoxContainer/Details/Label
-@onready var inventory_gui_item_grid_info_description_label = %Inventory/Info/VBoxContainer/Details/Description
+@onready var inventory_gui_item_grid_info = %Info
+@onready var inventory_gui_item_grid_info_icon_slot = %"Info/VBoxContainer/MarginContainer2/Icon Slot"
+@onready var inventory_gui_item_grid_info_label = %"Info/VBoxContainer/Info Label"
+@onready var inventory_gui_item_grid_info_description_label = %"Info/VBoxContainer/MarginContainer/MarginContainer/Details/Description Label"
 
 ## Options
-@onready var inventory_gui_options_barrier = %Inventory/Options
-@onready var inventory_gui_options_panel = %Inventory/Options/Submenu
-@onready var inventory_gui_options_list = %Inventory/Options/Submenu/List
+@onready var inventory_gui_options_barrier = %Inventory/Main/Content/Options
+@onready var inventory_gui_options_panel = %Submenu
+@onready var inventory_gui_options_list = %Submenu/List
 
 @onready var state_chart : StateChart = %StateChart
 
@@ -34,7 +44,13 @@ func _ready() -> void:
 	### --- HUD --- ###
 	if my_component_world_ability:
 		my_component_world_ability.used_ability.connect(_on_hud_used_ability)
-		my_component_world_ability.equipped.connect(_on_hud_equipped)
+		my_component_world_ability.equip_update.connect(_on_hud_equip_update)
+		my_component_world_ability.equip_active.connect(_on_hud_equip_active)
+		my_component_world_ability.equip_inactive.connect(_on_hud_equip_inactive)
+		my_component_world_ability.equip_set.connect(_on_hud_equip_set)
+		my_component_world_ability.equip_unset.connect(_on_hud_equip_unset)
+		hud_gui_keyboard_Q.hide()
+		hud_gui_keyboard_R.hide()
 	
 	### --- Inventory --- ###
 	
@@ -61,11 +77,12 @@ func convert_tab_to_glossary(tab : int):
 		if Glossary.item_category[key].TAB == tab:
 			return Glossary.item_category[key]
 
-func create_button_category_slots(category_title : String):
+func _create_button_category_slots(category_title : String) -> void:
 	
 	var button_list : Array
 	
 	## Pull the dreamkin if it's that cat
+	## This is so we don't sort it weirdly
 	if category_title == Glossary.item_category.DREAMKIN.TITLE:
 		var list = my_component_party.get_hybrid_data_all()
 		
@@ -90,8 +107,14 @@ func create_button_category_slots(category_title : String):
 	for button_slot in button_list:
 		var icon_inst = button_slot.properties.item.icon.instantiate()
 		button_slot.slot_container.add_child(icon_inst)
+		
+		## This is where we customize the slots based on item properties
+		if button_slot.properties.item.get("my_world_ability"):
+			#If stackable, get the quantity and display it in the corner of the slot!
+			if button_slot.properties.item.my_world_ability.is_in_equipment():
+				button_slot.button.modulate = Global.palette["Medium Slate Blue"]
 
-func create_button_category_list(category_title : String):
+func _create_button_category_list(category_title : String) -> void:
 	
 	var dict = my_component_inventory.get_items_from_category(category_title)
 	dict.sort()
@@ -108,19 +131,25 @@ func create_button_category_list(category_title : String):
 		else:
 			button.text = button.properties.item.title
 
-func refresh():
-	var prev = inventory_gui_tabs.current_tab
-	state_chart.send_event("on_gui_disabled")
-	state_chart.send_event("on_gui_enabled")
-	inventory_gui_tabs.current_tab = prev
+func refresh() -> void:
+	if inventory_gui.visible:
+		## Clear item slot in desc panel
+		Global.clear_children(inventory_gui_item_grid_info_icon_slot)
+		## Saving tab so when we close inv we don't lose tab
+		## And then closing and opening inventory to update
+		var prev = inventory_gui_tabs.current_tab
+		state_chart.send_event("on_gui_disabled")
+		state_chart.send_event("on_gui_enabled")
+		inventory_gui_tabs.current_tab = prev
 
-func options_close():
+func _options_close() -> void:
 	inventory_gui_options_barrier.hide()
 	inventory_gui_options_panel.hide()
+	inventory_gui_item_grid_info.hide()
 	Glossary.free_children(inventory_gui_options_list)
 	refresh.call_deferred()
 
-func options_create_list(properties : Dictionary):
+func _options_create_list(properties : Dictionary) -> void:
 	
 	var item = properties.item
 	
@@ -142,20 +171,53 @@ func options_create_list(properties : Dictionary):
 
 ### --- HUD --- ###
 
+## We updated equipment, but didn't change which one is equipped
+## For icon updates and such
+func _on_hud_equip_update(ability : component_world_ability.world_ability) -> void:
+	Global.clear_children(hud_gui_ability_slot)
+	hud_gui_ability_slot.add_child(ability.icon.instantiate())
+
+##
 func _on_hud_used_ability(ability : component_world_ability.world_ability) -> void:
 	pass
 
-func _on_hud_equipped(ability : component_world_ability.world_ability) -> void:
-	## This will either be an ability or null
-	if ability and ability.icon:
-		Global.clear_children(hud_gui_ability_slot)
-		hud_gui_ability_slot.add_child(ability.icon.instantiate())
+## Something is now our active ability
+func _on_hud_equip_active(new_ability : component_world_ability.world_ability) -> void:
+	hud_gui_keyboard_R.show()
+	hud_gui_keyboard_Q.show()
+	Global.clear_children(hud_gui_ability_slot)
+	hud_gui_ability_slot.add_child(new_ability.icon.instantiate())
+	equipment_changed.emit()
+	refresh()
+
+func _on_hud_equip_inactive(ability : component_world_ability.world_ability) -> void:
+	Global.clear_children(hud_gui_ability_slot)
+	hud_gui_keyboard_R.hide()
+	## If we have no equip to swap to or from
+	if my_component_world_ability.get_equipment().is_empty():
+		hud_gui_keyboard_Q.hide()
+	## If we just swapped to our empty slot
 	else:
-		Global.clear_children(hud_gui_ability_slot)
+		hud_gui_keyboard_Q.show()
+		equipment_changed.emit()
+	
+	refresh()
 
-### --- Inventory --- ###
+func _on_hud_equip_set(new_ability : component_world_ability.world_ability) -> void:
+	hud_gui_keyboard_Q.show()
+	
+	refresh()
 
-## --- Buttons ---
+func _on_hud_equip_unset(new_ability : component_world_ability.world_ability) -> void:
+	
+	if my_component_world_ability.get_equipment().is_empty():
+		hud_gui_keyboard_Q.hide()
+	
+	refresh()
+
+### --- INVENTORY --- ###
+
+## -- Buttons -- ##
 
 ## Changing states tabs
 
@@ -173,33 +235,22 @@ func _on_inventory_gui_tab_selected(tab : int):
 ## Item buttons
 
 func _on_button_pressed_inventory_item(properties : Dictionary):
-	options_create_list(properties)
+	_options_create_list(properties)
 
 func _on_button_enter_hover_inventory_item(properties : Dictionary):
-	
-	var item = properties.item
-	
-	var dict = Glossary.convert_info_item_gui(item)
-	
-	inventory_gui_item_grid_info_label.text = dict.header
-	inventory_gui_item_grid_info_description_label.text = dict.description
-	
+	_set_info(properties,inventory_gui_item_grid_info_icon_slot, inventory_gui_item_grid_info_label, inventory_gui_item_grid_info_description_label)
 	inventory_gui_item_grid_info.show()
 	
 func _on_button_exit_hover_inventory_item(properties : Dictionary):
-	inventory_gui_item_grid_info.hide()
+	pass
 
 ## Dreamkin buttons
 
 func _on_button_pressed_dreamkin(properties : Dictionary):
-	options_create_list(properties)
+	_options_create_list(properties)
 
 func _on_button_enter_hover_dreamkin(properties : Dictionary):
-	
-	var dreamkin = Glossary.convert_info_character_gui(properties.item)
-	inventory_gui_item_grid_info_label.text = dreamkin.header
-	inventory_gui_item_grid_info_description_label.text = dreamkin.description
-	
+	_set_info(properties,inventory_gui_item_grid_info_icon_slot, inventory_gui_item_grid_info_label, inventory_gui_item_grid_info_description_label)
 	inventory_gui_item_grid_info.show()
 
 func _on_button_exit_hover_dreamkin(properties : Dictionary):
@@ -217,18 +268,14 @@ func _on_button_pressed_inventory_item_option(properties : Dictionary):
 	)
 	
 	if result == Glossary.options_result.FINISHED:
-		options_close()
+		_options_close()
 
 func _on_button_enter_hover_inventory_item_option(properties : Dictionary):
-	
-	if "info" in properties:
-		var dict = Glossary.convert_info_universal_gui(properties.info)
-		inventory_gui_item_grid_info_label.text = dict.header
-		inventory_gui_item_grid_info_description_label.text = dict.description
-		inventory_gui_item_grid_info.show()
+	_set_info(properties,inventory_gui_item_grid_info_icon_slot, inventory_gui_item_grid_info_label, inventory_gui_item_grid_info_description_label)
+	inventory_gui_item_grid_info.show()
 
 func _on_button_exit_hover_inventory_item_option(properties : Dictionary):
-	inventory_gui_item_grid_info.hide()
+	pass
 
 ### --- STATES --- ###
 
@@ -236,12 +283,13 @@ func _on_button_exit_hover_inventory_item_option(properties : Dictionary):
 
 func _on_state_entered_inventory_gui_enabled():
 	inventory_gui.show()
+	inventory_opened.emit()
 
 func _on_state_input_inventory_gui_enabled(event : InputEvent) -> void:
 	
 	if Input.is_action_just_pressed("inventory") or Input.is_action_just_pressed("ui_cancel"):
 		if inventory_gui_options_barrier.visible:
-			options_close()
+			_options_close()
 		else:
 			state_chart.send_event("on_gui_disabled") #Disable the inventory
 			owner.state_chart.send_event("on_enabled") #Enable the player
@@ -270,7 +318,7 @@ func _on_state_exited_inventory_gui_disabled():
 
 func _on_state_entered_inventory_gui_gear():
 	Glossary.free_children(inventory_gui_item_grid)
-	create_button_category_slots(Glossary.item_category.GEAR.TITLE)
+	_create_button_category_slots(Glossary.item_category.GEAR.TITLE)
 	
 func _on_state_exited_inventory_gui_gear():
 	pass
@@ -279,7 +327,7 @@ func _on_state_exited_inventory_gui_gear():
 
 func _on_state_entered_inventory_gui_dreamkin():
 	Glossary.free_children(inventory_gui_item_grid)
-	create_button_category_slots(Glossary.item_category.DREAMKIN.TITLE)
+	_create_button_category_slots(Glossary.item_category.DREAMKIN.TITLE)
 
 func _on_state_exited_inventory_gui_dreamkin():
 	pass
@@ -288,7 +336,7 @@ func _on_state_exited_inventory_gui_dreamkin():
 
 func _on_state_entered_inventory_gui_items():
 	Glossary.free_children(inventory_gui_item_grid)
-	create_button_category_slots(Glossary.item_category.ITEMS.TITLE)
+	_create_button_category_slots(Glossary.item_category.ITEMS.TITLE)
 	
 func _on_state_exited_inventory_gui_items():
 	pass
@@ -297,7 +345,7 @@ func _on_state_exited_inventory_gui_items():
 
 func _on_state_entered_inventory_gui_keys():
 	Glossary.free_children(inventory_gui_item_grid)
-	create_button_category_list(Glossary.item_category.KEYS.TITLE)
+	_create_button_category_list(Glossary.item_category.KEYS.TITLE)
 
 func _on_state_exited_inventory_gui_keys():
 	pass

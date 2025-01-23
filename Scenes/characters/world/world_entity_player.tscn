@@ -46,13 +46,12 @@ my_component_inventory = NodePath("../Components/component_inventory")
 my_component_world_ability = NodePath("../Components/component_world_ability")
 
 [node name="FaceLight" type="OmniLight3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.125)
-light_energy = 0.2
-light_indirect_energy = 0.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0.375)
+light_energy = 0.02
 light_volumetric_fog_energy = 0.0
+light_size = 1.0
 light_specular = 0.0
-omni_range = 0.513
-omni_attenuation = 0.2
+light_bake_mode = 1
 
 [node name="CollisionShape3D" parent="." index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
@@ -91,10 +90,10 @@ libraries = {
 }
 
 [node name="character_animation_tree" parent="Components/component_animation" index="3"]
-parameters/Air/BlendSpace2D/blend_position = Vector2(0.00101209, 0.00429177)
-parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.00215471, 0.0394872)
-parameters/Walk/TimeScale/scale = 4.0
-"parameters/Walk 2/TimeScale/scale" = 0.5
+parameters/Air/BlendSpace2D/blend_position = Vector2(0.00126529, -0.00180829)
+parameters/Idle/BlendSpace2D/blend_position = Vector2(-0.00254989, 0.0116491)
+parameters/Walk/TimeScale/scale = 0.65
+"parameters/Walk 2/TimeScale/scale" = 0.65
 
 [node name="component_inventory" type="Node" parent="Components" index="4"]
 script = ExtResource("10_qjgfm")
@@ -116,9 +115,8 @@ my_component_interaction = NodePath("../component_interaction")
 my_component_world_ability = NodePath("../component_world_ability")
 my_component_movement_controller = NodePath("../component_movement_controller")
 
-[node name="component_animation_controller_world" parent="Components" index="12" node_paths=PackedStringArray("my_component_input_controller", "my_component_physics")]
+[node name="component_animation_controller_world" parent="Components" index="12" node_paths=PackedStringArray("my_component_input_controller")]
 my_component_input_controller = NodePath("../component_input_controller_manual")
-my_component_physics = NodePath("../component_physics")
 
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]

@@ -65,7 +65,6 @@ func on_state_entered_inside() -> void:
 	
 	# Verify we have a loomlight and it can be equipped
 	if equipment.ability_event(equipment.loomlight,"verify_equip"):
-		
 		equipment.set_active(equipment.loomlight)
 
 var encounter_rate : float = 0.0

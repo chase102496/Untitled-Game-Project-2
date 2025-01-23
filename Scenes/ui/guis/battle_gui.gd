@@ -1,5 +1,5 @@
 class_name battle_gui
-extends Control
+extends GUI
 
 @export var active_portrait : Control
 @onready var portrait_list : Array = $Portraits.get_children() #TODO REMOVE THIS
@@ -28,9 +28,10 @@ extends Control
 @onready var ui_button_items : Node = %Menu/Main/Items/Button
 @onready var ui_button_escape : Node = %Menu/Main/Escape/Button
 
-@onready var ui_description_box : PanelContainer = %Description
-@onready var ui_description_title : RichTextLabel = %"Description/VBoxContainer/Description Title"
+@onready var ui_description_icon : MarginContainer = $"%Description/VBoxContainer/MarginContainer/Icon Slot"
+@onready var ui_description_title : Label = %"Description/VBoxContainer/Description Title"
 @onready var ui_description_label : RichTextLabel = %"Description/VBoxContainer/Description Label"
+@onready var ui_description_box : PanelContainer = %Description
 
 @onready var ui_input_prompt_Q : Control = $"Input Prompts/icon_2d_keyboard_Q"
 @onready var ui_input_prompt_SPACE : Control = $"Input Prompts/icon_2d_keyboard_SPACE"
@@ -347,17 +348,21 @@ func _on_state_entered_battle_gui_items() -> void:
 	var dict = Global.player.my_component_inventory.get_items_from_category(Glossary.item_category.ITEMS.TITLE)
 	dict.sort()
 	
-	var button_list = Glossary.create_button_list(dict,ui_grid_items,self,
+	var button_list = Glossary.create_button_slots(dict,ui_grid_items,self,
 	"_on_button_pressed_items_item",
 	"_on_button_enter_hover_items_item",
 	"_on_button_exit_hover_items_item")
 	
-	for button in button_list:
-		## Display
-		if button.properties.item.quantity > 1:
-			button.text = str(button.properties.item.title,"  x",button.properties.item.quantity)
-		else:
-			button.text = button.properties.item.title
+	for button_slot in button_list:
+		var icon_inst = button_slot.properties.item.icon.instantiate()
+		button_slot.slot_container.add_child(icon_inst)
+	
+	#for button in button_list:
+		### Display
+		#if button.properties.item.quantity > 1:
+			#button.text = str(button.properties.item.title,"  x",button.properties.item.quantity)
+		#else:
+			#button.text = button.properties.item.title
 	
 func _on_state_physics_processing_battle_gui_items(delta: float) -> void:
 	pass
@@ -493,15 +498,17 @@ func _on_button_enter_hover_items_item(properties : Dictionary):
 	
 	var item = properties.item
 	
-	#TBD
-	ui_description_title.text = str("meep meep")
+	_set_info(properties,ui_description_icon, ui_description_title, ui_description_label)
 	
-	ui_description_label.text = str(
-		Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color]",
-		"\n",
-		"\n",
-		item.description
-		)
+	##TBD
+	#ui_description_title.text = str("meep meep")
+	#
+	#ui_description_label.text = str(
+		#Glossary.text_style_color_html(Glossary.text_style.FLAVOR),item.flavor,"[/color]",
+		#"\n",
+		#"\n",
+		#item.description
+		#)
 		
 	ui_description_box.show()
 
