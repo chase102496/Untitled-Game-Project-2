@@ -46,11 +46,6 @@ unique_name_in_owner = true
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 sprite_frames = SubResource("SpriteFrames_j6r5n")
 
-[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
-my_component_health = NodePath("../../../component_health")
-my_component_vis = NodePath("../../../component_vis")
-collider = NodePath("../../../../CollisionShape3D")
-
 [node name="character_animation_tree" parent="Components/component_animation" index="3" node_paths=PackedStringArray("my_owner")]
 tree_root = ExtResource("5_mi4sx")
 parameters/Death/TimeScale/scale = 1.0
@@ -70,17 +65,16 @@ my_owner = NodePath("../../..")
 script = ExtResource("14_yhqed")
 my_component_ability = NodePath("../component_ability")
 
-[node name="component_health" type="Node" parent="Components" node_paths=PackedStringArray("status_hud")]
+[node name="component_health" type="Node" parent="Components"]
 script = ExtResource("15_76mtu")
-status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
 
-[node name="component_vis" type="Node" parent="Components" node_paths=PackedStringArray("status_hud")]
+[node name="component_vis" type="Node" parent="Components"]
 script = ExtResource("16_c1w3d")
 max_vis = 12
-status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
 
-[node name="component_animation_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("animations")]
+[node name="component_animation_controller_battle" type="Node" parent="Components" node_paths=PackedStringArray("my_component_physics", "animations")]
 script = ExtResource("17_jodlc")
+my_component_physics = NodePath("../component_physics")
 animations = NodePath("../component_animation")
 
 [node name="component_physics" type="Node" parent="Components"]

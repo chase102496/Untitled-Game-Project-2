@@ -35,6 +35,12 @@ const palette : Dictionary = {
 	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
 
+func rotate_vector_by_body_rotation(vector: Vector3, rotating_body: Node3D) -> Vector3:
+	# Get the rotation Basis from the body's transform
+	var rotation_basis = rotating_body.transform.basis
+	# Rotate the vector using the Basis (via multiplication)
+	return rotation_basis * vector
+
 func get_max_vector3_by_length(vectors: Array) -> Vector3:
 	var max_vec : Vector3 = Vector3()
 	var max_length : float = -INF

@@ -2,6 +2,7 @@ class_name component_animation_controller
 extends component_node
 
 @export var my_component_input_controller : Node
+@export var my_component_physics : component_physics
 @export var animations : component_animation
 
 ## Utility Functions
@@ -12,6 +13,8 @@ func camera_billboard() -> void:
 var result_dir : Vector3 = Vector3.ZERO
 var result_rotation : float = 0
 
+## Updates our animations, meant to be ran every frame/tick
+## Defaults to our velocity, but rotated to adjust for its position relative to the camera
 func animation_update(vel : Vector3 = owner.velocity) -> void:
 	
 	## X Movement (Left/Right)

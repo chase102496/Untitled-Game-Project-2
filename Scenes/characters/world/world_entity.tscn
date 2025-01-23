@@ -46,11 +46,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0184311, -0.243187, -0.2709
 [node name="character_animation_sprite" parent="Components/component_animation/AnimationTransform" index="0"]
 sprite_frames = SubResource("SpriteFrames_xuram")
 
-[node name="status_hud" parent="Components/component_animation/character_sprite_position" index="2" node_paths=PackedStringArray("my_component_health", "my_component_vis", "collider")]
-my_component_health = NodePath("../../../component_health")
-my_component_vis = NodePath("../../../component_vis")
-collider = NodePath("../../../../CollisionShape3D")
-
 [node name="character_animation_player" parent="Components/component_animation" index="2"]
 libraries = {
 "": SubResource("AnimationLibrary_1l2l5")
@@ -75,17 +70,16 @@ my_owner = NodePath("../../..")
 [node name="component_state_controller_world" type="Node" parent="Components"]
 script = ExtResource("6_ordbn")
 
-[node name="component_health" type="Node" parent="Components" node_paths=PackedStringArray("status_hud")]
+[node name="component_health" type="Node" parent="Components"]
 script = ExtResource("7_c4cgf")
-status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
 
-[node name="component_vis" type="Node" parent="Components" node_paths=PackedStringArray("status_hud")]
+[node name="component_vis" type="Node" parent="Components"]
 script = ExtResource("8_3swv8")
 max_vis = 12
-status_hud = NodePath("../component_animation/character_sprite_position/status_hud")
 
-[node name="component_animation_controller_world" type="Node" parent="Components" node_paths=PackedStringArray("animations")]
+[node name="component_animation_controller_world" type="Node" parent="Components" node_paths=PackedStringArray("my_component_physics", "animations")]
 script = ExtResource("9_l84gh")
+my_component_physics = NodePath("../component_physics")
 animations = NodePath("../component_animation")
 
 [node name="component_physics" type="Node" parent="Components"]

@@ -116,8 +116,9 @@ my_component_interaction = NodePath("../component_interaction")
 my_component_world_ability = NodePath("../component_world_ability")
 my_component_movement_controller = NodePath("../component_movement_controller")
 
-[node name="component_animation_controller_world" parent="Components" index="12" node_paths=PackedStringArray("my_component_input_controller")]
+[node name="component_animation_controller_world" parent="Components" index="12" node_paths=PackedStringArray("my_component_input_controller", "my_component_physics")]
 my_component_input_controller = NodePath("../component_input_controller_manual")
+my_component_physics = NodePath("../component_physics")
 
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]
