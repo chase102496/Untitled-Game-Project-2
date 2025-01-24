@@ -226,7 +226,7 @@ func toggle_active() -> void:
 ## What we form the basis of all of our world abilities off of.
 class world_ability:
 	
-	var title : String = "Empty Ability"
+
 	var caster : Node
 	var interact_groups : Array
 	var my_interact_area : Area3D
@@ -234,7 +234,10 @@ class world_ability:
 	## This will either be world_ability_dreamstitch or world_ability_loomlight
 	var type : RefCounted
 	
+	var title : String = "---"
 	var icon : PackedScene = Glossary.icon_random.pick_random()
+	var flavor : String = ""
+	var description : String = ""
 	
 	var fx_instance : GPUParticles3D
 	
@@ -242,6 +245,8 @@ class world_ability:
 	
 	func _init(caster : Node) -> void:
 		self.caster = caster
+	
+	## TODO Need to make get and set data func, 4 of em
 	
 	## --- FX --- ##
 	
@@ -494,12 +499,10 @@ class world_ability_soulstitch:
 		_fx_normal()
 	
 	func _return_slingshot() -> void:
+		caster.velocity = recall_velocity
 		_fx_clear()
 		_fx_slingshot()
 		recall_tween.stop()
-		
-		caster.velocity = recall_velocity ##TBD HISTORY HERE
-		#caster.my_component_physics.
 	
 	func _on_cancel() -> void:
 		if is_mark_placed:

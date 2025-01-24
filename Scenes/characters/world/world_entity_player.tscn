@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bdyo4iaddo5x8"]
+[gd_scene load_steps=16 format=3 uid="uid://bdyo4iaddo5x8"]
 
 [ext_resource type="PackedScene" uid="uid://cw282fyqe5rxb" path="res://Scenes/characters/world/world_entity.tscn" id="1_w8yip"]
 [ext_resource type="Script" path="res://Scenes/characters/world/world_entity_player.gd" id="2_q04t1"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Logic/components/component_party.gd" id="12_do3sr"]
 [ext_resource type="Script" path="res://Logic/components/component_movement_controller.gd" id="13_u5omi"]
 [ext_resource type="Script" path="res://Logic/components/component_input_controller_manual.gd" id="14_luuhe"]
+[ext_resource type="Texture2D" uid="uid://cb3o08yapvyls" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/progress_circle/shadow.png" id="14_t3tv1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t1115"]
 radius = 0.25
@@ -117,6 +118,13 @@ my_component_movement_controller = NodePath("../component_movement_controller")
 
 [node name="component_animation_controller_world" parent="Components" index="12" node_paths=PackedStringArray("my_component_input_controller")]
 my_component_input_controller = NodePath("../component_input_controller_manual")
+
+[node name="Drop Shadow" type="Decal" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.9, 0)
+size = Vector3(0.6, 10, 0.6)
+texture_albedo = ExtResource("14_t3tv1")
+upper_fade = 2.0
+lower_fade = 2.0
 
 [editable path="Components/component_animation"]
 [editable path="Components/component_ability"]

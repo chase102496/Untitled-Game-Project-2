@@ -5,7 +5,6 @@ extends component_node
 
 var direction : Vector2 = Vector2.ZERO
 var raw_direction : Vector2 = Vector2.ZERO
-var jumping : bool = false
 
 signal jump
 signal jump_damper

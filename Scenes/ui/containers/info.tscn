@@ -1,0 +1,118 @@
+[gd_scene load_steps=7 format=3 uid="uid://dircmf6r1rjl4"]
+
+[ext_resource type="Script" path="res://Scenes/ui/containers/info.gd" id="2_8b4s1"]
+[ext_resource type="Texture2D" uid="uid://bf2icr5turth7" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_1.png" id="2_xnev7"]
+[ext_resource type="Texture2D" uid="uid://qhkmofd8dx2x" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_0.png" id="3_wl438"]
+[ext_resource type="Texture2D" uid="uid://fcyokiwoiu8k" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_1_alt.png" id="4_s37gu"]
+[ext_resource type="Texture2D" uid="uid://g8bn7jfd3rbu" path="res://Art/ui/Fantasy Borders/Double/Divider Fade/divider-fade-001.png" id="4_uwc16"]
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://Interface/menu_theme.tres" id="5_t8rv8"]
+
+[node name="Info" type="PanelContainer" node_paths=PackedStringArray("title", "icon_slot", "description")]
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = ExtResource("5_t8rv8")
+script = ExtResource("2_8b4s1")
+title = NodePath("VBoxContainer/HBoxContainer/Title")
+icon_slot = NodePath("VBoxContainer/Icon/Icon Slot")
+description = NodePath("VBoxContainer/Details/MarginContainer/Description")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="MarginContainer" parent="VBoxContainer"]
+texture_filter = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 2
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer/Icon"]
+custom_minimum_size = Vector2(132, 132)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("2_xnev7")
+texture_hover = ExtResource("3_wl438")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Icon Slot" type="MarginContainer" parent="VBoxContainer/Icon"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.313726, 0.470588, 0.607843, 1)
+text = "⸻"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton2" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+visible = false
+modulate = Color(0.313726, 0.470588, 0.607843, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("4_uwc16")
+expand_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Item name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.313726, 0.470588, 0.607843, 1)
+text = "⸻"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+visible = false
+modulate = Color(0.313726, 0.470588, 0.607843, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("4_uwc16")
+expand_mode = 2
+flip_h = true
+
+[node name="Details" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/Details"]
+self_modulate = Color(0.313726, 0.470588, 0.607843, 1)
+layout_mode = 2
+texture = ExtResource("4_s37gu")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Details"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Description" type="RichTextLabel" parent="VBoxContainer/Details/MarginContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("5_t8rv8")
+bbcode_enabled = true
+text = "[color=078ef5]◆[/color] 5  [color=364196]✫[/color] Void
+[color=gray]Flavor Text [/color]
+Test description. This does something cool."
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false

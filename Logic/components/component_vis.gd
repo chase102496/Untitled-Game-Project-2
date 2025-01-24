@@ -10,7 +10,8 @@ var vis : int:
 		var old_vis = vis
 		vis = value
 		var new_vis = vis
-		_update(new_vis - old_vis)
+		if old_vis != new_vis:
+			_update(new_vis - old_vis)
 
 func _ready() -> void:
 	if !vis:
@@ -31,12 +32,13 @@ func change(amt : int, display : bool = true):
 	var amt_changed = vis - old_vis
 	
 	## Adding to Vis
-	if amt > 0:
+	if amt_changed > 0:
 		if display:
-			Glossary.create_text_particle(owner.animations.selector_center,str(abs(amt_changed)),"text_float_water",Color.WHITE,0.3)
+			Glossary.create_fx_particle_custom(owner, "star_explosion", true, 10, 45, 4, Vector3.UP, Global.palette["Medium Slate Blue Saturated"])
+			#Glossary.create_text_particle(owner.animations.selector_center,str(abs(amt_changed)),"text_float_water",Color.WHITE,0.3)
 	
 	## Removing from Vis
-	elif amt < 0:
+	elif amt_changed < 0:
 		if display:
 			#Glossary.create_text_particle(owner.animations.selector_center,str(abs(amt_changed)),"text_fall_water",Color.WHITE,0.3)
 			pass

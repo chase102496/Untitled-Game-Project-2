@@ -35,6 +35,10 @@ const palette : Dictionary = {
 	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
 
+func send_event_delayed(target : Node, state : String, delay : float) -> void:
+	await get_tree().create_timer(delay).timeout
+	target.state_chart.send_event(state)
+
 func rotate_vector_by_body_rotation(vector: Vector3, rotating_body: Node3D) -> Vector3:
 	# Get the rotation Basis from the body's transform
 	var rotation_basis = rotating_body.transform.basis
@@ -67,6 +71,13 @@ func input_action_to_keycode_string(action : String) -> String:
 			human_keycode = OS.get_keycode_string(keycode)
 	
 	return human_keycode
+
+func set_all_nodes_ignore_mouse(parent_node: Node) -> void:
+	for child in parent_node.get_children():
+		if child is Control:
+			child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if child is Node:
+			set_all_nodes_ignore_mouse(child)
 
 ## Recursively sets a property on the node and all its children
 func set_recursive_property(node: Node, property_name: String, value) -> void:

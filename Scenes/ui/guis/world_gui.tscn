@@ -9,14 +9,13 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_wrf28"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_fi7i2"]
 [ext_resource type="PackedScene" uid="uid://dwhv3ry5jg0lk" path="res://Scenes/ui/containers/button_slot.tscn" id="6_jefqr"]
-[ext_resource type="Script" path="res://Scenes/ui/containers/empty_properties_button_slot.gd" id="7_6aujm"]
+[ext_resource type="PackedScene" uid="uid://dircmf6r1rjl4" path="res://Scenes/ui/containers/info.tscn" id="7_kdvaf"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_q80aw"]
-[ext_resource type="Texture2D" uid="uid://bf2icr5turth7" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_1.png" id="8_37bt6"]
-[ext_resource type="Texture2D" uid="uid://qhkmofd8dx2x" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_0.png" id="9_ijau8"]
 [ext_resource type="PackedScene" uid="uid://dufrr558odxyv" path="res://Scenes/ui/containers/status_slot.tscn" id="10_al0sn"]
 [ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="10_efbco"]
 [ext_resource type="Texture2D" uid="uid://buqw3wl2yld4x" path="res://Resources/Textures/2D/UI/Isle of Lore 2 Status Icons/Sources/output/status_icons.standard_transparent/status_icon_backpack_135.png" id="11_nfyit"]
 [ext_resource type="Texture2D" uid="uid://75unovq7wdgo" path="res://Resources/Textures/2D/UI/Edited/arrow_rotate.png" id="12_e5juk"]
+[ext_resource type="Texture2D" uid="uid://qjcbbiaolxux" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/tooltip.standard/tooltip_0.png" id="12_lgkvt"]
 [ext_resource type="Texture2D" uid="uid://dmctpdf8netf7" path="res://Art/sprites/hand_small_point.svg" id="12_oor66"]
 [ext_resource type="Script" path="res://Logic/misc/signal_animation.gd" id="13_qex55"]
 [ext_resource type="Script" path="res://Logic/misc/animation_player_autoplay.gd" id="13_twldw"]
@@ -123,6 +122,17 @@ _data = {
 "RESET": SubResource("Animation_prtih"),
 "new_animation": SubResource("Animation_nc7bj")
 }
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fdqif"]
+texture = ExtResource("12_lgkvt")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
+expand_margin_left = 12.0
+expand_margin_top = 12.0
+expand_margin_right = 12.0
+expand_margin_bottom = 12.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_uvqhh"]
 resource_local_to_scene = true
@@ -398,86 +408,9 @@ layout_mode = 2
 [node name="Options" type="Control" parent="Inventory/Main/Content"]
 layout_mode = 2
 
-[node name="Info" type="PanelContainer" parent="Inventory/Main"]
+[node name="Info" parent="Inventory/Main" instance=ExtResource("7_kdvaf")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Inventory/Main/Info"]
-layout_mode = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="Inventory/Main/Info/VBoxContainer" node_paths=PackedStringArray("button", "slot_container")]
-texture_filter = 2
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
-mouse_filter = 2
-script = ExtResource("7_6aujm")
-button = NodePath("TextureButton")
-slot_container = NodePath("Icon Slot")
-
-[node name="TextureButton" type="TextureButton" parent="Inventory/Main/Info/VBoxContainer/MarginContainer2"]
-custom_minimum_size = Vector2(132, 132)
-layout_mode = 2
-action_mode = 0
-texture_normal = ExtResource("8_37bt6")
-texture_hover = ExtResource("9_ijau8")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="Icon Slot" type="MarginContainer" parent="Inventory/Main/Info/VBoxContainer/MarginContainer2"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 2
-
-[node name="Info Label" type="Label" parent="Inventory/Main/Info/VBoxContainer"]
-layout_mode = 2
-text = "Item name"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="Inventory/Main/Info/VBoxContainer"]
-layout_mode = 2
-
-[node name="NinePatchRect" type="NinePatchRect" parent="Inventory/Main/Info/VBoxContainer/MarginContainer"]
-self_modulate = Color(0.313726, 0.470588, 0.607843, 1)
-layout_mode = 2
-texture = ExtResource("3_sb35y")
-patch_margin_left = 20
-patch_margin_top = 20
-patch_margin_right = 20
-patch_margin_bottom = 20
-
-[node name="MarginContainer" type="MarginContainer" parent="Inventory/Main/Info/VBoxContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="Details" type="VBoxContainer" parent="Inventory/Main/Info/VBoxContainer/MarginContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_constants/separation = 32
-
-[node name="Description Label" type="RichTextLabel" parent="Inventory/Main/Info/VBoxContainer/MarginContainer/MarginContainer/Details"]
-clip_contents = false
-custom_minimum_size = Vector2(400, 100)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_maa2b")
-bbcode_enabled = true
-text = "[color=078ef5]◆[/color] 5  [color=364196]✫[/color] Void
-[i]Flavor Text[/i]
-Test description. This does something cool."
-fit_content = true
-scroll_active = false
-shortcut_keys_enabled = false
 
 [node name="Pointer" type="Control" parent="Inventory"]
 visible = false
@@ -517,10 +450,11 @@ unique_name_in_owner = true
 layout_mode = 1
 offset_left = 1072.0
 offset_top = 567.0
-offset_right = 1112.0
-offset_bottom = 607.0
+offset_right = 1241.0
+offset_bottom = 721.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxTexture_fdqif")
 
 [node name="List" type="VBoxContainer" parent="Inventory/Submenu"]
 layout_mode = 2
@@ -704,6 +638,7 @@ script = ExtResource("6_fi7i2")
 [editable path="Inventory/Main/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_Q"]
 [editable path="Inventory/Main/Content/VBoxContainer/MarginContainer/HBoxContainer/icon_2d_keyboard_E"]
 [editable path="Inventory/Main/Content/VBoxContainer/Panel/ContentGrid/empty_properties_button_slot"]
+[editable path="Inventory/Main/Info"]
 [editable path="HUD/VBoxContainer/icon_2d_keyboard_R"]
 [editable path="HUD/VBoxContainer/icon_2d_keyboard_Q"]
 [editable path="HUD/VBoxContainer/icon_2d_keyboard_I"]

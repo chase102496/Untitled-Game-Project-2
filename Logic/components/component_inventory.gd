@@ -22,18 +22,12 @@ func set_data_inventory_all(host : Node, inventory_data_list : Array):
 	my_inventory = [] #Reset our abilities
 	for item in inventory_data_list: #iterate thru list
 		
-		#somehow grab the args and set them in .new(
-		
 		#var inst = Glossary.item_class[item["id"]].new(host) #search glossary for the name we found in metadata
 		
-		print(item.args)
-		
 		var inst = Glossary.item_class[item["id"]].new.callv([host]+item.args)
-		if inst.get("world_ability"):
-			print(inst.world_ability)
 		
 		inst.set_data(item)
-		my_inventory.append(inst)
+		add_item(inst)
 
 ## Returns all items in the given category
 func get_items_from_category(category_title : String) -> Array:
@@ -56,7 +50,7 @@ func add_item(inst : Object):
 		for item in my_inventory:
 			if item.id == inst.id and item.stackable:
 				item.on_stack(inst.quantity)
-				return #Exit function
+				return
 	
 	## If we never encounter a match or it's not stackable, just add it normally
 	my_inventory.append(inst)
@@ -121,7 +115,7 @@ class item:
 	func get_choices_display(type : target_type) -> Array:
 		match type:
 			target_type.ALL:
-				return [Global.player.name] + host.my_component_party.get_hybrid_name_all()
+				return [Global.player.display_name] + host.my_component_party.get_hybrid_name_all()
 			_:
 				push_error("Unknown type for get_choices - ",type)
 				return []
@@ -162,11 +156,13 @@ class item_echo:
 	
 	var my_world_ability : RefCounted
 	var my_world_ability_id : String
+	var is_equipped : bool
 	
 	func get_data():
 		return {
 			## Args that come after host and are mandatory
-			"args" : [my_world_ability_id]
+			"args" : [my_world_ability_id],
+			"is_equipped" : is_equipped
 		}
 	
 	## This is some fucking black magic head fuckery
@@ -186,25 +182,35 @@ class item_echo:
 			"Equip" : Callable(self,"on_equip_change"),
 		}
 	
+	func _equip() -> void:
+		is_equipped = true
+	
+	func _unequip() -> void:
+		is_equipped = false
+	
 	func on_equip_change() -> void:
 		if my_world_ability.is_in_equipment():
 			host.my_component_world_ability.unset_equipment(my_world_ability)
+			_unequip()
 		else:
 			host.my_component_world_ability.set_equipment(my_world_ability)
+			_equip()
 
 ## --- Items ---
 
 class item_consumable:
 	extends item
 	
-	## List of functions that pop up in world when we select this item in our inventory. References existing scripts, and their params to grab
-	## Legend
-	# "next" indicates we don't care what we choose, this is the next path forward
-	# "branch" will take us on whatever selection we chose, it must match verbatim the choice
-	# "choices" is mandatory for each level with a dictionary, and is just a string that leads us in a direction
-	# "choices_params" is an optional parameter that will pass all of its selections to the final script. This must be the same length as "choices" in the same level
-	# "choices_info" is optional info passed to the button display to display additional info like health, item descriptions, etc.
-	func inherit():
+	func _init(host : Node) -> void:
+		stackable = true
+		
+		## List of functions that pop up in world when we select this item in our inventory. References existing scripts, and their params to grab
+		## Legend
+		# "next" indicates we don't care what we choose, this is the next path forward
+		# "branch" will take us on whatever selection we chose, it must match verbatim the choice
+		# "choices" is mandatory for each level with a dictionary, and is just a string that leads us in a direction
+		# "choices_params" is an optional parameter that will pass all of its selections to the final script. This must be the same length as "choices" in the same level
+		# "choices_info" is optional info passed to the button display to display additional info like health, item descriptions, etc.
 		options_world["Use"] = {
 			"choices" : Callable(self,"get_choices_display").bind(target_type.ALL),
 			"choices_info" : Callable(self,"get_choices").bind(target_type.ALL),
@@ -231,6 +237,8 @@ class item_consumable:
 						"Cancel" : null
 				}
 		}
+	
+
 
 class item_nectar:
 	extends item_consumable
@@ -243,7 +251,7 @@ class item_nectar:
 		}
 	
 	func _init(host : Node, recovery_amount : int = 1, quantity : int = 1) -> void:
-		inherit()
+		super._init(host)
 		id = "item_nectar"
 		title = "Nectar"
 		flavor = "You couldn't just call it a health potion?"
@@ -254,19 +262,29 @@ class item_nectar:
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
 	
+	func on_option_verify(target) -> bool:
+		var my_component_health = Interface.get_root_health(target)
+		return my_component_health.health != my_component_health.max_health
+	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
-	func on_option_use_world(target = host):
-		Interface.change_health(target,recovery_amount)
-		#FX GO HERE
-		on_consume()
+	func on_option_use_world(target = host) -> bool:
+		if on_option_verify(target):
+			Interface.change_health(target,recovery_amount)
+			on_consume()
+			## FX GO HERE
+			Battle.active_character.send_event("on_end")
+		
+		return on_option_verify(target)
 	
-	func on_option_use_battle(target = host):
-		Interface.change_health(target,recovery_amount)
-		#FX GO HERE
-		on_consume()
-		await host.get_tree().create_timer(0.5).timeout
-		Battle.active_character.state_chart.send_event("on_end")
+	func on_option_use_battle(target = host) -> bool:
+		if on_option_verify(target):
+			Interface.change_health(target,recovery_amount)
+			on_consume()
+			## FX GO HERE
+			Battle.active_character.send_event("on_end")
+		
+		return on_option_verify(target)
 
 class item_dewdrop:
 	extends item_consumable
@@ -279,7 +297,7 @@ class item_dewdrop:
 		}
 	
 	func _init(host : Node, recovery_amount : int = 1, quantity : int = 1) -> void:
-		inherit()
+		super._init(host)
 		id = "item_dewdrop"
 		title = "Dewdrop"
 		flavor = "Warning: Staring too long may result in existential crises or sudden nap attacks."
@@ -289,17 +307,27 @@ class item_dewdrop:
 		self.recovery_amount = recovery_amount
 		self.quantity = quantity
 		category = Glossary.item_category.ITEMS
-
+	
+	func on_option_verify(target) -> bool:
+		var my_component_vis = Interface.get_root_vis(target)
+		return my_component_vis.vis != my_component_vis.max_vis
+	
 	## An option displayed in our menu when we click on this item
 	## Can literally be named whatever you want
-	func on_option_use_world(target : Node = host):
-		Interface.change_vis(target,recovery_amount)
-		#FX GO HERE
-		on_consume()
+	func on_option_use_world(target = host) -> bool:
+		if on_option_verify(target):
+			Interface.change_vis(target,recovery_amount)
+			on_consume()
+			## FX GO HERE
+			Battle.active_character.send_event("on_end")
+		
+		return on_option_verify(target)
 	
-	func on_option_use_battle(target : Node = host):
-		Interface.change_vis(target,recovery_amount)
-		#FX GO HERE
-		on_consume()
-		await host.get_tree().create_timer(0.5).timeout
-		Battle.active_character.state_chart.send_event("on_end")
+	func on_option_use_battle(target = host) -> bool:
+		if on_option_verify(target):
+			Interface.change_vis(target,recovery_amount)
+			on_consume()
+			## FX GO HERE
+			Battle.active_character.send_event("on_end")
+		
+		return on_option_verify(target)

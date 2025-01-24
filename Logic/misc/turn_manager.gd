@@ -1,9 +1,9 @@
 extends Node3D
 
 @export var turn_pause_amount : float = 0.5
-
 @export var spotlight : BattleSpotlight
 
+var current_team_alignment : String
 #DO NOT PUT ANYTHING BESIDES THE UNITS THAT WILL BE FIGHTING AND TAKING TURNS IN THE IMMEDIATE CHILD SECTION OF TURN_MANAGER
 
 ## Makes sure no matter what, when we unload the battlefield the Battle list is cleared
@@ -20,6 +20,7 @@ func _ready() -> void:
 	Events.battle_entity_death.connect(_on_battle_entity_death)
 	Events.turn_repeat.connect(_on_turn_repeat)
 	Events.turn_end.connect(_on_turn_end)
+	Events.turn_start.connect(_on_turn_start)
 	Events.battle_finished.connect(_on_battle_finished)
 	
 	#Initialize characters and battle list
@@ -37,6 +38,8 @@ func _ready() -> void:
 			Battle.active_character_index = 0
 	
 	Battle.update_focus()
+	
+	current_team_alignment = Battle.active_character.alignment
 
 ### --- Signals --- ###
 
@@ -80,6 +83,10 @@ func _on_turn_repeat() -> void:
 	
 	Events.turn_start.emit()
 
+## 
+func _on_turn_start() -> void:
+	pass
+
 ## Turn is over and we need to check if it's ok to start the next turn
 func _on_turn_end() -> void:
 	
@@ -112,7 +119,9 @@ func _next_turn() -> void:
 	
 	Battle.update_focus()
 	
-	if Battle.get_relative_character(-1).alignment != Battle.active_character.alignment:
+	if current_team_alignment != Battle.active_character.alignment:
+		Events.battle_team_start.emit(Battle.active_character_alignment)
+		current_team_alignment = Battle.active_character.alignment
 		await get_tree().create_timer(turn_pause_amount).timeout
 	
 	Events.turn_start.emit() #Sends everyone a memo that there's a new turn
@@ -135,10 +144,6 @@ func _load_next_character() -> void:
 	Battle.active_character_index = new_index
 	Battle.active_character = Battle.battle_list[new_index]
 	Battle.active_character_alignment = Battle.active_character.alignment
-
-	## If we are now on the other team's turn sequence, let em know
-	if Battle.get_relative_character(-1).alignment != Battle.active_character.alignment:
-		Events.battle_team_start.emit(Battle.active_character_alignment)
 
 ### --- Getters --- ###
 

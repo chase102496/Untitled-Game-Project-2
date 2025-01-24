@@ -17,19 +17,20 @@ func _ready():
 	icon = Glossary.icon_scene["lumia"]
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
+	
+	##HACK ALL THIS GETS OVERWRITTEN IF WE LOAD A SAVE
 	my_component_ability.add_ability(component_ability.ability_soulstitch.new())
 	my_component_ability.add_ability(component_ability.ability_switchstitch.new())
 	my_component_ability.add_ability(component_ability.ability_spook.new())
 	my_component_ability.add_ability(component_ability.ability_frigid_core.new())
 	
-	#my_component_world_ability.set_equipment(component_world_ability.world_ability_soulstitch.new(self))
-	#my_component_world_ability.set_equipment(component_world_ability.world_ability_loomlight.new(self))
+	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_loomlight"))
+	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_soulstitch"))
+	
+	#
 	
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
 	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
-	
-	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_loomlight"))
-	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_soulstitch"))
 	
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
 	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
@@ -55,14 +56,17 @@ func on_save(all_data):
 	data.max_health = my_component_health.max_health
 	data.vis = my_component_vis.vis
 	data.max_vis = my_component_vis.max_vis
-	##Abilities
-	data.my_abilities = my_component_ability.get_data_ability_all()
-	##Status fx
-	data.my_status = my_component_ability.get_data_status_all()
-	##Dreamkin
-	data.my_party = my_component_party.export_party()
-	##Inventory
+	## Inventory
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
+	## World Ability we had active
+	data.my_active_ability = my_component_world_ability.active
+	## Abilities & World Abilities
+	data.my_abilities = my_component_ability.get_data_ability_all()
+	## Status fx
+	data.my_status = my_component_ability.get_data_status_all()
+	## Dreamkin
+	data.my_party = my_component_party.export_party()
+	
 
 func on_load(all_data):
 	
@@ -86,14 +90,18 @@ func on_load(all_data):
 	my_component_health.max_health = data.max_health
 	my_component_vis.vis = data.vis
 	my_component_vis.max_vis = data.max_vis
+	##Inventory
+	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
+	##World Abilities
+	for item in my_component_inventory.get_items_from_category(Glossary.item_category.GEAR.TITLE):
+		if item.is_equipped:
+			my_component_world_ability.set_equipment(item.my_world_ability)
 	##Abilities
 	my_component_ability.set_data_ability_all(self,data.my_abilities)
 	##Status fx
 	my_component_ability.set_data_status_all(self,data.my_status)
 	##Dreamkin
 	my_component_party.import_party(data.my_party)
-	##Inventory
-	my_component_inventory.set_data_inventory_all(self,data.my_inventory)
 
 func _input(event: InputEvent) -> void:
 	

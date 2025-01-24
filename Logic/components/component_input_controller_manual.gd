@@ -4,7 +4,6 @@ extends component_input_controller_default
 @export var my_component_interaction : component_interaction
 @export var my_component_world_ability : component_world_ability
 
-var jump_damper_cooldown : bool = false
 var jump_queued : bool = false
 var coyote_time_queued : bool
 
@@ -14,8 +13,10 @@ func _ready() -> void:
 	%StateChart/Main/World/Grounded.state_entered.connect(_on_state_entered_world_grounded)
 	%StateChart/Main/World/Grounded.state_physics_processing.connect(_on_state_physics_processing_world_grounded)
 	%StateChart/Main/World/Airborne.state_physics_processing.connect(_on_state_physics_processing_world_airborne)
+	%StateChart/Main/World/Airborne.state_entered.connect(_on_state_entered_world_airborne)
 	%StateChart/Main/World/Airborne/Rising.state_entered.connect(_on_state_entered_world_airborne_rising)
 	%StateChart/Main/World/Airborne/Rising.state_exited.connect(_on_state_exited_world_airborne_rising)
+	%StateChart/Main/World/Airborne/Rising.state_input.connect(_on_state_input_world_airborne_rising)
 	%StateChart/Main/World/Airborne/Rising.state_physics_processing.connect(_on_state_physics_processing_world_airborne_rising)
 	%StateChart/Main/World/Airborne/Falling.state_entered.connect(_on_state_entered_world_airborne_falling)
 	%StateChart/Main/World/Airborne/Falling.state_physics_processing.connect(_on_state_physics_processing_world_airborne_falling)
@@ -79,6 +80,10 @@ func _on_state_physics_processing_world_grounded(_delta: float) -> void:
 
 # Airborne
 
+func _on_state_entered_world_airborne() -> void:
+	await get_tree().create_timer(0.1).timeout
+	coyote_time_queued = false
+
 func _on_state_physics_processing_world_airborne(_delta: float) -> void:
 	update_direction()
 	
@@ -88,20 +93,22 @@ func _on_state_physics_processing_world_airborne(_delta: float) -> void:
 		jump_queued = false
 
 func _on_state_entered_world_airborne_rising() -> void:
-	jump_damper_cooldown = true
+	pass
+
+func _on_state_input_world_airborne_rising(event : InputEvent) -> void:
+	if Input.is_action_just_released("move_jump"):
+		jump_damper.emit()
+		coyote_time_queued = false
 
 func _on_state_physics_processing_world_airborne_rising(_delta: float) -> void:
-	if !Input.is_action_pressed("move_jump") and jump_damper_cooldown:
-		jump_damper.emit()
-		jump_damper_cooldown = false
-	
-	coyote_time_queued = false #Set here because we have default state set to rising and it triggers the entered state
+	pass
 
 func _on_state_exited_world_airborne_rising() -> void:
 	pass
 
 func _on_state_entered_world_airborne_falling() -> void:
 	grav_reset.emit()
+
 
 func _on_state_physics_processing_world_airborne_falling(_delta: float) -> void:
 
@@ -111,6 +118,3 @@ func _on_state_physics_processing_world_airborne_falling(_delta: float) -> void:
 			jump.emit()
 			jump_grav.emit()
 			coyote_time_queued = false
-			
-		await get_tree().create_timer(0.1).timeout
-		coyote_time_queued = false

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://vvau0s3cp37s"]
+
+[ext_resource type="Theme" uid="uid://bitq02d30r24m" path="res://Interface/menu_theme.tres" id="1_e4eit"]
+[ext_resource type="Script" path="res://Scenes/ui/containers/quantity_slot.gd" id="1_sjke3"]
+
+[node name="slot_quantity" type="Control" node_paths=PackedStringArray("quantity")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 100.0
+script = ExtResource("1_sjke3")
+quantity = NodePath("Quantity")
+
+[node name="Quantity" type="Label" parent="."]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_e4eit")
+text = "3"
+horizontal_alignment = 2
+vertical_alignment = 2

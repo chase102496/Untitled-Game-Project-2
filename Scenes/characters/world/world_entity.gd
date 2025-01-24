@@ -18,6 +18,6 @@ extends Entity
 @export_enum("FRIENDS","FOES") var alignment : String
 @export_enum("PLAYER","DREAMKIN","ENEMY") var classification : String
 
-## Default icon for entities
 @onready var glossary : String = Global.get_glossary_nickname(self)
 @onready var unique_id : int = Glossary.get_unique_id()
+@onready var title : String = "Entity"

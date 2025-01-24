@@ -15,6 +15,7 @@ class party_dreamkin:
 	
 	#Some typing to make sure data isn't wonky
 	var name : String
+	var display_name : String
 	var classification : String
 	var unique_id : int
 	var global_position : Vector3
@@ -98,9 +99,9 @@ func get_hybrid_data_all():
 func get_hybrid_name_all():
 	var result : Array = []
 	for summon_inst in my_summons:
-		result.append(summon_inst.name)
+		result.append(summon_inst.display_name)
 	for party_inst in my_party:
-		result.append(party_inst.name)
+		result.append(party_inst.display_name)
 	return result
 
 ##Gets the results of any dreamkin anywhere in our summons or party based on a unique identifier

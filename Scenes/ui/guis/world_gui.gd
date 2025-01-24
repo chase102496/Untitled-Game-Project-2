@@ -27,10 +27,10 @@ var previous_equipment : component_world_ability.world_ability
 @onready var inventory_gui_item_grid = %ContentGrid
 
 ## Info
-@onready var inventory_gui_item_grid_info = %Info
-@onready var inventory_gui_item_grid_info_icon_slot = %"Info/VBoxContainer/MarginContainer2/Icon Slot"
-@onready var inventory_gui_item_grid_info_label = %"Info/VBoxContainer/Info Label"
-@onready var inventory_gui_item_grid_info_description_label = %"Info/VBoxContainer/MarginContainer/MarginContainer/Details/Description Label"
+@onready var inventory_gui_info = %Info
+@onready var inventory_gui_info_icon_slot = inventory_gui_info.icon_slot
+@onready var inventory_gui_info_title = inventory_gui_info.title
+@onready var inventory_gui_info_description = inventory_gui_info.description
 
 ## Options
 @onready var inventory_gui_options_barrier = %Inventory/Main/Content/Options
@@ -77,64 +77,47 @@ func convert_tab_to_glossary(tab : int):
 		if Glossary.item_category[key].TAB == tab:
 			return Glossary.item_category[key]
 
-func _create_button_category_slots(category_title : String) -> void:
-	
-	var button_list : Array
-	
-	## Pull the dreamkin if it's that cat
-	## This is so we don't sort it weirdly
-	if category_title == Glossary.item_category.DREAMKIN.TITLE:
-		var list = my_component_party.get_hybrid_data_all()
-		
-		## List of items to create, where to put em, who to call when they're pressed, what callables to call
-		button_list = Glossary.create_button_slots(list,inventory_gui_item_grid,self,
-		"_on_button_pressed_dreamkin",
-		"_on_button_enter_hover_dreamkin",
-		"_on_button_exit_hover_dreamkin")
-	
-	## Pull a set of items otherwise
-	else:
-		var list = my_component_inventory.get_items_from_category(category_title)
-		list.sort()
-		
-		## List of items to create, where to put em, who to call when they're pressed, what callables to call
-		button_list = Glossary.create_button_slots(list,inventory_gui_item_grid,self,
-		"_on_button_pressed_inventory_item",
-		"_on_button_enter_hover_inventory_item",
-		"_on_button_exit_hover_inventory_item")
-	
-	## Now we need to make it look like the item
-	for button_slot in button_list:
-		var icon_inst = button_slot.properties.item.icon.instantiate()
-		button_slot.slot_container.add_child(icon_inst)
-		
-		## This is where we customize the slots based on item properties
-		if button_slot.properties.item.get("my_world_ability"):
-			#If stackable, get the quantity and display it in the corner of the slot!
-			if button_slot.properties.item.my_world_ability.is_in_equipment():
-				button_slot.button.modulate = Global.palette["Medium Slate Blue"]
-
-func _create_button_category_list(category_title : String) -> void:
-	
-	var dict = my_component_inventory.get_items_from_category(category_title)
-	dict.sort()
-	
-	var button_list = Glossary.create_button_list(dict,inventory_gui_item_grid,self,
-	"_on_button_pressed_inventory_item",
-	"_on_button_enter_hover_inventory_item",
-	"_on_button_exit_hover_inventory_item")
-	
-	for button in button_list:
-		## Display
-		if button.properties.item.quantity > 1:
-			button.text = str(button.properties.item.title,"  x",button.properties.item.quantity)
-		else:
-			button.text = button.properties.item.title
+#func _create_button_category_slots(category_title : String) -> void:
+	#
+	#var button_list : Array
+	#
+	### Pull the dreamkin if it's that cat
+	### This is so we don't sort it weirdly
+	#if category_title == Glossary.item_category.DREAMKIN.TITLE:
+		#var list = my_component_party.get_hybrid_data_all()
+		#
+		### List of items to create, where to put em, who to call when they're pressed, what callables to call
+		#button_list = Glossary.create_button_slots(list,inventory_gui_item_grid,self,
+		#"_on_button_pressed_dreamkin",
+		#"_on_button_enter_hover_dreamkin",
+		#"_on_button_exit_hover_dreamkin")
+	#
+	### Pull a set of items otherwise
+	#else:
+		#var list = my_component_inventory.get_items_from_category(category_title)
+		#list.sort()
+		#
+		### List of items to create, where to put em, who to call when they're pressed, what callables to call
+		#button_list = Glossary.create_button_slots(list,inventory_gui_item_grid,self,
+		#"_on_button_pressed_inventory_item",
+		#"_on_button_enter_hover_inventory_item",
+		#"_on_button_exit_hover_inventory_item")
+	#
+	### Now we need to make it look like the item
+	#for button_slot in button_list:
+		#var icon_inst = button_slot.properties.item.icon.instantiate()
+		#button_slot.slot_container.add_child(icon_inst)
+		#
+		### This is where we customize the slots based on item properties
+		#if button_slot.properties.item.get("my_world_ability"):
+			##If stackable, get the quantity and display it in the corner of the slot!
+			#if button_slot.properties.item.my_world_ability.is_in_equipment():
+				#button_slot.button.modulate = Global.palette["Medium Slate Blue"]
 
 func refresh() -> void:
 	if inventory_gui.visible:
 		## Clear item slot in desc panel
-		Global.clear_children(inventory_gui_item_grid_info_icon_slot)
+		Global.clear_children(inventory_gui_info_icon_slot)
 		## Saving tab so when we close inv we don't lose tab
 		## And then closing and opening inventory to update
 		var prev = inventory_gui_tabs.current_tab
@@ -145,7 +128,7 @@ func refresh() -> void:
 func _options_close() -> void:
 	inventory_gui_options_barrier.hide()
 	inventory_gui_options_panel.hide()
-	inventory_gui_item_grid_info.hide()
+	inventory_gui_info.hide()
 	Glossary.free_children(inventory_gui_options_list)
 	refresh.call_deferred()
 
@@ -238,8 +221,8 @@ func _on_button_pressed_inventory_item(properties : Dictionary):
 	_options_create_list(properties)
 
 func _on_button_enter_hover_inventory_item(properties : Dictionary):
-	_set_info(properties,inventory_gui_item_grid_info_icon_slot, inventory_gui_item_grid_info_label, inventory_gui_item_grid_info_description_label)
-	inventory_gui_item_grid_info.show()
+	_set_info(properties,inventory_gui_info_icon_slot, inventory_gui_info_title, inventory_gui_info_description)
+	inventory_gui_info.show()
 	
 func _on_button_exit_hover_inventory_item(properties : Dictionary):
 	pass
@@ -250,11 +233,11 @@ func _on_button_pressed_dreamkin(properties : Dictionary):
 	_options_create_list(properties)
 
 func _on_button_enter_hover_dreamkin(properties : Dictionary):
-	_set_info(properties,inventory_gui_item_grid_info_icon_slot, inventory_gui_item_grid_info_label, inventory_gui_item_grid_info_description_label)
-	inventory_gui_item_grid_info.show()
+	_set_info(properties,inventory_gui_info_icon_slot, inventory_gui_info_title, inventory_gui_info_description)
+	inventory_gui_info.show()
 
 func _on_button_exit_hover_dreamkin(properties : Dictionary):
-	inventory_gui_item_grid_info.hide()
+	inventory_gui_info.hide()
 
 ## Option buttons
 
@@ -271,8 +254,8 @@ func _on_button_pressed_inventory_item_option(properties : Dictionary):
 		_options_close()
 
 func _on_button_enter_hover_inventory_item_option(properties : Dictionary):
-	_set_info(properties,inventory_gui_item_grid_info_icon_slot, inventory_gui_item_grid_info_label, inventory_gui_item_grid_info_description_label)
-	inventory_gui_item_grid_info.show()
+	_set_info(properties,inventory_gui_info_icon_slot, inventory_gui_info_title, inventory_gui_info_description)
+	inventory_gui_info.show()
 
 func _on_button_exit_hover_inventory_item_option(properties : Dictionary):
 	pass
@@ -304,7 +287,7 @@ func _on_state_input_inventory_gui_enabled(event : InputEvent) -> void:
 
 func _on_state_entered_inventory_gui_disabled():
 	inventory_gui.hide()
-	inventory_gui_item_grid_info.hide() #Hide description panel
+	inventory_gui_info.hide() #Hide description panel
 	inventory_gui_options_barrier.hide() #Hide options blocker if it was open
 	inventory_gui_options_panel.hide() #Hide options if it was open
 	inventory_gui_tabs.current_tab = 0 #Reset tabs to first
@@ -318,7 +301,7 @@ func _on_state_exited_inventory_gui_disabled():
 
 func _on_state_entered_inventory_gui_gear():
 	Glossary.free_children(inventory_gui_item_grid)
-	_create_button_category_slots(Glossary.item_category.GEAR.TITLE)
+	_create_button_category_slots(my_component_inventory.get_items_from_category(Glossary.item_category.GEAR.TITLE),inventory_gui_item_grid,"inventory_item")
 	
 func _on_state_exited_inventory_gui_gear():
 	pass
@@ -327,7 +310,8 @@ func _on_state_exited_inventory_gui_gear():
 
 func _on_state_entered_inventory_gui_dreamkin():
 	Glossary.free_children(inventory_gui_item_grid)
-	_create_button_category_slots(Glossary.item_category.DREAMKIN.TITLE)
+	_create_button_category_slots(my_component_party.get_hybrid_data_all(),inventory_gui_item_grid,"dreamkin")
+	
 
 func _on_state_exited_inventory_gui_dreamkin():
 	pass
@@ -336,7 +320,7 @@ func _on_state_exited_inventory_gui_dreamkin():
 
 func _on_state_entered_inventory_gui_items():
 	Glossary.free_children(inventory_gui_item_grid)
-	_create_button_category_slots(Glossary.item_category.ITEMS.TITLE)
+	_create_button_category_slots(my_component_inventory.get_items_from_category(Glossary.item_category.ITEMS.TITLE),inventory_gui_item_grid,"inventory_item")
 	
 func _on_state_exited_inventory_gui_items():
 	pass
@@ -345,7 +329,7 @@ func _on_state_exited_inventory_gui_items():
 
 func _on_state_entered_inventory_gui_keys():
 	Glossary.free_children(inventory_gui_item_grid)
-	_create_button_category_list(Glossary.item_category.KEYS.TITLE)
+	_create_button_category_slots(my_component_inventory.get_items_from_category(Glossary.item_category.KEYS.TITLE),inventory_gui_item_grid,"inventory_item")
 
 func _on_state_exited_inventory_gui_keys():
 	pass

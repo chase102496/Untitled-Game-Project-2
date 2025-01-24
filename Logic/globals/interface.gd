@@ -1,76 +1,92 @@
 extends Node
 
-enum entity_type {
-	PLAYER,
-	SUMMONED_DREAMKIN,
-	PARTY_DREAMKIN,
-	INVENTORY_ITEM,
-	NOT_FOUND
-}
-
 ## Similar to classification, but more exhaustive
-func evaluate_entity_type(input):
-	if "classification" in input:
-		if input.classification == Battle.classification.PLAYER:
-			return entity_type.PLAYER
-		if input.classification == Battle.classification.DREAMKIN:
-			if input is Node:
-				return entity_type.SUMMONED_DREAMKIN
-			elif input is Object:
-				return entity_type.PARTY_DREAMKIN
-		elif input.classification == Battle.classification.ITEM:
-			return entity_type.INVENTORY_ITEM
+func evaluate_class_type(input) -> RefCounted:
+	
+	## World
+	if input is world_entity_player:
+		return world_entity_player
+	elif input is world_entity_dreamkin:
+		return world_entity_dreamkin
+	## Battle
+	elif input is battle_entity_player:
+		return battle_entity_player
+	elif input is battle_entity_dreamkin:
+		return battle_entity_dreamkin
+	elif input is component_party.party_dreamkin:
+		return component_party.party_dreamkin
+	elif input is battle_entity_enemy:
+		return battle_entity_enemy
+	## Ability
+	elif input is component_ability.ability:
+		return component_ability.ability
+	elif input is component_world_ability.world_ability:
+		return component_world_ability.world_ability
+	## Item
+	elif input is component_inventory.item:
+		return component_inventory.item
 	else:
-		return entity_type.NOT_FOUND
+		return
+	
+	#if "classification" in input:
+		#if input.classification == Battle.classification.PLAYER:
+			#return entity_type.PLAYER
+		#if input.classification == Battle.classification.DREAMKIN:
+			#if input is Node:
+				#return entity_type.SUMMONED_DREAMKIN
+			#elif input is component_party.party_dreamkin:
+				#return entity_type.PARTY_DREAMKIN
+		#elif input.classification == Battle.classification.ITEM:
+			#return entity_type.INVENTORY_ITEM
+	#else:
+		#return entity_type.NOT_FOUND
 
 ##
 func change_health(target, amt : int):
-	match evaluate_entity_type(target):
-		entity_type.PLAYER, entity_type.SUMMONED_DREAMKIN:
+	match evaluate_class_type(target):
+		world_entity_player, battle_entity_player, world_entity_dreamkin, battle_entity_dreamkin:
 			target.my_component_health.change(amt)
-		entity_type.PARTY_DREAMKIN:
+		component_party.party_dreamkin:
 			target.change_health(amt)
-		entity_type.NOT_FOUND:
+		_:
 			push_error("Could not find matching type to apply change_health to - ",target)
 
 ##
 func change_vis(target, amt : int):
-	match evaluate_entity_type(target):
-		entity_type.PLAYER, entity_type.SUMMONED_DREAMKIN:
+	match evaluate_class_type(target):
+		world_entity_player, battle_entity_player, world_entity_dreamkin, battle_entity_dreamkin:
 			target.my_component_vis.change(amt)
-		entity_type.PARTY_DREAMKIN:
+		component_party.party_dreamkin:
 			target.change_vis(amt)
-		entity_type.NOT_FOUND:
+		_:
 			push_error("Could not find matching type to apply change_vis to - ",target)
 
 ##
 func get_root_health(target):
-	match evaluate_entity_type(target):
-		entity_type.PLAYER, entity_type.SUMMONED_DREAMKIN:
+	match evaluate_class_type(target):
+		world_entity_player, battle_entity_player, world_entity_dreamkin, battle_entity_dreamkin:
 			return target.my_component_health
-		entity_type.PARTY_DREAMKIN:
+		component_party.party_dreamkin:
 			return target
-		entity_type.NOT_FOUND:
+		_:
 			push_error("Could not find matching type to get root of health - ",target)
 
 ##
 func get_root_vis(target):
-	match evaluate_entity_type(target):
-		entity_type.PLAYER, entity_type.SUMMONED_DREAMKIN:
+	match evaluate_class_type(target):
+		world_entity_player, battle_entity_player, world_entity_dreamkin, battle_entity_dreamkin:
 			return target.my_component_vis
-		entity_type.PARTY_DREAMKIN:
+		component_party.party_dreamkin:
 			return target
-		entity_type.NOT_FOUND:
+		_:
 			push_error("Could not find matching type to get root of vis - ",target)
 
 ##
 func get_root_abilities(target):
-	match evaluate_entity_type(target):
-		entity_type.PLAYER, entity_type.SUMMONED_DREAMKIN:
+	match evaluate_class_type(target):
+		world_entity_player, battle_entity_player, world_entity_dreamkin, battle_entity_dreamkin:
 			return target.my_component_ability.get_abilities()
-		entity_type.PARTY_DREAMKIN:
+		component_party.party_dreamkin:
 			return target.my_abilities
-		entity_type.NOT_FOUND:
-			push_error("Could not find matching type to get root of abilities - ",target)
 		_:
 			push_error("Could not find matching type to get root of abilities - ",target)

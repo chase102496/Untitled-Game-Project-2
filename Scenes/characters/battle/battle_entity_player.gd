@@ -1,4 +1,4 @@
-class_name battle_entity_player_new
+class_name battle_entity_player
 extends battle_entity
 
 @export_group("Modules")

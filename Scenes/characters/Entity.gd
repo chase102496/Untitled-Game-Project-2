@@ -2,6 +2,7 @@ class_name Entity
 extends CharacterBody3D
 
 @export var icon : PackedScene = Glossary.icon_scene["status_defense"]
+@export var display_name : String = "Entity"
 
 ## Pass additional variables to us on creation
 func create(glossary : String, overrides : Dictionary = {}, parent : Node = null) -> Entity:

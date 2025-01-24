@@ -21,7 +21,6 @@ transformer = NodePath("AnimationTransform")
 [node name="character_animation_sprite" type="AnimatedSprite3D" parent="AnimationTransform"]
 gi_mode = 2
 shaded = true
-texture_filter = 0
 
 [node name="RemoteTransform3DPosition" type="RemoteTransform3D" parent="AnimationTransform/character_animation_sprite"]
 remote_path = NodePath("../../../character_sprite_position")

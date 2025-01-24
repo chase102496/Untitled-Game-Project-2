@@ -710,10 +710,13 @@ class ability:
 	var target_type : String = Battle.target_type.EVERYONE #Who we can target on the field
 	var target_selector : Dictionary = Battle.target_selector.SINGLE #How many targets we select
 	
-	var title : String = "---"
+	
 	var type : Dictionary = Battle.type.EMPTY
 	
-	var icon : PackedScene
+	var title : String = "---"
+	var icon : PackedScene = Glossary.icon_random.pick_random()
+	var flavor : String = ""
+	var description : String = ""
 	
 	## Base Damage
 	var damage : int = 0
@@ -721,7 +724,7 @@ class ability:
 	var vis_cost : int = 0
 	## Chance of applying status or whatever additional effect we want
 	var chance : float = 1.0
-	var description : String = ""
+	
 	
 	func _init() -> void:
 		pass
@@ -740,10 +743,15 @@ class ability:
 	## Just here for removing some redundant code
 	func get_data_default() -> Dictionary:
 		return {
+			## System
 			"id" : id,
+			## Visual
 			"title" : title,
-			"type" : type,
+			"icon" : icon,
+			"flavor" : flavor,
 			"description" : description,
+			## Main
+			"type" : type,
 			"target_type" : target_type,
 			"target_selector" : target_selector,
 		}

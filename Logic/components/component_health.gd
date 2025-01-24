@@ -18,7 +18,8 @@ var health : int:
 		var old_health = health
 		health = value
 		var new_health = health
-		_update(new_health - old_health)
+		if old_health != new_health:
+			_update(new_health - old_health)
 
 func _ready() -> void:
 	
@@ -106,11 +107,15 @@ func _calculate_health_change(amt: int) -> Dictionary:
 
 # Main change function
 func change(amt: int, from_tether: bool = false, display: bool = true):
+	
+	### --- Calculations --- ###
+	
 	# Perform the health calculation
 	var calc = _calculate_health_change(amt)
-	
 	# Update health and temporary armor
 	health = calc["new_health"]
+	
+	# Adjust temporary armor based on used
 	if amt < 0:
 		change_armor_temporary(calc["temporary_armor_used"])
 	
@@ -120,38 +125,44 @@ func change(amt: int, from_tether: bool = false, display: bool = true):
 		" Post-mitigation: ", calc["amt_post_mitigation"]
 	], Debug.msg_category.BATTLE)
 	
+	### --- Effects --- ###
+	
+	if display:
+		
+		# Healing fx
+		if calc["amt_changed"] > 0:
+			if display:
+				Glossary.create_fx_particle_custom(owner, "star_explosion", true, 10, 45, 4, Vector3.UP, Global.palette["Light Coral Saturated"])
+				#Glossary.create_text_particle(owner.animations.selector_center, str(abs(calc["amt_changed"])), "text_float_heart")
+		
+		# Negated fx
+		elif calc["amt_changed"] == 0:
+			# If it was originally damage but we blocked it
+			if amt < 0:
+				if display:
+					Glossary.create_fx_particle_custom(owner, "star_explosion", true, 10, 180, 4, Vector3.ZERO, Color.WHITE)
+		
+		# Damage fx
+		elif calc["amt_changed"] < 0:
+			if display:
+				Glossary.create_text_particle(owner.animations.selector_center, str(abs(calc["amt_changed"])), "text_float_star")
+				Glossary.create_fx_particle_custom(owner.animations.selector_center, "star_explosion", true, 10, 180, 3, Vector3.ZERO, Global.palette["Icterine"])
+				Camera.shake()
+				_on_hurt()
+		
 	### --- Consequences --- ###
 	
-	# Healing
-	if calc["amt_changed"] > 0:
-		if display:
-			Glossary.create_text_particle(owner.animations.selector_center, str(abs(calc["amt_changed"])), "text_float_heart")
+	# Avoid recursion
+	if !from_tether:
+		Events.battle_entity_damaged.emit(owner, calc["amt_changed"])
 	
-	# No damage (e.g. fully blocked)
-	elif calc["amt_changed"] == 0:
-		if display:
-			Glossary.create_fx_particle_custom(owner, "star_explosion", true, 10, 180, 4, Vector3.ZERO, Color.WHITE)
-	
-	# Taking damage
-	elif calc["amt_changed"] < 0:
-		if display:
-			Glossary.create_text_particle(owner.animations.selector_center, str(abs(calc["amt_changed"])), "text_float_star")
-			Glossary.create_fx_particle_custom(owner.animations.selector_center, "star_explosion", true, 10, 180, 3, Vector3.ZERO, Global.palette["Icterine"])
-			Camera.shake()
-		
-		# Avoid recursion
-		if !from_tether:
-			Events.battle_entity_damaged.emit(owner, calc["amt_changed"])
-		
-		# Check for death
-		if health == 0:
-			var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection", [calc["amt_post_mitigation"], from_tether], true)
-			if death_protection_result.is_empty():
-				Glossary.create_icon_particle(owner.animations.selector_center,"status_death","icon_float_away",Color.WHEAT,1,true,Vector3.ZERO,3)
-				Glossary.create_fx_particle_custom(owner.animations.selector_center, "star_explosion", true, 10, 180, 5, Vector3.ZERO, Global.palette["Icterine"])
-				_on_dying(death_protection_result)
-			else:
-				Glossary.create_text_particle_queue(owner.animations.selector_center, "Death Protection!")
-				Debug.message("Death Protection Activated!", Debug.msg_category.BATTLE)
+	# Check for death
+	if health == 0:
+		var death_protection_result = owner.my_component_ability.my_status.status_event("on_death_protection", [calc["amt_post_mitigation"], from_tether], true)
+		if death_protection_result.is_empty():
+			Glossary.create_icon_particle(owner.animations.selector_center,"status_death","icon_float_away",Color.WHEAT,1,true,Vector3.ZERO,3)
+			Glossary.create_fx_particle_custom(owner.animations.selector_center, "star_explosion", true, 10, 180, 5, Vector3.ZERO, Global.palette["Icterine"])
+			_on_dying(death_protection_result)
 		else:
-			_on_hurt()
+			Glossary.create_text_particle_queue(owner.animations.selector_center, "Death Protection!")
+			Debug.message("Death Protection Activated!", Debug.msg_category.BATTLE)

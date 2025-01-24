@@ -13,6 +13,7 @@ height = 0.8
 script = ExtResource("2_pp4ft")
 alignment = "FOES"
 classification = "ENEMY"
+display_name = &"Enemy"
 
 [node name="CollisionShape3D" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
@@ -22,6 +23,7 @@ shape = SubResource("CapsuleShape3D_ml83s")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 offset = Vector2(0, 16)
 flip_h = true
+texture_filter = 2
 sprite_frames = ExtResource("3_8cca7")
 animation = &"default_idle_down"
 frame = 1

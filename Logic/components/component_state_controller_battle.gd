@@ -132,7 +132,7 @@ func _on_state_entered_battle_start() -> void:
 	Debug.message("-----------------------",Debug.msg_category.BATTLE)
 	Debug.message(["Turn Start: ",owner.name],Debug.msg_category.BATTLE)
 	my_component_ability.skillcheck_difficulty = 1.0 #Reset our skillcheck difficulty
-	
+
 	my_component_ability.my_status.status_event("on_start")
 	owner.state_chart.send_event("on_choose")
 
