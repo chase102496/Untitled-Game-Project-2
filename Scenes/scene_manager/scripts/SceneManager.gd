@@ -15,6 +15,7 @@ var entry_point : Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	current_scene = get_tree().current_scene
+	Global.set_current_scene_type(current_scene.scene_type)
 	SaveManager.load_data_persistent()
 	
 	init_save_ids()
@@ -64,6 +65,7 @@ func transition_to(scene: String) -> void:
 		await transitioned_in
 		
 		var new_scene = load(scene).instantiate()
+		
 		current_scene = new_scene
 		
 		get_tree().paused = true
@@ -79,6 +81,8 @@ func transition_to(scene: String) -> void:
 			await new_scene.loaded
 		
 		init_save_ids()
+		
+		Global.set_current_scene_type(new_scene.scene_type) #Set our scene_type to BATTLE or WORLD. ALL MUST HAVE THIS AND SET BEFORE SAVING OR LOADING
 		
 		SaveManager.load_data_session()
 		

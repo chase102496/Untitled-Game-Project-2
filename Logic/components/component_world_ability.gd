@@ -225,7 +225,6 @@ func toggle_active() -> void:
 
 ## What we form the basis of all of our world abilities off of.
 class world_ability:
-	
 
 	var caster : Node
 	var interact_groups : Array
@@ -235,7 +234,14 @@ class world_ability:
 	var type : RefCounted
 	
 	var title : String = "---"
-	var icon : PackedScene = Glossary.icon_random.pick_random()
+	
+	## Updates live to the gui if we're equipped
+	var icon : PackedScene = Glossary.icon_random.pick_random():
+		set(value):
+			icon = value
+			if is_equip_active():
+				caster.my_component_world_ability.equip_update.emit(self)
+				
 	var flavor : String = ""
 	var description : String = ""
 	
@@ -243,8 +249,32 @@ class world_ability:
 	
 	var current_interaction_areas : Array = []
 	
+	## Cooldown timer
+	var cooldown_timer : Timer = Timer.new()
+	## Max cooldown
+	var cooldown_timer_max : float = 2.0
+	
 	func _init(caster : Node) -> void:
 		self.caster = caster
+		cooldown_timer.one_shot = true
+		cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
+	
+	## Called when cooldown is over
+	func _on_cooldown_timer_timeout() -> void:
+		pass
+	
+	func _cooldown_timer_start() -> void:
+		if !cooldown_timer.is_inside_tree():
+			caster.add_child(cooldown_timer)
+		cooldown_timer.stop()
+		cooldown_timer.start(cooldown_timer_max)
+	
+	## Called when we want to know if we're on cooldown
+	func _is_on_cooldown() -> bool:
+		if cooldown_timer.time_left == 0:
+			return false
+		else:
+			return true
 	
 	## TODO Need to make get and set data func, 4 of em
 	
@@ -351,7 +381,6 @@ class world_ability_dreamstitch:
 	
 	func on_equip() -> void:
 		super.on_equip()
-		caster.my_component_world_ability.equip_update.emit(self)
 
 ## Template super for all loomlight abilities
 class world_ability_loomlight:
@@ -449,8 +478,17 @@ class world_ability_soulstitch:
 		icon = Glossary.icon_scene["soulstitch_mark"]
 		title = "Soulstitch"
 		interact_groups.append("interact_ability_soulstitch")
+		cooldown_timer_max = 2.0
 	
 	### --- Private --- ###
+	
+	func _cooldown_timer_start() -> void:
+		super._cooldown_timer_start()
+		icon = Glossary.icon_scene["soulstitch_cooldown"]
+	
+	func _on_cooldown_timer_timeout() -> void:
+		super._on_cooldown_timer_timeout()
+		icon = Glossary.icon_scene["soulstitch_mark"]
 	
 	func _set_mark() -> void:
 		mark_location = caster.global_position
@@ -522,14 +560,10 @@ class world_ability_soulstitch:
 		particle_recall.global_position = caster.animations.selector_center.global_position
 		
 		icon = Glossary.icon_scene["soulstitch_return"]
-		caster.my_component_world_ability.equip_update.emit(self)
 	
 	## We RETURN normally to the mark
 	func _fx_normal() -> void:
 		var particle_clear = Glossary.create_fx_particle(caster.owner,"soulstitch_node_clear",true)
-		
-		icon = Glossary.icon_scene["soulstitch_mark"]
-		caster.my_component_world_ability.equip_update.emit(self)
 		
 		##anim
 		particle_clear.global_position = caster.global_position
@@ -558,17 +592,14 @@ class world_ability_soulstitch:
 		if particle_recall:
 			particle_recall.queue_free()
 			particle_recall = null
-		
-		icon = Glossary.icon_scene["soulstitch_mark"]
-		caster.my_component_world_ability.equip_update.emit(self)
 	
 	### --- Events --- ###
 	
 	func verify_use() -> bool:
-		if true:
-			return true
-		else:
+		if _is_on_cooldown():
 			return false
+		else:
+			return true
 	
 	func on_unequip() -> void:
 		super.on_unequip()
@@ -577,12 +608,13 @@ class world_ability_soulstitch:
 	func on_equip() -> void:
 		super.on_equip()
 		_on_cancel()
+		icon = icon
 	
 	func on_use() -> void:
-		
 		if verify_use():
 			if is_mark_placed:
 				_return_to_mark()
+				_cooldown_timer_start()
 			else:
 				_set_mark()
 				

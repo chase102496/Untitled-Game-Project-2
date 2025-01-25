@@ -18,27 +18,23 @@ func _ready():
 	Global.player = self
 	Dialogic.preload_timeline("res://timeline.dtl")
 	
-	##HACK ALL THIS GETS OVERWRITTEN IF WE LOAD A SAVE
-	my_component_ability.add_ability(component_ability.ability_soulstitch.new())
-	my_component_ability.add_ability(component_ability.ability_switchstitch.new())
-	my_component_ability.add_ability(component_ability.ability_spook.new())
-	my_component_ability.add_ability(component_ability.ability_frigid_core.new())
-	
-	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_loomlight"))
-	my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_soulstitch"))
-	
-	#
-	
-	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
-	my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
-	
-	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
-	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
-	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
-	my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
-	
-	##Debug
-	if my_component_party.my_party.size() == 0:
+	if SceneManager.prev_scene_path == "":
+		my_component_ability.add_ability(component_ability.ability_soulstitch.new())
+		my_component_ability.add_ability(component_ability.ability_switchstitch.new())
+		my_component_ability.add_ability(component_ability.ability_spook.new())
+		my_component_ability.add_ability(component_ability.ability_frigid_core.new())
+		
+		my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_loomlight"))
+		my_component_inventory.add_item(component_inventory.item_echo.new(self,"world_ability_soulstitch"))
+		
+		my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,2))
+		my_component_inventory.add_item(component_inventory.item_nectar.new(self,1,5))
+		
+		my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+		my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+		my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+		my_component_inventory.add_item(component_inventory.item_dewdrop.new(self,1,1))
+		
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 100},get_parent()),false)
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 99},get_parent()),false)
 		my_component_party.add_summon_dreamkin(Entity.new().create("world_entity_dreamkin",{"my_component_health.health" : 98},get_parent()),false)
@@ -66,7 +62,6 @@ func on_save(all_data):
 	data.my_status = my_component_ability.get_data_status_all()
 	## Dreamkin
 	data.my_party = my_component_party.export_party()
-	
 
 func on_load(all_data):
 	

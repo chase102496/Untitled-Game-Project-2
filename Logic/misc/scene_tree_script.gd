@@ -4,7 +4,10 @@ signal loaded()
 
 @export var emits_loaded_signal: bool = true
 
-@export_enum("world","battle") var scene_type : String = "world"
+@export var scene_type : Global.scene_type
+
+func _init() -> void:
+	Global.set_current_scene_type(scene_type)
 
 func _ready() -> void:
 	Debug.message(["Scene Loaded ",SceneManager.current_scene],Debug.msg_category.SCENE)

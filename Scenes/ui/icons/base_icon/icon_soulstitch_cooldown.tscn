@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://c18llfwmdx6d4"]
+
+[ext_resource type="Shader" uid="uid://u4uqvacj1tmv" path="res://Resources/Shader/recolor_canvas_item.tres" id="1_2scru"]
+[ext_resource type="Texture2D" uid="uid://dknaxw4j78r4h" path="res://Resources/Textures/2D/UI/Edited/soulstitch_mark.png" id="1_o8y4r"]
+
+[sub_resource type="Gradient" id="Gradient_jx58m"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bxcau"]
+gradient = SubResource("Gradient_jx58m")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n7xgm"]
+shader = ExtResource("1_2scru")
+shader_parameter/replacement_color = Color(1, 1, 1, 1)
+shader_parameter/grayscale_factor = 1.0
+shader_parameter/recolor_factor = 1.0
+shader_parameter/luminosity_factor = 1.0
+shader_parameter/use_gradient = true
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_bxcau")
+
+[node name="icon_soulstitch_cooldown" type="Control"]
+layout_mode = 3
+anchor_right = 0.104
+anchor_bottom = 0.185
+offset_right = 0.319992
+offset_bottom = 0.199997
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 4
+material = SubResource("ShaderMaterial_n7xgm")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_o8y4r")
+expand_mode = 1

@@ -4,14 +4,16 @@ extends component_impulse
 signal activated
 signal deactivated
 
-## This will allow us to listen for an area to allow the interaction to be sent in
-
-
 ## If plugged in, the impulse controller will only work when this is active, acting as an internal AND gate
 @export var impulse_parent : component_impulse
 
 ## This is what we get our signals from, usually an Area3D
 @onready var my_component_interact_reciever : component_interact_reciever = get_my_component_interact_reciever()
+
+## The delay after changing states
+
+@export var interact_timer : Timer = Timer.new()
+@export var interact_timer_max : float = 2.0
 
 @onready var state_chart : StateChart = $StateChart
 @onready var state_chart_initial_state = $StateChart/Main.initial_state
@@ -32,6 +34,12 @@ func _ready() -> void:
 	if impulse_parent:
 		impulse_parent.activated.connect(_on_impulse_parent_activated)
 		impulse_parent.deactivated.connect(_on_impulse_parent_deactivated)
+
+func _start_interact_timer() -> void:
+	interact_timer.start(interact_timer_max)
+
+func _is_interact_timer_running() -> bool:
+	return !interact_timer.is_stopped()
 
 func get_my_component_interact_reciever():
 	for child in get_children():
@@ -61,7 +69,9 @@ func my_state_transition_toggle(ignore_collision : bool = false, mirror : bool =
 ## ALWAYS use this to transition so we properly update things.
 func my_state_transition(
 	old_state_name : String, new_state_name : String,
+	## Should we care about simulating call to exit/enter area3D?
 	ignore_collision : bool = false,
+	## Related to heartstitch deprecated
 	mirror : bool = false
 	) -> void:
 	
@@ -84,6 +94,7 @@ func my_state_transition(
 			if ignore_collision:
 				
 				update_signals(old_state_name, false)
+				
 				update_signals(new_state_name, true)
 				state_chart.send_event(str("on_",new_state_name))
 			
@@ -112,9 +123,12 @@ func my_state_transition(
 				state_chart.send_event(str("on_",new_state_name))
 			
 			is_transitioning = false
-		#This runs when we have an impulse parent
+		
+		## This runs when we have an impulse parent preventing our signaling
 		else:
 			pass
+	
+	## This runs when we're busy processing a state
 	else:
 		#print_debug("state transition for ",self," busy.")
 		pass

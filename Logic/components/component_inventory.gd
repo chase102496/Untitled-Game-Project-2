@@ -9,23 +9,25 @@ var my_inventory : Array = []
 
 ##Placeholder reminder for imports and exports to save file functions!
 
+## SAVE
 func get_data_inventory_all():
 	var result : Array = []
 	for item in my_inventory:
+		
 		var sub_result : Dictionary = {}
 		sub_result = item.get_data_default() #Set default vars
 		sub_result.merge(item.get_data(),true) #Include and overwrite any defaults like id, etc
 		result.append(sub_result) #Append this merged data to our entry in the array
+			
 	return result
 
+## LOAD
 func set_data_inventory_all(host : Node, inventory_data_list : Array):
-	my_inventory = [] #Reset our abilities
-	for item in inventory_data_list: #iterate thru list
-		
-		#var inst = Glossary.item_class[item["id"]].new(host) #search glossary for the name we found in metadata
-		
+	my_inventory = [] ## IMPORTANT NOTE HERE, IT OVERWRITES WHATEVER INVENTORY WE HAD NO MATTER WHAT IF THIS IS UNCOMMENTED
+	for item in inventory_data_list:
+	
 		var inst = Glossary.item_class[item["id"]].new.callv([host]+item.args)
-		
+	
 		inst.set_data(item)
 		add_item(inst)
 
@@ -61,8 +63,11 @@ func remove_item(inst : Object):
 ## --- Item Classes ---
 
 class item:
+	extends save_object
+	
 	var id : String
 	var classification : String = Battle.classification.ITEM
+	
 	var host : Node
 	var category : Dictionary # This is here to sort items by page in our inventory. Gear, Dreamkin, Items, or Keys e.g. Glossary.item_category.GEAR
 	var title : String
@@ -70,7 +75,7 @@ class item:
 	var description : String
 	
 	## Icon to be instantiated when item is shown on screen via inventory
-	var icon : PackedScene = Glossary.icon_random.pick_random() 
+	var icon : PackedScene = Glossary.icon_random.pick_random()
 	
 	## If we want it to have its own slot in our inventory
 	var stackable : bool
@@ -98,6 +103,8 @@ class item:
 	func get_data_default() -> Dictionary:
 		return {
 			"id" : id,
+			"valid_worlds_load" : valid_worlds_load,
+			"valid_worlds_save" : valid_worlds_save,
 			"category" : category,
 			"title" : title,
 			"flavor" : category,
@@ -169,15 +176,18 @@ class item_echo:
 	func _init(host : Node, my_world_ability_id : String) -> void:
 		super._init(host)
 		self.my_world_ability_id = my_world_ability_id
-		my_world_ability = Glossary.world_ability_class[my_world_ability_id].new(host)
+		
+		## Exception for battle. We only want load the world_ability in world
+		if Global.get_current_scene_type() == Global.scene_type.WORLD:
+			my_world_ability = Glossary.world_ability_class[my_world_ability_id].new(host)
+			icon = my_world_ability.icon
+			title = my_world_ability.title
+			
 		id = "item_echo"
-		icon = my_world_ability.icon
-		title = my_world_ability.title
 		flavor = "No flavor. Like your step-mom makes"
 		description = "No description. Like that criminal that got away"
 		stackable = false
 		category = Glossary.item_category.GEAR
-		
 		options_world = {
 			"Equip" : Callable(self,"on_equip_change"),
 		}
@@ -237,8 +247,6 @@ class item_consumable:
 						"Cancel" : null
 				}
 		}
-	
-
 
 class item_nectar:
 	extends item_consumable
@@ -273,7 +281,7 @@ class item_nectar:
 			Interface.change_health(target,recovery_amount)
 			on_consume()
 			## FX GO HERE
-			Battle.active_character.send_event("on_end")
+			Battle.active_character.state_chart.send_event("on_end")
 		
 		return on_option_verify(target)
 	
@@ -282,7 +290,7 @@ class item_nectar:
 			Interface.change_health(target,recovery_amount)
 			on_consume()
 			## FX GO HERE
-			Battle.active_character.send_event("on_end")
+			Battle.active_character.state_chart.send_event("on_end")
 		
 		return on_option_verify(target)
 
@@ -319,7 +327,7 @@ class item_dewdrop:
 			Interface.change_vis(target,recovery_amount)
 			on_consume()
 			## FX GO HERE
-			Battle.active_character.send_event("on_end")
+			Battle.active_character.state_chart.send_event("on_end")
 		
 		return on_option_verify(target)
 	
@@ -328,6 +336,6 @@ class item_dewdrop:
 			Interface.change_vis(target,recovery_amount)
 			on_consume()
 			## FX GO HERE
-			Battle.active_character.send_event("on_end")
+			Battle.active_character.state_chart.send_event("on_end")
 		
 		return on_option_verify(target)

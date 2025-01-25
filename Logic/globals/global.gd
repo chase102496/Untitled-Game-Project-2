@@ -6,6 +6,8 @@ var camera_object : Node = null
 var player : Node3D = null
 var state_chart_already_exists : bool = false
 
+var current_scene_type : int = scene_type.WORLD
+
 const palette : Dictionary = {
 	"Melon": Color("#e5a198"),
 	"Melon Saturated": Color("#f08575"), # More saturated melon (reddish-pink)
@@ -34,6 +36,21 @@ const palette : Dictionary = {
 	"Magenta Haze": Color("#913d71"),
 	"Magenta Haze Saturated": Color("#b03a8b") # More saturated magenta
 }
+
+enum scene_type {
+	EMPTY,
+	WORLD,
+	BATTLE
+}
+
+func set_current_scene_type(value : scene_type) -> void:
+	current_scene_type = value
+
+func get_current_scene_type() -> int:
+	if current_scene_type == scene_type.EMPTY:
+		push_warning("Current scene does not have scene_type set in scene_tree_script")
+	
+	return current_scene_type
 
 func send_event_delayed(target : Node, state : String, delay : float) -> void:
 	await get_tree().create_timer(delay).timeout

@@ -5,13 +5,16 @@ extends component_impulse_controller
 ## Once activated, it stays in the activated state and ignores all further signals
 @export var one_way : bool = false
 
+## The input prompt to signal to
 @export var my_component_input_prompt : component_input_prompt
 
 enum type {
 	## Like a lever. Toggles between activated and deactivated on interaction
 	SWITCH,
 	## Like a pressure plate. Activates when in its Area3D, and deactivates upon exiting.
-	PROXIMITY
+	PROXIMITY,
+	## Like a button. Triggers once, then goes immediately back to deactivated after a short cooldown
+	BUTTON
 }
 
 ##Determines how this switch operates
@@ -38,7 +41,7 @@ func _update_input_prompt(signal_name : Signal) -> void:
 		var groups : Array = my_component_interact_reciever.get_groups()
 		var input_name : String
 		
-		## Interact button
+		## Interact prompt display, interpreted from the groups I am in
 		if "interact_general" in groups:
 			input_name = "interact"
 			signal_name.emit(input_name)
@@ -47,12 +50,14 @@ func _update_input_prompt(signal_name : Signal) -> void:
 			input_name = "interact_secondary"
 			signal_name.emit(input_name)
 
-## --- Deactivated --- ###
+### --- Enter --- ###
 
 func on_state_entered_deactivated() -> void:
 	deactivated.emit()
 	update_signals.call_deferred("deactivated", true, true) #Failsafe for switching states without interaction like _on_load
-#
+	
+
+### --- Interactions --- ###
 
 func _on_target_entered_deactivated(source : Node) -> void:
 	Debug.message(["_on_target_entered_deactivated ",debug_name])
@@ -68,15 +73,20 @@ func _on_target_exited_deactivated(source : Node) -> void:
 func _on_target_interact_deactivated(source : Node) -> void:
 	Debug.message(["_on_target_interact_deactivated ",debug_name])
 	
-	if type_selection == type.SWITCH:
-		my_state_transition("deactivated","activated")
+	match type_selection:
+		type.SWITCH, type.BUTTON:
+			my_state_transition("deactivated","activated")
+		type.BUTTON:
+			my_state_transition("deactivated","activated")
 
-#
+# --- Exit
 
 func on_state_exited_deactivated() -> void:
+	
 	update_signals.call_deferred("deactivated", false, true) #Failsafe
+	_start_interact_timer()
 
-## --- Activated --- ##
+## --- Enter --- ##
 
 func on_state_entered_activated() -> void:
 	activated.emit()
@@ -87,7 +97,7 @@ func on_state_entered_activated() -> void:
 	else:
 		update_signals.call_deferred("activated", true, true) #Failsafe
 
-#
+## --- Interactions --- ###
 
 func _on_target_entered_activated(source : Node) -> void:
 	Debug.message(["_on_target_entered_activated ",debug_name])
@@ -106,7 +116,8 @@ func _on_target_interact_activated(source : Node) -> void:
 	if type_selection == type.SWITCH:
 		my_state_transition("activated","deactivated")
 
-#
+# --- Exit --- ###
 
 func on_state_exited_activated() -> void:
 	update_signals.call_deferred("activated", false, true) #Failsafe
+	_start_interact_timer()

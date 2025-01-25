@@ -699,7 +699,7 @@ func set_data_ability_all(caster : Node, ability_data_list : Array):
 # Abilities
 
 class ability:
-	extends Node
+	extends save_object
 	
 	var id : String ##ID should match the class name
 	var skillcheck_modifier : int = 1

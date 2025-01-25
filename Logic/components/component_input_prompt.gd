@@ -23,5 +23,6 @@ func _on_input_open(input_name : String) -> void:
 
 ##
 func _on_input_closed(input_name : String) -> void:
-	active_inputs[input_name].queue_free()
-	active_inputs.erase(input_name)
+	if active_inputs.get(input_name):
+		active_inputs[input_name].queue_free()
+		active_inputs.erase(input_name)

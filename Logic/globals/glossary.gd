@@ -617,6 +617,7 @@ icon_scene["status_swarm"],icon_scene["status_soulstitch"],icon_scene["lumia"],i
 const icon_scene : Dictionary = {
 	## Dreamstitch
 	"soulstitch_mark" : preload("res://Scenes/ui/icons/base_icon/icon_soulstitch_mark.tscn"),
+	"soulstitch_cooldown" : preload("res://Scenes/ui/icons/base_icon/icon_soulstitch_cooldown.tscn"),
 	"soulstitch_return" : preload("res://Scenes/ui/icons/base_icon/icon_soulstitch_return.tscn"),
 	## Loomlight
 	"lantern" : preload("res://Scenes/ui/icons/anim_icon/icon_lantern_on.tscn"), #anim_icon
