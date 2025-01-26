@@ -24,19 +24,19 @@ delay_in_seconds = "0.0"
 [node name="Deactivated" type="Node" parent="StateChart/Main" index="1"]
 script = ExtResource("3_mu63i")
 
-[node name="on_activated" type="Node" parent="StateChart/Main/Deactivated" index="0"]
+[node name="on_transition" type="Node" parent="StateChart/Main/Deactivated" index="0"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../../Activated")
-event = &"on_activated"
+event = &"on_transition"
 delay_in_seconds = "0.0"
 
 [node name="Activated" type="Node" parent="StateChart/Main" index="2"]
 script = ExtResource("3_mu63i")
 
-[node name="on_deactivated" type="Node" parent="StateChart/Main/Activated" index="0"]
+[node name="on_transition" type="Node" parent="StateChart/Main/Activated" index="0"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../../Deactivated")
-event = &"on_deactivated"
+event = &"on_transition"
 delay_in_seconds = "0.0"
 
 [node name="Components" type="Node3D" parent="." index="1"]
