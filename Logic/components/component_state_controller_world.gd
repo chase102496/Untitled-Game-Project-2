@@ -21,10 +21,22 @@ func _ready() -> void:
 	%StateChart/Main/World/Airborne.state_physics_processing.connect(_on_state_physics_processing_world_airborne)
 	%StateChart/Main/World/Airborne/Rising.state_physics_processing.connect(_on_state_physics_processing_world_airborne_rising)
 	%StateChart/Main/World/Airborne/Falling.state_physics_processing.connect(_on_state_physics_processing_world_airborne_falling)
+	
+	#Disabled
+	%StateChart/Main/Disabled.state_entered.connect(_on_state_entered_disabled)
+	%StateChart/Main/Disabled.state_exited.connect(_on_state_exited_disabled)
 
 func _physics_process(_delta: float) -> void:
 	if my_component_input_controller:
 		direction = my_component_input_controller.direction
+
+## Disabled
+
+func _on_state_entered_disabled() -> void:
+	owner.my_component_physics.disable()
+
+func _on_state_exited_disabled() -> void:
+	owner.my_component_physics.enable()
 
 ## Airborne
 
@@ -32,7 +44,10 @@ func _on_state_entered_world_airborne() -> void:
 	if owner.velocity.y >= 0:
 		owner.state_chart.send_event("on_rising")
 	else:
-		owner.state_chart.send_event("on_falling")
+		if owner.is_on_floor():
+			owner.state_chart.send_event("on_grounded")
+		else:
+			owner.state_chart.send_event("on_falling")
 
 func _on_state_physics_processing_world_airborne(_delta : float) -> void:
 	if owner.is_on_floor():

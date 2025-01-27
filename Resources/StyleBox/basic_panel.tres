@@ -1,0 +1,17 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://cduyrfnf7qqb1"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_okrgq"]
+load_path = "res://.godot/imported/inventory_slot_1_alt.png-678e63eb30f5dd761bcb59a3eb73c2eb.ctex"
+
+[resource]
+texture = SubResource("CompressedTexture2D_okrgq")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 84, 84)
+modulate_color = Color(0.0823529, 0.152941, 0.247059, 1)

@@ -7,9 +7,21 @@ extends component_impulse_reciever
 
 func _ready() -> void:
 	super._ready()
+	
 	if item and item not in Glossary.item_class:
 		push_error("Item not found for component_impulse_reciever_item: ",item)
 
 func _on_one_shot() -> void:
+	super._on_one_shot()
+	if flags["on_one_shot"]:
+		_summon_item()
+
+func _on_activated() -> void:
 	super._on_activated()
-	Global.player.my_component_inventory.add_item(Glossary.item_class[item].new.callv([Global.player]+args))
+	if flags["on_activated"]:
+		_summon_item()
+
+func _summon_item() -> void:
+	var inst = Glossary.item_class[item].new.callv([Global.player]+args)
+	inst.quantity = quantity
+	Global.player.my_component_inventory.add_item(inst)

@@ -263,6 +263,10 @@ class world_ability:
 	func _on_cooldown_timer_timeout() -> void:
 		pass
 	
+	## Call to remove cooldown
+	func _on_cooldown_timer_stop() -> void:
+		cooldown_timer.stop()
+	
 	func _cooldown_timer_start() -> void:
 		if !cooldown_timer.is_inside_tree():
 			caster.add_child(cooldown_timer)
@@ -542,7 +546,9 @@ class world_ability_soulstitch:
 		_fx_slingshot()
 		recall_tween.stop()
 	
-	func _on_cancel() -> void:
+	#_on_cooldown_timer_stop() to reset cooldown
+	func _on_reset() -> void:
+		_cooldown_timer_start()
 		if is_mark_placed:
 			is_mark_placed = !is_mark_placed
 			_fx_clear()
@@ -584,8 +590,8 @@ class world_ability_soulstitch:
 	
 	## Clear both Lumia's fx and the mark's fx
 	func _fx_clear() -> void:
-		caster.animations.sprite.visible = true
-		
+		if !caster.animations.sprite.visible:
+			caster.animations.sprite.visible = true
 		if particle_character:
 			particle_character.queue_free()
 			particle_character = null
@@ -603,12 +609,11 @@ class world_ability_soulstitch:
 	
 	func on_unequip() -> void:
 		super.on_unequip()
-		_on_cancel()
+		_on_reset()
 	
 	func on_equip() -> void:
 		super.on_equip()
-		_on_cancel()
-		icon = icon
+		_on_reset()
 	
 	func on_use() -> void:
 		if verify_use():

@@ -11,6 +11,28 @@
 [ext_resource type="PackedScene" uid="uid://lx24i8fl6uo" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/history_layer.tscn" id="9_ojt3i"]
 [ext_resource type="Script" path="res://addons/dialogic/Resources/dialogic_style.gd" id="10_i7oo3"]
 
+[sub_resource type="Resource" id="Resource_hk3o0"]
+script = ExtResource("1_bq87c")
+scene = ExtResource("5_a7hvx")
+overrides = {
+"box_animation_in": "1",
+"box_animation_new_text": "1",
+"box_animation_out": "1",
+"box_color_custom": "Color(1, 1, 1, 1)",
+"box_color_use_global": "false",
+"box_margin_bottom": "18.0",
+"box_panel": "\"res://Resources/StyleBox/basic_panel.tres\"",
+"box_size": "Vector2(1000, 300)",
+"name_label_box_modulate": "Color(1, 1, 1, 1)",
+"name_label_box_panel": "\"res://Resources/StyleBox/basic_panel.tres\"",
+"next_indicator_size": "Vector2(12, 12)",
+"text_alignment": "1",
+"text_size": "28.0",
+"typing_sounds_every_nths_character": "2.0",
+"typing_sounds_pitch": "0.8",
+"typing_sounds_pitch_variance": "0.2"
+}
+
 [sub_resource type="Resource" id="Resource_kn0m4"]
 script = ExtResource("1_bq87c")
 scene = ExtResource("2_xejfn")
@@ -26,20 +48,14 @@ script = ExtResource("1_bq87c")
 scene = ExtResource("4_scd3c")
 overrides = {}
 
-[sub_resource type="Resource" id="Resource_hk3o0"]
-script = ExtResource("1_bq87c")
-scene = ExtResource("5_a7hvx")
-overrides = {
-"box_margin_bottom": "10.0",
-"box_size": "Vector2(800, 200)",
-"next_indicator_size": "Vector2(12, 12)",
-"text_size": "24.0"
-}
-
 [sub_resource type="Resource" id="Resource_jbf07"]
 script = ExtResource("1_bq87c")
 scene = ExtResource("6_vuhmj")
-overrides = {}
+overrides = {
+"extra_alignment": "1",
+"text_alignment": "1",
+"title_alignment": "1"
+}
 
 [sub_resource type="Resource" id="Resource_b1f01"]
 script = ExtResource("1_bq87c")
@@ -60,9 +76,8 @@ overrides = {}
 script = ExtResource("10_i7oo3")
 name = "somnia"
 base_overrides = {
-"global_bg_color": "Color(0.137255, 0.137255, 0.137255, 0.937255)",
-"global_font": "\"res://addons/dialogic/Example Assets/Fonts/Fancake.ttf\"",
-"global_font_size": "24.0"
+"global_font": "\"res://Art/ui/Fancake.ttf\"",
+"global_font_size": "32.0"
 }
-layers = Array[ExtResource("1_bq87c")]([SubResource("Resource_kn0m4"), SubResource("Resource_wmc0m"), SubResource("Resource_glwh7"), SubResource("Resource_hk3o0"), SubResource("Resource_jbf07"), SubResource("Resource_b1f01"), SubResource("Resource_tsnx3"), SubResource("Resource_c4pm5")])
-metadata/_latest_layer = -1
+layers = Array[ExtResource("1_bq87c")]([SubResource("Resource_hk3o0"), SubResource("Resource_kn0m4"), SubResource("Resource_wmc0m"), SubResource("Resource_glwh7"), SubResource("Resource_jbf07"), SubResource("Resource_b1f01"), SubResource("Resource_tsnx3"), SubResource("Resource_c4pm5")])
+metadata/_latest_layer = 0

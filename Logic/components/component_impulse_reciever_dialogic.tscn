@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhrtv81nw8tj4"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_reciever_dialogic.gd" id="1_sf0nw"]
+
+[node name="component_impulse_reciever_dialogic" type="Node"]
+script = ExtResource("1_sf0nw")

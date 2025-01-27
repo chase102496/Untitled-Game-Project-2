@@ -4,15 +4,8 @@ So far,[pause=0.3] we have the game mechanics about 50% done.
 label Question
 Wanna see some combat puzzles?
 - Yes!
-	Choose a puzzle\:
-	- Gloams Galore (Trivial)
-		do Battle.battle_initialize("enemy_gloam enemy_gloam enemy_gloam")
-	- Little Wedge (Easy)
-		do Battle.battle_initialize("enemy_elderoot enemy_gloam enemy_gloam enemy_elderoot")
-	- Weakest Link (Medium)
-		do Battle.battle_initialize("enemy_cinderling enemy_gloam enemy_shadebloom enemy_gloam enemy_shiverling")
-	- Tetris
-		do Battle.battle_initialize("")
+	Well, too bad. It's all WIP \:(
+	jump Question
 - Not really.
 	Oh, okay.[pause=0.3]  Feel free to explore what's here,[pause=0.3] then
 	[signal arg="on_enabled"]

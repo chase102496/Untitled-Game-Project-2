@@ -1,9 +1,9 @@
-[gd_resource type="Theme" load_steps=19 format=3 uid="uid://bitq02d30r24m"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://bitq02d30r24m"]
 
 [ext_resource type="FontFile" uid="uid://bjegw1gxg0mmf" path="res://Art/ui/Fancake.ttf" id="1_iu7ec"]
 [ext_resource type="StyleBox" uid="uid://c7c25oe1d4gbl" path="res://Interface/menu_style_box.tres" id="1_sehmd"]
 [ext_resource type="FontFile" uid="uid://catypkb2t6ewh" path="res://addons/dialogic/Example Assets/Fonts/Fancake.ttf" id="3_5ecrx"]
-[ext_resource type="Texture2D" uid="uid://fcyokiwoiu8k" path="res://Resources/Textures/2D/UI/Elements/ui_pack_elements/inventory_slot.standard/inventory_slot_1_alt.png" id="3_xh7ce"]
+[ext_resource type="StyleBox" uid="uid://cduyrfnf7qqb1" path="res://Resources/StyleBox/basic_panel.tres" id="3_poull"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2xust"]
 
@@ -16,19 +16,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pu612"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8b4gc"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2ghpr"]
-texture = ExtResource("3_xh7ce")
-texture_margin_left = 20.0
-texture_margin_top = 20.0
-texture_margin_right = 20.0
-texture_margin_bottom = 20.0
-expand_margin_left = 4.0
-expand_margin_top = 4.0
-expand_margin_right = 4.0
-expand_margin_bottom = 4.0
-region_rect = Rect2(0, 0, 84, 84)
-modulate_color = Color(0.0823529, 0.152941, 0.247059, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qnrbo"]
 
@@ -82,7 +69,7 @@ Label/constants/shadow_outline_size = 25
 Label/font_sizes/font_size = 48
 Label/fonts/font = ExtResource("1_iu7ec")
 PanelContainer/styles/normal = SubResource("StyleBoxEmpty_8b4gc")
-PanelContainer/styles/panel = SubResource("StyleBoxTexture_2ghpr")
+PanelContainer/styles/panel = ExtResource("3_poull")
 RichTextLabel/colors/default_color = Color(1, 1, 1, 1)
 RichTextLabel/colors/font_outline_color = Color(0.0823529, 0.152941, 0.247059, 1)
 RichTextLabel/colors/font_shadow_color = Color(0.033, 0.0620333, 0.1, 0.576471)

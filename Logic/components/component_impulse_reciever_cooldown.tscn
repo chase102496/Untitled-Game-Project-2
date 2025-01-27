@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://uvo1d7btr4fd"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_reciever_cooldown.gd" id="1_pqfee"]
+
+[node name="component_impulse_reciever_cooldown" type="Node" node_paths=PackedStringArray("my_impulse")]
+script = ExtResource("1_pqfee")
+my_impulse = NodePath("")

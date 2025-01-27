@@ -205,6 +205,7 @@ func _on_hud_equip_unset(new_ability : component_world_ability.world_ability) ->
 ## Changing states tabs
 
 func _on_inventory_gui_tab_selected(tab : int):
+	inventory_gui_info.hide()
 	match convert_tab_to_glossary(tab):
 		Glossary.item_category["GEAR"]:
 			state_chart.send_event("on_gui_gear")

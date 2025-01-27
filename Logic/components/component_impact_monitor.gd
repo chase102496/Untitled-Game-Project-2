@@ -15,7 +15,9 @@ func _ready() -> void:
 
 func _on_body_entered(body : Node3D) -> void:
 	
-	var velocity_history_reversed = body.my_component_physics.get_velocity_history().duplicate()
+	
+	
+	var velocity_history_reversed = body.my_component_physics.get_velocity_history(15).duplicate()
 	velocity_history_reversed.reverse()
 	
 	for vel in velocity_history_reversed:
@@ -24,5 +26,5 @@ func _on_body_entered(body : Node3D) -> void:
 				body.velocity = vel
 			body_impacted.emit(body,vel)
 			Debug.message(["Impact thereshold met: ",vel.length()],Debug.msg_category.PHYSICS)
-			Glossary.create_fx_particle(self,"soulstitch_node_clear",true)
+			Glossary.create_fx_particle_custom(owner,"dust",true,200,120,vel.length()*0.5,body.velocity.normalized(),Global.palette["Oxford Blue"])
 			break

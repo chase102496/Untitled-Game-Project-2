@@ -232,7 +232,7 @@ func apply_changes_with_tween(target : Object, changes : Dictionary, tween_durat
 			else:
 				print("Error: '%s' is not a material, cannot set shader parameter '%s'" % [current.name, param_name])
 		else:
-			print("Error: Property '%s' does not exist on '%s'" % [final_key, current.name])
+			print("Error: Property '%s' does not existds on '%s'" % [final_key, current.name])
 
 ## 
 func is_signal_connected_to_anything(node: Object, signal_name: String) -> bool:

@@ -12,6 +12,7 @@ var _collision : bool = true
 var _friction : bool = true
 #var _gravity : bool = true
 
+var collision_prev : Dictionary = {}
 var velocity_history : Array = []
 
 @export var base_grav : float = 35 # To revert to our default
@@ -34,13 +35,20 @@ func disable() -> void:
 	_enabled = false
 
 func enable_collision():
-	owner.set_collision_layer_value(1,true)
-	owner.set_collision_layer_value(3,true)
+	
+	#for i in 32:
+		#if i != 0:
+			#owner.set_collision_layer_value(i,collision_prev[i])
+	#
 	_collision = true
 
 func disable_collision():
-	owner.set_collision_layer_value(1,false)
-	owner.set_collision_layer_value(3,false)
+	
+	#for i in 32:
+		#if i != 0:
+			#collision_prev[i] = owner.get_collision_layer_value(i)
+			#owner.set_collision_layer_value(i,false)
+	
 	_collision = false
 
 func enable_friction():

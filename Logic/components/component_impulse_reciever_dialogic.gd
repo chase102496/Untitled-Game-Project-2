@@ -1,15 +1,14 @@
-class_name component_impulse_reciever_item
+class_name component_impulse_reciever_dialogic
 extends component_impulse_reciever
 
-@export var item : String
-@export var quantity : int = 1
-@export var args : Array = []
+@export var timeline : DialogicTimeline
+var timeline_inst
 
 func _ready() -> void:
 	super._ready()
-	if item and item not in Glossary.item_class:
-		push_error("Item not found for component_impulse_reciever_item: ",item)
+	if timeline:
+		timeline_inst = Dialogic.preload_timeline(timeline)
 
-func _on_one_shot() -> void:
+func _on_activated() -> void:
 	super._on_activated()
-	Global.player.my_component_inventory.add_item(Glossary.item_class[item].new.callv([Global.player]+args))
+	Dialogic.start(timeline_inst)

@@ -6,8 +6,10 @@ func _ready() -> void:
 func _on_body_impacted(body : Node3D, vel : Vector3):
 	
 	set_collision_layer_value(1,false)
-	Global.create_hitstop(0.025)
+	get_parent().visible = false
+	Global.create_hitstop(0.02)
 	
 	await get_tree().create_timer(1).timeout
 	
 	set_collision_layer_value(1,true)
+	get_parent().visible = true

@@ -45,14 +45,15 @@ gdscript/warnings/shadowed_global_identifier=0
 directories/dch_directory={}
 directories/dtl_directory={
 "reference": "res://Story/dialogic/reference.dtl",
-"timeline": "res://timeline.dtl"
+"test": "res://Resources/Timeline/test.dtl",
+"timeline": "res://Story/dialogic/timeline.dtl"
 }
 glossary/default_case_sensitive=true
 layout/style_list=["res://addons/dialogic/Resources/somnia.tres"]
 layout/default_style="res://addons/dialogic/Resources/somnia.tres"
 variables={}
 extensions_folder="res://addons/dialogic_additions"
-text/letter_speed=0.01
+text/letter_speed=0.02
 text/initial_text_reveal_skippable=true
 text/text_reveal_skip_delay=0.1
 text/advance_delay=0.1
@@ -70,6 +71,7 @@ choices/reveal_by_input=false
 save/autosave_delay=60.0
 save/encryption_on_exports_only=true
 text/autopauses={}
+text/autoadvance_enabled=false
 
 [display]
 
@@ -85,15 +87,6 @@ project/assembly_name="Untitled-Game-Project-2"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/notes_tab/plugin.cfg", "res://addons/shaker/plugin.cfg")
-
-[file_customization]
-
-folder_colors={
-"res://Levels/": "gray",
-"res://Logic/": "orange",
-"res://Resources/": "red",
-"res://Scenes/": "yellow"
-}
 
 [filesystem]
 

@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://3woj3321nkjn"]
+
+[ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="1_ed34t"]
+[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="2_egxaq"]
+[ext_resource type="PackedScene" uid="uid://gxyn17c0mhfb" path="res://Logic/components/component_impulse_reciever_tween.tscn" id="3_5q71f"]
+[ext_resource type="PackedScene" uid="uid://uvo1d7btr4fd" path="res://Logic/components/component_impulse_reciever_cooldown.tscn" id="4_m0wri"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6035q"]
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+
+[sub_resource type="TorusMesh" id="TorusMesh_fxpi1"]
+material = SubResource("StandardMaterial3D_6035q")
+inner_radius = 0.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p7jnu"]
+
+[node name="cooldown_pickup" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("TorusMesh_fxpi1")
+skeleton = NodePath("")
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="component_impulse_controller_switch" parent="Components" instance=ExtResource("1_ed34t")]
+type_selection = 1
+interact_timer_max = 0.1
+
+[node name="component_input_prompt" parent="Components/component_impulse_controller_switch/Components" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+
+[node name="component_interact_reciever" parent="Components/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("2_egxaq")]
+collision_layer = 1
+collision_mask = 1
+
+[node name="CollisionShape3D" parent="Components/component_impulse_controller_switch/component_interact_reciever" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_p7jnu")
+
+[node name="component_impulse_reciever_tween" parent="Components" node_paths=PackedStringArray("my_target", "my_impulse") instance=ExtResource("3_5q71f")]
+my_target = NodePath("../../MeshInstance3D")
+dict_activated = {
+"mesh.material.albedo_color": Color(1, 0.42, 0.777667, 1)
+}
+dict_deactivated = {
+"mesh.material.albedo_color": Color(0.380392, 0.72549, 0.772549, 1)
+}
+my_impulse = NodePath("../component_impulse_controller_switch")
+
+[node name="component_impulse_reciever_cooldown" parent="Components" node_paths=PackedStringArray("my_impulse") instance=ExtResource("4_m0wri")]
+my_impulse = NodePath("../component_impulse_controller_switch")
+
+[editable path="Components/component_impulse_controller_switch"]
+[editable path="Components/component_impulse_controller_switch/component_interact_reciever"]
