@@ -18,8 +18,9 @@ func _ready() -> void:
 
 ##
 func _on_input_open(input_name : String) -> void:
-	var inst = Glossary.create_input_prompt_keyboard(self,input_name)
-	active_inputs[input_name] = inst
+	if !active_inputs.get(input_name):
+		var inst = Glossary.create_input_prompt_keyboard(self,input_name)
+		active_inputs[input_name] = inst
 
 ##
 func _on_input_closed(input_name : String) -> void:

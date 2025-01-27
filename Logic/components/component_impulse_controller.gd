@@ -2,7 +2,13 @@ class_name component_impulse_controller
 extends component_impulse
 
 signal activated
+signal one_shot
 signal deactivated
+
+enum interaction_source {
+	PLAYER,
+	SYSTEM
+}
 
 ## If plugged in, the impulse controller will only work when this is active, acting as an internal AND gate
 @export var impulse_parent : component_impulse
@@ -12,8 +18,8 @@ signal deactivated
 
 ## The delay after changing states
 
-@export var interact_timer : Timer = Timer.new()
-@export var interact_timer_max : float = 2.0
+var interact_timer : Timer = Timer.new()
+@export_range(0.1,10,0.1) var interact_timer_max : float = 0.25
 
 @onready var state_chart : StateChart = $StateChart
 @onready var state_chart_initial_state = $StateChart/Main.initial_state
@@ -22,8 +28,7 @@ signal deactivated
 ## Just keeps track of our impulse parent, if we have one
 var impulse_parent_signal : bool
 
-## Used to prevent multiple transitions at once, favoring the first call
-var is_transitioning : bool = false
+var last_interaction_source : interaction_source = interaction_source.SYSTEM
 
 func _ready() -> void:
 	## Important info
@@ -33,7 +38,7 @@ func _ready() -> void:
 	
 	interact_timer.one_shot = true
 	add_child(interact_timer)
-	interact_timer.timeout.connect(_interact_timer_timeout)
+	interact_timer.timeout.connect(_on_interact_timer_timeout)
 	
 	if impulse_parent:
 		impulse_parent.activated.connect(_on_impulse_parent_activated)
@@ -42,11 +47,14 @@ func _ready() -> void:
 func _start_interact_timer() -> void:
 	interact_timer.start(interact_timer_max)
 
+func _stop_interact_timer() -> void:
+	interact_timer.stop()
+
 func _is_interact_timer_running() -> bool:
 	return !interact_timer.is_stopped()
 
-func _interact_timer_timeout() -> void:
-	pass
+func _on_interact_timer_timeout() -> void:
+	print(interact_timer.is_stopped())
 
 func get_my_component_interact_reciever():
 	for child in get_children():

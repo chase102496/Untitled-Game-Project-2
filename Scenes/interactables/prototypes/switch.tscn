@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cknu6h4eoieg2"]
+[gd_scene load_steps=11 format=3 uid="uid://cknu6h4eoieg2"]
 
 [ext_resource type="PackedScene" uid="uid://bxnsmg4ufjehi" path="res://Logic/components/component_impulse_filter_gate.tscn" id="1_0raud"]
 [ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="1_x8mbl"]
 [ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="2_5ncva"]
 [ext_resource type="PackedScene" uid="uid://gxyn17c0mhfb" path="res://Logic/components/component_impulse_reciever_tween.tscn" id="3_481rt"]
 [ext_resource type="PackedScene" uid="uid://bxdqarudkqkta" path="res://Logic/components/component_impulse_reciever_animation.tscn" id="5_aebtn"]
+[ext_resource type="PackedScene" uid="uid://xhem7eglmhgt" path="res://Logic/components/component_impulse_reciever_item.tscn" id="6_4fudv"]
 [ext_resource type="PackedScene" uid="uid://blve5xgsm70ww" path="res://Logic/components/component_save.tscn" id="6_w8t3l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37uaf"]
@@ -26,7 +27,6 @@ radius = 1.0
 [node name="Switch" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, -4.76837e-07, -2.38419e-07)
 mesh = SubResource("BoxMesh_bhq7n")
 skeleton = NodePath("")
 
@@ -44,11 +44,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 [node name="CollisionShape3D" parent="Components/component_impulse_controller_switch/component_interact_reciever" index="0"]
 shape = SubResource("SphereShape3D_5hpbu")
 
-[node name="component_impulse_reciever_tween" parent="Components" node_paths=PackedStringArray("my_impulse", "my_target") instance=ExtResource("3_481rt")]
-my_impulse = NodePath("../component_impulse_controller_switch")
+[node name="component_impulse_reciever_tween" parent="Components" node_paths=PackedStringArray("my_target", "my_impulse") instance=ExtResource("3_481rt")]
 my_target = NodePath("../../MeshInstance3D")
+my_impulse = NodePath("../component_impulse_controller_switch")
 
 [node name="component_impulse_reciever_animation" parent="Components" instance=ExtResource("5_aebtn")]
+
+[node name="component_impulse_reciever_item" parent="Components" instance=ExtResource("6_4fudv")]
 
 [node name="component_save" parent="Components" node_paths=PackedStringArray("save_parent") groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("6_w8t3l")]
 save_parent = NodePath("../component_impulse_controller_switch")

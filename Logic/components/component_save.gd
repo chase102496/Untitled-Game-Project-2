@@ -5,7 +5,9 @@ enum save_type {
 	## Looks for it based on where we are in the scene. Useful for objects that only exist in one specific scene
 	SCENE,
 	## Looks across the entire savefile. Requires a manually-entered unique ID
-	GLOBAL
+	GLOBAL,
+	## No saving
+	DISABLED
 }
 
 ## Determines how to set and get our savefile
@@ -28,15 +30,15 @@ func _ready() -> void:
 		save_parent = owner
 
 func find_save_id(all_data : Variant) -> String:
-	var result : String
 	
+	var result
 	match my_save_type:
 		save_type.SCENE:
 			result = SaveManager.get_save_id_scene(self,all_data)
 		save_type.GLOBAL:
 			result = SaveManager.get_save_id_global(self,all_data,save_global_id)
-		_:
-			push_error("Unable to find save_type when saving: ",my_save_type)
+		save_type.DISABLED:
+			result = null
 			
 	return result
 
@@ -45,18 +47,21 @@ func on_save(all_data : Variant) -> void:
 	@warning_ignore("unused_variable")
 	var key : String = find_save_id(all_data)
 	
-	# Packs up all the variables and their paths in save_parent using save_list as ref to which to search for
-	# Then packs them up and returns them as a dictionary
-	all_data[key] = Global.serialize_data(save_parent,save_list)
-	
-	Debug.message(["component_save saved data: ",all_data[key]],Debug.msg_category.SAVE)
+	if key != null:
+		# Packs up all the variables and their paths in save_parent using save_list as ref to which to search for
+		# Then packs them up and returns them as a dictionary
+		all_data[key] = Global.serialize_data(save_parent,save_list)
+		
+		Debug.message(["component_save saved data: ",all_data[key]],Debug.msg_category.SAVE)
 
 func on_load(all_data : Variant) -> void:
 	
 	@warning_ignore("unused_variable")
 	var key : String = find_save_id(all_data)
 	
-	Global.deserialize_data(save_parent,all_data[key])
-	
-	Debug.message(["component_save loaded data: ",all_data[key]],Debug.msg_category.SAVE)
+	if key != null:
+		
+		Global.deserialize_data(save_parent,all_data[key])
+		
+		Debug.message(["component_save loaded data: ",all_data[key]],Debug.msg_category.SAVE)
 	
