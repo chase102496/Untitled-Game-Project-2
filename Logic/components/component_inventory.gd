@@ -45,6 +45,22 @@ func get_items_from_category(category_title : String) -> Array:
 	#for item in my_inventory:
 		#pass
 
+## Returns the first item instance matching this ID
+func get_item_id(id : String) -> item:
+	for item in my_inventory:
+		if item.id == id:
+			return item
+	
+	return null
+
+## Tells if we have this item in our inventory
+func has_item_id(id : String) -> bool:
+	for item in my_inventory:
+		if item.id == id:
+			return true
+			
+	return false
+
 func add_item(inst : Object):
 	
 	## See if matching item exists and both are stackable
@@ -57,8 +73,22 @@ func add_item(inst : Object):
 	## If we never encounter a match or it's not stackable, just add it normally
 	my_inventory.append(inst)
 
+func add_item_id(id : String, quantity : int = 1) -> item:
+	var inst = Glossary.item_class[id].new(owner)
+	inst.quantity = quantity
+	Global.player.my_component_inventory.add_item(inst)
+	return inst
+
 func remove_item(inst : Object):
 	my_inventory.pop_at(my_inventory.find(inst))
+
+func remove_item_id(id : String, quantity : int = 1) -> void:
+	for item in my_inventory:
+		if item.id == id:
+			if item.quantity > quantity:
+				item.quantity -= quantity
+			else:
+				remove_item(item)
 
 ## --- Item Classes ---
 
@@ -157,6 +187,75 @@ class item:
 	## Need this to keep track of items internally and avoid overhead on inv manager
 	func on_remove() -> void:
 		host.my_component_inventory.remove_item(self)
+
+## --- Keys ---
+
+class item_key:
+	extends item
+	
+	func _init(host : Node) -> void:
+		icon = Glossary.icon_scene["key"]
+		id = "item_key"
+		title = "Key"
+		flavor = "Key go in key hole. Simple. Even cave man understand."
+		description = "A simple key. Used for some sort of... Door!"
+		category = Glossary.item_category.KEYS
+
+class item_key_red:
+	extends item_key
+	
+	func _init(host : Node) -> void:
+		super._init(host)
+		id = "item_key_red"
+		title = "Red Key"
+		icon = Glossary.icon_scene["key_red"]
+
+class item_key_yellow:
+	extends item_key
+	
+	func _init(host : Node) -> void:
+		super._init(host)
+		id = "item_key_yellow"
+		title = "Yellow Key"
+		icon = Glossary.icon_scene["key_yellow"]
+
+class item_key_blue:
+	extends item_key
+	
+	func _init(host : Node) -> void:
+		super._init(host)
+		id = "item_key_blue"
+		title = "Blue Key"
+		icon = Glossary.icon_scene["key_blue"]
+
+class item_key_purple:
+	extends item_key
+	
+	func _init(host : Node) -> void:
+		super._init(host)
+		id = "item_key_purple"
+		title = "Purple Key"
+		icon = Glossary.icon_scene["key_purple"]
+
+class item_key_green:
+	extends item_key
+	
+	func _init(host : Node) -> void:
+		super._init(host)
+		id = "item_key_green"
+		title = "Green Key"
+		icon = Glossary.icon_scene["key_green"]
+
+class item_key_orange:
+	extends item_key
+	
+	func _init(host : Node) -> void:
+		super._init(host)
+		id = "item_key_orange"
+		title = "Orange Key"
+		icon = Glossary.icon_scene["key_orange"]
+
+## --- Echoes ---
 
 class item_echo:
 	extends item

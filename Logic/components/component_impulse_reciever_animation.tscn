@@ -41,6 +41,11 @@ graph_offset = Vector2(-396, -65)
 [node name="component_impulse_reciever_animation" type="Node" node_paths=PackedStringArray("animation_tree")]
 script = ExtResource("1_simjl")
 animation_tree = NodePath("AnimationTree")
+my_impulse_flags = {
+"on_activated": true,
+"on_deactivated": true,
+"on_one_shot": false
+}
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 active = false

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxatc4ekmwr7u"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_filter_item.gd" id="1_poplq"]
+
+[node name="component_impulse_filter_item" type="Node"]
+script = ExtResource("1_poplq")

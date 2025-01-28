@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://bcue2ded8u2yr"]
+
+[ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="3_amkib"]
+[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="4_i60ww"]
+[ext_resource type="PackedScene" uid="uid://gxyn17c0mhfb" path="res://Logic/components/component_impulse_reciever_tween.tscn" id="5_88ioh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57itl"]
+shading_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_46wrk"]
+material = SubResource("StandardMaterial3D_57itl")
+radius = 0.2
+height = 0.2
+radial_segments = 16
+rings = 16
+is_hemisphere = true
+
+[node name="Empty Switch" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_46wrk")
+skeleton = NodePath("")
+
+[node name="Controllers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="component_impulse_controller_switch" parent="Controllers" instance=ExtResource("3_amkib")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+is_one_way = false
+
+[node name="component_input_prompt" parent="Controllers/component_impulse_controller_switch/Components" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="component_interact_reciever" parent="Controllers/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("4_i60ww")]
+
+[node name="Recievers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="component_impulse_reciever_tween" parent="Recievers" node_paths=PackedStringArray("my_target", "my_impulse") instance=ExtResource("5_88ioh")]
+my_target = NodePath("../../MeshInstance3D")
+dict_activated = {
+"mesh.material.albedo_color": Color(0.380392, 0.72549, 0.772549, 1)
+}
+dict_deactivated = {
+"mesh.material.albedo_color": Color(0.568627, 0.239216, 0.443137, 1)
+}
+my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
+
+[node name="Filters" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[editable path="Controllers/component_impulse_controller_switch"]

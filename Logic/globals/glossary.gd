@@ -624,6 +624,13 @@ const icon_scene : Dictionary = {
 	## General
 	"vis" : preload("res://Scenes/ui/icons/base_icon/icon_vis.tscn"),
 	"heart" : preload("res://Scenes/ui/icons/base_icon/icon_heart.tscn"),
+	"key" : preload("res://Scenes/ui/icons/base_icon/icon_key.tscn"),
+	"key_red" : preload("res://Scenes/ui/icons/base_icon/icon_key_red.tscn"),
+	"key_yellow" : preload("res://Scenes/ui/icons/base_icon/icon_key_yellow.tscn"),
+	"key_blue" : preload("res://Scenes/ui/icons/base_icon/icon_key_blue.tscn"),
+	"key_green" : preload("res://Scenes/ui/icons/base_icon/icon_key_green.tscn"),
+	"key_purple" : preload("res://Scenes/ui/icons/base_icon/icon_key_purple.tscn"),
+	"key_orange" : preload("res://Scenes/ui/icons/base_icon/icon_key_orange.tscn"),
 	## Characters, Enemies, and Dreamkin
 	"lumia" : preload("res://Scenes/ui/icons/base_icon/icon_lumia.tscn"),
 	## Input Prompts
@@ -701,6 +708,14 @@ const status_class : Dictionary = {
 	}
 
 const item_class : Dictionary = {
+	"item_key" : component_inventory.item_key,
+	"item_key_red" : component_inventory.item_key_red,
+	"item_key_blue" : component_inventory.item_key_blue,
+	"item_key_yellow" : component_inventory.item_key_yellow,
+	"item_key_orange" : component_inventory.item_key_orange,
+	"item_key_green" : component_inventory.item_key_green,
+	"item_key_purple" : component_inventory.item_key_purple,
+	
 	"item_nectar" : component_inventory.item_nectar,
 	"item_dewdrop" : component_inventory.item_dewdrop,
 	"item_echo" : component_inventory.item_echo,

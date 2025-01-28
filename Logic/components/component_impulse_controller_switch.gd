@@ -2,15 +2,16 @@
 class_name component_impulse_controller_switch
 extends component_impulse_controller
 
-## Once activated, it stays in the activated state and ignores all further signals
-## Doesn't effect buttons
-@export var one_way : bool = false
+## Once activated, it stays in the activated state and ignores all further signals no matter what
+@export var is_one_way : bool = false
 
 ## The input prompt to signal to
 @export var my_component_input_prompt : component_input_prompt
 
+## Keeps track of input prompt when it isn't displayed to update it later
 var current_input_prompt : Signal
 
+## The way interaction is handled
 enum type {
 	## Like a lever. Toggles between activated and deactivated on interaction
 	SWITCH,
@@ -109,7 +110,7 @@ func _on_state_exited_deactivated() -> void:
 	_signal_handler("_on_state_exited",null,"deactivated")
 
 func _on_state_entered_activated() -> void:
-	if one_way:
+	if is_one_way:
 		state_chart.send_event("on_predisabled")
 	else:
 		activated.emit()

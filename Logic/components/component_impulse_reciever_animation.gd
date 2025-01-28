@@ -13,3 +13,8 @@ func _on_activated() -> void:
 func _on_deactivated() -> void:
 	super._on_deactivated()
 	animation_tree.get("parameters/playback").travel(animation_state_deactivated)
+
+func _on_one_shot() -> void:
+	super._on_one_shot()
+	animation_tree.get("parameters/playback").travel(animation_state_activated)
+	

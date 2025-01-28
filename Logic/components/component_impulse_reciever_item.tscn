@@ -4,8 +4,3 @@
 
 [node name="component_impulse_reciever_item" type="Node"]
 script = ExtResource("1_ktwj2")
-flags = {
-"on_activated": false,
-"on_deactivated": false,
-"on_one_shot": true
-}

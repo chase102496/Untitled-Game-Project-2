@@ -21,6 +21,7 @@ var my_impulse_count : int = 8
 @export var my_impulse_7 : component_impulse
 
 func _ready() -> void:
+	super._ready()
 	
 	var impulse_placeholder : String = "my_impulse_"
 	

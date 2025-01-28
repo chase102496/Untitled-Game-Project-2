@@ -219,7 +219,8 @@ func _on_inventory_gui_tab_selected(tab : int):
 ## Item buttons
 
 func _on_button_pressed_inventory_item(properties : Dictionary):
-	_options_create_list(properties)
+	if properties.item.options_world:
+		_options_create_list(properties)
 
 func _on_button_enter_hover_inventory_item(properties : Dictionary):
 	_set_info(properties,inventory_gui_info_icon_slot, inventory_gui_info_title, inventory_gui_info_description)

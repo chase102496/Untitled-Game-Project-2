@@ -15,8 +15,6 @@ func _ready() -> void:
 
 func _on_body_entered(body : Node3D) -> void:
 	
-	
-	
 	var velocity_history_reversed = body.my_component_physics.get_velocity_history(15).duplicate()
 	velocity_history_reversed.reverse()
 	

@@ -1,15 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://cknu6h4eoieg2"]
+[gd_scene load_steps=13 format=3 uid="uid://cknu6h4eoieg2"]
 
 [ext_resource type="PackedScene" uid="uid://bxnsmg4ufjehi" path="res://Logic/components/component_impulse_filter_gate.tscn" id="1_0raud"]
 [ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="1_x8mbl"]
 [ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="2_5ncva"]
+[ext_resource type="PackedScene" uid="uid://dxatc4ekmwr7u" path="res://Logic/components/component_impulse_filter_item.tscn" id="2_fvvr6"]
 [ext_resource type="PackedScene" uid="uid://gxyn17c0mhfb" path="res://Logic/components/component_impulse_reciever_tween.tscn" id="3_481rt"]
 [ext_resource type="PackedScene" uid="uid://bxdqarudkqkta" path="res://Logic/components/component_impulse_reciever_animation.tscn" id="5_aebtn"]
 [ext_resource type="PackedScene" uid="uid://xhem7eglmhgt" path="res://Logic/components/component_impulse_reciever_item.tscn" id="6_4fudv"]
 [ext_resource type="PackedScene" uid="uid://blve5xgsm70ww" path="res://Logic/components/component_save.tscn" id="6_w8t3l"]
 [ext_resource type="PackedScene" uid="uid://bhrtv81nw8tj4" path="res://Logic/components/component_impulse_reciever_dialogic.tscn" id="7_orcai"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37uaf"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_02y2e"]
 resource_local_to_scene = true
 diffuse_mode = 3
 specular_mode = 1
@@ -18,7 +19,7 @@ rim_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_bhq7n"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_37uaf")
+material = SubResource("StandardMaterial3D_02y2e")
 size = Vector3(0.25, 0.25, 0.25)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5hpbu"]
@@ -34,6 +35,8 @@ skeleton = NodePath("")
 [node name="Components" type="Node3D" parent="."]
 
 [node name="component_impulse_filter_gate" parent="Components" instance=ExtResource("1_0raud")]
+
+[node name="component_impulse_filter_item" parent="Components" instance=ExtResource("2_fvvr6")]
 
 [node name="component_impulse_controller_switch" parent="Components" instance=ExtResource("1_x8mbl")]
 
