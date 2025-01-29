@@ -20,13 +20,15 @@ func _ready() -> void:
 
 func _on_state_entered_disabled() -> void:
 	_disabled = true
-	await get_tree().create_timer(0.3).timeout #cope
-	active_interact_area.shape.disabled = true
+	
+	#await get_tree().create_timer(0.3).timeout #cope
+	#active_interact_area.shape.disabled = true
 
 func _on_state_exited_disabled() -> void:
 	_disabled = false
-	await get_tree().create_timer(0.3).timeout #cope
-	active_interact_area.shape.disabled = false
+	
+	#await get_tree().create_timer(0.3).timeout #cope
+	#active_interact_area.shape.disabled = false
 
 func verify(source : Node) -> bool:
 	if source.is_in_group("interact_general"):

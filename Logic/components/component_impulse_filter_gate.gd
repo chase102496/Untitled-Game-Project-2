@@ -58,14 +58,14 @@ func _on_activated_AND() -> void:
 	
 	if gates_activated == gates_total:
 		Debug.message(["!! ",gates_activated," / ",gates_total])
-		activated.emit()
+		_on_activated()
 
 func _on_deactivated_AND() -> void:
 	
 	_update_gates_activated(-1)
 	
 	if gates_activated != gates_total:
-		deactivated.emit()
+		_on_deactivated()
 
 ## --- OR --- ##
 # 1 or more signals = activated, otherwise, deactivated
@@ -74,11 +74,11 @@ func _on_activated_OR() -> void:
 	
 	_update_gates_activated(1)
 	
-	activated.emit()
+	_on_activated()
 
 func _on_deactivated_OR() -> void:
 
 	_update_gates_activated(-1)
 	
 	if gates_activated == 0:
-		deactivated.emit()
+		_on_deactivated()

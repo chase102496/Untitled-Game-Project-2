@@ -10,6 +10,9 @@ enum save_type {
 	DISABLED
 }
 
+## HEYY DONT FORGET TO CHANGE THE GROUPS TOO
+## Set save parent, save variables, and then check the groups
+
 ## Determines how to set and get our savefile
 @export var my_save_type : save_type
 ## Only needed if save_type is GLOBAL
@@ -24,10 +27,6 @@ enum save_type {
 func _init() -> void:
 	if my_save_type == save_type.SCENE:
 		add_to_group("save_id_scene") #So we can get a save_id_scene when our scene is initialized or loaded
-
-func _ready() -> void:
-	if !save_parent:
-		save_parent = owner
 
 func find_save_id(all_data : Variant) -> String:
 	
@@ -52,7 +51,7 @@ func on_save(all_data : Variant) -> void:
 		# Then packs them up and returns them as a dictionary
 		all_data[key] = Global.serialize_data(save_parent,save_list)
 		
-		Debug.message(["component_save saved data: ",all_data[key]],Debug.msg_category.SAVE)
+		Debug.message(["component_save saved data for ",save_parent,": ",all_data[key]],Debug.msg_category.SAVE)
 
 func on_load(all_data : Variant) -> void:
 	
@@ -63,5 +62,5 @@ func on_load(all_data : Variant) -> void:
 		
 		Global.deserialize_data(save_parent,all_data[key])
 		
-		Debug.message(["component_save loaded data: ",all_data[key]],Debug.msg_category.SAVE)
+		Debug.message(["component_save loaded data for ",save_parent,": ",all_data[key]],Debug.msg_category.SAVE)
 	

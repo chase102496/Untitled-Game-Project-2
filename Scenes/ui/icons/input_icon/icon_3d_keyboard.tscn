@@ -9,7 +9,7 @@ viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1b8qf"]
 resource_local_to_scene = true
-render_priority = 100
+render_priority = 101
 transparency = 1
 shading_mode = 0
 diffuse_mode = 3

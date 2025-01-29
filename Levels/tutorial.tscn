@@ -14,7 +14,7 @@ panorama = ExtResource("5_ehswa")
 [sub_resource type="Sky" id="Sky_ncf8r"]
 sky_material = SubResource("PanoramaSkyMaterial_oa1ei")
 
-[sub_resource type="Environment" id="Environment_xtmpc"]
+[sub_resource type="Environment" id="Environment_vbsd5"]
 background_mode = 2
 background_color = Color(0.108, 0.2214, 0.27, 1)
 sky = SubResource("Sky_ncf8r")
@@ -35,7 +35,8 @@ adjustment_brightness = 1.03
 adjustment_contrast = 1.2
 adjustment_saturation = 1.12
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_vy0ne"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_doonh"]
+dof_blur_far_enabled = true
 dof_blur_far_distance = 15.0
 dof_blur_near_enabled = true
 dof_blur_near_distance = 4.0
@@ -70,8 +71,8 @@ follow_offset = Vector3(0, 1.5, 3)
 
 [node name="Camera3D" parent="Camera" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-environment = SubResource("Environment_xtmpc")
-attributes = SubResource("CameraAttributesPractical_vy0ne")
+environment = SubResource("Environment_vbsd5")
+attributes = SubResource("CameraAttributesPractical_doonh")
 
 [node name="world_entity_player" parent="." instance=ExtResource("2_8ih0j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 1.5, 17)

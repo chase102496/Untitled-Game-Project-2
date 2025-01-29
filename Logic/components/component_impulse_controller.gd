@@ -5,13 +5,9 @@ extends component_impulse
 
 
 signal activated
-signal one_shot
 signal deactivated
-
-enum interaction_source {
-	PLAYER,
-	SYSTEM
-}
+signal activated_load
+signal deactivated_load
 
 ## If plugged in, the impulse controller will only work when this is active, acting as an internal AND gate
 @export var impulse_parent : component_impulse
@@ -30,8 +26,6 @@ var interact_timer : Timer = Timer.new()
 
 ## Just keeps track of our impulse parent, if we have one
 var impulse_parent_signal : bool
-
-var last_interaction_source : interaction_source = interaction_source.SYSTEM
 
 func _ready() -> void:
 	## Important info

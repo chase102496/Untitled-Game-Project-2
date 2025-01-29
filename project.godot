@@ -46,7 +46,9 @@ directories/dch_directory={}
 directories/dtl_directory={
 "reference": "res://Story/dialogic/reference.dtl",
 "test": "res://Resources/Timeline/test.dtl",
-"timeline": "res://Story/dialogic/timeline.dtl"
+"timeline": "res://Story/dialogic/timeline.dtl",
+"you_recieved_a_key": "res://Story/dialogic/snippets/you_recieved_a_key.dtl",
+"you_recieved_soulstitch": "res://you_recieved_soulstitch.dtl"
 }
 glossary/default_case_sensitive=true
 layout/style_list=["res://addons/dialogic/Resources/somnia.tres"]
@@ -86,7 +88,7 @@ project/assembly_name="Untitled-Game-Project-2"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg", "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/notes_tab/plugin.cfg", "res://addons/shaker/plugin.cfg")
+enabled=PackedStringArray("res://addons/csgtomeshinstance/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/dreadpon.spatial_gardener/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/notes_tab/plugin.cfg", "res://addons/shaker/plugin.cfg")
 
 [filesystem]
 

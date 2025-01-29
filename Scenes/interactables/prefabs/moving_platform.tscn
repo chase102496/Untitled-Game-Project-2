@@ -1,0 +1,199 @@
+[gd_scene load_steps=33 format=4 uid="uid://dngc5qotpeve2"]
+
+[ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="1_6hpr6"]
+[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="2_7hgfg"]
+[ext_resource type="PackedScene" uid="uid://bxdqarudkqkta" path="res://Logic/components/component_impulse_reciever_animation.tscn" id="3_0n1h1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lhgge"]
+resource_local_to_scene = true
+radius = 1.125
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_txa6t"]
+animation = &"activated"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_08eer"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qbww3"]
+graph_offset = Vector2(-738.832, -141.817)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_txa6t")
+nodes/Animation/position = Vector2(-80, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_08eer")
+nodes/TimeScale/position = Vector2(100, 120)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_23acp"]
+animation = &"activated"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_u2kbn"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_71pp1"]
+graph_offset = Vector2(-856, -139)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_23acp")
+nodes/Animation/position = Vector2(-260, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_u2kbn")
+nodes/TimeScale/position = Vector2(20, 120)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xsfyo"]
+animation = &"deactivated"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_yijnn"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_waugq"]
+graph_offset = Vector2(-850, -58)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_xsfyo")
+nodes/Animation/position = Vector2(-240, 140)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_yijnn")
+nodes/TimeScale/position = Vector2(20, 140)
+node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
+
+[sub_resource type="Curve" id="Curve_2ktqe"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.83821, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wje08"]
+xfade_time = 0.5
+xfade_curve = SubResource("Curve_2ktqe")
+reset = false
+switch_mode = 1
+
+[sub_resource type="Curve" id="Curve_f3w4q"]
+_data = [Vector2(0, 0), 0.0, 0.650424, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wcm37"]
+xfade_time = 0.5
+xfade_curve = SubResource("Curve_f3w4q")
+reset = false
+switch_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r6o4f"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3h46t"]
+
+[sub_resource type="Curve" id="Curve_q4q8t"]
+_data = [Vector2(0, 0), 0.0, 1.47824, 0, 0, Vector2(1, 1), 1.16628, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_evxvh"]
+xfade_time = 1.0
+xfade_curve = SubResource("Curve_q4q8t")
+reset = false
+switch_mode = 1
+
+[sub_resource type="Curve" id="Curve_obkki"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_js7bw"]
+xfade_time = 0.5
+xfade_curve = SubResource("Curve_obkki")
+reset = false
+switch_mode = 1
+
+[sub_resource type="Curve" id="Curve_2sws1"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.991525), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_td1ob"]
+xfade_time = 0.5
+xfade_curve = SubResource("Curve_2sws1")
+reset = false
+switch_mode = 1
+
+[sub_resource type="Curve" id="Curve_n65oi"]
+_data = [Vector2(0, 0), 0.0, 1.50624, 0, 0, Vector2(1, 1), 0.894332, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fowh2"]
+xfade_time = 1.0
+xfade_curve = SubResource("Curve_n65oi")
+reset = false
+switch_mode = 1
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_wsiag"]
+states/activated/node = SubResource("AnimationNodeBlendTree_qbww3")
+states/activated/position = Vector2(442, 25)
+states/activated_clone/node = SubResource("AnimationNodeBlendTree_71pp1")
+states/activated_clone/position = Vector2(646, 100)
+states/deactivated/node = SubResource("AnimationNodeBlendTree_waugq")
+states/deactivated/position = Vector2(442, 195)
+transitions = ["activated", "deactivated", SubResource("AnimationNodeStateMachineTransition_wje08"), "deactivated", "activated", SubResource("AnimationNodeStateMachineTransition_wcm37"), "Start", "activated", SubResource("AnimationNodeStateMachineTransition_r6o4f"), "Start", "deactivated", SubResource("AnimationNodeStateMachineTransition_3h46t"), "activated", "activated_clone", SubResource("AnimationNodeStateMachineTransition_evxvh"), "activated_clone", "deactivated", SubResource("AnimationNodeStateMachineTransition_js7bw"), "deactivated", "activated_clone", SubResource("AnimationNodeStateMachineTransition_td1ob"), "activated_clone", "activated", SubResource("AnimationNodeStateMachineTransition_fowh2")]
+graph_offset = Vector2(-485, -190)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfon2"]
+albedo_color = Color(0.0823529, 0.152941, 0.247059, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xktjw"]
+albedo_color = Color(0.64, 0.796, 1, 1)
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ttlsn"]
+_surfaces = [{
+"aabb": AABB(-1.375, -0.125, -1.19078, 2.75, 0.25, 2.38157),
+"attribute_data": PackedByteArray("AAAAAAAAAACrqio+AAAAAKuqKj4AAIA/q6oqPgAAgD8AAAAAAACAPwAAAAAAAAAAAABAPwAAAAAAAIA/AAAAAAAAAD8AAAA/AABAPwAAAAAAAIA/AAAAABdddD+MLjo9iy46P5guOj0AAEA/AAAAAKKLbj+OLjo9AABAPwAAAAAXXXQ/jC46PaKLbj+OLjo9q6oqPgAAAACrqqo+AAAAAKuqqj4AAIA/q6qqPgAAgD+rqio+AACAP6uqKj4AAAAA/v9/PgAAAAAAAEA/AAAAAAAAAD8AAAA/56KLPoAuOj3+/38+AAAAAAAAQD8AAAAAo4suP4suOj3noos+gC46PQAAQD8AAAAAAABAPwAAAACMLjo/jC46PaOLLj+LLjo9q6qqPgAAAAAAAAA/AAAAAAAAAD8AAIA/AAAAPwAAgD+rqqo+AACAP6uqqj4AAAAAAAAAAAAAAAD+/38+AAAAAAAAAD8AAAA/mC46PZguOj0AAAAAAAAAAP7/fz4AAAAA/v9/Po0uOj2YLjo9mC46Pf7/fz4AAAAA/v9/PgAAAADooos+jC46Pf7/fz6NLjo9AAAAPwAAAACrqio/AAAAAKuqKj8AAIA/q6oqPwAAgD8AAAA/AACAPwAAAD8AAAAAAgCAPgAAAAAAAAAAAAAAAAAAAD8AAAA/6qKLPoAuOj0CAIA+AAAAAAAAAAAAAAAA5qKLPYkuOj3qoos+gC46PQAAAAAAAAAAAAAAAAAAAACKLjo9ii46Peaiiz2JLjo9q6oqPwAAAABVVVU/AAAAAFVVVT8AAIA/VVVVPwAAgD+rqio/AACAP6uqKj8AAAAA//8/PwAAAAACAIA+AAAAAAAAAD8AAAA/iy46P4guOj3//z8/AAAAAAIAgD4AAAAAuuiiPoouOj2LLjo/iC46PQIAgD4AAAAAAgCAPgAAAADqoos+ii46Pbrooj6KLjo9VVVVPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAgD9VVVU/AACAP1VVVT8AAAAAAACAPwAAAAD//z8/AAAAAAAAAD8AAAA/AABAP4wuOj0YXXQ/iC46PQAAgD8AAAAAAACAPwAAAACLLjo/jC46PQAAQD+MLjo9AACAPwAAAAD//z8/AAAAAIsuOj+MLjo9"),
+"format": 34359738391,
+"material": SubResource("StandardMaterial3D_hfon2"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 108,
+"vertex_data": PackedByteArray("AACwPwAAAL4AAAAA//8vPwAAAL6ka5g///8vPwAAAD6ka5g///8vPwAAAD6ka5g/AACwPwAAAD4AAAAAAACwPwAAAL4AAAAA//8vPwAAAL6ka5g/AACwPwAAAL4AAAAAAAAAAAAAAL4AAAAAAACwPwAAAD4AAAAA//8vPwAAAD6ka5g/AAAgPwAAAD5mkIo/AACgPwAAAD4AAAAzAACwPwAAAD4AAAAA//8vPwAAAD5Sank/AACwPwAAAD4AAAAAAAAgPwAAAD5mkIo///8vPwAAAD5Sank///8vPwAAAL6ka5g/AQAwvwAAAL6ka5g/AQAwvwAAAD6ka5g/AQAwvwAAAD6ka5g///8vPwAAAD6ka5g///8vPwAAAL6ka5g/AQAwvwAAAL6ka5g///8vPwAAAL6ka5g/AAAAAAAAAL4AAAAAAAAgPwAAAD5mkIo///8vPwAAAD6ka5g/AQAwvwAAAD6ka5g/AQAAvwAAAD5mkIo/AAAgPwAAAD5mkIo/AQAwvwAAAD6ka5g/AQAwvwAAAD6ka5g/AQAgvwAAAD5mkIo/AQAAvwAAAD5mkIo/AQAwvwAAAL6ka5g/AACwvwAAAL4QEgG0AACwvwAAAD4QEgG0AACwvwAAAD4QEgG0AQAwvwAAAD6ka5g/AQAwvwAAAL6ka5g/AACwvwAAAL4QEgG0AQAwvwAAAL6ka5g/AAAAAAAAAL4AAAAAAQAgvwAAAD5mkIo/AQAwvwAAAD6ka5g/AACwvwAAAD4QEgG0AACYvwAAAD7Qs909AQAgvwAAAD5mkIo/AACwvwAAAD4QEgG0AACwvwAAAD4QEgG0AACgvwAAAD4AAAC0AACYvwAAAD7Qs909AACwvwAAAL4QEgG0/v8vvwAAAL6ka5i//v8vvwAAAD6ka5i//v8vvwAAAD6ka5i/AACwvwAAAD4QEgG0AACwvwAAAL4QEgG0/v8vvwAAAL6ka5i/AACwvwAAAL4QEgG0AAAAAAAAAL4AAAAAAACgvwAAAD4AAAC0AACwvwAAAD4QEgG0/v8vvwAAAD6ka5i//f8vvwAAAD5Uanm/AACgvwAAAD4AAAC0/v8vvwAAAD6ka5i//v8vvwAAAD6ka5i/AAAgvwAAAD5okIq//f8vvwAAAD5Uanm//v8vvwAAAL6ka5i//v8vPwAAAL6ka5i//v8vPwAAAD6ka5i//v8vPwAAAD6ka5i//v8vvwAAAD6ka5i//v8vvwAAAL6ka5i//v8vPwAAAL6ka5i//v8vvwAAAL6ka5i/AAAAAAAAAL4AAAAAAAAgvwAAAD5okIq//v8vvwAAAD6ka5i//v8vPwAAAD6ka5i/AAAAPwAAAD5nkIq/AAAgvwAAAD5okIq//v8vPwAAAD6ka5i//v8vPwAAAD6ka5i/AAAgPwAAAD5nkIq/AAAAPwAAAD5nkIq//v8vPwAAAL6ka5i/AACwPwAAAL4AAAAAAACwPwAAAD4AAAAAAACwPwAAAD4AAAAA/v8vPwAAAD6ka5i//v8vPwAAAL6ka5i/AACwPwAAAL4AAAAA/v8vPwAAAL6ka5i/AAAAAAAAAL4AAAAAAACYPwAAAD7gs929AAAgPwAAAD5nkIq//v8vPwAAAD6ka5i//v8vPwAAAD6ka5i/AACgPwAAAD4AAAAzAACYPwAAAD7gs929/v8vPwAAAD6ka5i/AACwPwAAAD4AAAAAAACgPwAAAD4AAAAzJdH/fyVR/78l0f9/JVH/vyXR/38lUf+/JdH/fyVR/78l0f9/JVH/vyXR/38lUf+//38AAP//bNf/fwAA//+S6P9/AAD///+//3///yVR/7//f///JVH/v/9///8lUf+//3///yVR/7//f///JVH/v/9///8lUf+//3///yVR/7//f///JVH/v/9///8lUf+//3//fwAA/7//f/9/AAD/v/9//38AAP+//3//fwAA/7//f/9/AAD/v/9//38AAP+//38AACXR/7//fwAA//9s1/9/AAD///+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+/2S7/fwAAkujZLv9/AACS6Nku/38AAJLo2S7/fwAAkujZLv9/AACS6Nku/38AAJLo/38AANmu/7//fwAAJdH/v/9/AAD///+//3///wAAkuj/f///AACS6P9///8AAJLo/3///wAAkuj/f///AACS6P9///8AAJLo/3///wAAkuj/f///AACS6P9///8AAJLoAADZrv//kugAANmu//+S6AAA2a7//5LoAADZrv//kugAANmu//+S6AAA2a7//5Lo/38AAP//kij/fwAA//9sF/9/AAD///8//3///yVR/z//f///JVH/P/9///8lUf8//3///yVR/z//f///JVH/P/9///8lUf8//3///yVR/z//f///JVH/P/9///8lUf8//////////7//////////v/////////+//////////7//////////v/////////+//38AACXR/z//fwAA//+SKP9/AAD///8//3///wAA/z//f///AAD/P/9///8AAP8//3///wAA/z//f///AAD/P/9///8AAP8//3///wAA/z//f///AAD/P/9///8AAP8////ZrgAAbBf//9muAABsF///2a4AAGwX///ZrgAAbBf//9muAABsF///2a4AAGwX/38AANmu/z//fwAAJdH/P/9/AAD///8//3///wAAbBf/f///AABsF/9///8AAGwX/3///wAAbBf/f///AABsF/9///8AAGwX/3///wAAbBf/f///AABsF/9///8AAGwX")
+}, {
+"aabb": AABB(-1.25, 0.125, -1.08253, 2.5, 0.025, 2.16506),
+"attribute_data": PackedByteArray("q6oqPmZmZj+rqio+AACAP5mZGT5lZmY/mpkZPmZmZj+rqio+AACAPwAAAABmZmY/q6oqPgAAgD8AAAAAAACAPwAAAABmZmY/AABAPwAAAAAAAIA/AAAAAAAAAD8AAAA/q6qqPmZmZj+rqqo+AACAPyIioj5mZmY/IiKiPmZmZj+rqqo+AACAP6uqKj5mZmY/q6qqPgAAgD+rqio+AACAP6uqKj5mZmY//v9/PgAAAAAAAEA/AAAAAAAAAD8AAAA/AAAAP2ZmZj8AAAA/AACAP3h39z5mZmY/eHf3PmZmZj8AAAA/AACAP6uqqj5mZmY/AAAAPwAAgD+rqqo+AACAP6uqqj5mZmY/AAAAAAAAAAD+/38+AAAAAAAAAD8AAAA/q6oqP2ZmZj+rqio/AACAP2dmJj9mZmY/Z2YmP2ZmZj+rqio/AACAPwAAAD9mZmY/q6oqPwAAgD8AAAA/AACAPwAAAD9mZmY/AgCAPgAAAAAAAAAAAAAAAAAAAD8AAAA/VVVVP2ZmZj9VVVU/AACAPxERUT9mZmY/ERFRP2ZmZj9VVVU/AACAP6uqKj9mZmY/VVVVPwAAgD+rqio/AACAP6uqKj9mZmY///8/PwAAAAACAIA+AAAAAAAAAD8AAAA/AAAAAGZmZj8AAAAAAACAP7Oqqj1lZmY/sKqqPWVmZj8AAAAAAACAP1VVVT9mZmY/AAAAAAAAgD9VVVU/AACAP1VVVT9mZmY/AACAPwAAAAD//z8/AAAAAAAAAD8AAAA/"),
+"format": 34359738391,
+"material": SubResource("StandardMaterial3D_xktjw"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 72,
+"vertex_data": PackedByteArray("AAAgPwAAAD5mkIo///8fP5qZGT5nkIo///8vPwAAAD5Sank///8vPwAAAD5Sank///8fP5qZGT5nkIo/AACgPwAAAD4AAAAz//8fP5qZGT5nkIo/AACgP5qZGT4AAAAAAACgPwAAAD4AAAAzAACgP5qZGT4AAAAA//8fP5qZGT5nkIo/AAAAAJqZGT4AAAAAAQAgvwAAAD5mkIo/AQAgv5qZGT5mkIo/AQAAvwAAAD5mkIo/AQAAvwAAAD5mkIo/AQAgv5qZGT5mkIo/AAAgPwAAAD5mkIo/AQAgv5qZGT5mkIo///8fP5qZGT5nkIo/AAAgPwAAAD5mkIo///8fP5qZGT5nkIo/AQAgv5qZGT5mkIo/AAAAAJqZGT4AAAAAAACgvwAAAD4AAAC0AACgv5qZGT4AAAC0AACYvwAAAD7Qs909AACYvwAAAD7Qs909AACgv5qZGT4AAAC0AQAgvwAAAD5mkIo/AACgv5qZGT4AAAC0AQAgv5qZGT5mkIo/AQAgvwAAAD5mkIo/AQAgv5qZGT5mkIo/AACgv5qZGT4AAAC0AAAAAJqZGT4AAAAAAAAgvwAAAD5okIq//v8fv5qZGT5nkIq//f8vvwAAAD5Uanm//f8vvwAAAD5Uanm//v8fv5qZGT5nkIq/AACgvwAAAD4AAAC0/v8fv5qZGT5nkIq/AACgv5qZGT4AAAC0AACgvwAAAD4AAAC0AACgv5qZGT4AAAC0/v8fv5qZGT5nkIq/AAAAAJqZGT4AAAAAAAAgPwAAAD5nkIq//v8fP5qZGT5nkIq/AAAAPwAAAD5nkIq/AAAAPwAAAD5nkIq//v8fP5qZGT5nkIq/AAAgvwAAAD5okIq//v8fP5qZGT5nkIq//v8fv5qZGT5nkIq/AAAgvwAAAD5okIq//v8fv5qZGT5nkIq//v8fP5qZGT5nkIq/AAAAAJqZGT4AAAAAAACgPwAAAD4AAAAzAACgP5qZGT4AAAAAAACYPwAAAD7gs929AACYPwAAAD7gs929AACgP5qZGT4AAAAAAAAgPwAAAD5nkIq/AACgP5qZGT4AAAAA/v8fP5qZGT5nkIq/AAAgPwAAAD5nkIq//v8fP5qZGT5nkIq/AACgP5qZGT4AAAAAAAAAAJqZGT4AAAAAJdH/fyVR/78l0f9/JVH/vyXR/38lUf+/JdH/fyVR/78l0f9/JVH/vyXR/38lUf+/JdH/fyVR/78l0f9/JVH/vyXR/38lUf+//3///yVR/7//f///JVH/v/9///8lUf+//3//fwAA/7//f/9/AAD/v/9//38AAP+//3//fwAA/7//f/9/AAD/v/9//38AAP+//3//fwAA/7//f/9/AAD/v/9//38AAP+//3///wAA/7//f///AAD/v/9///8AAP+/2S7/fwAAkujZLv9/AACS6Nku/38AAJLo2S7/fwAAkujZLv9/AACS6Nku/38AAJLo2S7/fwAAkujZLv9/AACS6Nku/38AAJLo/3///wAAkuj/f///AACS6P9///8AAJLoAADZrv//bJcAANmu//9slwAA2a7//2yXAAAlUf//kugAACVR//+S6AAAJVH//5LoAADZrv//kugAANmu//+S6AAA2a7//5Lo/3///yVR/z//f///JVH/P/9///8lUf8//////////7//////////v/////////+//v8AAP7//7/+/wAA/v//v/7/AAD+//+//v///////7/+////////v/7///////+//3///wAA/z//f///AAD/P/9///8AAP8//v8lUQAAbBf+/yVRAABsF/7/JVEAAGwX/v/ZrgAAkmj+/9muAACSaP7/2a4AAJJo/v/ZrgAAbBf+/9muAABsF/7/2a4AAGwX/3///wAAbBf/f///AABsF/9///8AAGwX")
+}]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_0m5so"]
+points = PackedVector3Array(-0.6875, -0.125, -1.19078, -1.375, -0.125, -0.000233054, -0.6875, 0.124993, -1.19078, 0.6875, -0.125, -1.19078, -1.375, 0.124993, -0.000233054, -0.687769, -0.125, 1.19078, -0.625049, 0.15, -1.08262, 0.6875, 0.124993, -1.19078, -1.2501, 0.15, -0.000233054, 1.375, -0.125, 0, -0.687769, 0.124993, 1.19078, 0.6875, -0.125, 1.19078, 0.62478, 0.15, -1.08262, 1.375, 0.124993, 0, -0.625049, 0.15, 1.08238, 0.6875, 0.124993, 1.19078, 1.24983, 0.15, 0, 0.62478, 0.15, 1.08238)
+
+[node name="moving_platform" type="Node3D"]
+
+[node name="Controllers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="component_impulse_controller_switch" parent="Controllers" instance=ExtResource("1_6hpr6")]
+is_one_way = false
+type_selection = 1
+
+[node name="component_interact_reciever" parent="Controllers/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("2_7hgfg")]
+
+[node name="CollisionShape3D" parent="Controllers/component_impulse_controller_switch/component_interact_reciever" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.375, 0)
+shape = SubResource("SphereShape3D_lhgge")
+
+[node name="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="component_impulse_reciever_animation" parent="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER" node_paths=PackedStringArray("my_impulse") instance=ExtResource("3_0n1h1")]
+my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
+
+[node name="AnimationTree" parent="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER/component_impulse_reciever_animation" index="0"]
+tree_root = SubResource("AnimationNodeStateMachine_wsiag")
+anim_player = NodePath("../AnimationPlayer")
+parameters/activated_clone/TimeScale/scale = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER/component_impulse_reciever_animation"]
+callback_mode_process = 0
+
+[node name="Filters" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_ttlsn")
+
+[node name="AnimatableBody3D UNCHECK SYNC TO PHYSICS" type="AnimatableBody3D" parent="MeshInstance3D"]
+collision_layer = 3
+collision_mask = 3
+sync_to_physics = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/AnimatableBody3D UNCHECK SYNC TO PHYSICS"]
+shape = SubResource("ConvexPolygonShape3D_0m5so")
+
+[editable path="Controllers/component_impulse_controller_switch"]
+[editable path="Controllers/component_impulse_controller_switch/component_interact_reciever"]
+[editable path="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER/component_impulse_reciever_animation"]

@@ -8,12 +8,19 @@ extends component_impulse_filter
 func _ready() -> void:
 	super._ready()
 
-func _on_my_impulse_activated() -> void:
-	super._on_my_impulse_activated()
+func _check_item() -> bool:
 	if Global.player.my_component_inventory.has_item_id(item_id):
 		if Global.player.my_component_inventory.get_item_id(item_id).quantity >= quantity:
-			activated.emit()
+			return true
+			
+	return false
+
+func _on_my_impulse_activated() -> void:
+	super._on_my_impulse_activated()
+	if _check_item():
+		_on_activated()
 
 func _on_my_impulse_deactivated() -> void:
 	super._on_my_impulse_deactivated()
-	deactivated.emit()
+	if _check_item():
+		_on_deactivated()

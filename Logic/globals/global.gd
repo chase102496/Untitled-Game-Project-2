@@ -283,6 +283,9 @@ func serialize_data(target: Object, export_data: PackedStringArray) -> Dictionar
 			## Checking for special get conditions
 			## @ denotes we want to call a special function to save the object's info
 			## @state_current_nodepath will save the current state as a nodepath relative to state_chart._state
+			## $ denotes we want to execute the callable variable after this character
+			## $_ready for instance will call the _ready function on load-in
+			## $ can use this to set dynamic callables we can reassign to different values
 			if final_key[0] == "@":
 				var cmd = final_key.substr(1)
 				
@@ -295,6 +298,13 @@ func serialize_data(target: Object, export_data: PackedStringArray) -> Dictionar
 							push_error("Object has no state_chart to capture serialize states for: ",final_key," ",current)
 					_:
 						push_error("Could not match command: ",final_key," ",current)
+			
+			elif final_key[0] == "$":
+				var trimmed_key = final_key.substr(1)
+				if current.get(trimmed_key):
+					nested[final_key] = current.get(trimmed_key) #Saves the STRING
+				else:
+					push_error("Error: Callable '%s' does not exist on '%s'" % [final_key, current.name])
 			
 			## Is just a normal variable
 			elif current.get(final_key):
@@ -326,7 +336,10 @@ func deserialize_data(target: Object, imported_data: Dictionary) -> void:
 				push_error("Error: Property '%s' does not exist on target '%s'." % [key, target.name])
 		## This means we're inside the last dictionary, and we should be referencing the final part
 		else:
+			## Used to execute the save via $ cmd instead of setting it to the var
 			
+			
+			## Used to execute specific save functionality
 			if key[0] == "@":
 				var cmd = key.substr(1)
 				
@@ -336,6 +349,13 @@ func deserialize_data(target: Object, imported_data: Dictionary) -> void:
 						target.state_chart.set_load_state(imported_data[key],true)
 					_:
 						pass
+			## Used to call any callable variable after this key from the scope of the source
+			elif key[0] == "$":
+				var cmd = key.substr(1)
+				if target.get(cmd):
+					Callable(target,imported_data[key]).call_deferred()
+				else:
+					push_error("Error: Callable '%s' does not exist on target '%s'." % [key, target.name])
 			
 			# Set the value directly
 			elif target.get(key):

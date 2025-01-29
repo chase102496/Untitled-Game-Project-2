@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://ba65sohnbory4"]
+
+[node name="door_frame" type="CSGCombiner3D"]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.75)
+radius = 0.25
+sides = 6
+smooth_faces = false
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.75)
+radius = 0.25
+sides = 6
+smooth_faces = false
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2, -4.37114e-08)
+radius = 0.25
+sides = 6
+smooth_faces = false

@@ -88,6 +88,9 @@ func _physics_process(delta: float) -> void:
 	if _enabled:
 		_store_velocity_history()
 		
+		
+		
 		if _friction:
 			owner.move_and_slide()
+			
 			owner.velocity.y = move_toward(owner.velocity.y, max_grav, grav * delta)

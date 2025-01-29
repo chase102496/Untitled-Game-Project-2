@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://jobwx0u1sf3g"]
+
+[ext_resource type="Script" path="res://Logic/components/component_impulse_filter_relay.gd" id="1_3vdev"]
+
+[node name="component_impulse_filter_relay" type="Node"]
+script = ExtResource("1_3vdev")
+my_impulse_flags = {
+"activated": true,
+"deactivated": true,
+"one_shot": true
+}

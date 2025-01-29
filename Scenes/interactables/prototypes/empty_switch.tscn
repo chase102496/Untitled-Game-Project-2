@@ -4,13 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="4_i60ww"]
 [ext_resource type="PackedScene" uid="uid://gxyn17c0mhfb" path="res://Logic/components/component_impulse_reciever_tween.tscn" id="5_88ioh"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57itl"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k6ydq"]
 shading_mode = 2
 diffuse_mode = 3
 specular_mode = 1
 
 [sub_resource type="SphereMesh" id="SphereMesh_46wrk"]
-material = SubResource("StandardMaterial3D_57itl")
+material = SubResource("StandardMaterial3D_k6ydq")
 radius = 0.2
 height = 0.2
 radial_segments = 16
@@ -27,11 +27,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="component_impulse_controller_switch" parent="Controllers" instance=ExtResource("3_amkib")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 is_one_way = false
-
-[node name="component_input_prompt" parent="Controllers/component_impulse_controller_switch/Components" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="component_interact_reciever" parent="Controllers/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("4_i60ww")]
 

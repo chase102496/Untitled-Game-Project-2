@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://Logic/components/component_interact_controller.gd" id="1_ypa7y"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_al4cq"]
-radius = 1.0
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_h4v36"]
+height = 1.5
 
 [node name="component_interact_controller" type="Area3D"]
 collision_layer = 16
@@ -11,4 +11,4 @@ collision_mask = 16
 script = ExtResource("1_ypa7y")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_al4cq")
+shape = SubResource("CylinderShape3D_h4v36")

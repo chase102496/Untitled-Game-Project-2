@@ -10,8 +10,3 @@ dict_activated = {
 dict_deactivated = {
 "mesh.material.albedo_color": Color(1, 0.296102, 0.583871, 1)
 }
-my_impulse_flags = {
-"on_activated": true,
-"on_deactivated": true,
-"on_one_shot": false
-}

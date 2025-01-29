@@ -21,6 +21,8 @@ enum type {
 	BUTTON
 }
 
+var is_player_source : bool = false
+
 ##Determines how this switch operates
 @export var type_selection : type = type.SWITCH
 
@@ -120,13 +122,15 @@ func _on_state_exited_activated() -> void:
 	_signal_handler("_on_state_exited",null,"activated")
 
 func _on_state_entered_predisabled() -> void:
-	one_shot.emit() #Only triggers once per playthrough
+	activated.emit()
+	is_player_source = true
 	_stop_interact_timer()
 	_update_input_prompt(my_component_input_prompt.input_closed)
 	state_chart.send_event("on_disabled")
 
 func _on_state_entered_disabled() -> void:
-	activated.emit()
+	if !is_player_source:
+		activated_load.emit()
 
 ## Area
 
