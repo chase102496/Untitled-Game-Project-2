@@ -458,6 +458,8 @@ class world_ability_soulstitch:
 	var mark_location : Vector3
 	var recall_time : float = 0.5
 	var recall_tween : Tween
+	## Max range we are able to recall to the mark
+	var recall_range_max : float = 10
 	
 	## Direction of recall
 	var recall_direction : Vector3
@@ -601,8 +603,14 @@ class world_ability_soulstitch:
 	
 	### --- Events --- ###
 	
+	func _is_out_of_range() -> bool:
+		if caster.global_position.distance_to(mark_location) > recall_range_max:
+			return true
+		else:
+			return false
+	
 	func verify_use() -> bool:
-		if _is_on_cooldown():
+		if _is_on_cooldown() or (_is_out_of_range() and is_mark_placed):
 			return false
 		else:
 			return true

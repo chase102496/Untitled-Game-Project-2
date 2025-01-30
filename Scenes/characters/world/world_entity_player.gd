@@ -17,6 +17,8 @@ func _ready():
 	icon = Glossary.icon_scene["lumia"]
 	Global.player = self
 	
+	
+	
 	if SceneManager.prev_scene_path == "":
 		my_component_ability.add_ability(component_ability.ability_soulstitch.new())
 		my_component_ability.add_ability(component_ability.ability_switchstitch.new())

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://dngc5qotpeve2"]
+[gd_scene load_steps=27 format=4 uid="uid://dngc5qotpeve2"]
 
 [ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="1_6hpr6"]
 [ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="2_7hgfg"]
@@ -47,25 +47,11 @@ nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_yijnn")
 nodes/TimeScale/position = Vector2(20, 140)
 node_connections = [&"TimeScale", 0, &"Animation", &"output", 0, &"TimeScale"]
 
-[sub_resource type="Curve" id="Curve_2ktqe"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 2.83821, 0.0, 0, 0]
-point_count = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wje08"]
-xfade_time = 0.5
-xfade_curve = SubResource("Curve_2ktqe")
-reset = false
-switch_mode = 1
-
-[sub_resource type="Curve" id="Curve_f3w4q"]
-_data = [Vector2(0, 0), 0.0, 0.650424, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wcm37"]
-xfade_time = 0.5
-xfade_curve = SubResource("Curve_f3w4q")
-reset = false
-switch_mode = 1
+switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r6o4f"]
 
@@ -78,26 +64,6 @@ point_count = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_evxvh"]
 xfade_time = 1.0
 xfade_curve = SubResource("Curve_q4q8t")
-reset = false
-switch_mode = 1
-
-[sub_resource type="Curve" id="Curve_obkki"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_js7bw"]
-xfade_time = 0.5
-xfade_curve = SubResource("Curve_obkki")
-reset = false
-switch_mode = 1
-
-[sub_resource type="Curve" id="Curve_2sws1"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 0.991525), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_td1ob"]
-xfade_time = 0.5
-xfade_curve = SubResource("Curve_2sws1")
 reset = false
 switch_mode = 1
 
@@ -118,8 +84,8 @@ states/activated_clone/node = SubResource("AnimationNodeBlendTree_71pp1")
 states/activated_clone/position = Vector2(646, 100)
 states/deactivated/node = SubResource("AnimationNodeBlendTree_waugq")
 states/deactivated/position = Vector2(442, 195)
-transitions = ["activated", "deactivated", SubResource("AnimationNodeStateMachineTransition_wje08"), "deactivated", "activated", SubResource("AnimationNodeStateMachineTransition_wcm37"), "Start", "activated", SubResource("AnimationNodeStateMachineTransition_r6o4f"), "Start", "deactivated", SubResource("AnimationNodeStateMachineTransition_3h46t"), "activated", "activated_clone", SubResource("AnimationNodeStateMachineTransition_evxvh"), "activated_clone", "deactivated", SubResource("AnimationNodeStateMachineTransition_js7bw"), "deactivated", "activated_clone", SubResource("AnimationNodeStateMachineTransition_td1ob"), "activated_clone", "activated", SubResource("AnimationNodeStateMachineTransition_fowh2")]
-graph_offset = Vector2(-485, -190)
+transitions = ["activated", "deactivated", SubResource("AnimationNodeStateMachineTransition_wje08"), "deactivated", "activated", SubResource("AnimationNodeStateMachineTransition_wcm37"), "Start", "activated", SubResource("AnimationNodeStateMachineTransition_r6o4f"), "Start", "deactivated", SubResource("AnimationNodeStateMachineTransition_3h46t"), "activated", "activated_clone", SubResource("AnimationNodeStateMachineTransition_evxvh"), "activated_clone", "activated", SubResource("AnimationNodeStateMachineTransition_fowh2")]
+graph_offset = Vector2(-424, -94)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hfon2"]
 albedo_color = Color(0.0823529, 0.152941, 0.247059, 1)
@@ -157,8 +123,22 @@ points = PackedVector3Array(-0.6875, -0.125, -1.19078, -1.375, -0.125, -0.000233
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="component_impulse_controller_switch" parent="Controllers" instance=ExtResource("1_6hpr6")]
-is_one_way = false
 type_selection = 1
+is_one_way = false
+one_way_flags = {
+"deafen": true,
+"mute": true
+}
+impulse_reset_signal = "activated"
+reset_flags = {
+"deafen": true,
+"mute": true
+}
+impulse_deafen_signal = "activated"
+is_deafened = false
+impulse_mute_signal = "activated"
+is_muted = false
+interact_timer_max = 0.25
 
 [node name="component_interact_reciever" parent="Controllers/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("2_7hgfg")]
 

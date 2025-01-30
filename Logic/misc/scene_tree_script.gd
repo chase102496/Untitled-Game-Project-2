@@ -18,3 +18,4 @@ func activate() -> void:
 func load_scene() -> void:
 	await get_tree().create_timer(0.5).timeout
 	loaded.emit()
+	Events.loaded_scene.emit()

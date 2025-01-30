@@ -8,6 +8,8 @@ extends Node
 ## HACK THIS IS MY HACK CODE NOT THE PLUGIN
 # ----------------------------------------
 
+signal state_changed(event : StringName)
+
 ## Sets the initial state based on a NodePath or String
 func set_initial_state(path : NodePath):
 	_state.initial_state = path
@@ -69,7 +71,7 @@ func set_load_state(path : NodePath, trigger_transition : bool = true) -> void:
 			#print_debug("Requested load state already matches current state\n", "Current: ",current_to,"Load: ", trans.to)
 			pass
 
-# ----------------------------------------
+## HACK ----------------------------------
 
 ## The the remote debugger
 const DebuggerRemote = preload("utilities/editor_debugger/editor_debugger_remote.gd")
@@ -174,8 +176,8 @@ func send_event(event:StringName) -> void:
 	
 	_queued_events.append(event)
 	_run_changes()
-		
-		
+	state_changed.emit(event)
+	
 ## Sets a property that can be used in expression guards. The property will be available as a global variable
 ## with the same name. E.g. if you set the property "foo" to 42, you can use the expression "foo == 42" in
 ## an expression guard.

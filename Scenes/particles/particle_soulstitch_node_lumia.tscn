@@ -58,7 +58,7 @@ offsets = PackedFloat32Array(0, 0.6, 0.9)
 colors = PackedColorArray(0.95, 0, 1, 1, 0.721, 0.07, 1, 1, 0.210724, 0.272321, 1, 1)
 metadata/_snap_enabled = true
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_7oeec"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_udwyy"]
 gradient = SubResource("Gradient_hq4ji")
 
 [sub_resource type="Curve" id="Curve_87cd3"]
@@ -66,7 +66,7 @@ max_value = 20.0
 _data = [Vector2(0, 0.4), 0.0, 140.185, 0, 0, Vector2(0.985075, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_8dlva"]
+[sub_resource type="CurveTexture" id="CurveTexture_gs08r"]
 curve = SubResource("Curve_87cd3")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t7pc2"]
@@ -81,8 +81,8 @@ damping_max = 0.05
 scale_min = 0.25
 scale_max = 0.5
 color = Color(0.496, 0.37, 1, 1)
-color_ramp = SubResource("GradientTexture1D_7oeec")
-emission_curve = SubResource("CurveTexture_8dlva")
+color_ramp = SubResource("GradientTexture1D_udwyy")
+emission_curve = SubResource("CurveTexture_gs08r")
 turbulence_noise_strength = 20.0
 turbulence_noise_scale = 5.0
 turbulence_noise_speed = Vector3(1, 1, 1)

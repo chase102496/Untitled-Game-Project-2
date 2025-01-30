@@ -52,6 +52,14 @@ func get_current_scene_type() -> int:
 	
 	return current_scene_type
 
+func find_ancestor_character3d(node: Node) -> CharacterBody3D:
+	var current = node
+	while current:
+		if current is CharacterBody3D:
+			return current
+		current = current.get_parent()
+	return null  # No CharacterBody3D found
+
 func send_event_delayed(target : Node, state : String, delay : float) -> void:
 	await get_tree().create_timer(delay).timeout
 	target.state_chart.send_event(state)
@@ -306,8 +314,8 @@ func serialize_data(target: Object, export_data: PackedStringArray) -> Dictionar
 				else:
 					push_error("Error: Callable '%s' does not exist on '%s'" % [final_key, current.name])
 			
-			## Is just a normal variable
-			elif current.get(final_key):
+			## Is just a normal variable, double-checking to make sure we're not pulling it and getting false with is Variant
+			elif current.get(final_key) or current.get(final_key) is Variant:
 				## Set the value at the final level
 				nested[final_key] = current.get(final_key)
 			
@@ -358,7 +366,8 @@ func deserialize_data(target: Object, imported_data: Dictionary) -> void:
 					push_error("Error: Callable '%s' does not exist on target '%s'." % [key, target.name])
 			
 			# Set the value directly
-			elif target.get(key):
+			elif target.get(key) or target.get(key) is Variant:
+				
 				if target.has_method(key):
 					Callable(target, key).call_deferred(imported_data[key])
 				else:

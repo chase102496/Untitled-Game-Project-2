@@ -48,7 +48,7 @@ directories/dtl_directory={
 "test": "res://Resources/Timeline/test.dtl",
 "timeline": "res://Story/dialogic/timeline.dtl",
 "you_recieved_a_key": "res://Story/dialogic/snippets/you_recieved_a_key.dtl",
-"you_recieved_soulstitch": "res://you_recieved_soulstitch.dtl"
+"you_recieved_soulstitch": "res://Story/dialogic/snippets/you_recieved_soulstitch.dtl"
 }
 glossary/default_case_sensitive=true
 layout/style_list=["res://addons/dialogic/Resources/somnia.tres"]

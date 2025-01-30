@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b36q0erjohb66"]
+
+[ext_resource type="PackedScene" uid="uid://bic8dmfc0eqgb" path="res://Logic/components/component_interact_reciever.tscn" id="1_qg6y7"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qvfe7"]
+resource_local_to_scene = true
+radius = 2.0
+
+[node name="component_interact_reciever_interact_general" groups=["interact_general"] instance=ExtResource("1_qg6y7")]
+
+[node name="CollisionShape3D" parent="." index="0"]
+shape = SubResource("SphereShape3D_qvfe7")

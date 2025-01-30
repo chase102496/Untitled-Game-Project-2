@@ -8,44 +8,53 @@
 
 [node name="component_impulse_controller_switch" node_paths=PackedStringArray("my_component_input_prompt") instance=ExtResource("1_854y3")]
 script = ExtResource("2_p0xor")
-one_way = false
-my_component_input_prompt = NodePath("Components/component_input_prompt")
 type_selection = 0
+is_one_way = false
+impulse_reset_signal = "activated"
+impulse_disable_signal = "activated"
+interact_timer_max = 0.25
+my_component_input_prompt = NodePath("Components/component_input_prompt")
 
 [node name="Main" parent="StateChart" index="0"]
 initial_state = NodePath("Deactivated")
 
-[node name="_on_load" type="Node" parent="StateChart/Main" index="0"]
+[node name="_on_reset" type="Node" parent="StateChart/Main" index="0"]
+script = ExtResource("4_5pn0t")
+to = NodePath("..")
+event = &"_on_reset"
+delay_in_seconds = "0.0"
+
+[node name="_on_load" type="Node" parent="StateChart/Main" index="1"]
 script = ExtResource("4_5pn0t")
 to = NodePath("..")
 event = &"_on_load"
 delay_in_seconds = "0.0"
 
-[node name="on_activated" type="Node" parent="StateChart/Main" index="1"]
+[node name="on_activated" type="Node" parent="StateChart/Main" index="2"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../Activated")
 event = &"on_activated"
 delay_in_seconds = "0.0"
 
-[node name="on_deactivated" type="Node" parent="StateChart/Main" index="2"]
+[node name="on_deactivated" type="Node" parent="StateChart/Main" index="3"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../Deactivated")
 event = &"on_deactivated"
 delay_in_seconds = "0.0"
 
-[node name="on_predisabled" type="Node" parent="StateChart/Main" index="3"]
+[node name="on_predisabled" type="Node" parent="StateChart/Main" index="4"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../PreDisabled")
 event = &"on_predisabled"
 delay_in_seconds = "0.0"
 
-[node name="on_disabled" type="Node" parent="StateChart/Main" index="4"]
+[node name="on_disabled" type="Node" parent="StateChart/Main" index="5"]
 script = ExtResource("4_5pn0t")
 to = NodePath("../Disabled")
 event = &"on_disabled"
 delay_in_seconds = "0.0"
 
-[node name="Deactivated" type="Node" parent="StateChart/Main" index="5"]
+[node name="Deactivated" type="Node" parent="StateChart/Main" index="6"]
 script = ExtResource("3_mu63i")
 
 [node name="on_transition" type="Node" parent="StateChart/Main/Deactivated" index="0"]
@@ -54,7 +63,7 @@ to = NodePath("../../Activated")
 event = &"on_transition"
 delay_in_seconds = "0.0"
 
-[node name="Activated" type="Node" parent="StateChart/Main" index="6"]
+[node name="Activated" type="Node" parent="StateChart/Main" index="7"]
 script = ExtResource("3_mu63i")
 
 [node name="on_transition" type="Node" parent="StateChart/Main/Activated" index="0"]
@@ -63,10 +72,10 @@ to = NodePath("../../Deactivated")
 event = &"on_transition"
 delay_in_seconds = "0.0"
 
-[node name="PreDisabled" type="Node" parent="StateChart/Main" index="7"]
+[node name="PreDisabled" type="Node" parent="StateChart/Main" index="8"]
 script = ExtResource("3_mu63i")
 
-[node name="Disabled" type="Node" parent="StateChart/Main" index="8"]
+[node name="Disabled" type="Node" parent="StateChart/Main" index="9"]
 script = ExtResource("3_mu63i")
 
 [node name="Components" type="Node3D" parent="." index="1"]

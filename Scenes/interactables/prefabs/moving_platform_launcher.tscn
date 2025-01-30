@@ -1,0 +1,96 @@
+[gd_scene load_steps=8 format=3 uid="uid://cs02p2bnx5v4r"]
+
+[ext_resource type="PackedScene" uid="uid://dngc5qotpeve2" path="res://Scenes/interactables/prototypes/moving_platform.tscn" id="1_elokm"]
+[ext_resource type="Script" path="res://Scenes/interactables/prefabs/moving_platform_launcher.gd" id="2_g6gkv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cqewu"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="Animation" id="Animation_4ah0a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gqd2t"]
+resource_name = "activated"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.1, 0.2, 0.28, 0.34, 0.38),
+"transitions": PackedFloat32Array(3.13834, 0.840896, 0.420448, 0.420448, 0.420448, 0.420448, 0.420448),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.5, 0), Vector3(0, 0.6, 0), Vector3(0, 0.5, 0), Vector3(0, 0.55, 0), Vector3(0, 0.57, 0), Vector3(0, 0.55, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.02),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_launch_target"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_nyb57"]
+resource_name = "deactivated"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(2, 2),
+"update": 0,
+"values": [Vector3(0, 0.55, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7rtt3"]
+_data = {
+"RESET": SubResource("Animation_4ah0a"),
+"activated": SubResource("Animation_gqd2t"),
+"deactivated": SubResource("Animation_nyb57")
+}
+
+[node name="moving_platform_launcher" node_paths=PackedStringArray("area") instance=ExtResource("1_elokm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("2_g6gkv")
+area = NodePath("Controllers/component_impulse_controller_switch/component_interact_reciever")
+
+[node name="CollisionShape3D" parent="Controllers/component_impulse_controller_switch/component_interact_reciever" index="0"]
+shape = SubResource("BoxShape3D_cqewu")
+
+[node name="AnimationPlayer" parent="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER/component_impulse_reciever_animation" index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_7rtt3")
+}
+
+[node name="MeshInstance3D" parent="." index="3"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[editable path="Controllers/component_impulse_controller_switch"]
+[editable path="Controllers/component_impulse_controller_switch/component_interact_reciever"]
+[editable path="Recievers MAKE SURE TO SET PHYSICS MODE and ANIMTREE POINTER/component_impulse_reciever_animation"]

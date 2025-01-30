@@ -92,7 +92,7 @@ func start_skillcheck_window(time : float) -> void:
 		_skillcheck_end()
 
 func _on_battle_entity_dying(entity : Node) -> void:
-	var cast_queue : Node = owner.my_component_ability.cast_queue
+	var cast_queue = owner.my_component_ability.cast_queue
 	if cast_queue and cast_queue.primary_target and entity == cast_queue.primary_target:
 		_skillcheck_end()
 

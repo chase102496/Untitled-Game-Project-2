@@ -5,16 +5,18 @@ extends component_impulse_filter
 
 func _on_my_impulse_activated() -> void:
 	super._on_my_impulse_activated()
-	_on_activated()
+	_on_activated.call_deferred()
 
 func _on_my_impulse_deactivated() -> void:
 	super._on_my_impulse_deactivated()
-	_on_deactivated()
+	_on_deactivated.call_deferred()
 
-func _on_my_impulse_activated_load() -> void:
-	super._on_my_impulse_activated_load()
-	_on_activated_load()
-
-func _on_my_impulse_deactivated_load() -> void:
-	super._on_my_impulse_deactivated_load()
-	_on_deactivated_load()
+##
+#
+#func _on_my_impulse_activated_load() -> void:
+	#super._on_my_impulse_activated_load()
+	#_on_activated_load()
+#
+#func _on_my_impulse_deactivated_load() -> void:
+	#super._on_my_impulse_deactivated_load()
+	#_on_deactivated_load()

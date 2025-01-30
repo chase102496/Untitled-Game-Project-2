@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1pnogll12jh2"]
+
+[ext_resource type="PackedScene" uid="uid://blve5xgsm70ww" path="res://Logic/components/component_save.tscn" id="1_ycylx"]
+
+[node name="component_save_persistent_switch" groups=["load_data_persistent", "load_data_session", "save_data_persistent", "save_data_session"] instance=ExtResource("1_ycylx")]
+save_list = PackedStringArray("is_deafened", "is_muted", "@state_current_nodepath")

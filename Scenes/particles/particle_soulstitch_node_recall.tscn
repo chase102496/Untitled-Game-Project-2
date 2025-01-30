@@ -1,69 +1,85 @@
 [gd_scene load_steps=11 format=3 uid="uid://bjb4evqdmso8t"]
 
 [ext_resource type="Shader" path="res://test_junk/flame_shader.gdshader" id="1_kfjd1"]
+[ext_resource type="PackedScene" uid="uid://4ec85bmw10f3" path="res://Scenes/particles/particle_soulstitch_node_lumia.tscn" id="1_udsgq"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ohs8f"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1dt8e"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 0.69, 0.881167, 1)
+proximity_fade_distance = 15.0
+distance_fade_mode = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_1ub1y"]
+material = SubResource("StandardMaterial3D_1dt8e")
+radius = 10.0
+height = 20.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_en3rx"]
+transparency = 1
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 0.690196, 0.882353, 1)
+proximity_fade_distance = 15.0
+distance_fade_mode = 1
+distance_fade_min_distance = 10.0
+distance_fade_max_distance = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_hoepi"]
+material = SubResource("StandardMaterial3D_en3rx")
+flip_faces = true
+radius = 9.99
+height = 19.99
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_388fm"]
 noise_type = 3
 fractal_octaves = 1
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hk2ft"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0hwhf"]
 seamless = true
-noise = SubResource("FastNoiseLite_ohs8f")
+noise = SubResource("FastNoiseLite_388fm")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xo4wg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsfgt"]
 render_priority = 0
 shader = ExtResource("1_kfjd1")
-shader_parameter/time_speed = 1.0
+shader_parameter/time_speed = 0.05
 shader_parameter/spin = 1.0
 shader_parameter/flame_brightness = 0.6
 shader_parameter/color_intensity = 0.0
 shader_parameter/horizontal_frequency = 1.0
 shader_parameter/vertical_frequency = 1.0
 shader_parameter/size = -0.5
-shader_parameter/core_size = 1.0
-shader_parameter/color1 = Color(0.57, 0.57, 0.57, 1)
-shader_parameter/color2 = Color(0.93, 0.93, 0.93, 1)
-shader_parameter/color3 = Color(1, 1, 1, 1)
-shader_parameter/color4 = Color(0.93, 0.93, 0.93, 1)
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_hk2ft")
+shader_parameter/core_size = 3.0
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(0.45, 0.189, 0.34995, 1)
+shader_parameter/color3 = Color(0.41, 0.1722, 0.318843, 1)
+shader_parameter/color4 = Color(0.62, 0.2604, 0.482153, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_0hwhf")
 
-[sub_resource type="SphereMesh" id="SphereMesh_fsh4b"]
-material = SubResource("ShaderMaterial_xo4wg")
-radius = 0.3
-height = 0.6
+[sub_resource type="SphereMesh" id="SphereMesh_1yg5b"]
+material = SubResource("ShaderMaterial_dsfgt")
+radius = 10.0
+height = 20.0
 radial_segments = 256
 rings = 256
 
-[sub_resource type="Curve" id="Curve_oxofv"]
-_data = [Vector2(0, 1), 0.0, -3.19363, 0, 0, Vector2(0.75, 0), 0.250447, 0.0, 0, 0]
-point_count = 2
+[node name="particle_heartsurge_node_recall" type="Node3D"]
 
-[sub_resource type="CurveTexture" id="CurveTexture_i0a66"]
-curve = SubResource("Curve_oxofv")
+[node name="particle_heartsurge_node_lumia" parent="." instance=ExtResource("1_udsgq")]
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p6dkd"]
-gravity = Vector3(0, 0, 0)
-radial_accel_min = -0.500002
-radial_accel_max = 0.499998
-scale_curve = SubResource("CurveTexture_i0a66")
+[node name="sphere outside" type="MeshInstance3D" parent="."]
+transparency = 0.85
+cast_shadow = 0
+mesh = SubResource("SphereMesh_1ub1y")
+skeleton = NodePath("../particle_heartsurge_node_recall_radius")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ccl1"]
-blend_mode = 1
-shading_mode = 0
-diffuse_mode = 3
-specular_mode = 1
+[node name="sphere inside" type="MeshInstance3D" parent="."]
+transparency = 0.9
+cast_shadow = 0
+mesh = SubResource("SphereMesh_hoepi")
+skeleton = NodePath("../particle_heartsurge_node_recall_radius")
 
-[sub_resource type="SphereMesh" id="SphereMesh_s1sgy"]
-material = SubResource("StandardMaterial3D_3ccl1")
-radius = 0.1
-height = 0.2
-
-[node name="particle_heartsurge_node_recall" type="MeshInstance3D"]
-mesh = SubResource("SphereMesh_fsh4b")
-
-[node name="blob" type="GPUParticles3D" parent="."]
-amount = 100
-lifetime = 0.25
-fixed_fps = 1000
-process_material = SubResource("ParticleProcessMaterial_p6dkd")
-draw_pass_1 = SubResource("SphereMesh_s1sgy")
+[node name="particle_heartsurge_node_recall_radius" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("SphereMesh_1yg5b")
+skeleton = NodePath("")
