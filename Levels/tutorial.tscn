@@ -17,7 +17,7 @@ panorama = ExtResource("5_ehswa")
 [sub_resource type="Sky" id="Sky_ncf8r"]
 sky_material = SubResource("PanoramaSkyMaterial_oa1ei")
 
-[sub_resource type="Environment" id="Environment_q1yfj"]
+[sub_resource type="Environment" id="Environment_58xuj"]
 background_mode = 2
 background_color = Color(0.108, 0.2214, 0.27, 1)
 sky = SubResource("Sky_ncf8r")
@@ -38,7 +38,7 @@ adjustment_brightness = 1.03
 adjustment_contrast = 1.2
 adjustment_saturation = 1.12
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_rtmoo"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_emlb6"]
 dof_blur_far_distance = 15.0
 dof_blur_near_enabled = true
 dof_blur_near_distance = 4.0
@@ -68,14 +68,15 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 light_bake_mode = 1
 
 [node name="Camera" parent="." node_paths=PackedStringArray("follow_target") instance=ExtResource("3_32cij")]
-transform = Transform3D(0.999701, 0, 0, 0, 0.970293, 0.241922, 0, -0.241921, 0.970297, -20.5, 5.625, 38.625)
+transform = Transform3D(0.999701, 0, 0, 0, 0.970293, 0.241922, 0, -0.241921, 0.970297, -20.5, 6.525, 39.025)
 follow_target = NodePath("../world_entity_player")
-follow_offset = Vector3(0, 1.5, 3)
+follow_offset = Vector3(0, 2.4, 3.4)
+look_at_offset = Vector3(0, 1, 0)
 
 [node name="Camera3D" parent="Camera" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-environment = SubResource("Environment_q1yfj")
-attributes = SubResource("CameraAttributesPractical_rtmoo")
+environment = SubResource("Environment_58xuj")
+attributes = SubResource("CameraAttributesPractical_emlb6")
 
 [node name="world_entity_player" parent="." instance=ExtResource("2_8ih0j")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 4.125, 35.625)

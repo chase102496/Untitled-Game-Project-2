@@ -203,6 +203,7 @@ item = "item_key"
 my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
 
 [node name="component_impulse_reciever_dialogic" parent="Recievers" node_paths=PackedStringArray("my_impulse") instance=ExtResource("9_xjt01")]
+dialogue = "[pulse]You received: [color=red]Item[/color] [/pulse]"
 my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
 
 [node name="Filters" type="Node3D" parent="."]

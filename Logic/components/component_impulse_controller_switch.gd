@@ -263,10 +263,6 @@ func _transition(state_name : String) -> void:
 func _on_state_changed(event : StringName = "") -> void:
 	
 	if state_chart.get_current_state() != initial_state:
-	
-		print_debug(name," _on_state_changed")
-		print_debug(state_chart.get_initial_state())
-		print_debug(state_chart.get_current_state())
 		
 		_update_input_prompt(my_component_input_prompt.input_closed)
 		

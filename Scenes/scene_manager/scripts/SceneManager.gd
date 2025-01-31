@@ -57,6 +57,9 @@ func transition_to(scene: String) -> void:
 	
 	##Make sure we don't try to load another scene
 	if !busy:
+		
+		SaveManager.save_data_session()
+		
 		busy = true
 		scene_load_start.emit()
 		

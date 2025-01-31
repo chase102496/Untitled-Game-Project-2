@@ -16,6 +16,6 @@ func activate() -> void:
 	pass
 
 func load_scene() -> void:
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.5).timeout #cope
 	loaded.emit()
 	Events.loaded_scene.emit()

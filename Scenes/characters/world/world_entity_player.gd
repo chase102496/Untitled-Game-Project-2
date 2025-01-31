@@ -56,7 +56,7 @@ func on_save(all_data):
 	## Inventory
 	data.my_inventory = my_component_inventory.get_data_inventory_all()
 	## World Ability we had active
-	data.my_active_ability = my_component_world_ability.active
+	#data.my_active_ability = my_component_world_ability.active
 	## Abilities & World Abilities
 	data.my_abilities = my_component_ability.get_data_ability_all()
 	## Status fx

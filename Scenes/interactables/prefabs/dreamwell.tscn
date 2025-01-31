@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://1v13n2xn0efq"]
+[gd_scene load_steps=25 format=4 uid="uid://1v13n2xn0efq"]
 
 [ext_resource type="PackedScene" uid="uid://c51siwwonli4n" path="res://Scenes/interactables/prototypes/empty_trigger_zone.tscn" id="1_7ngan"]
 [ext_resource type="Shader" path="res://Resources/Shader/water/water.gdshader" id="2_wh72l"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bvh7ikmm4eeyw" path="res://Logic/components/component_impulse_reciever_stats.tscn" id="4_rud4k"]
 [ext_resource type="PackedScene" uid="uid://bre6yqnq1efmt" path="res://Logic/components/component_impulse_reciever_save_game.tscn" id="5_gljak"]
 [ext_resource type="PackedScene" uid="uid://d4mbat8s17wdq" path="res://Logic/components/component_impulse_reciever_particle.tscn" id="6_wokh7"]
+[ext_resource type="PackedScene" uid="uid://bhrtv81nw8tj4" path="res://Logic/components/component_impulse_reciever_dialogic.tscn" id="7_mir2a"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1k2p4"]
 render_priority = 0
@@ -189,6 +190,10 @@ my_impulse = NodePath("../../component_impulse_controller_switch")
 my_impulse = NodePath("../../component_impulse_controller_switch")
 
 [node name="component_impulse_reciever_save_game" parent="Recievers" index="2" node_paths=PackedStringArray("my_impulse") instance=ExtResource("5_gljak")]
+my_impulse = NodePath("../../component_impulse_controller_switch")
+
+[node name="component_impulse_reciever_dialogic" parent="Recievers" index="3" node_paths=PackedStringArray("my_impulse") instance=ExtResource("7_mir2a")]
+dialogue = "Saved game."
 my_impulse = NodePath("../../component_impulse_controller_switch")
 
 [editable path="component_impulse_controller_switch"]

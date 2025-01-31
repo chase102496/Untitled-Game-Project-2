@@ -33,7 +33,10 @@ func find_save_id(all_data : Variant) -> String:
 	var result
 	match my_save_type:
 		save_type.SCENE:
+			
+			#IF it's our scene
 			result = SaveManager.get_save_id_scene(self,all_data)
+			
 		save_type.GLOBAL:
 			result = SaveManager.get_save_id_global(self,all_data,save_global_id)
 		save_type.DISABLED:
@@ -54,11 +57,16 @@ func on_save(all_data : Variant) -> void:
 
 func on_load(all_data : Variant) -> void:
 	
-	var key : String = find_save_id(all_data)
+	## Returns a save path for us to save to
+	var key = find_save_id(all_data)
 	
 	if key != null:
 		
-		Global.deserialize_data(save_parent,all_data[key])
+		##Scene matches us
 		
-		Debug.message(["component_save loaded data for ",save_parent,": ",all_data[key]],Debug.msg_category.SAVE)
+		if key in all_data:
+		
+			Global.deserialize_data(save_parent,all_data[key])
+		
+			Debug.message(["component_save loaded data for ",save_parent,": ",all_data[key]],Debug.msg_category.SAVE)
 	
