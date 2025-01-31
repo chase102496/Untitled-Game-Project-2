@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://bq3e0pta3w7ht"]
+[gd_scene load_steps=23 format=4 uid="uid://bq3e0pta3w7ht"]
 
 [ext_resource type="Script" path="res://addons/shaker/src/Vector3/shaker_component3D.gd" id="1_0b247"]
 [ext_resource type="Script" path="res://addons/shaker/data/Vector3/BaseShakerType3D.gd" id="2_ktk4a"]
@@ -9,9 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://b1pnogll12jh2" path="res://Logic/components/prefabs/component_save_persistent_switch.tscn" id="6_wh6ag"]
 [ext_resource type="PackedScene" uid="uid://bxdqarudkqkta" path="res://Logic/components/component_impulse_reciever_animation.tscn" id="7_tu1os"]
 [ext_resource type="PackedScene" uid="uid://xhem7eglmhgt" path="res://Logic/components/component_impulse_reciever_item.tscn" id="8_3otp4"]
+[ext_resource type="PackedScene" uid="uid://bmko4mxvh11i3" path="res://Logic/components/prefabs/component_save_persistent_reciever.tscn" id="9_g6dhm"]
 [ext_resource type="PackedScene" uid="uid://bhrtv81nw8tj4" path="res://Logic/components/component_impulse_reciever_dialogic.tscn" id="9_xjt01"]
-[ext_resource type="PackedScene" uid="uid://jobwx0u1sf3g" path="res://Logic/components/component_impulse_filter_relay.tscn" id="10_pjq7t"]
-[ext_resource type="PackedScene" uid="uid://b3xb2guunu5vn" path="res://Logic/components/prefabs/component_save_persistent_filter.tscn" id="12_k0t5s"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tibyg"]
 albedo_color = Color(0.313726, 0.470588, 0.607843, 1)
@@ -168,18 +167,7 @@ shape = SubResource("ConvexPolygonShape3D_cj81l")
 [node name="Controllers" type="Node3D" parent="."]
 
 [node name="component_impulse_controller_switch" parent="Controllers" instance=ExtResource("5_ibfyl")]
-one_way_flags = {
-"deafen": true,
-"mute": false
-}
-reset_flags = {
-"deafen": true,
-"mute": true
-}
-impulse_deafen_signal = "activated"
-is_deafened = false
-impulse_mute_signal = "activated"
-is_muted = false
+is_one_way = true
 
 [node name="component_input_prompt" parent="Controllers/component_impulse_controller_switch/Components" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.125, 0)
@@ -197,10 +185,13 @@ shape = SubResource("CylinderShape3D_l2e6d")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="component_impulse_reciever_animation" parent="Recievers" node_paths=PackedStringArray("my_impulse") instance=ExtResource("7_tu1os")]
-my_impulse = NodePath("../../Filters/RELAY")
+my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
 
 [node name="AnimationTree" parent="Recievers/component_impulse_reciever_animation" index="0"]
 anim_player = NodePath("../AnimationPlayer")
+
+[node name="component_save_persistent_reciever" parent="Recievers/component_impulse_reciever_animation" node_paths=PackedStringArray("save_parent") instance=ExtResource("9_g6dhm")]
+save_parent = NodePath("..")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Recievers/component_impulse_reciever_animation"]
 libraries = {
@@ -208,23 +199,14 @@ libraries = {
 }
 
 [node name="component_impulse_reciever_item" parent="Recievers" node_paths=PackedStringArray("my_impulse") instance=ExtResource("8_3otp4")]
-my_impulse = NodePath("../../Filters/RELAY PERMANENT")
+item = "item_key"
+my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
 
 [node name="component_impulse_reciever_dialogic" parent="Recievers" node_paths=PackedStringArray("my_impulse") instance=ExtResource("9_xjt01")]
-my_impulse = NodePath("../../Filters/RELAY PERMANENT")
+my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
 
 [node name="Filters" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-
-[node name="RELAY" parent="Filters" node_paths=PackedStringArray("my_impulse") instance=ExtResource("10_pjq7t")]
-my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
-
-[node name="RELAY PERMANENT" parent="Filters" node_paths=PackedStringArray("my_impulse") instance=ExtResource("10_pjq7t")]
-my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
-is_one_way = true
-
-[node name="component_save_persistent_filter" parent="Filters/RELAY PERMANENT" node_paths=PackedStringArray("save_parent") instance=ExtResource("12_k0t5s")]
-save_parent = NodePath("..")
 
 [editable path="Controllers/component_impulse_controller_switch"]
 [editable path="Controllers/component_impulse_controller_switch/component_interact_reciever"]

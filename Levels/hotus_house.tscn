@@ -63,6 +63,7 @@ size = Vector2(30, 30)
 
 [node name="hotus_house" type="Node3D"]
 script = ExtResource("1_54bp6")
+scene_type = 1
 
 [node name="Lights" type="Node3D" parent="."]
 

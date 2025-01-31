@@ -43,7 +43,6 @@ func find_save_id(all_data : Variant) -> String:
 
 func on_save(all_data : Variant) -> void:
 	
-	@warning_ignore("unused_variable")
 	var key : String = find_save_id(all_data)
 	
 	if key != null:
@@ -55,7 +54,6 @@ func on_save(all_data : Variant) -> void:
 
 func on_load(all_data : Variant) -> void:
 	
-	@warning_ignore("unused_variable")
 	var key : String = find_save_id(all_data)
 	
 	if key != null:

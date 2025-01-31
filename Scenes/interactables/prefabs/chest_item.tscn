@@ -57,9 +57,6 @@ radius = 1.55
 [node name="chest" parent="Meshes/chest" index="0"]
 mesh = SubResource("ArrayMesh_jclj8")
 
-[node name="component_impulse_controller_switch" parent="Controllers" index="0"]
-is_one_way = true
-
 [node name="component_input_prompt" parent="Controllers/component_impulse_controller_switch/Components" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.125, 0)
 

@@ -16,9 +16,14 @@ var entry_point : Vector3 = Vector3.ZERO
 func _ready() -> void:
 	current_scene = get_tree().current_scene
 	Global.set_current_scene_type(current_scene.scene_type)
-	SaveManager.load_data_persistent()
 	
 	init_save_ids()
+	
+	if !current_scene.is_node_ready():
+		await current_scene.ready
+	
+	SaveManager.load_data_persistent()
+	Events.loaded_scene.emit()
 
 func init_save_ids() -> void:
 	for inst in get_tree().get_nodes_in_group("save_id_scene"):

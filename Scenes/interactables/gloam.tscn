@@ -1,55 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://clrl5yxrkq5qs"]
+[gd_scene load_steps=11 format=3 uid="uid://clrl5yxrkq5qs"]
 
 [ext_resource type="Script" path="res://Logic/misc/gloam.gd" id="1_vug2x"]
-[ext_resource type="Texture2D" uid="uid://bp7f1e0kqmn4x" path="res://Art/particles/star_01.png" id="2_23ab2"]
+[ext_resource type="PackedScene" uid="uid://781d1n5x0g4" path="res://Scenes/particles/particle_gloam.tscn" id="2_khbt0"]
 [ext_resource type="Shader" path="res://test_junk/fog_thingy.gdshader" id="2_pqm72"]
-
-[sub_resource type="Curve" id="Curve_deejm"]
-min_value = -1.0
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.55298, -0.746011), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_43ewh"]
-curve = SubResource("Curve_deejm")
-
-[sub_resource type="Curve" id="Curve_mcq57"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.254967, 1), 0.0, 0.0, 0, 0, Vector2(0.751656, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="CurveTexture" id="CurveTexture_tenvy"]
-curve = SubResource("Curve_mcq57")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qfg1i"]
-emission_shape = 3
-emission_box_extents = Vector3(4, 4, 4)
-angle_min = 1.07288e-05
-angle_max = 180.0
-angle_curve = SubResource("CurveTexture_43ewh")
-gravity = Vector3(0, 0.1, 0)
-radial_accel_min = -0.100002
-radial_accel_max = 0.0999978
-tangential_accel_min = -0.100002
-tangential_accel_max = 0.0999978
-damping_max = 0.05
-scale_curve = SubResource("CurveTexture_tenvy")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_73nf3"]
-transparency = 2
-alpha_scissor_threshold = 0.9
-alpha_antialiasing_mode = 0
-blend_mode = 1
-shading_mode = 0
-specular_mode = 1
-disable_fog = true
-albedo_texture = ExtResource("2_23ab2")
-billboard_mode = 3
-billboard_keep_scale = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-
-[sub_resource type="QuadMesh" id="QuadMesh_md72n"]
-material = SubResource("StandardMaterial3D_73nf3")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kpytn"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -92,12 +45,7 @@ size = Vector3(2, 2, 2)
 transform = Transform3D(10, 0, 0, 0, 5, 0, 0, 0, 10, 0, 0, 0)
 script = ExtResource("1_vug2x")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-amount = 1024
-lifetime = 10.0
-process_material = SubResource("ParticleProcessMaterial_qfg1i")
-draw_pass_1 = SubResource("QuadMesh_md72n")
+[node name="particle_gloam" parent="." instance=ExtResource("2_khbt0")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uotvi")

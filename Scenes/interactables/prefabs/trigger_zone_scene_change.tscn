@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bprlug8jcorhb"]
+
+[ext_resource type="PackedScene" uid="uid://c51siwwonli4n" path="res://Scenes/interactables/prototypes/empty_trigger_zone.tscn" id="1_580qd"]
+[ext_resource type="Script" path="res://Logic/components/component_impulse_reciever_scene_change.gd" id="2_0d11v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2qdqb"]
+
+[sub_resource type="FogMaterial" id="FogMaterial_3rxyv"]
+density = 3.0
+albedo = Color(0, 0, 0, 1)
+edge_fade = 1e-05
+
+[node name="trigger_zone_scene_change" node_paths=PackedStringArray("my_impulse") instance=ExtResource("1_580qd")]
+script = ExtResource("2_0d11v")
+my_impulse = NodePath("component_impulse_controller_switch")
+
+[node name="CollisionShape3D" parent="component_impulse_controller_switch/component_interact_reciever_interact_general" index="0"]
+shape = SubResource("BoxShape3D_2qdqb")
+
+[node name="FogVolume" type="FogVolume" parent="." index="1"]
+material = SubResource("FogMaterial_3rxyv")
+
+[editable path="component_impulse_controller_switch"]
+[editable path="component_impulse_controller_switch/component_interact_reciever_interact_general"]

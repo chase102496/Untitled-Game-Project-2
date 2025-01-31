@@ -79,6 +79,11 @@ _data = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 script = ExtResource("2_g6gkv")
 area = NodePath("Controllers/component_impulse_controller_switch/component_interact_reciever")
+launch_velocity_flags = {
+"X": false,
+"Y": true,
+"Z": false
+}
 
 [node name="CollisionShape3D" parent="Controllers/component_impulse_controller_switch/component_interact_reciever" index="0"]
 shape = SubResource("BoxShape3D_cqewu")

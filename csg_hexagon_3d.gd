@@ -1,0 +1,2 @@
+class_name CSGHexagon3D
+extends CSGCylinder3D

@@ -7,6 +7,7 @@ signal activated
 signal deactivated
 signal activated_load
 signal deactivated_load
+signal failed ## TBD
 
 var current_state : String = "deactivated"
 

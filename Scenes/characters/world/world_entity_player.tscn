@@ -120,7 +120,7 @@ my_component_movement_controller = NodePath("../component_movement_controller")
 my_component_input_controller = NodePath("../component_input_controller_manual")
 
 [node name="Drop Shadow" type="Decal" parent="." index="7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.65, 0)
 size = Vector3(0.6, 10, 0.6)
 texture_albedo = ExtResource("14_t3tv1")
 upper_fade = 2.0

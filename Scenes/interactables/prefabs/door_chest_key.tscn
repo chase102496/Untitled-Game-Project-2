@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://8nbd7v6suiut" path="res://Scenes/interactables/prototypes/door.tscn" id="1_0orgb"]
 [ext_resource type="PackedScene" uid="uid://b1pnogll12jh2" path="res://Logic/components/prefabs/component_save_persistent_switch.tscn" id="2_0q3ec"]
 [ext_resource type="PackedScene" uid="uid://h3oylurnvf63" path="res://Scenes/interactables/prefabs/chest_item.tscn" id="2_u0xe2"]
+[ext_resource type="PackedScene" uid="uid://bmko4mxvh11i3" path="res://Logic/components/prefabs/component_save_persistent_reciever.tscn" id="3_jy8yj"]
 [ext_resource type="PackedScene" uid="uid://xhem7eglmhgt" path="res://Logic/components/component_impulse_reciever_item.tscn" id="3_wuo7o"]
 [ext_resource type="PackedScene" uid="uid://dxatc4ekmwr7u" path="res://Logic/components/component_impulse_filter_item.tscn" id="4_iew72"]
-[ext_resource type="PackedScene" uid="uid://jobwx0u1sf3g" path="res://Logic/components/component_impulse_filter_relay.tscn" id="5_2nr58"]
 [ext_resource type="PackedScene" uid="uid://b3xb2guunu5vn" path="res://Logic/components/prefabs/component_save_persistent_filter.tscn" id="6_rsper"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u55a6"]
@@ -152,30 +152,24 @@ save_parent = NodePath("..")
 [node name="CollisionShape3D" parent="Controllers/component_impulse_controller_switch/component_interact_reciever" index="0"]
 shape = SubResource("CylinderShape3D_mguta")
 
-[node name="component_impulse_reciever_animation" parent="Recievers" index="0" node_paths=PackedStringArray("my_impulse")]
-my_impulse = NodePath("../../Filters/RELAY UPDATER")
+[node name="component_impulse_reciever_animation" parent="Recievers" index="0" node_paths=PackedStringArray("my_impulse", "impulse_deafen")]
+my_impulse = NodePath("../../Filters/FILTER")
+impulse_deafen = NodePath("../../Filters/FILTER")
+
+[node name="component_save_persistent_reciever" parent="Recievers/component_impulse_reciever_animation" index="2" node_paths=PackedStringArray("save_parent") instance=ExtResource("3_jy8yj")]
+save_parent = NodePath("..")
 
 [node name="component_impulse_reciever_item" parent="Recievers" index="1" node_paths=PackedStringArray("my_impulse") instance=ExtResource("3_wuo7o")]
 item_action = 1
 item = "item_key_red"
-my_impulse = NodePath("../../Filters/RELAY PERMANENT")
+my_impulse = NodePath("../../Filters/FILTER")
 
 [node name="FILTER" parent="Filters" index="0" node_paths=PackedStringArray("my_impulse") instance=ExtResource("4_iew72")]
 item_id = "item_key_red"
 my_impulse = NodePath("../../Controllers/component_impulse_controller_switch")
 is_one_way = true
 
-[node name="RELAY UPDATER" parent="Filters" index="1" node_paths=PackedStringArray("my_impulse") instance=ExtResource("5_2nr58")]
-my_impulse = NodePath("../FILTER")
-
-[node name="component_save_persistent_filter" parent="Filters/RELAY UPDATER" index="0" node_paths=PackedStringArray("save_parent") instance=ExtResource("6_rsper")]
-save_parent = NodePath("..")
-
-[node name="RELAY PERMANENT" parent="Filters" index="2" node_paths=PackedStringArray("my_impulse") instance=ExtResource("5_2nr58")]
-my_impulse = NodePath("../FILTER")
-is_one_way = true
-
-[node name="component_save_persistent_filter" parent="Filters/RELAY PERMANENT" index="0" node_paths=PackedStringArray("save_parent") instance=ExtResource("6_rsper")]
+[node name="component_save_persistent_filter" parent="Filters/FILTER" index="0" node_paths=PackedStringArray("save_parent") instance=ExtResource("6_rsper")]
 save_parent = NodePath("..")
 
 [node name="chest" parent="." index="4" instance=ExtResource("2_u0xe2")]

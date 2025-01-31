@@ -41,6 +41,16 @@ func evaluate_class_type(input) -> RefCounted:
 	#else:
 		#return entity_type.NOT_FOUND
 
+## Restores party and Lumia to full health and vis
+func restore_all():
+	
+	for member in Global.player.my_component_party.get_hybrid_data_all():
+		change_vis(member,get_root_vis(member).max_vis)
+		change_health(member,get_root_health(member).max_health)
+	
+	change_health(Global.player,Global.player.my_component_health.max_health)
+	change_vis(Global.player,Global.player.my_component_vis.max_vis)
+
 ##
 func change_health(target, amt : int):
 	match evaluate_class_type(target):

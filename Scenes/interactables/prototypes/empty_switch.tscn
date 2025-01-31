@@ -27,6 +27,18 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="component_impulse_controller_switch" parent="Controllers" instance=ExtResource("3_amkib")]
+one_way_flags = {
+"deafen": true,
+"mute": true
+}
+reset_flags = {
+"deafen": true,
+"mute": true
+}
+impulse_deafen_signal = "activated"
+is_deafened = false
+impulse_mute_signal = "activated"
+is_muted = false
 
 [node name="component_interact_reciever" parent="Controllers/component_impulse_controller_switch" groups=["interact_general"] instance=ExtResource("4_i60ww")]
 

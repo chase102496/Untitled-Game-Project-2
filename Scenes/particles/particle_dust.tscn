@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/particles/particle_manager.gd" id="1_04ul6"]
 
 [sub_resource type="Curve" id="Curve_ne2aq"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.67033), 5.5631e-07, 5.5631e-07, 0, 0, Vector2(0.443965, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0532915, 0.66812), 5.5631e-07, 5.5631e-07, 0, 0, Vector2(0.443965, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_yc7lm"]
@@ -12,19 +12,19 @@ curve = SubResource("Curve_ne2aq")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6g1jj"]
 resource_local_to_scene = true
 emission_shape = 1
-emission_sphere_radius = 0.2
+emission_sphere_radius = 0.1
 spread = 30.0
 initial_velocity_min = 0.4
 initial_velocity_max = 0.6
 gravity = Vector3(0, 0.2, 0)
 damping_max = 0.3
-scale_min = 0.2
-scale_max = 0.4
+scale_min = 0.1
+scale_max = 0.26
 scale_curve = SubResource("CurveTexture_yc7lm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwd6l"]
 resource_local_to_scene = true
-transparency = 1
+depth_draw_mode = 1
 shading_mode = 0
 diffuse_mode = 3
 specular_mode = 1
@@ -41,7 +41,8 @@ material = SubResource("StandardMaterial3D_pwd6l")
 radial_segments = 16
 
 [node name="particle_dust" type="GPUParticles3D"]
-lifetime = 1.6
+amount = 5
+speed_scale = 2.0
 explosiveness = 1.0
 randomness = 1.0
 fixed_fps = 60

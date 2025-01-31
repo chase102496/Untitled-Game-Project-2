@@ -178,6 +178,7 @@ func summon_all(battle_or_world : String):
 
 ##Save summon to our party
 func recall(index : int):
+	
 	if index < my_summons.size() and index >= 0:
 		##Get data for active summon at index
 		var party_data = get_summon_data(index)
@@ -190,7 +191,7 @@ func recall(index : int):
 		summon_inst.queue_free()
 		return party_inst #Return the new party dreamkin object
 	else:
-		print_debug("Could not recall #",index," out of bounds ",my_party)
+		Debug.message(["Attempted to recall Dreamkin when the index ",index," doesn't exist!"],Debug.msg_category.WORLD)
 
 ##Save summon to our party, instance instead of index
 func recall_inst(dreamkin : Node):

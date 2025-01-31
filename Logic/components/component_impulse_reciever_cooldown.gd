@@ -5,7 +5,7 @@ func _ready() -> void:
 	super._ready()
 
 func _on_activated() -> void:
-	super._on_activated()
+	super._on_my_impulse_activated()
 	
 	if Global.player.my_component_world_ability.active:
 		Global.player.my_component_world_ability.active._on_cooldown_timer_stop()

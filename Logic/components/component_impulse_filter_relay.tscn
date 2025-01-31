@@ -4,8 +4,3 @@
 
 [node name="component_impulse_filter_relay" type="Node"]
 script = ExtResource("1_3vdev")
-my_impulse_flags = {
-"activated": true,
-"deactivated": true,
-"one_shot": true
-}

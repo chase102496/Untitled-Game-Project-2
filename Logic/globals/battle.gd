@@ -137,7 +137,7 @@ func battle_initialize(entity_list, scene_new : String = "res://Levels/turn_aren
 	_battle_reset()
 	
 	##Save our current world info to load up
-	SaveManager.save_data_session()
+	#SaveManager.save_data_session()
 	
 	var final_entity_list : Array = []
 	

@@ -19,9 +19,6 @@ func _ready() -> void:
 
 func _on_activated() -> void:
 	super._on_activated()
-	_trigger_item()
-
-func _trigger_item() -> void:
 	
 	match item_action:
 		action.GIVE:
@@ -30,4 +27,3 @@ func _trigger_item() -> void:
 			Global.player.my_component_inventory.add_item(inst)
 		action.TAKE:
 			Global.player.my_component_inventory.remove_item_id(item,quantity)
-			

@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://dy1atssvl76av"]
+
+[ext_resource type="Shader" path="res://Resources/Shader/water/water.gdshader" id="1_dtxp7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u1sm7"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1k2p4"]
+render_priority = 0
+shader = ExtResource("1_dtxp7")
+shader_parameter/absorption_color = Color(1, 0.35, 0, 1)
+shader_parameter/fresnel_radius = 0.0
+shader_parameter/fresnel_color = Color(0.41, 0.1722, 0.318843, 1)
+shader_parameter/roughness = 0.15
+shader_parameter/specular = 0.25
+shader_parameter/depth_distance = 25.0
+shader_parameter/beers_law = 4.5
+shader_parameter/displacement_strength = 0.3
+shader_parameter/displacement_scroll_speed = 0.1
+shader_parameter/displacement_scroll_offset = Vector2(-0.2, 0.3)
+shader_parameter/displacement_scale_offset = 0.5
+shader_parameter/displacement_scale = Vector2(0.04, 0.04)
+shader_parameter/edge_thickness = 0.03
+shader_parameter/edge_speed = 0.35
+shader_parameter/edge_noise_scale = Vector2(0.4, 0.4)
+shader_parameter/influence_size = 1.0
+shader_parameter/player_wave_frequenzy = 10.0
+shader_parameter/player_wave_speed = 5.0
+shader_parameter/caustic_size = 2.0
+shader_parameter/caustic_range = 40.0
+shader_parameter/caustic_strength = 0.08
+shader_parameter/refraction_strength = 1.25
+shader_parameter/normal_map_strength = 1.0
+shader_parameter/scroll_speed = 0.3
+shader_parameter/scroll_offset = Vector2(0.1, -0.3)
+shader_parameter/scale_offset = 0.5
+shader_parameter/normal_map_scale = Vector2(0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_54dqt"]
+albedo_color = Color(0.22, 0.120047, 0.1166, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ewx78"]
+albedo_color = Color(0.0784, 0.15048, 0.16, 1)
+
+[node name="dreamwell" type="CSGCombiner3D"]
+
+[node name="CSGHexagon3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+radius = 0.6
+height = 0.1
+sides = 6
+smooth_faces = false
+material = SubResource("StandardMaterial3D_u1sm7")
+
+[node name="CSGHexagon3D3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+height = 0.1
+sides = 6
+smooth_faces = false
+material = SubResource("ShaderMaterial_1k2p4")
+
+[node name="CSGHexagon3D2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+radius = 0.65
+height = 0.1
+sides = 6
+smooth_faces = false
+material = SubResource("StandardMaterial3D_u1sm7")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+radius = 0.6
+height = 0.25
+sides = 6
+smooth_faces = false
+material = SubResource("StandardMaterial3D_54dqt")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+operation = 2
+height = 0.25
+sides = 6
+smooth_faces = false
+material = SubResource("StandardMaterial3D_ewx78")

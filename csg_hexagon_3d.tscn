@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl5v7853lv1c5"]
+
+[ext_resource type="Script" path="res://csg_hexagon_3d.gd" id="1_7yfns"]
+
+[node name="CSGHexagon3D" type="CSGCylinder3D"]
+radius = 1.0
+sides = 6
+smooth_faces = false
+script = ExtResource("1_7yfns")

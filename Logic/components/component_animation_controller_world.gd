@@ -27,6 +27,8 @@ func _on_jump() -> void:
 	tween.tween_property(owner.animations.transformer,"scale",Vector3(0.8,1.2,1),0.1)
 	tween.set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(owner.animations.transformer,"scale",Vector3(1,1,1),0.2)
+	
+	Glossary.create_fx_particle_custom(owner.animations.selector_feet,"dust",true,-1,100,1,Vector3(0,-1,0),Global.palette["Oxford Blue"])
 
 ## Disabled
 

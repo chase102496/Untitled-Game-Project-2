@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://c51siwwonli4n"]
+
+[ext_resource type="PackedScene" uid="uid://bltyq4wqoagse" path="res://Logic/components/component_impulse_controller_switch.tscn" id="1_go8wk"]
+[ext_resource type="PackedScene" uid="uid://b36q0erjohb66" path="res://Logic/components/prefabs/component_interact_reciever_interact_general.tscn" id="2_pwmly"]
+
+[node name="empty_trigger_zone" type="Node3D"]
+
+[node name="component_impulse_controller_switch" parent="." instance=ExtResource("1_go8wk")]
+type_selection = 1
+one_way_flags = {
+"deafen": true,
+"mute": true
+}
+reset_flags = {
+"deafen": true,
+"mute": true
+}
+impulse_deafen_signal = "activated"
+is_deafened = false
+impulse_mute_signal = "activated"
+is_muted = false
+
+[node name="component_interact_reciever_interact_general" parent="component_impulse_controller_switch" instance=ExtResource("2_pwmly")]
+
+[editable path="component_impulse_controller_switch"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4mbat8s17wdq"]
+
+[ext_resource type="Script" path="res://component_impulse_reciever_particle.gd" id="1_m6ohh"]
+
+[node name="component_impulse_reciever_particle" type="Node3D"]
+script = ExtResource("1_m6ohh")

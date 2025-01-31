@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvh7ikmm4eeyw"]
+
+[ext_resource type="Script" path="res://component_impulse_reciever_health.gd" id="1_p5wn3"]
+
+[node name="component_impulse_reciever_stats" type="Node"]
+script = ExtResource("1_p5wn3")

@@ -72,6 +72,9 @@ var interact_timer : Timer = Timer.new()
 ##
 #@onready var state_chart_initial_state = $StateChart/Main.initial_state
 
+##
+var initial_state : String
+
 func _ready() -> void:
 	
 	interact_timer.one_shot = true
@@ -90,6 +93,8 @@ func _ready() -> void:
 	_connect_signals()
 	
 	Events.loaded_scene.connect(_on_loaded_scene)
+	
+	initial_state = state_chart.get_current_state()
 
 ## General Utility
 
@@ -257,13 +262,21 @@ func _transition(state_name : String) -> void:
 
 func _on_state_changed(event : StringName = "") -> void:
 	
-	_update_input_prompt(my_component_input_prompt.input_closed)
+	if state_chart.get_current_state() != initial_state:
 	
-	if is_one_way and one_way_flags["deafen"]:
-		_on_impulse_deafen()
+		print_debug(name," _on_state_changed")
+		print_debug(state_chart.get_initial_state())
+		print_debug(state_chart.get_current_state())
+		
+		_update_input_prompt(my_component_input_prompt.input_closed)
+		
+		if is_one_way and one_way_flags["deafen"]:
+			_on_impulse_deafen()
+		
+		if is_one_way and one_way_flags["mute"]:
+			_on_impulse_mute()
 	
-	if is_one_way and one_way_flags["mute"]:
-		_on_impulse_mute()
+		initial_state = state_chart.get_current_state()
 
 func _on_state_entered_deactivated() -> void:
 	_emit("deactivated")

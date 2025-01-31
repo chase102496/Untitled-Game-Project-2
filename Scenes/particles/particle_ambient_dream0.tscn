@@ -2,23 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://c1jfqvko0tqj8" path="res://Art/particles/star_04.png" id="1_521wi"]
 
-[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_8fcjr"]
-resource_local_to_scene = true
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-diffuse_mode = 3
-specular_mode = 1
-vertex_color_use_as_albedo = true
-albedo_texture = ExtResource("1_521wi")
-billboard_mode = 3
-billboard_keep_scale = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-grow_amount = 5.884
-
 [sub_resource type="Gradient" id="Gradient_le5yj"]
 offsets = PackedFloat32Array(0, 0.108333, 0.35, 1)
 colors = PackedColorArray(0.95, 0, 1, 0, 0.721, 0.07, 1, 1, 0.210724, 0.272321, 1, 1, 0.42, 0.671333, 1, 0)
@@ -53,11 +36,28 @@ turbulence_noise_strength = 20.0
 turbulence_noise_scale = 5.0
 turbulence_noise_speed = Vector3(1, 1, 1)
 
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_8fcjr"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 1
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_521wi")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+grow_amount = 5.884
+
 [sub_resource type="QuadMesh" id="QuadMesh_bwovf"]
 lightmap_size_hint = Vector2i(7, 7)
+material = SubResource("ORMMaterial3D_8fcjr")
 
 [node name="particle_ambient_dream0" type="GPUParticles3D"]
-material_override = SubResource("ORMMaterial3D_8fcjr")
 amount = 1000
 lifetime = 20.0
 trail_lifetime = 3.85
